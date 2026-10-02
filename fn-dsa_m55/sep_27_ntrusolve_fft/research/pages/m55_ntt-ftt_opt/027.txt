@@ -1,0 +1,96 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 27/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 27
+Alg. 11: Toom-Cook 4-way interpola-
+tion [KMRV18]
+Input: Seven arrays w1 to w7 with 127
+coeﬃcients of the intermediate
+products each
+Output: An array C containing the
+coeﬃcients of
+C(x) = A(x) ∗B(x)
+1 C ←0;
+2 for j = 0 to 126 do
+3 r1 = w2[i];
+4 r4 = w5[i];
+5 r5 = w6[i];
+6 r0 = w1[i];
+7 r2 = w3[i];
+8 r3 = w4[i];
+9 r6 = w7[i];
+10 r1 = r1 + r4;
+11 r5 = r5−r4;
+12 r3 = (r3−r2)/2;
+13 r4 = r4−r0;
+14 r8 = 64·r6;
+15 r4 = r4−r8;
+16 r4 = 2·r4 + r5;
+17 r2 = r2 + r3;
+18 r1 = r1−65·r2;
+19 r2 = r2−r6;
+20 r2 = r2−r0;
+21 r1 = r1 + 45·r2;
+22 r4 = (r4−8·r2)/24;
+23 r5 = r5 + r1;
+24 r1 = (r1 + 16·r3)/18;
+25 r3 =−(r3 + r1);
+26 r5 = (30·r1−r5)/60;
+27 r2 = r2−r4;
+28 r1 = r1−r5;
+29 C[i] = (C[i] + r6);
+30 C[i + 64] = (C[i + 64] + r5);
+31 C[i + 128] = (C[i + 128] + r4);
+32 C[i + 192] = (C[i + 192] + r3);
+33 C[i + 256] = (C[i + 256] + r2);
+34 C[i + 320] = (C[i + 320] + r1);
+35 C[i + 384] = (C[i + 384] + r0);
+36 return C;
+Alg. 12: Striding Toom-Cook 4-way inter-
+polation[This work]
+Input: Seven arrays w1 to w7 with 64
+coeﬃcients of the intermediate
+products each
+Output: An array C containing the
+coeﬃcients of
+C(x) = A(x) ∗B(x)
+1 for j= 0 to 63 do
+2 r7 = r0; r8 = r1; r9 = r2;
+3 r1 = w2[i];
+4 r4 = w5[i];
+5 r5 = w6[i];
+6 r0 = w1[i];
+7 r2 = w3[i];
+8 r3 = w4[i];
+9 r6 = w7[i];
+10 r1 = r1 + r4;
+11 r5 = r5−r4;
+12 r3 = (r3−r2)/2;
+13 r4 = r4−r0;
+14 r8 = 64·r6;
+15 r4 = r4−r8;
+16 r4 = 2·r4 + r5;
+17 r2 = r2 + r3;
+18 r1 = r1−65·r2;
+19 r2 = r2−r6;
+20 r2 = r2−r0;
+21 r1 = r1 + 45·r2;
+22 r4 = (r4−8·r2)/24;
+23 r5 = r5 + r1;
+24 r1 = (r1 + 16·r3)/18;
+25 r3 =−(r3 + r1);
+26 r5 = (30·r1−r5)/60;
+27 r2 = r2−r4;
+28 r1 = r1−r5;
+29 C[4·i + 3] = r3;
+30 if i == 0 then
+31 C[4·i] = r6;
+32 C[4·i + 1] = r5;
+33 C[4·i + 2] = r4;
+34 else
+35 36 37 C[4·i] = (r6 + r9);
+C[4·i + 1] = (r5 + r8);
+C[4·i + 2] = (r4 + r7);
+38 C[0] = (C[0]−r2);
+39 C[1] = (C[1]−r1);
+40 C[2] = (C[2]−r0);
+41 return C;

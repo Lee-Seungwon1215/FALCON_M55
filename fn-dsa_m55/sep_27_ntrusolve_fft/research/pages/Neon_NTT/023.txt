@@ -1,0 +1,46 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 23/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 23
+Table 6: Performance results for the full schemes kyber768, saber, and dilithium3 on
+Cortex-A72 and Apple M1. On Cortex-A72, we report the median cycle count of 10000
+executions for Kyber and Saber, and 100000 executions for Dilithium. On Apple M1, we
+report the average cycle count of 10000 executions for Kyber and Saber, and 1000000
+executions for Dilithium. For Dilithium, we sign 59-byte messages.
+Cortex-A72 K E D Apple M1
+K E D
+kyber512 (Ours) kyber512 [NG21] kyber512 [SKS+21]b 62459 80710 76443 67903a 88906a 87563a 84728 109668 108646 14939 24834 20893
+23000 32500 29400
+– – –
+kyber768 (Ours) kyber768 [NG21] kyber768 [SKS+21]b 99201 127453 120665 110784a 141312a 138984a 143791 180687 179085 23756 36284 31047
+36300 49200 45700
+– – –
+kyber1024 (Ours) 156694 192280 184161 33024 48925 44000
+kyber1024 [NG21] 176809a 215665a 214076a 55900 71600 67100
+kyber1024 [SKS+21]b 228082 272418 270668 – – –
+lightsaber (Ours) lightsaber [NG21]c 64181 87272 92813 83960a 118583a 136203a 20137 29731 28551
+31200 37200 35300
+saber (Ours) saber [NG21]c 109192 140103 147925 158757a 206337a 226304a 32865 44917 44074
+51300 59900 58000
+firesaber (Ours) firesaber [NG21]c 175104 211382 222317 245249a 304128a 330750a 50345 65402 64593
+77000 87900 86700
+K S V K S V
+dilithium2 (Ours) dilithium2 (ref) 269724 649230 272824 410312 1353753 449633 71061 224125 69792
+187842 741140 199615
+dilithium3 (Ours) dilithium3 (ref) 515776 1089387 447460 743166 2308598 728866 152435 365248 104821
+358848 1218027 329187
+dilithium5 (Ours) dilithium5 (ref) 782752 1436988 764886 1151504 2903604 1198723 a We re-benchmark the code from [NG21] in SUPERCOP.
+b [SKS+21] targets the Arm Cortex-A75.
+c Fastest implementation in [NG21] (Toom–Cook).
+178137 426635 167489
+544833 1531067 557696
+Keccak parallelization. We believe that the Saber specification should be changed. Saber’s
+performance on Cortex-A72 and Apple M1 will then be much closer to Kyber.
+Acknowledgments
+The authors in Taiwan thank the Ministry of Science and Technology for grant 109-2221-
+E-001-009-MY3, the Sinica Investigator Award AS-IA-109-M01, the Executive Yuan Data
+Safety and Talent Cultivation Project (AS-KPQ-109-DSTCP), and the Cybersecurity
+Center of Excellence Project at National Applied Research Labs.
+References
+[AASA+20] Gorjan Alagic, Jacob Alperin-Sheriﬀ, Daniel Apon, David Cooper, Quynh
+Dang, John Kelsey, Yi-Kai Liu, Carl Miller, Dustin Moody, Rene Peralta,
+Ray Perlner, Angela Robinson, and Daniel Smith-Tone. NISTIR8309 – status

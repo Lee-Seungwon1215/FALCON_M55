@@ -1,0 +1,50 @@
+DOCUMENT: m55_slothy.pdf PAGE: 10/46
+
+10 Fast and Clean: Auditable high-performance assembly via constraint solving
+M2
+M1
+M0
+task1,1 task0,2 task2,0 task0,1 task2,1
+task1,2
+task0,0 task1,0
+0 1 2 3 4 5 6 7 8 9 10 11
+Figure 3: An instance of the job shop problem. taski,j denotes task j of job i.
+3.2.3 AArch64+Neon
+We will also be optimizing workloads for the Cortex-A55 and Cortex-A72 CPUs. Those
+CPUs belong to the A-profile of the Arm architecture and implement the AArch64 64-
+bit execution state, which was introduced in Armv8-A [Armb] and is also used in the
+Armv8-R and Armv9-A architectures. AArch64 offers 31 general purpose registers of 64-bit
+each, as well as 32 vector registers of 128-bit each, which are operated on by the A64
+instruction set including the Neon SIMD vector extension (there are also the SVE and
+SVE2 vector extensions operating on vectors of flexible width of up to 2048-bits, but we
+will not consider those in this paper). For an introduction to AArch64+Neon, we refer
+the reader to [Armp, Armb]. In this paper, we will be optimizing for the Cortex-A55 and
+Cortex-A72 CPUs: The Cortex-A55 CPU is an efficiency-focused, in-order implementation
+of AArch64+Neon with extensive dual-issuing capabilities, while the Cortex-A72 CPU is a
+high performance, out-of-order core — more details will be discussed in Section 6.3.
+3.3 Combinatorial optimization
+(Flexible) Job shop problem. The job shop problem is a type of scheduling problem: A
+number of jobs are given which are to be run on a set of machines. Each job consists of a
+series of tasks to be performed in-order, and for each task there are constraints on the
+time they take and the machine they must run on. The job shop problem is to find an
+assignment of the tasks to the machines which optimizes a given measure [ML93], such as
+the total time taken. For the original job shop problem, each task must run on a fixed
+machine. For the flexible job shop problem, multiple machines may be suitable for each
+task [Pin16]. A visualization of an instance of the job shop problem is given in Figure 3.
+Google OR-Tools. Google OR-Tools [PF] is a software for combinatorial optimization,
+tailored at solving problems such as vehicle routing, flows, integer and linear programming,
+and constraint programming. We find that Google OR-Tools’s CP-SAT is well suited to
+our assembly superoptimization problem, in two ways: First, it’s fast. Second, CP-SAT’s
+API allows for the specification of a mix of Boolean, integer, and interval variables, and
+moreover offers convenient constraints such as non-overlapping for intervals, or mutual
+difference for a set of integer variables. However, we expect our modeling approach to
+apply to other constraint solvers as well, and encourage further research and comparison.
+3.4 The Fourier Transform and its friends
+Introduction. The Fourier Transform is a transformation for the decomposition of signals
+into frequency components. It has numerous incarnations — such as Fourier series, the
+Number Theoretic Transform, and even harmonic analysis on number fields — and a vast
+range of applications. Simply put, the importance of the Fourier Transform cannot be
+overstated. Here, we are interested in the discrete Fourier Transform over the complex
+numbers, which can be viewed as Cn →Cn
+,(xi) →( jxiζij
+n ) where ζn = exp(2πi/n) is

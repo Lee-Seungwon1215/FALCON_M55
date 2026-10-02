@@ -1,0 +1,85 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 7/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 7
+Algorithm 4 Montgomery reduction, implementation-view
+Require: N odd modulus, R= 2n >N, T ∈Z representative of N−1
+∈ZR
+Require: z∈Z representative mod N, to be reduced
+Ensure: mont+
+N(z) representative of zR−1 ∈ZN satisfying |mont+
+N(z)|≤|z|
+2n + N
+2.
+1: k←zT ◃ Unsigned single-width multiply
+2: k←k mod±R ◃ Canonical signed representative
+3: c← kN
+R ◃ Signed multiply-high with truncation
+4: zhigh=
+z
+R ◃ High part extraction
+5: mont+
+N(z) ←zhigh−c ◃ Signed subtraction/addition
+by R, that is, z= kN in ZR. Since N and R are coprime, this is achieved by taking k to
+be a small representative of z·N−1 in ZR; we will always choose zN−1 mod±R.
+The so obtained “Montgomery reduction” is summarized in Algorithm 2 and denoted
+mont+
+N(z) –withRalwaysbeingimplicit. Algorithm2alsoshowsaclosevariantmont−
+N(z)
+which implements the correction step through an addition z+ kN instead of a subtraction:
+In this case, we want k to be a small representative of−z·N−1 in ZR, for which we
+choose−zN−1 mod±R. We will call this variant “negative” Montgomery reduction. Their
+relation is as follows:
+Fact 3. Assume the context of Algorithm 2. If z ̸= 2n−1 ∈ZR, then mont+
+N(z) =
+mont−
+N(z). Otherwise, mont−
+N(z) = mont+
+N(z)−N.
+Proof. This follows from Fact 1 and the fact that 2n−1 ·x= 2n−1 for odd x.
+Remark 1. The exceptional case z= 2n−1 can be made explicit: mont±
+N(z) =z±2n−1 N
+2n .
+Implementation considerations. We briefly summarize known implementation aspects of
+Montgomery reduction.
+Firstly, in the context of Algorithm 2 for mont+
+N(z), z−cis divisible by R, and hence
+z−c
+R =
+z
+R−
+c
+R . This allows to rewrite the algorithm in terms of single-width operations,
+as detailed in Algorithm 4. This description does not apply to mont−
+N(z): This is because
+z+c
+R will usually introduce a carry-in from low-half to high-half as part of z+ c, and this
+carry is lost inz
+R + c
+R . We will revisit this later.
+Secondly, consider the use of Montgomery reduction for modular multiplication by
+constants: If z = ab for single-width values a,b ∈Z, and b is known in advance, then
+b·N−1
+∈ZR can be precomputed and leads to Algorithm 5, the Montgomery reduction
+for products (a.k.a., “Montgomery Multiplication”) with one known factor.
+Finally, formicroarchitectureswithlength-doubling(“long”)andnon-doublingproducts,
+the optimal implementation varies depending on what instructions are available. For the
+Neon instruction set, please refer to Section 3.2.5 and Algorithm 14.
+2.5 Fixed point arithmetic
+Let n ∈{16,32}. The fixed-point interpretation of a single-width signed integer a ∈
+{−2n−1
+,−2n−1 + 1,...,2n−1
+−1}is the single-precision fractional valuea
+2n−1 ∈[−1,+1).
+Likewise, the fixed-point interpretation of a double-width signed integer a is the double-
+precision fractional valuea
+22n−1.
+In this interpretation, the double-precision product of two single-precision fractional
+values corresponds to a doubling long multiplication on the corresponding signed integers:
+a
+b
+ab
+2ab
+2n−1·
+2n−1 =
+22n−2 =
+22n−1 . For this reason, doubling long multiplications are found in

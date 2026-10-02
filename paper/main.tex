@@ -1,0 +1,47 @@
+\documentclass[journal=tches,submission]{iacrtrans}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+
+% Draft markers: remove all of them before submission.
+% \TODO{...}: text that still has to be written.
+% \tbd{...}:  provisional numbers from ongoing experiments; re-check against
+%             the final measurements.
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\tbd}[1]{\textcolor{red}{#1}}
+
+% Author data is hidden by the `submission' option (anonymous review).
+\author{Anonymous}
+\institute{Anonymous}
+
+% TODO: working title. Alternative: "Double Precision Meets Helium:
+% Accelerating FN-DSA on the Arm Cortex-M55".
+\title[FN-DSA on Arm Cortex-M55]{Accelerating FN-DSA on the Arm Cortex-M55\\
+  with Double-Precision Floating Point and Helium}
+
+\begin{document}
+
+\maketitle
+
+\keywords{FN-DSA \and Falcon \and Cortex-M55 \and Helium \and MVE
+  \and Floating-point arithmetic \and NTT \and FFT \and Keccak}
+
+\begin{abstract}
+  \TODO{Write the abstract once the signing results are final.}
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/preliminaries}
+\input{sections/related}
+\input{sections/methodology}
+\input{sections/ntt}
+\input{sections/keygen}
+\input{sections/sign}
+\input{sections/exact}
+\input{sections/evaluation}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+% iacrtrans selects the bibliography style (alpha) itself.
+\bibliography{references}
+
+\end{document}

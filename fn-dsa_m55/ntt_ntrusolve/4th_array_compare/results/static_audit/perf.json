@@ -1,0 +1,267 @@
+{
+  "kind": "perf",
+  "changed_crypto_sources": [
+    "kgen_mp31_cm55.s"
+  ],
+  "d0_control_only_unreachable_padding": true,
+  "unchanged_arithmetic_macros": [
+    "MP31_ROOT",
+    "MP31_MONT",
+    "MP31_ADD",
+    "MP31_SUB",
+    "MP31_IROOT",
+    "MP31_CT",
+    "MP31_GS",
+    "MP31_FINAL_ROOT"
+  ],
+  "all_allocated_addresses_sizes_identical": true,
+  "all_allocated_bytes_outside_three_kernel_slots_identical": true,
+  "changed_bytes": 3220,
+  "symbols": {
+    "fndsa_mp_NTT": {
+      "d0_layout": {
+        "address": "0x10000330",
+        "bytes": 850
+      },
+      "d1": {
+        "address": "0x10000330",
+        "bytes": 1166
+      }
+    },
+    "fndsa_mp_iNTT": {
+      "d0_layout": {
+        "address": "0x100007c0",
+        "bytes": 1400
+      },
+      "d1": {
+        "address": "0x100007c0",
+        "bytes": 1770
+      }
+    },
+    "fndsa_mp_NTT_small": {
+      "d0_layout": {
+        "address": "0x10000ec0",
+        "bytes": 724
+      },
+      "d1": {
+        "address": "0x10000ec0",
+        "bytes": 1030
+      }
+    },
+    "fndsa_sign_core": {
+      "d0_layout": {
+        "address": "0x1000f3c0",
+        "bytes": 1344
+      },
+      "d1": {
+        "address": "0x1000f3c0",
+        "bytes": 1344
+      }
+    },
+    "fndsa_mqpoly_int_to_ntt": {
+      "d0_layout": {
+        "address": "0x10001a28",
+        "bytes": 4366
+      },
+      "d1": {
+        "address": "0x10001a28",
+        "bytes": 4366
+      }
+    },
+    "fndsa_mqpoly_ntt_to_int": {
+      "d0_layout": {
+        "address": "0x10002b44",
+        "bytes": 5236
+      },
+      "d1": {
+        "address": "0x10002b44",
+        "bytes": 5236
+      }
+    }
+  },
+  "elf_sha256": {
+    "d0_layout": "61c5ea58b709a618a68293297caf2048763127a9f05403884c49c8f980cc7bf4",
+    "d1": "98dcfe6d8850a3bb36748b9c982621f0f081f1bcdad6ac8dc846bbe430ff79b1"
+  },
+  "itcm_bytes": 110244,
+  "dtcm_bytes": 225728,
+  "extra_coefficient_spills": false,
+  "stack_bytes_regular": 112,
+  "stack_bytes_small": 104,
+  "branches_for_manual_review": {
+    "fndsa_mp_NTT": [
+      [
+        "10000332",
+        "bls.w",
+        "10000ec0 <fndsa_mp_NTT_small>"
+      ],
+      [
+        "1000034e",
+        "beq.n",
+        "100003ba <fndsa_mp_NTT+0x8a>"
+      ],
+      [
+        "100003b2",
+        "bne.n",
+        "10000366 <fndsa_mp_NTT+0x36>"
+      ],
+      [
+        "100003b8",
+        "b.n",
+        "100003be <fndsa_mp_NTT+0x8e>"
+      ],
+      [
+        "100003c6",
+        "bge.w",
+        "10000666 <fndsa_mp_NTT+0x336>"
+      ],
+      [
+        "100003d8",
+        "beq.w",
+        "10000530 <fndsa_mp_NTT+0x200>"
+      ],
+      [
+        "10000514",
+        "bne.w",
+        "100003ea <fndsa_mp_NTT+0xba>"
+      ],
+      [
+        "10000520",
+        "bne.w",
+        "100003dc <fndsa_mp_NTT+0xac>"
+      ],
+      [
+        "1000052e",
+        "b.n",
+        "100003be <fndsa_mp_NTT+0x8e>"
+      ],
+      [
+        "10000662",
+        "bne.w",
+        "10000530 <fndsa_mp_NTT+0x200>"
+      ],
+      [
+        "100007b0",
+        "bne.w",
+        "1000067a <fndsa_mp_NTT+0x34a>"
+      ]
+    ],
+    "fndsa_mp_iNTT": [
+      [
+        "100007c2",
+        "bcc.w",
+        "100097a0 <fndsa_mp_iNTT_c>"
+      ],
+      [
+        "10000938",
+        "bne.w",
+        "100007f2 <fndsa_mp_iNTT+0x32>"
+      ],
+      [
+        "1000094c",
+        "beq.w",
+        "10000c2e <fndsa_mp_iNTT+0x46e>"
+      ],
+      [
+        "10000950",
+        "bgt.w",
+        "10000dea <fndsa_mp_iNTT+0x62a>"
+      ],
+      [
+        "10000968",
+        "beq.w",
+        "10000ad8 <fndsa_mp_iNTT+0x318>"
+      ],
+      [
+        "10000abc",
+        "bne.w",
+        "1000097a <fndsa_mp_iNTT+0x1ba>"
+      ],
+      [
+        "10000ac8",
+        "bne.w",
+        "1000096c <fndsa_mp_iNTT+0x1ac>"
+      ],
+      [
+        "10000ad6",
+        "b.n",
+        "10000942 <fndsa_mp_iNTT+0x182>"
+      ],
+      [
+        "10000c22",
+        "bne.w",
+        "10000ad8 <fndsa_mp_iNTT+0x318>"
+      ],
+      [
+        "10000c2c",
+        "b.n",
+        "10000942 <fndsa_mp_iNTT+0x182>"
+      ],
+      [
+        "10000c7a",
+        "bne.n",
+        "10000c8e <fndsa_mp_iNTT+0x4ce>"
+      ],
+      [
+        "10000c8c",
+        "b.n",
+        "10000c9e <fndsa_mp_iNTT+0x4de>"
+      ],
+      [
+        "10000de4",
+        "bne.w",
+        "10000c8e <fndsa_mp_iNTT+0x4ce>"
+      ],
+      [
+        "10000de8",
+        "b.n",
+        "10000ea0 <fndsa_mp_iNTT+0x6e0>"
+      ],
+      [
+        "10000e9e",
+        "bne.n",
+        "10000e34 <fndsa_mp_iNTT+0x674>"
+      ]
+    ],
+    "fndsa_mp_NTT_small": [
+      [
+        "10000ec2",
+        "bcc.w",
+        "10009400 <fndsa_mp_NTT_c>"
+      ],
+      [
+        "10000eca",
+        "bne.w",
+        "10000336 <fndsa_mp_NTT+0x6>"
+      ],
+      [
+        "10000ee8",
+        "beq.w",
+        "1000103e <fndsa_mp_NTT_small+0x17e>"
+      ],
+      [
+        "10001026",
+        "bne.w",
+        "10000efc <fndsa_mp_NTT_small+0x3c>"
+      ],
+      [
+        "10001032",
+        "bne.w",
+        "10000eec <fndsa_mp_NTT_small+0x2c>"
+      ],
+      [
+        "10001170",
+        "bne.w",
+        "1000103e <fndsa_mp_NTT_small+0x17e>"
+      ],
+      [
+        "100012ba",
+        "bne.w",
+        "10001184 <fndsa_mp_NTT_small+0x2c4>"
+      ]
+    ]
+  },
+  "ct_scope": "D1 branches and addresses depend on public logn/counters; existing VPT retained",
+  "formal_constant_time_proof": false,
+  "dynamic_leakage_test": false
+}

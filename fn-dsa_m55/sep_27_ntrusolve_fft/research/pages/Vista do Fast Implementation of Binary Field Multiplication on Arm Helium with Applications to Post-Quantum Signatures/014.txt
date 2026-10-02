@@ -1,0 +1,112 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 14/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Var. Op.
+FAEST
+Verify
+Sign
+Verify
+FAEST-EM
+F
+Sign
+Verify
+Verify
+Table 4. FAEST and FAEST-EM performance on Cortex-M85 (-03, cycles/10°).
+128
+Reference
+192
+This work
+256
+128
+192
+256
+128
+Speedup
+192
+116.067
+101.285
+795.240
+704.277
+347.990
+323.910
+2754.356
+2234.950
+905.136
+98.472
+849.887
+89.046
+6746.262
+759.076
+6519.935
+691.651
+256
+282.519
+279.431
+2196.711
+785.217 1.18×
+1.15x
+773.228
+1.14x
+1.16x
+1.10x
+64313611022
+1.02x
+1.02x
+6451.861
+1.02x
+1.01x
+67.589
+54.844
+205.554
+189.556
+469.370
+388.928
+52.006
+166.717
+361.088 1.30x
+1.23x
+1.30x
+44.557
+156.794
+317.186
+1.23x
+1.21x
+1.23x
+1556.484
+469.394
+1511.877
+3291.342
+1.03x
+336.942 1471.392 2794-508 350.374 1511.522 2299.503 103x 103x 1.03
+intrinsic functions in all benchmarks, in some cases reducing the cycle count by more than
+15% for the same source code. This suggests that the instruction scheduling quality for
+MVE instructions varies significantly between compiler toolchains and that Clang should
+be preferred for Helium-targeted implementations. Although individual field arithmetic
+primitives show significant reductions in cycle count compared to scalar reference imple-
+mentations, these do not directly translate to the overall signature scheme performance.
+When integrated with AIMer and FAEST, the overall speed gains are more modest, as the
+algorithms as a whole have other dependencies, which make the gains moderate.
+7. Conclusion
+In this work, we present fully vectorized and constant-time implementations of algorithms
+for multiplication and squaring in GF(2128), GF(2192), and GF(2256), targeting the Helium
+instruction set on the Arm Cortex-M85 processor. The proposed multiplication algorithm
+exploits the even/odd lane decomposition of the VMULLB and VMULLT instructions
+through a sliding-window accumulation scheme, and has proven to be consistently faster
+than a hierarchical approach based on 32 × 32-bit and 64 x 64-bit compositions in all three
+field sizes.
+To evaluate the practical impact of these primitives, we integrated them into the
+AIMer and FAEST post-quantum signature schemes. For AlMer, the Helium-optimized
+implementation is up to 1.35x faster than the M4-targeted reference, with the most
+significant gains observed at the 256-bit security level, where field arithmetic represents
+a larger fraction of the total cost. For FAEST, the gains are more modest, reaching up to
+1.23x for the standard variant and 1.30x for FAEST-EM. These results demonstrate that
+the Helium extension of the Cortex-M85 is a suitable platform for efficient and secure
+binary field arithmetic in embedded devices, and that it enables competitive performance
+for post-quantum signature schemes whose cost is dominated by field operations.
+Future Work. As future work, we plan to extend the Helium optimization to the re-
+maining components of the FAEST implementation, including the SHAKE-based hash
+functions, with the goal of developing a fully Helium-native implementation of the FAEST
+signature scheme and further improving its performance, security, and efficiency.
+14

@@ -1,0 +1,132 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 7/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Algorithm 3 Four parallel
+MULT32x32 multiplications
+Require: a, b: 128-bit registers viewed as four 32-bit lanes
+Ensure: I: lower 32-bit half of each lane product, h: upper
+32-bit half of each lane product
+1: function MULT32x32(a, b)
+ro + VREV32(b)
+r1 + VMULLT(a, ro)
+4:
+5:
+6:
+7:
+8:
+9:
+10:
+1l:
+12:
+r2 + VMULLB(a, ro)
+т3 + VEOR(r1, r2)
+r4 + VMULLT(a, b)
+r5 + VMULLB(a, b)
+r6 + VSHL(r3, 16)
+ry + VSHR(r3, 16)
+1 + VEOR(r5, r6)
+h+ VEOR(r4, т7)
+returnlh
+Algorithm
+5 Two parallel
+MuLT64x64 multiplications
+Require: a, b: 128-bit registers viewed as two 64-bit lanes
+Ensure: I: lower halves of both lane products, h: upper halves
+of both lane products
+1: function MULT64x64(a, b)
+2:
+3:
+rota
+4:
+r1+b
+r2 + VREV64(r1)
+5:
+MULT32x32(ro, r2, &r3, &r4)
+6:
+7:
+MULT32x32(ro, r1, &r5, &r6)
+8:
+rт + VEOR(r6, 73)
+r8 + VEOR(r5, r4)
+9:
+rт + VREV64(r7)
+10:
+11:
+r8 + VREV64(r8)
+т7 + VEOR(17, r3)
+12:
+13:
+rg + VEOR(78, r4)
+т9 + VPSEL(r5, r7, po).
+14:
+110 + VPSEL(r8, T6, Po)
+15:
+return | + r10, h + r9
+Algorithm 4 One MULT64×64
+Require: a, b: 128-bit registers viewed as two 64-bit lane:
+Ensure: I: lower 64-bit half of the product, h: upper 64-bit hali
+of the product
+2i luncior MULT64X64-1(a, b)
+3:
+Tota
+4:
+VST1(v0, b)
+71 + VDUP(vo[0])
+5:
+r2 + VDUP(vo[3])
+6:
+тз + VMULLB(ro, r1)
+7:
+8:
+T4 + VMULLT(ro, r2)
+VST1(v1 [0], т3)
+9:
+VST1(v](4), rs)
+10:
+STEP(1); STEP(2); STEP(3) • same as Algorithm 2
+11:
+75 + VLD1(v1[0])
+12:
+T6 + VLD1(21(4])
+13:
+return | + r5, h+ r6
+Algorithm 6 128-bit hierarchical
+multiplication
+Ensure: 1,h sich cna 28) 6(2) = h - z
+128 g/
+2: Inci t VCLT(6, 0)28HFER(a, b)
+то + VGET(6, 0)
+r1 + VGET(b, 1)
+4:
+5:
+tmp+ (ro, r1)
+MULT64x64 (a, tmp, &r2, &r3)
+tmp+ (r1, ro)
+MULT64x64(a, tmp, &r4, &rs)
+8:
+T6 + VGET(r3, 0)
+r7 + VGET(r2, 1)
+11:
+T8 + VGET(r2, 0) Ф VGET(rs, 0) $ VGET(r5, 1)
+rg + VGET(r3, 1) Ф VGET(r4, 0) + VGET(r4, 1)
+1+ (r6, r8)
+h+ (rg, r7)
+return l,h
+and c3 = p2, where the superscripts lo and hi denote the lower and upper 128-bit halves
+of each 256-bit subproduct.
+4.3. Squaring
+Squaring in GF (2') is a specialization of multiplication that eliminates all cross-products.
+For a(x) = Ei-o ai xlbi with a; E GF(21°), the Frobenius endomorphism gives a (z)2 =
+ri=0ar x32i
+', so each 16-bit coefficient is squared independently and placed at position
+', with no interaction between coefficients. Splitting into lower and upper halves:
+(4)
+To map this computation to VMULLB and VMULLT, the vector a = (ao, a1,...,az) is
+first permuted to (ao, 04, 01, 05, 02, 06, 03, a7) using VREV64 and VPSEL. In the per-
+muted vector, the even lanes (ao, a1, 02, 03) and odd lanes (a1, 05, a6, az) are sepa-
+rated, so that VMULLB and VMULLT with the permuted vector as both operands yield
+Psq = (ao, a3, az, az) and 9sq = (aỉ, ả3, ảổ, az), corresponding to the lower and upper
+halves of Equation (4), respectively.
+7

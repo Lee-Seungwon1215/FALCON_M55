@@ -1,0 +1,35 @@
+DOCUMENT: TWfalcon.pdf PAGE: 10/25
+
+10 TWFalcon: Triple-Word Arithmetic for Falcon
+Figure 3: The frequency of each exponent of the combined error value (δc + δσ) for
+Falcon-1024 from 100,000 signature generation runs.
+3.2 Precision Testing in Practice
+In the Falcon specification, it is stated that the test for error values was done by running
+the signature scheme twice: once using floating-point arithmetic with 53 bits of precision,
+and once with 200 bits of precision. The version with 200-bit precision is treated as having
+“infinite precision”, and serves as a reference to compute the error value of the 53-bit
+precision version.
+To implement this in the latest Falcon code, [Por25b], the MPFR library is used
+[FHL+07]. This library can be used to perform floating-point arithmetic with arbitrary
+precision. All arithmetic performed in the Falcon code is modified to perform a high-
+precision and low-precision computation. Additionally, all constants in the code are
+recalculated to support computations with high-precision values. As explained in Sec-
+tion 3.1, the errors that are important are from the mean (µ) and the standard deviation
+(σ), which are the inputs to the Gaussian sampler. So, for these values the errors are
+computed by comparing the low-precision value (treated as the computed result) with
+the high-precision value (treated as the “real” value). Specifically, the absolute error is
+calculated for the parameter µ, and the relative error is calculated for σ, or more precisely,
+for σ−1, since σ itself is never computed in the code for efficiency reasons. The value µ is
+derived from the splitting of the target polynomial t down the Falcon tree. Polynomial t
+is computed using the inverse of the private key and the hashed message. In contrast, σ
+corresponds to a leaf in the Falcon tree, and is obtained from the splitting of the private
+key. This error computation is done for integer emulation, double type, and 53-bit MPFR
+values to check if this would influence the values, which as expected, it did not.
+Then, the combined error (δµ + δσ) is computed. Note, the value µ is denoted by the
+value c in the precision evaluation proof in Falcon, and this notation is kept in Section 3.1.
+Rather than storing the full floating-point values, only the exponent e is saved, where the
+value is represented in the form 0.x1x2...xn·2−e, with each digit xi satisfying 0 ≤xi ≤9.
+To get enough data points, the signature generation part of Falcon-1024 was executed
+100,000 times, each time using a different randomly generated messages and key. The
+results are presented in Figure 3, which shows a bar plot of the frequency distribution of
+the error exponents observed across the 100,000 runs.

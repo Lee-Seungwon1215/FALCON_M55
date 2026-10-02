@@ -1,0 +1,27 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 31/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 31
+E Assembly for Asymmetric Multiplication
+Algorithm 31 _4x4_asymmetric as a building block for 32-bit 4 ×4 asymmetric multi-
+plication in saber.
+Inputs:
+mulacc,mulacc2, a0,b0,...,b3, l0,h0,...,l3,h3, dS,qS,dD
+Roles of the symbols:
+Long multiplication with optional accumulations: mulacc,mulacc2
+Coeﬃcient of the NTT of matrix: a0
+Coeﬃcients of the NTT_heavy of vector: b0,...,b3
+Accumulators for double-size results: l0,h0,...,l3,h3
+Specifiers: dS,qS,dD = (.2S,.4S,.2D)
+Outputs:
+Case (mulacc,mulacc2) = (smull,smull2):
+l0+ h0 « 32= a0∗b0,...,l3+ h3 « 32= a0∗b3
+Case (mulacc,mulacc2) = (smlal,smlal2):
+l0+ h0 « 32+= a0∗b0,...,l3+ h3 « 32+= a0∗b3
+1: mulacc l0dD, a0dS, b0dS
+2: mulacc2 h0dD, a0qS, b0qS
+3: mulacc l1dD, a0dS, b1dS
+4: mulacc2 h1dD, a0qS, b1qS
+5: mulacc l2dD, a0dS, b2dS
+6: mulacc2 h2dD, a0qS, b2qS
+7: mulacc l3dD, a0dS, b3dS
+8: mulacc2 h3dD, a0qS, b3qS

@@ -1,0 +1,42 @@
+DOCUMENT: falcon_m7.pdf PAGE: 14/22
+
+14 James Howe and Bas Westerbaan
+The FPUs on the development boards typically provide two functions for each
+floating-point function; a 32-bit version (e.g., vadd.f32) and a 64-bit version
+(e.g., vadd.f64). Since we are concerned with Falcon which requires 53 bits
+of floating-point precision, we focus on the 64-bit (double-precision) floating-
+point functions. The IEEE 754 standard for floating-point binary representation
+is shown in Table 9 for float and double types. The double-precision binary
+floating-point format (binary64) expresses floating point numbers using a 1-bit
+sign value in the most significant position, 11 bits for the exponent in positions
+62-to-52, and 52 bits for the significand in positions 51-to-0.
+1 asm volatile (
+2 " vldr d5 , %2\n"
+3 " vldr d6 , %3\n"
+4 "dmb\n"
+5 "isb\n"
+6 "ldr r1 , %1\n"
+10 11 12 13 14 15 16 17 18 19 20 21 7 " vmul .f64 d4 , d5 , d6\n"
+8 " vmul .f64 d4 , d5 , d6\n"
+9 " vmul .f64 d4 , d5 , d6\n"
+" vmul .f64 d4 , d5 , d6\n"
+" vmul .f64 d4 , d5 , d6\n"
+" vmul .f64 d4 , d5 , d6\n"
+" vmul .f64 d4 , d5 , d6\n"
+" vmul .f64 d4 , d5 , d6\n"
+" vmul .f64 d4 , d5 , d6\n"
+" vmul .f64 d4 , d5 , d6\n"
+"ldr r2 , %1\n"
+" subs %0, r2 , r1\n"
+: "=r"( cycles ) : "m"(DWT -> CYCCNT ),
+"m"(r1), "m"(r2) : "r1"
+,
+"r2"
+,
+"d4"
+,
+"d5"
+,
+"d6");
+Listing 1.1: Code snippet of the testing framework we used to test the constant
+timeness of the double precision FPU on the STM32 development boards.

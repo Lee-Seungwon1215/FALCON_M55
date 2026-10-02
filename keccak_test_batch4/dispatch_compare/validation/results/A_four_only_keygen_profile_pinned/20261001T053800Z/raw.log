@@ -1,0 +1,339 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 61566
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :61566 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10015fd0
+hbreak *0x10019260
+set $early_fault_bp = $bpnum
+jump *0x10019275
+if $pc != 0x10015fd0
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmppp086p7z/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10015f80
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10019260
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 61566
+Info : Listening on port 61566 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/61566
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+BENCH_BEGIN dispatch candidate=A_four_only threshold=4 mode=profile keygen=1
+BENCH_HW cpu=800000000 ccr=00000611 control=00000099 fpscr=00040000 primask=0
+CALIBRATION runs=4000 wrapped=2404000 self=976000 raw=440000
+EDGE_DISPATCH all25_words=2048 all16_masks=PASS transitions=PASS inactive=PASS
+PAIR n=512 op=0 batch=0 original=208130783 batch4=203395223
+PAIR n=512 op=0 batch=1 original=184423773 batch4=183238108
+PAIR n=512 op=0 batch=2 original=164773516 batch4=163537319
+PAIR n=512 op=0 batch=3 original=167506635 batch4=166205586
+PAIR n=512 op=0 batch=4 original=227889742 batch4=227359352
+PAIR n=512 op=0 batch=5 original=161626953 batch4=160423860
+PAIR n=512 op=0 batch=6 original=253648803 batch4=247957898
+PAIR n=512 op=0 batch=7 original=277101482 batch4=276681397
+PAIR n=512 op=0 batch=8 original=284622254 batch4=284253420
+PAIR n=512 op=0 batch=9 original=253715797 batch4=252854816
+CHECK n=512 keys=44 signatures=0 tamper=0 guards=PASS profile_error=0
+PAIR n=1024 op=0 batch=0 original=921119997 batch4=902337312
+PAIR n=1024 op=0 batch=1 original=1155414418 batch4=1129753517
+PAIR n=1024 op=0 batch=2 original=792981320 batch4=793197068
+PAIR n=1024 op=0 batch=3 original=571534145 batch4=571330762
+PAIR n=1024 op=0 batch=4 original=779532994 batch4=774320445
+PAIR n=1024 op=0 batch=5 original=999756591 batch4=998058314
+PAIR n=1024 op=0 batch=6 original=1067333211 batch4=1059451262
+PAIR n=1024 op=0 batch=7 original=609391452 batch4=610853899
+PAIR n=1024 op=0 batch=8 original=837902214 batch4=817936629
+PAIR n=1024 op=0 batch=9 original=959635185 batch4=952534779
+CHECK n=1024 keys=88 signatures=0 tamper=0 guards=PASS profile_error=0
+TOTAL n=512 op=0 variant=0 batches=10 cycles=2183439738
+CATEGORY n=512 op=0 variant=0 name=other cycles=2069825483 calls=0 children=6875 inclusive=0
+CATEGORY n=512 op=0 variant=0 name=single_keccak cycles=84112845 calls=5715 children=0 inclusive=84112845
+CATEGORY n=512 op=0 variant=0 name=shake_init cycles=17640 calls=40 children=0 inclusive=17640
+CATEGORY n=512 op=0 variant=0 name=shake_inject cycles=146040 calls=40 children=520 inclusive=3828480
+CATEGORY n=512 op=0 variant=0 name=shake_flip cycles=11720 calls=40 children=0 inclusive=11720
+CATEGORY n=512 op=0 variant=0 name=shake_extract cycles=3156850 calls=5475 children=5475 inclusive=83737855
+CATEGORY n=512 op=0 variant=0 name=inject_chunk cycles=150600 calls=280 children=0 inclusive=150600
+CATEGORY n=512 op=0 variant=0 name=x4_permute cycles=25618560 calls=640 children=0 inclusive=25618560
+CATEGORY n=512 op=0 variant=0 name=x4_squeeze cycles=400000 calls=640 children=0 inclusive=400000
+CATEGORY n=512 op=0 variant=0 name=batch_prepare cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=0 name=batch_absorb cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=0 name=batch_export cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=0 name=batch_block cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=0 name=sampler_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=0 name=batch_clear cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=0 name=scalar_bridge cycles=0 calls=0 children=0 inclusive=0
+LANES n=512 op=0 variant=0 one=0 two=0 three=0 four=0
+TOTAL n=512 op=0 variant=1 batches=10 cycles=2165906979
+CATEGORY n=512 op=0 variant=1 name=other cycles=2043351691 calls=0 children=9377 inclusive=0
+CATEGORY n=512 op=0 variant=1 name=single_keccak cycles=67876732 calls=4612 children=0 inclusive=67876732
+CATEGORY n=512 op=0 variant=1 name=shake_init cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=1 name=shake_inject cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=1 name=shake_flip cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=1 name=shake_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=1 name=inject_chunk cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=1 name=x4_permute cycles=29920253 calls=962 children=0 inclusive=29920253
+CATEGORY n=512 op=0 variant=1 name=x4_squeeze cycles=1813896 calls=3843 children=0 inclusive=1813896
+CATEGORY n=512 op=0 variant=1 name=batch_prepare cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=1 name=batch_absorb cycles=965780 calls=20 children=60 inclusive=2831840
+CATEGORY n=512 op=0 variant=1 name=batch_export cycles=3786452 calls=4612 children=0 inclusive=3786452
+CATEGORY n=512 op=0 variant=1 name=batch_block cycles=8010 calls=10 children=20 inclusive=323740
+CATEGORY n=512 op=0 variant=1 name=sampler_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=0 variant=1 name=batch_clear cycles=10762367 calls=4622 children=0 inclusive=10762367
+CATEGORY n=512 op=0 variant=1 name=scalar_bridge cycles=7421798 calls=4612 children=13836 inclusive=89790519
+LANES n=512 op=0 variant=1 one=1571 two=1069 three=301 four=962
+TOTAL n=1024 op=0 variant=0 batches=10 cycles=8694601527
+CATEGORY n=1024 op=0 variant=0 name=other cycles=8205028514 calls=0 children=31170 inclusive=0
+CATEGORY n=1024 op=0 variant=0 name=single_keccak cycles=445778166 calls=30290 children=0 inclusive=445778166
+CATEGORY n=1024 op=0 variant=0 name=shake_init cycles=17640 calls=40 children=0 inclusive=17640
+CATEGORY n=1024 op=0 variant=0 name=shake_inject cycles=291920 calls=40 children=1080 inclusive=8245200
+CATEGORY n=1024 op=0 variant=0 name=shake_flip cycles=11720 calls=40 children=0 inclusive=11720
+CATEGORY n=1024 op=0 variant=0 name=shake_extract cycles=17150770 calls=29770 children=29770 inclusive=455276616
+CATEGORY n=1024 op=0 variant=0 name=inject_chunk cycles=300960 calls=560 children=0 inclusive=300960
+CATEGORY n=1024 op=0 variant=0 name=x4_permute cycles=25621837 calls=640 children=0 inclusive=25621837
+CATEGORY n=1024 op=0 variant=0 name=x4_squeeze cycles=400000 calls=640 children=0 inclusive=400000
+CATEGORY n=1024 op=0 variant=0 name=batch_prepare cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=0 name=batch_absorb cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=0 name=batch_export cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=0 name=batch_block cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=0 name=sampler_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=0 name=batch_clear cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=0 name=scalar_bridge cycles=0 calls=0 children=0 inclusive=0
+LANES n=1024 op=0 variant=0 one=0 two=0 three=0 four=0
+TOTAL n=1024 op=0 variant=1 batches=10 cycles=8609773987
+CATEGORY n=1024 op=0 variant=1 name=other cycles=8108943315 calls=0 children=39285 inclusive=0
+CATEGORY n=1024 op=0 variant=1 name=single_keccak cycles=293886693 calls=19969 children=0 inclusive=293886693
+CATEGORY n=1024 op=0 variant=1 name=shake_init cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=1 name=shake_inject cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=1 name=shake_flip cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=1 name=shake_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=1 name=inject_chunk cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=1 name=x4_permute cycles=102583108 calls=3298 children=0 inclusive=102583108
+CATEGORY n=1024 op=0 variant=1 name=x4_squeeze cycles=7614596 calls=16128 children=0 inclusive=7614596
+CATEGORY n=1024 op=0 variant=1 name=batch_prepare cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=1 name=batch_absorb cycles=1801110 calls=20 children=130 inclusive=5845331
+CATEGORY n=1024 op=0 variant=1 name=batch_export cycles=16394549 calls=19969 children=0 inclusive=16394549
+CATEGORY n=1024 op=0 variant=1 name=batch_block cycles=8010 calls=10 children=20 inclusive=323740
+CATEGORY n=1024 op=0 variant=1 name=sampler_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=0 variant=1 name=batch_clear cycles=46409223 calls=19979 children=0 inclusive=46409223
+CATEGORY n=1024 op=0 variant=1 name=scalar_bridge cycles=32133383 calls=19969 children=59907 inclusive=388767018
+LANES n=1024 op=0 variant=1 one=7512 two=3887 three=1561 four=3298
+EDGE_STREAM checks=10112 policies=0,1,2,7 unequal=PASS tails=PASS retry_1_26=PASS
+EDGE_KEY mixed_degrees=PASS policies=0,1,2 optional_outputs=PASS invalid=PASS
+BENCH_DONE result=0 keys=88 signatures=0 tamper=0 fingerprint=a6c22661 profile_error=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1f690 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x10898 lma 0x30000980
+Loading section datas, size 0x50 lma 0x30011220
+Loading section device_states, size 0x2c lma 0x30011270
+Loading section k_mutex_area, size 0x14 lma 0x3001129c
+Loading section .last_section, size 0x4 lma 0x300112b0
+Start address 0x10019274, load size 199776
+Transfer rate: 549 KB/sec, 7399 bytes/write.
+Temporary breakpoint 1 at 0x10015fd0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10019260: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmppp086p7z/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10015f80: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10019260: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x985e4b            9985611
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30032f28          805515048
+r8             0x300000d0          805306576
+r9             0x3003b068          805548136
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3003b018          0x3003b018 <z_main_stack+32688>
+lr             0x10015fc7          268525511
+pc             0x10015f80          0x10015f80 <nucleo_test_breakpoint>
+xpsr           0x1060000           17170432
+fpscr          0x80040010          -2147221488
+msp            0x30032f28          0x30032f28 <z_idle_stacks>
+psp            0x3003b018          0x3003b018 <z_main_stack+32688>
+vpr            0x300               [ P0=768 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30032f28          0x30032f28 <z_idle_stacks>
+psp_s          0x3003b018          0x3003b018 <z_main_stack+32688>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30032728          0x30032728 <z_interrupt_stacks>
+psplim_s       0x30033068          0x30033068 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x300               768
+0x3003b018 <z_main_stack+32688>:	0x00000000	0x10015fe3	0x00000000	0x1001ca47
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30032f28
+PSP=0x3003b018
+LR=0x10015fc7
+PC=0x10015f80
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3003b018 <z_main_stack+32688>:	0x00000000	0x10015fe3	0x00000000	0x1001ca47
+0x3003b028 <z_main_stack+32704>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

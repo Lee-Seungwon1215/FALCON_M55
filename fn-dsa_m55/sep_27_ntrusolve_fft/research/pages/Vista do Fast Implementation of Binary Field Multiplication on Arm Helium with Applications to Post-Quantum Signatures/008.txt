@@ -1,0 +1,107 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 8/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+For GF(2192) and GF(2256), the same procedure is applied independently to each
+128-bit block of the input. Since each a occupies exactly the 32 bits at position x2
+squared coefficients land in disjoint bit positions and no overlap between blocks needs
+to be combined. For GF(2192), the high block contains only 64 bits of data, so lane 2
+is zeroed before the rearrangement. The partial results are then passed to the respective
+reduction routine; see Algorithms 8, 9, and 10.
+Algorithm 7 128-bit polynomial
+squaring
+Require: a € GF(2128)
+Ensure: 1, h such that a(x)? = h • x128 øl
+2: uncion a(12=a)
+Write a (2) =[Iz0a;2l6i
+3:
+4:
+c+0
+5:
+for i = 0 to 7 do
+c+ cĐa?- 232i
+6:
+return | + c[0:8], h + c[8:16]
+Algorithm
+9 Squaring
+in
+GF(2192)
+Require: 4, l: high and low 128-bit halves of a € GF(2192)
+Ensure: Co, C1: low and high halves of a?
+1: function GF192_SQUARE(h, 1)
+2:
+ro + VGET(I, 1)
+3:
+4:
+6:
+7:
+тз + VREV64(r2)
+т4 + VPSEL(r2, r3, 0хС3С3)
+r5 + VMULLB(T4, 74)
+10:
+rr + VGET(h, 1)
+11:
+12:
+rg + VSET(0, r8, 1)
+13:
+14:
+rg + VREV64(r8)
+T10 + VPSEL(T8, r9, 0xC3C3)
+16: GF192 REDUCTION(711, T6, r5, &c1, &co)
+Algorithm
+8
+Squaring
+GF(2128)
+Require: a € GF(2128)
+Ensure: c = a2 € GF(2128)
+1: function GF128_SQUARE(a)
+ro + VGET(a, 1)
+r1 f VGET(a, 2)
+r2 + VSET(ro, a, 2)
+r2 + VSET(r1, r2, 1)
+гз + VREV64(r2)
+т4 + VPSEL(т2, т3, ОхСЗС3)
+r5 + VMULLB(r4, T4)
+r6 + VMULLT(r4, r4)
+10:
+GF128_REDUCTION(r6, 75, &c)
+in
+Algorithm
+10 Squaring in
+GF (2256)
+Require: h, l: high and low 128-bit halves of a € GF(2256)
+Ensure: Co, C1: low and high halves of a?
+1: function GF256_SQUARE(h, 1)
+2:
+тo + VGET(1, 1)
+3:
+r1 + VGET(1, 2)
+4:
+r2 + VSET(ro, l, 2)
+12 + VSET(r1, r2, 1)
+r2 + VREV64(r2)
+74 + VPSEL(r2, т3, 0хСЗС3)
+r5 + VMULLB(r4, 74)
+r6+ VMULLT(r4, r4)
+10:
+rr + VGET(h, 1)
+r8 + VGET(h, 2)
+rg + VSET(r7, h, 2)
+rg + VSET(r8, r9, 1)
+710 + VREV64(r9)
+r11 + VPSEL(rg, r10, 0xC3C3
+r12 + VMULLB(r11, r11
+713 + VMULLT(r11, r11
+1: GF256_REDUCTION(713, 712, T6, T5, &C1, deco)
+4.4. Modular reduction
+After a carry-less multiplication or squaring, the unreduced result has degree up to 2m - 2
+and must be reduced modulo the irreducible polynomial f(x) to obtain an element of
+GF(2'"). Let the unreduced product be written as c(x) = cL(x) +x™CH(x), where
+CL, CH E GF(2") denote the lower and higher halves, respectively. Using the defining
+relation f(x) = x™ + r(x), we substitute x™ = r(x) and obtain c(x) mod f(x) =
+СІ(Х) Ф СН (Х) г(х).
+Since r (x) has low degree, the product cн (x) r(x) may still produce terms of de-
+gree ≥ m, requiring a second reduction step. The reduction therefore follows a two-stage
+structre: 02) mod 1(x)=c(x) Ф|(x) @ h(x), where I(x) contains the lower terms
+8

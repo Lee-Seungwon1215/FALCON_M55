@@ -1,0 +1,161 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 5/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 5
+Algorithm 3 Plantard multiplication with enlarged input range
+Input: Two signed integers a,b such that ab ∈ [q2l
+q2l+α
+,22l
+−q2l+α),q<2l−α−1,q′
+= q−1 mod±22l
+Output: r= ab(−2−2l) mod±q where r∈[−
+q+1
+q
+2 ,
+2 )
+1: r= [[abq′]2l]l + 2α q
+l
+2: return r
+−
+temporarily overflow 16-bit signed integer and fully utilize
+the large input range of the Plantard arithmetic.
+Through carefully theoretical analysis, we found that one
+can maximize the input range of the Plantard arithmetic and
+tailor it for a specific modulus, which contributes to a better
+NTT/INTT implementation on low-end 32-bit platforms. The
+proposed Plantard multiplication with enlarged input range
+is shown in Algorithm 3. The proposed algorithm does not
+modify any computation steps compared with Algorithm 2,
+except that we manage to further enlarge the input range
+of ab from [−q222α,q222α] to [q2l
+−q2l+α
+,22l
+−q2l+α).
+Specifically, by replacing q by q<2l−α−1 in the above input
+ranges, one could get a at least two times larger input range
+compared to the original design.
+increased. So, ris still in [−
+q+1
+q
+2 ,
+2 ). For condition that pq−ab
+is divisible by 22l, because q is an odd modulus, there always
+exist a p≡abq−1 mod 22l such that pq−ab≡0 mod 22l. So,
+this condition is also valid.
+The third condition is the most important part that demon-
+strates the correctness of the Plantard multiplication. In order
+to maximize its input range, we first assume that this condition
+holds for a new range of ab, i.e.,
+0 <q2l+α
+−p0q+ ab<22l
+, (1)
+where q < 2l−α−1,p= abq−1 mod±22l,p1 = p
+2l ,p0 =
+p−p12l,p0 ∈[0,2l) and α > 0. Then, we can deduce the
+maximum input range of abthrough Inequality (1) as follows.
+• When ab ≥ 0 and 0 ≤ p0 < 2l, to ensure that
+the Inequality (1) holds, for the left-hand side of the
+inequality, we have:
+q2l+α
+−p0q+ ab≥q2l+α
+−p0q>q2l+α
+−q2l >0,
+which always holds for α>0. As for the right-hand side,
+we have:
+q2l+α
+−p0q+ ab≤q2l+α + ab<22l
+.
+B. Theoretical Proof
+Note that in 2024, Yang et al. [30] identified a misuse
+of the floor and ceiling functions in the correctness proof
+of improved Plantard arithmetic in [20]. The authors of the
+To ensure that the Inequality (1) holds, we conclude that
+ab<22l
+−q2l+α
+.
+• When ab < 0 and 0 ≤p0 < 2l, for the right-hand side,
+we have:
+improved Plantard arithmetic then updated their correctness
+q2l+α
+−p0q+ ab<q2l+α <2l−α−12l+α <22l
+,
+proof to rectify this issue in their eprint version [31]. The
+main update they made to the algorithm was to ensure α>0
+which always holds for α>0. As for the left-hand side,
+instead of α≥0 in the original paper. Mostly, the theoretical
+we have:
+proof of the Plantard multiplication with enlarged input range
+is similar to the one given in [19], [20] and [31]. Theorem 1
+q2l+α
+−p0q+ ab>q2l+α
+−q2l + ab>0.
+shows the correctness of Algorithm 3.
+Theorem 1 (Correctness): Let q be an odd modulus, l be
+the minimum word length (i.e., power of 2 number) such that
+q < 2l−α−1, where α > 0, then Algorithm 3 is correct for
+ab∈[q2l
+−q2l+α
+,22l
+−q2l+α).
+To ensure that the Inequality (1) holds, we conclude that
+ab ≥q2l
+−q2l+α. Therefore, the Inequality (1) is valid for
+every ab ∈ [q2l
+−q2l+α
+,22l
+−q2l+α). By dividing every
+components in Inequality (1) by 22l, we can get
+Proof of Theorem 1: All preconditions in Algorithm 3
+remain the same as in Algorithm 2 except the range of ab.
+0 < q2l+α
+−p0q+ ab
+22l <1.
+We show that the input range of the Plantard multiplication
+can be maximized without modifying any computation steps.
+Overall, we conclude that
+Similar to the proof in [20], the correctness of this algorithm
+depends on the following four conditions:
+(i) r∈[−
+q+1
+q
+2 ,
+2 );
+(ii) pq−ab is divisible by 22l, where p≡abq−1 mod 22l;
+(iii) 0 < q2l+α
+−p0q+ ab < 22l, where p1 = p
+2l ,p0 =
+p−p12l. Because the right-shift of the signed integer
+always rounds the result towards negative infinity, we
+always have p0 ∈[0,2l).
+pq−ab
+r= ab−2−2l mod q≡
+22l
+≡
+pq−ab
+22l + q2l+α
+−p0q+ ab
+22l
+   q abq−1 mod±22l
+2l + 2α
+2l
+   
+≡
+(iv) r= ab(−2−2l) mod±q.
+Since we do not modify any preconditions and computation
+steps of the Plantard multiplication, the first two conditions
+Finally, we obtain that r = ab(−2−2l) mod±q=
+q+1
+q
+2 ,
+2 ),
+[[abq′]2l]l + 2α q
+l
+remain true. More specifically, for condition r ∈[−
+for signed inputs a and b that satisfy
+since abq′mod±22l
+2l is the only part containing ab and it
+ab∈[q2l
+−q2l+α
+,22l
+−q2l+α).is still in [−2l−1
+,2l−1
+−1] even though the range of ab is

@@ -1,0 +1,51 @@
+DOCUMENT: plantard.pdf PAGE: 8/24
+
+8 Improved Plantard Arithmetic for Lattice-based Cryptography
+Algorithm 9 Original Plantard Multiplication [Pla21]
+Input: Unsigned integers a,b∈[0,q], q< 2l
+ϕ,ϕ= 1+√5
+2 ,q′≡q−1 mod 22l, where l is the
+machine word size
+Output: r≡ab(−2−2l) mod q where r∈[0,q]
+1: r= [[abq′]2l]l + 1 q
+l
+▷ bq′could be precomputed when b is constant
+2: return r
+Despite this advantage, it should be noted that the original algorithm is designed
+for unsigned integer inputs within the range [0,q]. It has been well-illustrated that
+using a signed version of modular arithmetic in NTT/INTT will further speed up the
+computation. Therefore, the original Plantard multiplication could be extended to support
+signed arithmetic and purchase faster NTT/INTT implementations.
+2.5 Target Platform: Cortex-M4
+Our target platform is STM32F407G-DISC1, with a 32-bit ARM Cortex-M4 processor
+implementing the ARMv7E-M instruction sets. It provides 16 32-bit general-purpose
+registers, but only 14 of them are available for programming. Because Cortex-M4 supports
+floating-point (FP) computation, 32 32-bit FP registers are available for programming and
+can be used to “cache” frequently-used values.
+The Cortex-M4 also supports Single Instruction Multiple Data (SIMD) instructions
+that can operate two halfwords or four bytes in parallel. The essential instructions in
+our implementation include smul{b,t}{b,t}, smulw{b,t}, and ldrd. We use Rd to
+represent the destination register; Rm and Rn represent two source registers. The smulbb
+instruction multiplies the bottom halfword of Rm by the bottom halfword of Rn and writes
+the result to Rd. The smulwb instruction multiplies Rm by the bottom halfword of Rn;
+extracts the most significant 32 bits of the result, and writes it to Rd. The ldrd R8, R9,
+[R3, #0x20] instruction loads R8 from the address R3+32 and loads R9 from the address
+R3+36.
+3 Improved Plantard Arithmetic
+This section presents the improved Plantard arithmetic, which was initially proposed in
+[Pla21]. Our improvement is built by first imposing a slight restriction on the modulus
+based on the observation of current LBC schemes (e.g., Kyber and NTTRU); then, several
+tweaks are proposed to improve the Plantard arithmetic. Detailed correctness proof and
+advantages of the improved algorithm will be presented.
+3.1 Improved Plantard Multiplication
+The improved Plantard multiplication is presented in Algorithm 10. Due to the adaptation
+of signed numbers, we denote (Xmod±2l′) as [X]l′, (X >> l′) as [X]l′ for a positive
+integer l′. Here, (X >>l′) is equivalent to ⌊X/2l′⌋for all signed integer numbers because
+the right-shift of the signed integer will always round the result towards negative infinity.
+We denote q as an odd modulus, l as the minimum word size (e.g., 16, 32 or 64 bits) such
+that q<2l−α−1, where α is a small integer.
+The improved Plantard multiplication is based on the observation that the moduli
+adopted by most of the existing LBC schemes are several times smaller than the restriction
+q< 2l
+ϕ in the original algorithm [Pla21], e.g., 12-bit modulus 3329 in Kyber, 13-bit modulus
+7681 in NTTRU, 23-bit modulus 8380417 in Dilithium. Thus, there are still margins

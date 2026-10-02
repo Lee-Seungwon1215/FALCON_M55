@@ -1,0 +1,76 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 8/38
+
+8 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 5 Montgomery multiplication, implementation-view
+Require: N odd modulus, R= 2n >N
+Require: a,b∈Z representative mod N with |a|,|b|<R.
+Require: Precomputed btw = b·N−1
+∈ZR.
+Ensure: mont+
+N(a,b) representative of abR−1 ∈ZN satisfying |mont+
+N(a,b)|≤|a||b|
+2n + N
+2.
+1: k←a·btw ◃ Unsigned single-width multiply
+2: k←k mod±R ◃ Canonical signed representative
+3: c← kN
+R ◃ Signed multiply-high with truncation
+4: zhigh=
+ab
+R ◃ Multiply-high
+5: mont+
+N(a,b) ←zhigh−c ◃ Signed subtraction
+some ISAs supporting fixed point arithmetic: Neon oﬀers SQDMULL, Helium oﬀers VQDMULL,
+and SVE 2 oﬀers QDMULL.
+Similarly, single-precision approximations to the product of two single-precision frac-
+tional values correspond to a doubling long multiplication returning high halfa
+b
+2n−1·
+2n−1 =
+2ab
+22n−1 ≈
+2ab
+2n
+2n−1 , with flexibility in terms of the choice of approximation−; common choices
+are truncation via ⌊−⌋and rounding to the nearest integer ⌊−⌉. For this reason, ISAs
+supporting fixed point arithmetic oﬀer instructions for doubling long multiplication return-
+ing high halves, often with separate variants for truncation and rounding: For example,
+Neon oﬀers SQDMULH (truncating) and SQRDMULH (rounding), Helium oﬀers VQ[R]DMULH,
+and SVE2 oﬀers Q[R]DMULH. We note that Intel’s AVX2 includes VPMULHRSW but not a
+non-rounding variant.
+Finally, ISAs supporting fixed-point arithmetic often oﬀer multiply-accumulate-add
+or even multiply-accumulate-subtract variants for their single-precision fixed-point multi-
+plications: Neon from Armv8.1-A onwards oﬀers VQRDMLAH and VQRDMLSH, Helium oﬀers
+VQ[R]DMLAH, and SVE2 oﬀers QRDMLAH and QRDMLSH. Interpreted as integer operations,
+those correspond to doubling long multiplications returning (rounded/truncated) high half
+with accumulate add/subtract.
+2.6 Number Theoretic Transform
+In Kyber, Saber, and Dilithium, we need arithmetic in Rq = Zq[x]/⟨x256 +1⟩, a polynomial
+ring. Hereq= 3329 = 13·28 +1 forKyber, q= 213 forSaber, andq= 223
+−213 +1 = 8380417
+for Dilithium. More specifically, we need to perform a matrix-to-vector multiplication and
+inner products. All three will be developed in parallel after we switch to a modulus q′for
+Saber [CHK+21] so that the results are the same as for a computation over Z[x]/⟨x256 + 1⟩.
+Let F= Fq for Dilithium and Kyber and F= Fq′ for Saber. From the CRT (Chinese
+Remainder Theorem) we have the ring isomorphism (Figure 1):
+2n−1
+i=0
+F[x]/⟨x2n
+−c2⟩∼
+= F[x]/⟨xn
+fixi ↔
+n−1
+(fi + cfn+i) xi
+,
+i=0
+−c⟩×F[x]/⟨xn + c⟩;
+n−1
+i=0
+(fi−cfn+i) xi
+.
+To split a 2n-long polynomial, we perform CT butterflies between npairs of coeﬃcients,
+each from one half of the polynomial. Everything can be done in-place, and the CT
+butterfly has an obvious inverse — the GS butterfly, except for a factor of 2. For even
+n and ±c with square roots in F we can recurse this process, each stage comprising the
+same number of butterflies. Let ζ be a principal root of order 2k, so that ζ2k−1
+=−1. An

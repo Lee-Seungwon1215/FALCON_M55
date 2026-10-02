@@ -1,0 +1,43 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 3/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 3
+• We implement the striding Toom-Cook/Karatsuba and a 32-bit degree-256 negacyclic
+NTT on the Cortex-M55 processor, based on the Helium instruction set. We report
+an ≈5×speedup of our striding Toom-Cook/Karatsuba implementation compared to
+previous Cortex-M4 implementations, and an ≈3.5×speedup of our implementation
+of the NTT compared to the fastest NTT on Cortex-M4 [CHK+21]. NTT-based
+multiplication remains faster, albeit by a smaller margin than on Cortex-M4.
+• We provide an introduction to the M-profile Vector Extension and to the Cortex-
+M55 processor, highlight its similarities and diﬀerences compared to other vector
+extensions, and share our experience on what to look out for to get the most out of
+the instructions. We hope that this will enable researchers to build on our work and
+study the use of the Helium vector extension for other workloads, esp. PQC schemes.
+Table 1 Comparing features of multiplication based on FFT/NTT and Toom-Cook
+NTT [CHK+21] Toom-Cook
+Lazy interpolation   [MKV20]
+No expansion during evaluation  #
+No expansion during inner multiplication  [This work]
+Code The code generation tooling and resulting Helium assembly for Cortex-M55 are
+available at https://gitlab.com/arm-research/security/pqmx. The repository also
+contains detailed instructions for how to explore Helium using a freely available functional
+model of the Cortex-M55. The Cortex-M4 code will be made available on the Saber
+repository https://github.com/KULeuven-COSIC/SABER.
+2 Preliminaries
+We denote Zn the ring of integers modulo n∈Z. If n= q is a prime, we also write Fq.
+Unless stated otherwise, R denotes a commutative ring. We denote R[X] the polynomial
+ring over R, and for a monic polynomial P ∈R[X] we denote R[X]/(P) the quotient of
+R[X] obtained by identifying polynomials with the same remainder modulo P. We will
+mostly work with Fq[X]/(Xn + 1) or Z2k [X]/(Xn + 1).
+2.1 Polynomial multiplication
+In this section we survey the most prominent sub-quadratic polynomial multiplication
+strategies: Toom-Cook/Karatsuba and the Number Theoretic Transform (NTT). Good
+expositions exist in the literature, so we will be brief. See e.g. the excellent [Ber01].
+2.2 Multiplication by evaluation
+The idea behind Toom-Cook/Karatsuba and NTT-based multiplication is the same: Mul-
+tiplication via evaluation. Given a ring R, two polynomials f,g∈R[X] and fixed elements
+α1,...,αn ∈R, we have (fg)(αi) = f(αi)g(αi). Each equation puts a constraint on fg,
+and by choosing n large enough, we hope to be able to recover fg from (fg)(αi).
+Formally, consider the evaluation homomorphism
+evα : R[X] f−→(f(α1 ),...,f(αn )) −−−−−−−−−−−−−−−−→R×R×···×R.
+It factors through the quotient R[X]/ i(X−αi), which as a set is canonically identified
+with R[X]<n, the set of polynomials of degree < n. Depending on the context, we

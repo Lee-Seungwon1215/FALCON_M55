@@ -1,0 +1,46 @@
+DOCUMENT: TWfalcon.pdf PAGE: 1/25
+
+TWFalcon: Triple-Word Arithmetic for Falcon
+Giving Falcon the Precision to Fly Securely
+Stef Halmans1, Christine van Vredendaal2, Tobias Schneider2, Frank
+Custers2 and Tim Güneysu1
+1 Ruhr University Bochum, Bochum, Germany, stef.halmans@rub.de, tim.gueneysu@rub.de
+2 NXP Semiconductors, Eindhoven, Netherlands, christine.cloostermans@nxp.com,
+tobias.schneider@nxp.com, frank.custers_1@nxp.com
+Abstract. The post-quantum signature scheme Falcon is an attractive scheme for
+constrained devices due to its compactness and verification performance. However, it
+relies on floating-point arithmetic for signature generation, which - alongside physical
+security concerns - introduces two additional drawbacks:
+Firstly, if implemented using the standard double-precision format, Falcon does not
+satisfy the formally proven error bounds required for a secure Gaussian sampler
+implementation. Although no practical attacks exploiting this limitation are currently
+known, it does give future attack concerns. Secondly, when looking at constrained
+devices, 32-bit constrained devices can lack hardware support for high-precision
+floating-point arithmetic and its use introduces significant performance overhead, as
+it must be emulated using integers.
+In this work we present a novel method to address these limitations: We show
+that Falcon can be implemented using single-precision floating-point numbers. Our
+proposed method uses Triple-Word Floating-Point (TW) arithmetic and achieves
+a precision of at least 72 bits, compared to the 53 bits of double-precision floating-
+point arithmetic. We show our implementation achieves error bounds that meet the
+formal security requirements for a secure Gaussian sampler implementation, while
+maintaining other security guarantees. This way, Falcon can run on constrained
+devices equipped only with a single-precision Floating-Point Unit (FPU) without the
+need for integer emulation.
+We demonstrate the feasibility of our approach on the Nucleo-L4R5ZI board, which
+features a Cortex-M4F processor enabled with a single-precision FPU. More precisely,
+we show the cost of increasing the precision of Falcon in this way only increases
+the computational effort by a factor of approximately 1.84 compared to the CPU
+cycles required for an implementation using emulated double-precision arithmetic via
+integers.
+Keywords: Falcon· FN-DSA· triple-word floating-point arithmetic· constrained
+devices· post-quantum cryptography
+1 Introduction
+Steady progress in quantum computing research poses a significant threat to classical
+public-key cryptography, which are based on integer factorization and discrete logarithms.
+In response to this threat, the National Institute of Standards and Technology initiated the
+Post-Quantum Cryptography (PQC) Standardization Project to identify and standardize
+quantum-resistant algorithms [NIS]. As of today, NIST has identified four algorithms
+for standardization. The first three, key encapsulation mechanism ML-KEM [SAB+22],
+and digital signature schemes ML-DSA [LDK+22] and SLH-DSA [HBD+22] have been
+standardized as FIPS-203 [NIS23b], FIPS-204 [NIS23a] and FIPS-205 [NIS23c] respectively.

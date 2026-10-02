@@ -1,0 +1,60 @@
+DOCUMENT: plantard.pdf PAGE: 13/24
+
+Junhao Huang et al. 13
+Algorithm 11 The 2-cycle improved Plantard multiplication by a constant on Cortex-M4
+,2l−1), a precomputed 2l-bit integer bq′where b
+q+1
+Input: An l-bit signed integer a∈[−2l−1
+is a constant and q′
+= q−1 mod±22l
+Output: rtop ≡ab(−2−2l) mod q,rtop ∈[−
+q
+2 ,
+2 )
+1: bq′←bq−1 mod±22l ▷ precomputed
+2: smulwb r,bq′,a ▷ r←[[abq′]2l]l
+3: smlabb r,r,q,q2α ▷ rtop ←[q[r]l + q2α]l
+4: return rtop
+Algorithm 12 The 3-cycle signed Montgomery multiplication on Cortex-M4 [ABCG20]
+Input: Two l-bit signed integers a,b such that ab∈[−q2l−1,q2l−1)
+Output: rtop ≡ab2−lmod q,rtop ∈(−q,q)
+1: mul c,a,b
+2: smulbb r,c,−q−1 ▷ r←[c]l· −q−1
+3: smlabb r,r,q,c ▷ rtop ←[[r]l·q]l + [c]l
+4: return rtop
+The word size in the following parts is set to l= 16 to support the 16-bit arithmetic in
+Kyber and NTTRU. As recommended in Subsection 3.3, the maximum α that satisfies
+Theorem 1 is α= 3/α= 2 for Kyber/NTTRU.
+Based on the Plantard multiplication described in Algorithm 10, we propose a 2-cycle
+modular multiplication by a constant for 16-bit moduli. The detailed instruction sequence
+is shown in Algorithm 11. This is achieved by observing that a part of the main step
+of the Plantard multiplication is abq′mod±22l. If the multiplicand b is a constant, one
+can directly precompute bq′mod±22l where q′
+= q−1 mod±22l. Recall that the input of
+Algorithm 10, aand b, satisfies a,b∈[−q2α,q2α] and ab∈[−q222α,q222α]. We can always
+reduce the constant b down to [0,q) during the precomputation of bq′. Therefore, the
+input range of a can be extended to [−q22α,q22α]. Besides, for the parameter α, we have
+2l−α−2 <q<2l−α−1 when the maximum αis chosen. Therefore, by combining 2l−α−2 <q
+and a∈[−22αq,22αq], we conclude that alies in [−2l+α−2
+,2l+α−2]. For any integer α>0,
+the input a covers every 16-bit signed integer, i.e., a∈[−2l−1
+,2l−1).
+The main step of Algorithm 10 is [([[abq′]2l]l + 2α)q]l. The smulwb instruction
+in Algorithm 11 computes [[abq′]2l]l in 1 cycle, and the intermediate result is saved in the
+bottom half of r. Here, adding 2α to the bottom half of r before the multiplication with q
+might produce a carry to the top half of the 32-bit register r. This would cause an error
+when the top half of r is not zero. This problem can be addressed by computing the main
+step separately as [q·[[abq′]2l]l + q2α]l with the smlabb instruction. Here, the term q2α
+is fixed and can be precomputed without extra runtime overhead. The final result locates
+in the top half of r. Compared with Algorithm 12, the state-of-the-art 16-bit Montgomery
+multiplication implementation on Cortex-M4 [ABCG20], we reduce one multiplication by
+precomputing the product of q−1 and the constant operand b. As for its comparison with
+the Barrett arithmetic, we refer to Subsubsection 4.2.4 for more details.
+Note that [LS19] proposed a similar trick for Montgomery multiplication with the
+AVX2 instructions, which is improved over the work in [Sei18]. It is achieved by precom-
+puting q−1/−q−1 with the bottom half of c (see step 2 of Algorithm 7/Algorithm 12).
+Unfortunately, it is not suitable for Cortex-M4 because the trick shown in [LS19] highly
+relies on the two-instruction-fashion multiplication, whereas the 16/32-bit multiplication on
+Cortex-M4 is carried out in a single instruction. Applying their optimization on Cortex-M4
+introduces extra multiplication instructions as stated in [BKS19, Subsection 3.2].
+As for the multiplication of two variables, we present a 2-cycle Plantard reduction over

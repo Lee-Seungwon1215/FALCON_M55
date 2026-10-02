@@ -1,0 +1,65 @@
+DOCUMENT: m55_slothy.pdf PAGE: 7/46
+
+Abdulrahman, Becker, Kannwischer, Klein 7
+1 vldrw.u32 q0, [inA]
+2 vadd.u32 q0, q0, q0
+3 vadd.u32 q0, q0, q0
+4 vstrw.u32 q0, [inA]
+5 vldrw.u32 q0, [inB]
+6 vmul.u32 q0, q0, q0
+7 vmul.u32 q0, q0, q0
+8 vstrw.u32 q0, [inB]
+1 vldrw.u32 q0, [inA]
+2 vadd.u32 q0, q0, q0
+3 vadd.u32 q0, q0, q0
+4 vstrw.u32 q0, [inA]
+5 vldrw.u32 q1, [inB]
+6 vmul.u32 q1, q1, q1
+7 vmul.u32 q1, q1, q1
+8 vstrw.u32 q1, [inB]
+1 vldrw.u32 q0, [inA]
+2 vadd.u32 q0, q0, q0
+3 vldrw.u32 q1, [inB]
+4 vadd.u32 q0, q0, q0
+5 vmul.u32 q1, q1, q1
+6 vstrw.u32 q0, [inA]
+7 vmul.u32 q1, q1, q1
+8 vstrw.u32 q1, [inB]
+Listing 1: Left: Two logically independent code paths using the same register. Middle:
+Register renaming to separate register usage and enable interleaving. Right: Interleaving.
+a labelling of the CFG’s nodes. Register allocation assigns architectural registers to
+instruction inputs/outputs — a labelling of the CFG’s edges. Instruction scheduling and
+register allocation influence each other, as the choice of scheduling restricts the set of valid
+register allocations, and vice versa: An instruction must not overwrite a register (an aspect
+of register allocation) if that instruction is placed in between a producer and consumer
+of said register (an aspect of scheduling). The relation and ordering between instruction
+scheduling and register allocation is called the phase ordering problem.
+Software pipelining. Software pipelining [Lam88, RG81] is a software optimization
+technique whereby multiple iterations of a loop are interleaved to create instruction
+level parallelism and thereby facilitate execution on the underlying microarchitecture.
+Popular approaches are iterative modulo scheduling [Rau94] and swing modulo scheduling
+[LGAV96]. While originally devised for Very Long Instruction Word (VLIW) processors,
+software pipelining is well-known also for classical microarchitectures: When the execution
+of one loop iteration cannot progress due to latency constraints or lack of availability
+of functional units, instructions from the next iteration(s) may be pulled forward to fill
+the gaps. This is conceptually similar to how out-of-order microarchitectures reorder
+instructions during execution (explained below), but explicit software pipelining may still
+be beneficial even for such microarchitectures.
+Software pipelining puts pressure on the register file since iterations may only be
+interleaved once there is no collision in their register use. In an out-of-order microarchitec-
+ture, this is a consequence of register renaming assigning a fresh physical register to each
+instruction output, thereby benefiting from a physical register file that’s larger than the
+architectural register file. Software pipelining, however, has to perform manual register
+renaming within the architectural register file, which can be challenging. See Listing 1 for
+a toy example of an interleaving opportunity created through register renaming.
+3.2 (Micro)architecture
+While the ideas behind SLOTHY are (micro)architecture independent, a basic knowledge
+of CPU (micro)architecture in general, and the Arm architecture in particular, is necessary
+to appreciate the concrete examples discussed in this paper. We provide a brief overview.
+3.2.1 Microarchitecture 1-1
+This section provides a minimal mental model of instruction execution, formulated in a
+somewhat non-standard way via computational flow graphs. For thorough introduction to
+microarchitecture design, we refer to [TA16].
+An instruction’s life in stages. All processors considered here execute instructions in
+a series of stages called pipeline. At the start of the pipeline, instructions are fetched
+from memory, decoded and have their arguments determined. The processor then tracks

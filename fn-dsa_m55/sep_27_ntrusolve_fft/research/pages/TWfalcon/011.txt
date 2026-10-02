@@ -1,0 +1,56 @@
+DOCUMENT: TWfalcon.pdf PAGE: 11/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 11
+The Falcon specification claims that from their tests, the combined error always satisfies
+≤2−40, which is already worse than the proven ≤2−46, as discussed in Section 3.1. In
+Figure 3, this exponent value 40 is highlighted in red. The graph shows that this claim does
+not hold: despite logarithmic scale, a significant number of errors fall at lower exponent
+values, even as low as 37. From these tests, it can be concluded that for 100,000 Falcon-1024
+runs, the combined error is always below 2−37. This is 3 bits worse than the claimed
+bound, which was already 6 bits worse than the theoretical requirement resulting from the
+proof.
+Empirical testing, even with 100,000 signatures, cannot prove that a bound will never
+be exceeded. These runs yield about 102.4 million leaf instances of µ and σ, from which
+the error values are computed. As the sample size grows, the chance of observing rarer
+extremes increases; for example, with 1 million signatures one could plausibly see an error
+exponent as low as−36. This may also explain why earlier reports (e.g., [PFH+22]) appear
+more favorable: they likely used fewer trials and thus observed fewer extremes. That
+said, the empirical frequency of error exponents decays roughly exponentially, so very low
+exponents are highly unlikely, though not impossible, in practice.
+As in Section 3.1, we can analyze the theoretic security implications of this result.
+When using Equation 1 with (δc + δσ) = 2−37 and λ = 256, we obtain the following
+inequality:
+1
+2−47 ≤
+.
+qs
+This implies that, under a worst-case analysis using Rényi divergence, the use of double-
+precision arithmetic ensures security only up to approximately 247 queries.
+Of course, this represents the worst-case scenario. The median and rounded average of
+the exponents of the combined error is 43, indicating the combined error is typically below
+2−43. While this is better than the worst-case bound of 2−37, it is still worse than the
+required 2−46. Applying Equation 1 again, this average-case error implies that the scheme is
+secure for 259 queries, which is still significantly below the required 264 queries. Fortunately,
+there are currently no known attacks that can exploit these error values introduced by the
+floating-point arithmetic. Moreover, it is unclear whether the existing proof is tight. For
+example, early precision analysis of Klein’s sampler based on standard deviation suggested
+much higher precision requirements than those later established using Rényi divergence.
+It is possible that future work may find tighter bounds or alternative proof techniques.
+Nonetheless, based on current knowledge, the double-precision floating-point standard
+does not offer sufficient precision to ensure provable security of the Gaussian sampler at a
+security level of λ= 256 with an allowed query bound of qs = 264, and is therefore not
+complying with the NIST requirements for Post-Quantum signature schemes. One way to
+get more precision, especially for constrained devices with only a single-precision FPU, is
+to use TW algorithms. How this can be implemented for Falcon will be discussed next.
+4 Implementation
+In this section, our novel implementation of Falcon using the Triple-Word Floating-Point
+(TW) technique is discussed. Section 4.1 discusses the exponent range needed to represent
+all floating-point values that can appear in the Falcon signature scheme and shows that
+TW implemented with the single-precision standard will not result in issues. Then in
+Section 4.2 we present the new triple-word arithmetic that was not covered in [FMP19],
+but is required to allow us to perform all Falcon operations in triple-word form. Lastly,
+we show in Section 4.3 that the resulting implementation can be made constant time.
+Multiple TW algorithms from [FMP19] have a “fast” version with higher error. Thanks to
+the added precision of TW, these faster algorithms can be used for all Falcon operations,
+as verified in Section 5.2.

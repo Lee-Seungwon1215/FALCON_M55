@@ -1,0 +1,626 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 62017
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :62017 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10001a9c
+hbreak *0x10004d08
+set $early_fault_bp = $bpnum
+jump *0x10004d1d
+if $pc != 0x10001a9c
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmphzhxofyr/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10001a4c
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10004d08
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 62017
+Info : Listening on port 62017 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/62017
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+AUDIT_HW cpu=800000000 fpscr=00040000 ccr=00000611 tcm=00000099
+AUDIT_BEGIN scalar_double_bytes=8 complex_bytes=16
+AUDIT_STAGE case=1024-test10 stage=input_f n=4 fixed=a8addb456a85c1fb fp64=e974d671f02c8cf5 differences=0 first=4
+AUDIT_STAGE case=1024-test10 stage=input_F n=4 fixed=c89fcfd5bde823eb fp64=86d24b2cd63b13f5 differences=0 first=4
+AUDIT_STAGE case=1024-test10 stage=FFT_f n=4 fixed=3e0cd4164c2f36ab fp64=e3d327aeb753c6a8 differences=4 first=0
+AUDIT_STAGE case=1024-test10 stage=norm n=2 fixed=f4b6b92c8cce64e2 fp64=89e95a4d7fcfb96a differences=2 first=0
+AUDIT_STAGE case=1024-test10 stage=inverse_native n=4 fixed=9999c017208c0934 fp64=f4ecb8564dbfdcf2 differences=4 first=0
+AUDIT_STAGE case=1024-test10 stage=inverse_used n=4 fixed=9999c017208c0934 fp64=f4ecb8564dbfdcf2 differences=4 first=0
+AUDIT_STAGE case=1024-test10 stage=FFT_F n=4 fixed=92150622e6009193 fp64=9e019ed18d32b132 differences=4 first=0
+AUDIT_STAGE case=1024-test10 stage=pointwise n=4 fixed=3965a5475783fd5b fp64=c50e729c687d9093 differences=4 first=0
+AUDIT_STAGE case=1024-test10 stage=iFFT n=4 fixed=39966dfb2acd9704 fp64=44d7579353770c84 differences=4 first=0
+AUDIT_K_VALUE case=1024-test10 index=1 fixed=80 fp64=79
+AUDIT_K case=1024-test10 differences=1 valid=1
+AUDIT_STAGE case=1024-test12 stage=input_f n=4 fixed=03570553af2f0bf3 fp64=9b189b21988bbff5 differences=0 first=4
+AUDIT_STAGE case=1024-test12 stage=input_F n=4 fixed=4d28db7f9dd0f56b fp64=c065767f9dce13f5 differences=0 first=4
+AUDIT_STAGE case=1024-test12 stage=FFT_f n=4 fixed=40ba61ecaa2a969b fp64=609ba1d49bff4f3d differences=4 first=0
+AUDIT_STAGE case=1024-test12 stage=norm n=2 fixed=463a64eca4efc451 fp64=c8d1a731878a46cf differences=2 first=0
+AUDIT_STAGE case=1024-test12 stage=inverse_native n=4 fixed=376b8733d7385cf3 fp64=5824eac023e449fb differences=4 first=0
+AUDIT_STAGE case=1024-test12 stage=inverse_used n=4 fixed=376b8733d7385cf3 fp64=5824eac023e449fb differences=4 first=0
+AUDIT_STAGE case=1024-test12 stage=FFT_F n=4 fixed=b5d445774c80560f fp64=b18ecd77728e13f5 differences=4 first=0
+AUDIT_STAGE case=1024-test12 stage=pointwise n=4 fixed=4d25757f9dce1242 fp64=932f3120941bb3f7 differences=4 first=0
+AUDIT_STAGE case=1024-test12 stage=iFFT n=4 fixed=4d22107f9dcb30cc fp64=7a94d76e89b961bb differences=4 first=0
+AUDIT_K_VALUE case=1024-test12 index=0 fixed=0 fp64=51
+AUDIT_K_VALUE case=1024-test12 index=1 fixed=0 fp64=42
+AUDIT_K_VALUE case=1024-test12 index=2 fixed=0 fp64=8
+AUDIT_K_VALUE case=1024-test12 index=3 fixed=0 fp64=-31
+AUDIT_K case=1024-test12 differences=4 valid=1
+AUDIT_STAGE case=1024-test25 stage=input_f n=8 fixed=10649e8f49f184ab fp64=6261dadcf1471fc5 differences=0 first=8
+AUDIT_STAGE case=1024-test25 stage=input_F n=8 fixed=f818bd28e8658e39 fp64=ef358a72281a39c5 differences=0 first=8
+AUDIT_STAGE case=1024-test25 stage=FFT_f n=8 fixed=f8d27421669112fd fp64=25b7f5805ee93eca differences=8 first=0
+AUDIT_STAGE case=1024-test25 stage=norm n=4 fixed=12eb6568f3f7f394 fp64=1090f8e9b2112a48 differences=4 first=0
+AUDIT_STAGE case=1024-test25 stage=inverse_native n=8 fixed=c544fcf72ba8e939 fp64=ccd6220e1cec1aa0 differences=8 first=0
+AUDIT_STAGE case=1024-test25 stage=inverse_used n=8 fixed=c544fcf72ba8e939 fp64=ccd6220e1cec1aa0 differences=8 first=0
+AUDIT_STAGE case=1024-test25 stage=FFT_F n=8 fixed=eebe2372208d23c5 fp64=2460852af5bec300 differences=8 first=0
+AUDIT_STAGE case=1024-test25 stage=pointwise n=8 fixed=34288828d3985689 fp64=5296803efe82de7a differences=8 first=0
+AUDIT_STAGE case=1024-test25 stage=iFFT n=8 fixed=35999f54a6fdd400 fp64=d521b7060e96c166 differences=8 first=0
+AUDIT_K_VALUE case=1024-test25 index=0 fixed=7 fp64=3
+AUDIT_K_VALUE case=1024-test25 index=1 fixed=12 fp64=6
+AUDIT_K_VALUE case=1024-test25 index=2 fixed=16 fp64=8
+AUDIT_K_VALUE case=1024-test25 index=3 fixed=16 fp64=9
+AUDIT_K case=1024-test25 differences=8 valid=1
+AUDIT_STAGE case=1024-test3 stage=input_f n=4 fixed=0668545aa80f181f fp64=e6b983c886646cf5 differences=0 first=4
+AUDIT_STAGE case=1024-test3 stage=input_F n=4 fixed=ae70028786142135 fp64=2b95e13345dbd3f5 differences=0 first=4
+AUDIT_STAGE case=1024-test3 stage=FFT_f n=4 fixed=0dae1539ff02579b fp64=ae2e0cb221d44f5b differences=4 first=0
+AUDIT_STAGE case=1024-test3 stage=norm n=2 fixed=4f019b19d54c67aa fp64=c7275f9efaf171a6 differences=2 first=0
+AUDIT_STAGE case=1024-test3 stage=inverse_native n=4 fixed=a94db0d9389d3a22 fp64=48bbfcbd804747c5 differences=4 first=0
+AUDIT_STAGE case=1024-test3 stage=inverse_used n=4 fixed=a94db0d9389d3a22 fp64=48bbfcbd804747c5 differences=4 first=0
+AUDIT_STAGE case=1024-test3 stage=FFT_F n=4 fixed=fab5544b6b54e009 fp64=49eb1cba5dd9fa69 differences=4 first=0
+AUDIT_STAGE case=1024-test3 stage=pointwise n=4 fixed=812f9c91abab4591 fp64=0703e0b76259e86b differences=4 first=0
+AUDIT_STAGE case=1024-test3 stage=iFFT n=4 fixed=ec4e8b1b9a7aad41 fp64=20d97bf1046568ac differences=4 first=0
+AUDIT_K_VALUE case=1024-test3 index=0 fixed=99 fp64=98
+AUDIT_K case=1024-test3 differences=1 valid=1
+AUDIT_STAGE case=1024-test38 stage=input_f n=8 fixed=f5a876371c91bee4 fp64=43a179d2f431afc5 differences=0 first=8
+AUDIT_STAGE case=1024-test38 stage=input_F n=8 fixed=a398eca643c0bf5e fp64=15f3d33ffa1a39c5 differences=0 first=8
+AUDIT_STAGE case=1024-test38 stage=FFT_f n=8 fixed=58dc0ed1ac675541 fp64=8c7ec4ac90a7dfc0 differences=8 first=0
+AUDIT_STAGE case=1024-test38 stage=norm n=4 fixed=59e28a48b581225b fp64=263c78fd0667ee14 differences=4 first=0
+AUDIT_STAGE case=1024-test38 stage=inverse_native n=8 fixed=64aa1eae580646c1 fp64=a47ca28045a2fc5e differences=8 first=0
+AUDIT_STAGE case=1024-test38 stage=inverse_used n=8 fixed=64aa1eae580646c1 fp64=a47ca28045a2fc5e differences=8 first=0
+AUDIT_STAGE case=1024-test38 stage=FFT_F n=8 fixed=c5e5f34239bf9b71 fp64=aad4d2bb77d9e3da differences=8 first=0
+AUDIT_STAGE case=1024-test38 stage=pointwise n=8 fixed=1322041cb9cdfa15 fp64=fb4f97040d275482 differences=8 first=0
+AUDIT_STAGE case=1024-test38 stage=iFFT n=8 fixed=643060db23b52c88 fp64=5c7bab4de7384334 differences=8 first=0
+AUDIT_K_VALUE case=1024-test38 index=6 fixed=1 fp64=0
+AUDIT_K case=1024-test38 differences=1 valid=1
+AUDIT_STAGE case=1024-test45 stage=input_f n=4 fixed=6e4b307deab2867b fp64=c2f52d517dae43f5 differences=0 first=4
+AUDIT_STAGE case=1024-test45 stage=input_F n=4 fixed=8dd7b557cccd6b22 fp64=cd4907ecddce13f5 differences=0 first=4
+AUDIT_STAGE case=1024-test45 stage=FFT_f n=4 fixed=8716ca2259f39301 fp64=0a865ce89ff39717 differences=4 first=0
+AUDIT_STAGE case=1024-test45 stage=norm n=2 fixed=cbe09fe1a3c8e2af fp64=bbe00d705c8290f5 differences=2 first=0
+AUDIT_STAGE case=1024-test45 stage=inverse_native n=4 fixed=fbd30ff017e35458 fp64=1433894faced3564 differences=4 first=0
+AUDIT_STAGE case=1024-test45 stage=inverse_used n=4 fixed=fbd30ff017e35458 fp64=1433894faced3564 differences=4 first=0
+AUDIT_STAGE case=1024-test45 stage=FFT_F n=4 fixed=194ae2b9b5d1dc05 fp64=aaf002e5913016cb differences=4 first=0
+AUDIT_STAGE case=1024-test45 stage=pointwise n=4 fixed=fe15c00ae1507d70 fp64=859d81e8e8119ace differences=4 first=0
+AUDIT_STAGE case=1024-test45 stage=iFFT n=4 fixed=97c1a37730c3b863 fp64=fcb945b143d414fa differences=4 first=0
+AUDIT_K_VALUE case=1024-test45 index=0 fixed=0 fp64=9
+AUDIT_K_VALUE case=1024-test45 index=1 fixed=0 fp64=9
+AUDIT_K_VALUE case=1024-test45 index=2 fixed=0 fp64=3
+AUDIT_K_VALUE case=1024-test45 index=3 fixed=0 fp64=-5
+AUDIT_K case=1024-test45 differences=4 valid=1
+AUDIT_STAGE case=1024-test56 stage=input_f n=4 fixed=aa1236aacc448533 fp64=8f2fcc45a1a0c1f5 differences=0 first=4
+AUDIT_STAGE case=1024-test56 stage=input_F n=4 fixed=ed202187f403ced3 fp64=2965767f9dce13f5 differences=0 first=4
+AUDIT_STAGE case=1024-test56 stage=FFT_f n=4 fixed=4f1e2b0c117beaeb fp64=1ec21ee95f65fd40 differences=4 first=0
+AUDIT_STAGE case=1024-test56 stage=norm n=2 fixed=2d64dc2b1186c359 fp64=fc3b1fdb3385b1c2 differences=2 first=0
+AUDIT_STAGE case=1024-test56 stage=inverse_native n=4 fixed=c2643510392f7863 fp64=a345e85716a5e721 differences=4 first=0
+AUDIT_STAGE case=1024-test56 stage=inverse_used n=4 fixed=c2643510392f7863 fp64=a345e85716a5e721 differences=4 first=0
+AUDIT_STAGE case=1024-test56 stage=FFT_F n=4 fixed=4d22117f9dcb327f fp64=9c468efbd08e13f5 differences=4 first=0
+AUDIT_STAGE case=1024-test56 stage=pointwise n=4 fixed=3bd27f7f93fe14ec fp64=4b84d6180667fd78 differences=4 first=0
+AUDIT_STAGE case=1024-test56 stage=iFFT n=4 fixed=4a285588b37cc87b fp64=b5c49352587bf8ef differences=4 first=0
+AUDIT_K_VALUE case=1024-test56 index=0 fixed=0 fp64=3
+AUDIT_K_VALUE case=1024-test56 index=1 fixed=0 fp64=-8
+AUDIT_K_VALUE case=1024-test56 index=2 fixed=0 fp64=-15
+AUDIT_K_VALUE case=1024-test56 index=3 fixed=0 fp64=-13
+AUDIT_K case=1024-test56 differences=4 valid=1
+AUDIT_STAGE case=1024-test65 stage=input_f n=8 fixed=8f12a1567610da8d fp64=affbdff8427ee9c5 differences=0 first=8
+AUDIT_STAGE case=1024-test65 stage=input_F n=8 fixed=e905dd293170d8e2 fp64=4f544e1fa7ae79c5 differences=0 first=8
+AUDIT_STAGE case=1024-test65 stage=FFT_f n=8 fixed=bee888eedcd044a9 fp64=ecf8eb874f708982 differences=8 first=0
+AUDIT_STAGE case=1024-test65 stage=norm n=4 fixed=428e294b88062a80 fp64=f215491e3c3300c4 differences=4 first=0
+AUDIT_STAGE case=1024-test65 stage=inverse_native n=8 fixed=ed986e0e9828c1fa fp64=846bcb2249ca8251 differences=8 first=0
+AUDIT_STAGE case=1024-test65 stage=inverse_used n=8 fixed=ed986e0e9828c1fa fp64=846bcb2249ca8251 differences=8 first=0
+AUDIT_STAGE case=1024-test65 stage=FFT_F n=8 fixed=6aa5312db973b589 fp64=f9e89ecd442458ae differences=8 first=0
+AUDIT_STAGE case=1024-test65 stage=pointwise n=8 fixed=5db93ca9a6cc2f5a fp64=ba9b8d2a1852eb3d differences=8 first=0
+AUDIT_STAGE case=1024-test65 stage=iFFT n=8 fixed=5201136e55e0f6eb fp64=9e09d47badfbbf84 differences=8 first=0
+AUDIT_K_VALUE case=1024-test65 index=0 fixed=18 fp64=19
+AUDIT_K case=1024-test65 differences=1 valid=1
+AUDIT_STAGE case=1024-test7 stage=input_f n=32 fixed=a4205f03f681bb60 fp64=9fbea371fd8ac5a5 differences=0 first=32
+AUDIT_STAGE case=1024-test7 stage=input_F n=32 fixed=6c04886034a1e2e8 fp64=d24ee014394875a5 differences=0 first=32
+AUDIT_STAGE case=1024-test7 stage=FFT_f n=32 fixed=af8e4054dc190f91 fp64=0f70f26cbedef723 differences=32 first=0
+AUDIT_STAGE case=1024-test7 stage=norm n=16 fixed=82a608187bfa2f78 fp64=e8f9a06479ed5b76 differences=16 first=0
+AUDIT_STAGE case=1024-test7 stage=inverse_native n=32 fixed=628855e756db4e46 fp64=b0413a3be963ac3b differences=32 first=0
+AUDIT_STAGE case=1024-test7 stage=inverse_used n=32 fixed=628855e756db4e46 fp64=b0413a3be963ac3b differences=32 first=0
+AUDIT_STAGE case=1024-test7 stage=FFT_F n=32 fixed=3501ac45ef8b9801 fp64=d44c33b0f904f385 differences=32 first=0
+AUDIT_STAGE case=1024-test7 stage=pointwise n=32 fixed=c898242df6d2a451 fp64=9c10c1c0da847d52 differences=32 first=0
+AUDIT_STAGE case=1024-test7 stage=iFFT n=32 fixed=b956a3e52a72be05 fp64=db201ce56ae11416 differences=32 first=0
+AUDIT_K_VALUE case=1024-test7 index=0 fixed=23 fp64=27
+AUDIT_K_VALUE case=1024-test7 index=1 fixed=-23 fp64=-24
+AUDIT_K_VALUE case=1024-test7 index=2 fixed=56 fp64=52
+AUDIT_K_VALUE case=1024-test7 index=3 fixed=-46 fp64=-44
+AUDIT_K case=1024-test7 differences=30 valid=1
+AUDIT_STAGE case=1024-test70 stage=input_f n=4 fixed=d7b5a29773e7be06 fp64=bf3e49624ba896f5 differences=0 first=4
+AUDIT_STAGE case=1024-test70 stage=input_F n=4 fixed=a6d538a30ecb69d7 fp64=ad0e595bf94e13f5 differences=0 first=4
+AUDIT_STAGE case=1024-test70 stage=FFT_f n=4 fixed=5651cf2d7b51925d fp64=1e38d644454f4689 differences=4 first=0
+AUDIT_STAGE case=1024-test70 stage=norm n=2 fixed=714dbe7a53a311a6 fp64=2aced9354acfcf51 differences=2 first=0
+AUDIT_STAGE case=1024-test70 stage=inverse_native n=4 fixed=bfab093c7a1ec387 fp64=7ff0f8bef334fc77 differences=4 first=0
+AUDIT_STAGE case=1024-test70 stage=inverse_used n=4 fixed=bfab093c7a1ec387 fp64=7ff0f8bef334fc77 differences=4 first=0
+AUDIT_STAGE case=1024-test70 stage=FFT_F n=4 fixed=2758cdd8010b7b51 fp64=1f4b48e9f61809fe differences=4 first=0
+AUDIT_STAGE case=1024-test70 stage=pointwise n=4 fixed=78558506920bec98 fp64=6dfa887784077e70 differences=4 first=0
+AUDIT_STAGE case=1024-test70 stage=iFFT n=4 fixed=dcc041b70dce3bef fp64=e1d159ff21e82591 differences=4 first=0
+AUDIT_K_VALUE case=1024-test70 index=1 fixed=0 fp64=1
+AUDIT_K_VALUE case=1024-test70 index=2 fixed=0 fp64=1
+AUDIT_K case=1024-test70 differences=2 valid=1
+AUDIT_STAGE case=1024-test72 stage=input_f n=4 fixed=da7a70065a35397d fp64=eba376e0c937dcf5 differences=0 first=4
+AUDIT_STAGE case=1024-test72 stage=input_F n=4 fixed=392f6dc408dd8a4c fp64=fd5f1d29db9813f5 differences=0 first=4
+AUDIT_STAGE case=1024-test72 stage=FFT_f n=4 fixed=0547276c865ff491 fp64=bbcd9acbd1ce9709 differences=4 first=0
+AUDIT_STAGE case=1024-test72 stage=norm n=2 fixed=4f7284e291b92e10 fp64=1ca8939152146805 differences=2 first=0
+AUDIT_STAGE case=1024-test72 stage=inverse_native n=4 fixed=4e70c7983fd69002 fp64=e98b16103df3cfbc differences=4 first=0
+AUDIT_STAGE case=1024-test72 stage=inverse_used n=4 fixed=4e70c7983fd69002 fp64=e98b16103df3cfbc differences=4 first=0
+AUDIT_STAGE case=1024-test72 stage=FFT_F n=4 fixed=1475fca7136fb6c1 fp64=001bf3bcf091c67b differences=4 first=0
+AUDIT_STAGE case=1024-test72 stage=pointwise n=4 fixed=623479c7c50b653b fp64=b00499f036de7b45 differences=4 first=0
+AUDIT_STAGE case=1024-test72 stage=iFFT n=4 fixed=95969bc10b2fe54a fp64=1668d63160939a6e differences=4 first=0
+AUDIT_K_VALUE case=1024-test72 index=0 fixed=112 fp64=101
+AUDIT_K_VALUE case=1024-test72 index=1 fixed=135 fp64=126
+AUDIT_K_VALUE case=1024-test72 index=2 fixed=-27 fp64=-29
+AUDIT_K_VALUE case=1024-test72 index=3 fixed=-23 fp64=-17
+AUDIT_K case=1024-test72 differences=4 valid=1
+AUDIT_STAGE case=1024-test74 stage=input_f n=16 fixed=b8c91c7fbca320c9 fp64=158d6777a5166865 differences=0 first=16
+AUDIT_STAGE case=1024-test74 stage=input_F n=16 fixed=ee3f234c1846da47 fp64=9edda360c0ff6465 differences=0 first=16
+AUDIT_STAGE case=1024-test74 stage=FFT_f n=16 fixed=a6df9a20490a13a5 fp64=aa721703a62a29a6 differences=16 first=0
+AUDIT_STAGE case=1024-test74 stage=norm n=8 fixed=c4ebb113ea66e0c5 fp64=569637974fe4d47c differences=8 first=0
+AUDIT_STAGE case=1024-test74 stage=inverse_native n=16 fixed=5d6cf78240e692cf fp64=2c3ba0c9015e15a6 differences=16 first=0
+AUDIT_STAGE case=1024-test74 stage=inverse_used n=16 fixed=5d6cf78240e692cf fp64=2c3ba0c9015e15a6 differences=16 first=0
+AUDIT_STAGE case=1024-test74 stage=FFT_F n=16 fixed=82637f14d49de975 fp64=7fae18a9d17b00e9 differences=16 first=0
+AUDIT_STAGE case=1024-test74 stage=pointwise n=16 fixed=26e20716581c2769 fp64=249cdef05a7fd0c2 differences=16 first=0
+AUDIT_STAGE case=1024-test74 stage=iFFT n=16 fixed=2b488b388c9abd58 fp64=0bd1664be042b327 differences=16 first=0
+AUDIT_K_VALUE case=1024-test74 index=0 fixed=-25 fp64=-23
+AUDIT_K_VALUE case=1024-test74 index=1 fixed=13 fp64=11
+AUDIT_K_VALUE case=1024-test74 index=3 fixed=-17 fp64=-15
+AUDIT_K_VALUE case=1024-test74 index=4 fixed=24 fp64=22
+AUDIT_K case=1024-test74 differences=12 valid=1
+AUDIT_STAGE case=1024-test76 stage=input_f n=4 fixed=e506c679240f4789 fp64=04d9d7a2de69d5f5 differences=0 first=4
+AUDIT_STAGE case=1024-test76 stage=input_F n=4 fixed=76a25533924d69db fp64=f147d67f9dce13f5 differences=0 first=4
+AUDIT_STAGE case=1024-test76 stage=FFT_f n=4 fixed=8694e0f2d95e09e3 fp64=ceed927636e30c08 differences=4 first=0
+AUDIT_STAGE case=1024-test76 stage=norm n=2 fixed=387c82634b4a328b fp64=89a98e0d99cdc457 differences=2 first=0
+AUDIT_STAGE case=1024-test76 stage=inverse_native n=4 fixed=4e650b197e069ce4 fp64=0e244ff99cf3dc1f differences=4 first=0
+AUDIT_STAGE case=1024-test76 stage=inverse_used n=4 fixed=4e650b197e069ce4 fp64=0e244ff99cf3dc1f differences=4 first=0
+AUDIT_STAGE case=1024-test76 stage=FFT_F n=4 fixed=ccb921d4d319d08f fp64=1dc815141cd993f5 differences=4 first=0
+AUDIT_STAGE case=1024-test76 stage=pointwise n=4 fixed=0fc38f53b55f5521 fp64=59e4849fda276c06 differences=4 first=0
+AUDIT_STAGE case=1024-test76 stage=iFFT n=4 fixed=cd646091b4089197 fp64=c07bbff279dc087e differences=4 first=0
+AUDIT_K_VALUE case=1024-test76 index=0 fixed=-8 fp64=-7
+AUDIT_K_VALUE case=1024-test76 index=3 fixed=-7 fp64=-6
+AUDIT_K case=1024-test76 differences=2 valid=1
+AUDIT_STAGE case=1024-test77 stage=input_f n=4 fixed=3b692bfef22f24b3 fp64=f3ab723ffda64cf5 differences=0 first=4
+AUDIT_STAGE case=1024-test77 stage=input_F n=4 fixed=fbf49209339b0379 fp64=b3d4365c575013f5 differences=0 first=4
+AUDIT_STAGE case=1024-test77 stage=FFT_f n=4 fixed=4dbc1bb438e335db fp64=5f007d3f2a0e4b43 differences=4 first=0
+AUDIT_STAGE case=1024-test77 stage=norm n=2 fixed=478c0fde3e6e97f7 fp64=9ae438347e6342d5 differences=2 first=0
+AUDIT_STAGE case=1024-test77 stage=inverse_native n=4 fixed=34e48576e7977559 fp64=12a1fa99ee192335 differences=4 first=0
+AUDIT_STAGE case=1024-test77 stage=inverse_used n=4 fixed=34e48576e7977559 fp64=12a1fa99ee192335 differences=4 first=0
+AUDIT_STAGE case=1024-test77 stage=FFT_F n=4 fixed=236faa24bf2770e5 fp64=3da2861f753a414c differences=4 first=0
+AUDIT_STAGE case=1024-test77 stage=pointwise n=4 fixed=8f9a1786f25fca68 fp64=c3d5d19cd9955d54 differences=4 first=0
+AUDIT_STAGE case=1024-test77 stage=iFFT n=4 fixed=072a6b3901d4c323 fp64=b0f3425c74e7a16f differences=4 first=0
+AUDIT_K_VALUE case=1024-test77 index=2 fixed=95 fp64=94
+AUDIT_K case=1024-test77 differences=1 valid=1
+AUDIT_STAGE case=1024-test79 stage=input_f n=16 fixed=b01089a8a6ed93ff fp64=df858b7993fffc65 differences=0 first=16
+AUDIT_STAGE case=1024-test79 stage=input_F n=16 fixed=beb9adf1acb94ea2 fp64=794864433611e465 differences=0 first=16
+AUDIT_STAGE case=1024-test79 stage=FFT_f n=16 fixed=6439c8720c139ead fp64=1c83bce163c2dfa0 differences=16 first=0
+AUDIT_STAGE case=1024-test79 stage=norm n=8 fixed=887cfc81e194daef fp64=49c264a0577cd87d differences=8 first=0
+AUDIT_STAGE case=1024-test79 stage=inverse_native n=16 fixed=6afbbf2a5ee42a73 fp64=3c93f55f9ac6d032 differences=16 first=0
+AUDIT_STAGE case=1024-test79 stage=inverse_used n=16 fixed=6afbbf2a5ee42a73 fp64=3c93f55f9ac6d032 differences=16 first=0
+AUDIT_STAGE case=1024-test79 stage=FFT_F n=16 fixed=0369dd51d00da291 fp64=1028f1f7da3311fe differences=16 first=0
+AUDIT_STAGE case=1024-test79 stage=pointwise n=16 fixed=1b62985b99edbb85 fp64=6e8e73f45cdaba94 differences=16 first=0
+AUDIT_STAGE case=1024-test79 stage=iFFT n=16 fixed=ac1b7436bf337893 fp64=2c39d4ad944de256 differences=16 first=0
+AUDIT_K_VALUE case=1024-test79 index=0 fixed=43 fp64=26
+AUDIT_K_VALUE case=1024-test79 index=1 fixed=-34 fp64=-53
+AUDIT_K_VALUE case=1024-test79 index=2 fixed=109 fp64=118
+AUDIT_K_VALUE case=1024-test79 index=3 fixed=41 fp64=64
+AUDIT_K case=1024-test79 differences=15 valid=1
+AUDIT_STAGE case=1024-test80 stage=input_f n=16 fixed=677011ad150ac1a9 fp64=e693871b42272065 differences=0 first=16
+AUDIT_STAGE case=1024-test80 stage=input_F n=16 fixed=af2c533cce7cac22 fp64=9402d6779459c465 differences=0 first=16
+AUDIT_STAGE case=1024-test80 stage=FFT_f n=16 fixed=6eba597a611a3b21 fp64=b39a0e409516e421 differences=16 first=0
+AUDIT_STAGE case=1024-test80 stage=norm n=8 fixed=8ac5f6c82f774c52 fp64=1473eed6a788ceb2 differences=8 first=0
+AUDIT_STAGE case=1024-test80 stage=inverse_native n=16 fixed=0f12b79bd9c97784 fp64=884838cffd11d7ff differences=16 first=0
+AUDIT_STAGE case=1024-test80 stage=inverse_used n=16 fixed=0f12b79bd9c97784 fp64=884838cffd11d7ff differences=16 first=0
+AUDIT_STAGE case=1024-test80 stage=FFT_F n=16 fixed=1404f984a1f0e529 fp64=8328ed5130fc2c3e differences=16 first=0
+AUDIT_STAGE case=1024-test80 stage=pointwise n=16 fixed=e44770eba00ea2af fp64=9c4eb8f2785521ef differences=16 first=0
+AUDIT_STAGE case=1024-test80 stage=iFFT n=16 fixed=6ebedcc3f8293847 fp64=f47b01ac8fdd3214 differences=16 first=0
+AUDIT_K_VALUE case=1024-test80 index=1 fixed=-96 fp64=-94
+AUDIT_K_VALUE case=1024-test80 index=4 fixed=60 fp64=61
+AUDIT_K_VALUE case=1024-test80 index=5 fixed=-104 fp64=-106
+AUDIT_K_VALUE case=1024-test80 index=7 fixed=-29 fp64=-28
+AUDIT_K case=1024-test80 differences=9 valid=1
+AUDIT_STAGE case=1024-test81 stage=input_f n=4 fixed=85884c3e063fdf9b fp64=a45e30c34d5653f5 differences=0 first=4
+AUDIT_STAGE case=1024-test81 stage=input_F n=4 fixed=fe6c4b87fdce05d7 fp64=4f45767f9dce13f5 differences=0 first=4
+AUDIT_STAGE case=1024-test81 stage=FFT_f n=4 fixed=99e1ff694a5aebcb fp64=9acec1bf7b38bc2c differences=4 first=0
+AUDIT_STAGE case=1024-test81 stage=norm n=2 fixed=46d9a2a2336f0fe6 fp64=447b7628503571b2 differences=2 first=0
+AUDIT_STAGE case=1024-test81 stage=inverse_native n=4 fixed=6bbd89451d9ba12f fp64=c7983835e6b66f4b differences=4 first=0
+AUDIT_STAGE case=1024-test81 stage=inverse_used n=4 fixed=6bbd89451d9ba12f fp64=c7983835e6b66f4b differences=4 first=0
+AUDIT_STAGE case=1024-test81 stage=FFT_F n=4 fixed=e793d977f3771433 fp64=b31e22132f9e13f5 differences=4 first=0
+AUDIT_STAGE case=1024-test81 stage=pointwise n=4 fixed=4d22107f9dcb30cc fp64=fbd7b18f6a3e3ce3 differences=4 first=0
+AUDIT_STAGE case=1024-test81 stage=iFFT n=4 fixed=447f607f98e8f6c0 fp64=c50b3fc4b3e178df differences=4 first=0
+AUDIT_K_VALUE case=1024-test81 index=0 fixed=0 fp64=-4
+AUDIT_K_VALUE case=1024-test81 index=1 fixed=0 fp64=3
+AUDIT_K_VALUE case=1024-test81 index=3 fixed=0 fp64=-3
+AUDIT_K case=1024-test81 differences=3 valid=1
+AUDIT_STAGE case=1024-test84 stage=input_f n=4 fixed=60366d6c81311afc fp64=9a73dde28c5fb6f5 differences=0 first=4
+AUDIT_STAGE case=1024-test84 stage=input_F n=4 fixed=c3aeda66cc1d0761 fp64=a4ef767f9dce13f5 differences=0 first=4
+AUDIT_STAGE case=1024-test84 stage=FFT_f n=4 fixed=ab0058bff63d4279 fp64=5543614ccd418e1f differences=4 first=0
+AUDIT_STAGE case=1024-test84 stage=norm n=2 fixed=494246b252d2f89c fp64=8e9f9f33a630a231 differences=2 first=0
+AUDIT_STAGE case=1024-test84 stage=inverse_native n=4 fixed=1cb705e43d7e5d51 fp64=3eeeaf1766daac2d differences=4 first=0
+AUDIT_STAGE case=1024-test84 stage=inverse_used n=4 fixed=1cb705e43d7e5d51 fp64=3eeeaf1766daac2d differences=4 first=0
+AUDIT_STAGE case=1024-test84 stage=FFT_F n=4 fixed=f829da808974e4d5 fp64=36f9ed527e1613f5 differences=4 first=0
+AUDIT_STAGE case=1024-test84 stage=pointwise n=4 fixed=4d22107f9dcb30cc fp64=6dc0f6b4f7ad69fe differences=4 first=0
+AUDIT_STAGE case=1024-test84 stage=iFFT n=4 fixed=447f607f98e8f6c0 fp64=84536bbebe45ad55 differences=4 first=0
+AUDIT_K_VALUE case=1024-test84 index=0 fixed=0 fp64=-2
+AUDIT_K_VALUE case=1024-test84 index=1 fixed=0 fp64=3
+AUDIT_K_VALUE case=1024-test84 index=2 fixed=0 fp64=-3
+AUDIT_K_VALUE case=1024-test84 index=3 fixed=0 fp64=1
+AUDIT_K case=1024-test84 differences=4 valid=1
+AUDIT_STAGE case=512-test43 stage=input_f n=4 fixed=89659cafe9c2b8af fp64=61f1105ddcaca5f5 differences=0 first=4
+AUDIT_VALUE case=512-test43 stage=input_f index=0 fixed_raw=00000084fb8d32a7 fp64_bits=40609f71a654e000
+AUDIT_STAGE case=512-test43 stage=input_F n=4 fixed=a3e0e3427b711e91 fp64=42e3a444b9ce13f5 differences=0 first=4
+AUDIT_VALUE case=512-test43 stage=input_F index=0 fixed_raw=ffffffffebd7ff22 fp64_bits=bfb42800de000000
+AUDIT_STAGE case=512-test43 stage=FFT_f n=4 fixed=d3a10c7036b64bd3 fp64=5e6b3b163f1cf65c differences=4 first=0
+AUDIT_VALUE case=512-test43 stage=FFT_f index=0 fixed_raw=00000109f71bfaad fp64_bits=40709f71bfaacd28
+AUDIT_STAGE case=512-test43 stage=norm n=2 fixed=cdd7da1ea82f68e6 fp64=c0cb2e0ed8a9de10 differences=2 first=0
+AUDIT_VALUE case=512-test43 stage=norm index=0 fixed_raw=06696e7e4a18e1d1 fp64_bits=4199a5b9f928634b
+AUDIT_STAGE case=512-test43 stage=inverse_native n=4 fixed=990cc26226ca0f48 fp64=b451c94a907df03f differences=4 first=0
+AUDIT_VALUE case=512-test43 stage=inverse_native index=0 fixed_raw=00000000052f5ec9 fp64_bits=3f94bd7b23980f48
+AUDIT_STAGE case=512-test43 stage=inverse_used n=4 fixed=990cc26226ca0f48 fp64=b451c94a907df03f differences=4 first=0
+AUDIT_VALUE case=512-test43 stage=inverse_used index=0 fixed_raw=00000000052f5ec9 fp64_bits=3f94bd7b23980f48
+AUDIT_STAGE case=512-test43 stage=FFT_F n=4 fixed=d7f7aeb45c2d7f33 fp64=80cd5d36d3114bba differences=4 first=0
+AUDIT_VALUE case=512-test43 stage=FFT_F index=0 fixed_raw=ffffffffd7aff5dc fp64_bits=bfc4280511d63c6f
+AUDIT_STAGE case=512-test43 stage=pointwise n=4 fixed=a60d952862141b06 fp64=3b0a7b40e899aa42 differences=4 first=0
+AUDIT_VALUE case=512-test43 stage=pointwise index=0 fixed_raw=ffffffffe2726c30 fp64_bits=bfbd8d93cf5d65d1
+AUDIT_STAGE case=512-test43 stage=iFFT n=4 fixed=d3ff62b4c7fac8a3 fp64=5f5470251078a97c differences=4 first=0
+AUDIT_VALUE case=512-test43 stage=iFFT index=0 fixed_raw=fffffffa971dcb6d fp64_bits=c014b0eeb67fbc0a
+AUDIT_K_VALUE case=512-test43 index=1 fixed=-14 fp64=-13
+AUDIT_K_VALUE case=512-test43 index=2 fixed=25 fp64=23
+AUDIT_K_VALUE case=512-test43 index=3 fixed=-21 fp64=-20
+AUDIT_K case=512-test43 differences=3 valid=1
+AUDIT_STAGE case=512-test50 stage=input_f n=8 fixed=ac9471d2ed2d5574 fp64=b8912a31919f45c5 differences=0 first=8
+AUDIT_STAGE case=512-test50 stage=input_F n=8 fixed=6fc226c1d20bcf68 fp64=7e96c64f6295c9c5 differences=0 first=8
+AUDIT_STAGE case=512-test50 stage=FFT_f n=8 fixed=01be67504de94d05 fp64=93e3ee2bc0be4425 differences=8 first=0
+AUDIT_STAGE case=512-test50 stage=norm n=4 fixed=9b2eaba85881d05e fp64=c066acec5858eeef differences=4 first=0
+AUDIT_STAGE case=512-test50 stage=inverse_native n=8 fixed=3118f24f46dad1e5 fp64=d280cc50eca61094 differences=8 first=0
+AUDIT_STAGE case=512-test50 stage=inverse_used n=8 fixed=3118f24f46dad1e5 fp64=d280cc50eca61094 differences=8 first=0
+AUDIT_STAGE case=512-test50 stage=FFT_F n=8 fixed=260c1ac7ff5dcde9 fp64=a2848e248acd743b differences=8 first=0
+AUDIT_STAGE case=512-test50 stage=pointwise n=8 fixed=a54d3cd351df47cc fp64=26c4434ba71b8c1e differences=8 first=0
+AUDIT_STAGE case=512-test50 stage=iFFT n=8 fixed=7d9ac0bdf1a08d94 fp64=bf835a29c09db7a1 differences=8 first=0
+AUDIT_K_VALUE case=512-test50 index=2 fixed=68 fp64=69
+AUDIT_K case=512-test50 differences=1 valid=1
+AUDIT_STAGE case=512-test58 stage=input_f n=8 fixed=4ed622e28ee54305 fp64=18d1a1750743edc5 differences=0 first=8
+AUDIT_STAGE case=512-test58 stage=input_F n=8 fixed=c8b4812f25cb37ca fp64=39a2b0ce32bb39c5 differences=0 first=8
+AUDIT_STAGE case=512-test58 stage=FFT_f n=8 fixed=e682c1ed619385e5 fp64=75fa90f4d45ef251 differences=8 first=0
+AUDIT_STAGE case=512-test58 stage=norm n=4 fixed=174c0ee02f023ddd fp64=03326627bf29bd17 differences=4 first=0
+AUDIT_STAGE case=512-test58 stage=inverse_native n=8 fixed=6b095e28c609dc68 fp64=4c64c7d6c9c106ac differences=8 first=0
+AUDIT_STAGE case=512-test58 stage=inverse_used n=8 fixed=6b095e28c609dc68 fp64=4c64c7d6c9c106ac differences=8 first=0
+AUDIT_STAGE case=512-test58 stage=FFT_F n=8 fixed=4f2cfc402debae6d fp64=5f7be22708a8d518 differences=8 first=0
+AUDIT_STAGE case=512-test58 stage=pointwise n=8 fixed=5ad95410591c7a51 fp64=b626be5bfc1a95a9 differences=8 first=0
+AUDIT_STAGE case=512-test58 stage=iFFT n=8 fixed=c3a49f189639a8c1 fp64=cca6a82f8fc4dca0 differences=8 first=0
+AUDIT_K_VALUE case=512-test58 index=0 fixed=220 fp64=219
+AUDIT_K case=512-test58 differences=1 valid=1
+AUDIT_STAGE case=512-test68 stage=input_f n=8 fixed=68f614214cec492b fp64=7d399e110d4d93c5 differences=0 first=8
+AUDIT_STAGE case=512-test68 stage=input_F n=8 fixed=fd69036d13f0e721 fp64=04b273bf0ca699c5 differences=0 first=8
+AUDIT_STAGE case=512-test68 stage=FFT_f n=8 fixed=01b7b36a1609c841 fp64=dbfe1503276fbbaf differences=8 first=0
+AUDIT_STAGE case=512-test68 stage=norm n=4 fixed=dfcaca61b76df6f0 fp64=a31661887693505f differences=4 first=0
+AUDIT_STAGE case=512-test68 stage=inverse_native n=8 fixed=61e359f1dd0f86e7 fp64=7afd3b273d39fa14 differences=8 first=0
+AUDIT_STAGE case=512-test68 stage=inverse_used n=8 fixed=61e359f1dd0f86e7 fp64=7afd3b273d39fa14 differences=8 first=0
+AUDIT_STAGE case=512-test68 stage=FFT_F n=8 fixed=58728cac455bce35 fp64=a348251a977e1981 differences=8 first=0
+AUDIT_STAGE case=512-test68 stage=pointwise n=8 fixed=05ea90dc6c5f4edf fp64=1506cf4880b70d2b differences=8 first=0
+AUDIT_STAGE case=512-test68 stage=iFFT n=8 fixed=203cfaedb939e1b0 fp64=59c31f2f5f0ab679 differences=8 first=0
+AUDIT_K_VALUE case=512-test68 index=0 fixed=250 fp64=249
+AUDIT_K_VALUE case=512-test68 index=2 fixed=-243 fp64=-242
+AUDIT_K_VALUE case=512-test68 index=4 fixed=45 fp64=44
+AUDIT_K_VALUE case=512-test68 index=7 fixed=60 fp64=61
+AUDIT_K case=512-test68 differences=4 valid=1
+AUDIT_STAGE case=512-test78 stage=input_f n=16 fixed=8f51d9980ce2fa22 fp64=ed4ecf6b62a1f865 differences=0 first=16
+AUDIT_STAGE case=512-test78 stage=input_F n=16 fixed=001de56dd7f87734 fp64=22fbb02160ff6465 differences=0 first=16
+AUDIT_STAGE case=512-test78 stage=FFT_f n=16 fixed=67d25063186a927d fp64=d1c425591022d355 differences=16 first=0
+AUDIT_STAGE case=512-test78 stage=norm n=8 fixed=a0cbc4837dfcd5cd fp64=f6261c2c525824cb differences=8 first=0
+AUDIT_STAGE case=512-test78 stage=inverse_native n=16 fixed=efa9a8ce0b5a4762 fp64=4ce544a2468404d3 differences=16 first=0
+AUDIT_STAGE case=512-test78 stage=inverse_used n=16 fixed=efa9a8ce0b5a4762 fp64=4ce544a2468404d3 differences=16 first=0
+AUDIT_STAGE case=512-test78 stage=FFT_F n=16 fixed=09ae56748f1ec9d5 fp64=ac449a509228b4c2 differences=16 first=0
+AUDIT_STAGE case=512-test78 stage=pointwise n=16 fixed=e417a9bb17eefc16 fp64=a9145882fd9aef4f differences=16 first=0
+AUDIT_STAGE case=512-test78 stage=iFFT n=16 fixed=aaf1565b48a3a9f8 fp64=7cb5c55bc2c05513 differences=16 first=0
+AUDIT_K_VALUE case=512-test78 index=5 fixed=2 fp64=1
+AUDIT_K case=512-test78 differences=1 valid=1
+AUDIT_STAGE case=512-test80 stage=input_f n=8 fixed=f7fb8c7985d263f3 fp64=6a73ad483fb3ddc5 differences=0 first=8
+AUDIT_STAGE case=512-test80 stage=input_F n=8 fixed=93009b22d9862109 fp64=ee9e6d8136a519c5 differences=0 first=8
+AUDIT_STAGE case=512-test80 stage=FFT_f n=8 fixed=32328c025e21b429 fp64=906209a2c3c01f54 differences=8 first=0
+AUDIT_STAGE case=512-test80 stage=norm n=4 fixed=247aeb0fccf93601 fp64=f2fc58d0b768f7e3 differences=4 first=0
+AUDIT_STAGE case=512-test80 stage=inverse_native n=8 fixed=8671923d3bb1a4ed fp64=f26619c76561b22a differences=8 first=0
+AUDIT_STAGE case=512-test80 stage=inverse_used n=8 fixed=8671923d3bb1a4ed fp64=f26619c76561b22a differences=8 first=0
+AUDIT_STAGE case=512-test80 stage=FFT_F n=8 fixed=359458156d91a29d fp64=f58f3e7092500687 differences=8 first=0
+AUDIT_STAGE case=512-test80 stage=pointwise n=8 fixed=c9ede8b2a77598c3 fp64=b0ed6ec034647fd2 differences=8 first=0
+AUDIT_STAGE case=512-test80 stage=iFFT n=8 fixed=d08ddcc5ca53235a fp64=3d84b71ec0f6cdd1 differences=8 first=0
+AUDIT_K_VALUE case=512-test80 index=1 fixed=143 fp64=142
+AUDIT_K_VALUE case=512-test80 index=2 fixed=23 fp64=24
+AUDIT_K_VALUE case=512-test80 index=3 fixed=30 fp64=31
+AUDIT_K_VALUE case=512-test80 index=4 fixed=142 fp64=141
+AUDIT_K case=512-test80 differences=7 valid=1
+AUDIT_STAGE case=512-test87 stage=input_f n=4 fixed=71c90e24e42ac09f fp64=d849a12f744447f5 differences=0 first=4
+AUDIT_STAGE case=512-test87 stage=input_F n=4 fixed=b5e645faa34304ec fp64=f84cfab55ed753f5 differences=0 first=4
+AUDIT_STAGE case=512-test87 stage=FFT_f n=4 fixed=226bd68e10f0d2c9 fp64=69bd9007f748b91b differences=4 first=0
+AUDIT_STAGE case=512-test87 stage=norm n=2 fixed=e7cd8694bcd77af9 fp64=a82beaa06dd83f1d differences=2 first=0
+AUDIT_STAGE case=512-test87 stage=inverse_native n=4 fixed=17cbe926c903fd09 fp64=141f22b78ac8c38c differences=4 first=0
+AUDIT_STAGE case=512-test87 stage=inverse_used n=4 fixed=17cbe926c903fd09 fp64=141f22b78ac8c38c differences=4 first=0
+AUDIT_STAGE case=512-test87 stage=FFT_F n=4 fixed=96c03b85f4298451 fp64=ecda0ab940e1d6e5 differences=4 first=0
+AUDIT_STAGE case=512-test87 stage=pointwise n=4 fixed=d825e8f35da08117 fp64=8ee8facc60ce1213 differences=4 first=0
+AUDIT_STAGE case=512-test87 stage=iFFT n=4 fixed=b36cb2fa95c511b0 fp64=4eddd22b64b0ac78 differences=4 first=0
+AUDIT_K_VALUE case=512-test87 index=0 fixed=230 fp64=229
+AUDIT_K_VALUE case=512-test87 index=2 fixed=-111 fp64=-110
+AUDIT_K_VALUE case=512-test87 index=3 fixed=241 fp64=240
+AUDIT_K case=512-test87 differences=3 valid=1
+AUDIT_STAGE case=512-test97 stage=input_f n=8 fixed=3d11da55b6cfa2e5 fp64=6bfebb6f3149abc5 differences=0 first=8
+AUDIT_STAGE case=512-test97 stage=input_F n=8 fixed=681e9889313f6d95 fp64=4f69f832281a39c5 differences=0 first=8
+AUDIT_STAGE case=512-test97 stage=FFT_f n=8 fixed=d442123f3c59240d fp64=e7dd672f890e060d differences=8 first=0
+AUDIT_STAGE case=512-test97 stage=norm n=4 fixed=a996af8c186a369f fp64=941af87fced4f4e9 differences=4 first=0
+AUDIT_STAGE case=512-test97 stage=inverse_native n=8 fixed=e2737e10d2d4686b fp64=70a08b3c5d96f61c differences=8 first=0
+AUDIT_STAGE case=512-test97 stage=inverse_used n=8 fixed=e2737e10d2d4686b fp64=70a08b3c5d96f61c differences=8 first=0
+AUDIT_STAGE case=512-test97 stage=FFT_F n=8 fixed=3b0f72e71d229fe1 fp64=e3a4f75ebf10556a differences=8 first=0
+AUDIT_STAGE case=512-test97 stage=pointwise n=8 fixed=1d6c1c1a852db0d7 fp64=2e517fa83bb3d2e1 differences=8 first=0
+AUDIT_STAGE case=512-test97 stage=iFFT n=8 fixed=168630366e4023e9 fp64=e9de5e5c4e4ef303 differences=8 first=0
+AUDIT_K_VALUE case=512-test97 index=0 fixed=0 fp64=1
+AUDIT_K_VALUE case=512-test97 index=3 fixed=0 fp64=-1
+AUDIT_K_VALUE case=512-test97 index=5 fixed=0 fp64=1
+AUDIT_K_VALUE case=512-test97 index=6 fixed=0 fp64=1
+AUDIT_K case=512-test97 differences=4 valid=1
+AUDIT_STAGE case=residual-1024-test65 stage=input_f n=8 fixed=8f12a1567610da8d fp64=affbdff8427ee9c5 differences=0 first=8
+AUDIT_VALUE case=residual-1024-test65 stage=input_f index=0 fixed_raw=fffffc3986db9d89 fp64_bits=c08e33c92313b800
+AUDIT_STAGE case=residual-1024-test65 stage=input_F n=8 fixed=29023479b9a14211 fp64=e96f039067d559c5 differences=0 first=8
+AUDIT_VALUE case=residual-1024-test65 stage=input_F index=0 fixed_raw=ffffffe221eb9c50 fp64_bits=c03dde1463b00000
+AUDIT_STAGE case=residual-1024-test65 stage=FFT_f n=8 fixed=bee888eedcd044a9 fp64=ecf8eb874f708982 differences=8 first=0
+AUDIT_VALUE case=residual-1024-test65 stage=FFT_f index=0 fixed_raw=00000000003f5cac fp64_bits=3f4fae55eca013ec
+AUDIT_STAGE case=residual-1024-test65 stage=norm n=4 fixed=428e294b88062a80 fp64=f215491e3c3300c4 differences=4 first=0
+AUDIT_VALUE case=residual-1024-test65 stage=norm index=0 fixed_raw=000000000000d25c fp64_bits=3eea4babe78e3fd7
+AUDIT_STAGE case=residual-1024-test65 stage=inverse_native n=8 fixed=ed986e0e9828c1fa fp64=846bcb2249ca8251 differences=8 first=0
+AUDIT_VALUE case=residual-1024-test65 stage=inverse_native index=0 fixed_raw=0004d1bfd7d7145d fp64_bits=411346df23d69371
+AUDIT_STAGE case=residual-1024-test65 stage=inverse_used n=8 fixed=ed986e0e9828c1fa fp64=03e5c6cb232ea071 differences=0 first=8
+AUDIT_VALUE case=residual-1024-test65 stage=inverse_used index=0 fixed_raw=0004d1bfd7d7145d fp64_bits=411346ff5f5c5174
+AUDIT_STAGE case=residual-1024-test65 stage=FFT_F n=8 fixed=d62f3e8282e93055 fp64=328348b74c4b3e3b differences=8 first=0
+AUDIT_VALUE case=residual-1024-test65 stage=FFT_F index=0 fixed_raw=0000000000062443 fp64_bits=3f18910c9b5e4264
+AUDIT_STAGE case=residual-1024-test65 stage=pointwise n=8 fixed=28c5103a23bea6dd fp64=20b0dda9fdaf0019 differences=8 first=0
+AUDIT_VALUE case=residual-1024-test65 stage=pointwise index=0 fixed_raw=00000036afb95e0c fp64_bits=404b57ecf1ec5c94
+AUDIT_STAGE case=residual-1024-test65 stage=iFFT n=8 fixed=b1508ae592c33c40 fp64=235730204b90ef5a differences=8 first=0
+AUDIT_VALUE case=residual-1024-test65 stage=iFFT index=0 fixed_raw=00001903da5b52c4 fp64_bits=40b903dac75fba55
+AUDIT_K_VALUE case=residual-1024-test65 index=6 fixed=-1443 fp64=-1442
+AUDIT_K case=residual-1024-test65 differences=1 valid=1
+AUDIT_STAGE case=residual-512-test58 stage=input_f n=64 fixed=9ab4fef40afd0825 fp64=940908e246fd0825 differences=0 first=64
+AUDIT_VALUE case=residual-512-test58 stage=input_f index=0 fixed_raw=00000003b9000000 fp64_bits=400dc80000000000
+AUDIT_STAGE case=residual-512-test58 stage=input_F n=64 fixed=b71d11f0e002a825 fp64=f2f885b3bf92e825 differences=0 first=64
+AUDIT_VALUE case=residual-512-test58 stage=input_F index=0 fixed_raw=00040b8c539be800 fp64_bits=41102e314e6fa000
+AUDIT_STAGE case=residual-512-test58 stage=FFT_f n=64 fixed=350122bb147dd805 fp64=2da62cd8a47fe02d differences=64 first=0
+AUDIT_VALUE case=residual-512-test58 stage=FFT_f index=0 fixed_raw=fffffba359815ad9 fp64_bits=c0917299fa948fc2
+AUDIT_STAGE case=residual-512-test58 stage=norm n=32 fixed=8048af800bc8f55b fp64=57396808384a0d49 differences=32 first=0
+AUDIT_VALUE case=residual-512-test58 stage=norm index=0 fixed_raw=0080e0e1b91556dc fp64_bits=41601c1c3722d0ef
+AUDIT_STAGE case=residual-512-test58 stage=inverse_native n=64 fixed=07dd0a30993ecd9f fp64=1b30a7935f857797 differences=64 first=0
+AUDIT_VALUE case=residual-512-test58 stage=inverse_native index=0 fixed_raw=ffffffffeeabd7db fp64_bits=bfb154282555f8da
+AUDIT_STAGE case=residual-512-test58 stage=inverse_used n=64 fixed=07dd0a30993ecd9f fp64=349f859577271825 differences=0 first=64
+AUDIT_VALUE case=residual-512-test58 stage=inverse_used index=0 fixed_raw=ffffffffeeabd7db fp64_bits=bfb1542825000000
+AUDIT_STAGE case=residual-512-test58 stage=FFT_F n=64 fixed=9ec6cf8a84df8ef1 fp64=17d2646f2916cc91 differences=64 first=0
+AUDIT_VALUE case=residual-512-test58 stage=FFT_F index=0 fixed_raw=000007cf88156bb7 fp64_bits=409f3e2055aef1a6
+AUDIT_STAGE case=residual-512-test58 stage=pointwise n=64 fixed=d9f0e7c66e211662 fp64=0c3b529c70c38961 differences=64 first=0
+AUDIT_VALUE case=residual-512-test58 stage=pointwise index=0 fixed_raw=fffffd983bb0d57e fp64_bits=c0833e22795402e4
+AUDIT_STAGE case=residual-512-test58 stage=iFFT n=64 fixed=f3861153381330d4 fp64=f9063c6fbfbeec10 differences=64 first=0
+AUDIT_VALUE case=residual-512-test58 stage=iFFT index=0 fixed_raw=02b13fd5ceffc30e fp64_bits=c1aa9d805462007a
+AUDIT_K_VALUE case=residual-512-test58 index=0 fixed=45170646 fp64=-223264810
+AUDIT_K_VALUE case=residual-512-test58 index=1 fixed=41855594 fp64=-184286792
+AUDIT_K_VALUE case=residual-512-test58 index=2 fixed=37634726 fp64=-141319289
+AUDIT_K_VALUE case=residual-512-test58 index=3 fixed=32599562 fp64=-95292269
+AUDIT_K case=residual-512-test58 differences=63 valid=1
+AUDIT_DONE result=0 cases=28
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x9860 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xa1c4 lma 0x30000980
+Loading section datas, size 0x4c lma 0x3000ab60
+Loading section device_states, size 0x2c lma 0x3000abac
+Loading section k_mutex_area, size 0x14 lma 0x3000abd8
+Loading section .last_section, size 0x4 lma 0x3000abec
+Start address 0x10004d1c, load size 83800
+Transfer rate: 545 KB/sec, 4190 bytes/write.
+Temporary breakpoint 1 at 0x10001a9c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10004d08: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmphzhxofyr/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10001a4c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10004d08: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x9846a3            9979555
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x3001b808          805419016
+r8             0x300000d0          805306576
+r9             0x3002b948          805484872
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3002b8f8          0x3002b8f8 <z_main_stack+65456>
+lr             0x10001a93          268442259
+pc             0x10001a4c          0x10001a4c <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x20040010          537133072
+msp            0x3001b808          0x3001b808 <z_idle_stacks>
+psp            0x3002b8f8          0x3002b8f8 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x3001b808          0x3001b808 <z_idle_stacks>
+psp_s          0x3002b8f8          0x3002b8f8 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x3001b008          0x3001b008 <z_interrupt_stacks>
+psplim_s       0x3001b948          0x3001b948 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x3002b8f8 <z_main_stack+65456>:	0x00000000	0x10001aaf	0x00000000	0x10008453
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0xf30379ad
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x3001b808
+PSP=0x3002b8f8
+LR=0x10001a93
+PC=0x10001a4c
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3001b808 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3001b818 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0xf30379ad
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

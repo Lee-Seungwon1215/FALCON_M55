@@ -1,0 +1,35 @@
+DOCUMENT: falcon_m7.pdf PAGE: 6/22
+
+6 James Howe and Bas Westerbaan
+30,000
+25,000
+Sign
+Verify
+Clock Cycles (x1000)
+20,000
+15,000
+10,000
+5,000
+Falcon-512-EMU
+Falcon-1024-EMU
+0
+Falcon-512-FPU
+Falcon-1024-FPU
+Dilithium2
+Dilithium3
+Dilithium5
+Fig. 2: Signature benchmarks of Dilithium and Falcon (tree) on the ARM Cortex
+M7, replicating Figure 7 in [AAC+22].
+3.1 Stack Usage and RAM Size
+Tables 3 and 5 show stack usage of Dilithium and Falcon and Tables 4 and 6
+show the RAM usage of Dilithium and Falcon on ARM Cortex M7. We calculate
+the stack usage by using the avstack.pl6 tool, adapted to the ARM toolchain,
+and RAM was calculated using meminfo. Note that the implementations we
+benchmarked weren’t optimized for low memory usage. Dilithium, for one, can
+be used in much more memory constrained environments than these numbers
+here suggest [GKS20].
+4 Profiling on ARM Cortex M7
+This section presents the profiling results of Dilithium and Falcon on the ARM
+Cortex M7 using the STM32F767ZI NUCLEO-144 development board. Firstly,
+we provide Figures 3 and 4 profiling the acceptance rates of Dilithium’s sign
+6 https://dlbeer.co.nz/oss/avstack.html.

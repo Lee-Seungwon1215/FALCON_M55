@@ -1,0 +1,24 @@
+DOCUMENT: falcon_m4.pdf PAGE: 17/18
+
+ssub16 r0, r0, r1 @ r0 <- x0-y0 : x1-y1
+sel r12, r10, r11 @ q if negative, 0 otherwise
+sadd16 r0, r0, r12 @ add q if necessary
+If several signatures are to be verified against the same public key, then there are two easy
+optimizations that can be applied:
+– The conversion of the public key into NTT representation can be done once, and shared,
+saving one NTT per verification.
+– In the BUFF variant, the public key hash can be computed once, and shared, saving about
+103000 cycles for Falcon-512 (206000 for Falcon-1024).
+In our API, these possible optimizations are not applied, since we favour a simpler one-call
+operation in which the public key and signature are provided in their encoded formats.
+3 Conclusion
+The improvements described in this note, over the previous implementation, consist mostly
+of algorithmic refinements for the key pair generation (imported from ntrugen[13], in par-
+ticular the use of fixed-point computations instead of floating-point), and better assembly
+optimization in signature generation and verification. They show that while Falcon key
+pair generation and signature generation remain somewhat costly operations in microcon-
+trollers, they are not unusable (even at the low speed of 24 MHz, sub-second performance
+for signature generation is achieved). For signature verification, Falcon is very fast (faster
+than ML-DSA, but also faster than the best pre-quantum ECDSA and EdDSA implementa-
+tions at a similar security level) and uses relatively little RAM.
+17

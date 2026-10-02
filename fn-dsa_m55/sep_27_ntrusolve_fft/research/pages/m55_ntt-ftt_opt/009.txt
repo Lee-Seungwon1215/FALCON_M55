@@ -1,0 +1,77 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 9/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 9
+Because the load/store units and arithmetic units can both be kept busy at the same
+time, even on a single issue CPU, the architected instruction overlap can significantly
+improve performance at minimal area overheads. Moreover, implementations benefit
+from the fact that instruction overlapping is architectural because they do not need logic
+to maintain the illusion of atomic execution: The Helium architecture extension allows
+instructions to be interrupted between architectural beats.
+Implication: Instruction design Support for instruction overlapping has to be built into
+the design of the architecture: For example, consider a data dependency between two
+consecutive instructions A,B on a dual-beat system. In this case, beats B0,B1 of B can
+only commence if the inputs (produced by beats A0,A1 of A) are available. Generally, this
+is supported by instructions whose beats describe the same amount of work and operate
+on lanes independently, and from right to left. This explains why there is a 128-bit left
+shift Helium instruction VSHLC (see Figure 3), but no 128-bit right shift. Long multiplies
+are another example: The inputs to VMULL in the Neon instruction set are lower and upper
+halves of 128-bit vectors. This would not fare well with beat-wise execution, and instead
+there are instructions VMULL{B,T} in Helium operating on even or odd parts of the inputs,
+which is beat-friendly. We again refer to [Armc, Part 1] for details and more examples.
+128 0
+#imm
+128-#imm 32 0
+Qi Rd
+VSHLC Qi, Rd, #imm
+128 0
+#imm
+#imm 32 0
+Qi 0
+Rd
+Figure 3 The semantics of the beat-friendly long left shift with carry instruction VSHLC
+Implication: Programming discipline There are three main ways to develop code for
+the Helium instruction set: Auto-vectorization, intrinsics and handwritten assembly. In
+the former cases, the compiler has the responsibility of instruction scheduling. When
+handwriting Helium instructions, however, it is important to carefully study the ordering
+of instructions in order to make optimal use of instruction overlapping and the available
+computational resources. For example, the sequence in Figure 2 would run 50% slower on a
+system with 64-bit data paths if we’d batch the multiplies and load operations. Generally,
+alternating instructions of diﬀerent nature (load/store, add/sub, multiply) is preferred.
+Low overhead loops Armv8.1-M adds the Low Overhead Branch Extension, allowing
+software to indicate how many iterations of a loop will be executed and let the hardware do
+counter modification and branching. Importantly, the loop-end instruction LE may cache
+details of the loop and allow processors to optimize future iterations, skipping subsequent
+LE instructions and overlapping instructions across loop iterations. The following iterations
+of the loop can therefore perform as if the loop had been unrolled at compile-time.
+Xk
+Data in memory
+#28
+#24
+#20
+#16
+#12
+#8
+#4
+128
+96
+#0
+32
+VLD20.u32 {Qi, Qj}, [Xk]
+VLD21.u32 {Qi, Qj}, [Xk]
+Data in registers
+Qi[3]
+64
+32
+0
+128
+96
+64
+0
+Qi[2]
+Qi[1]
+Qi[0]
+Qj[3]
+Qj[2]
+Qj[1]
+Qj[0]
+Figure 4 32-bit deinterleaving load at stride 2

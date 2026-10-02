@@ -1,0 +1,75 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 16/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Kannwischer, M. J., Rijneveld, J., Schwabe, P., and Stoffelen, K. (2019). pqm4: Testing
+and benchmarking NIST PQC on ARM cortex-m4. Cryptology ePrint Archive, Paper
+2019/844.
+Kim, S., Ha, J., Son, M., Lee, B., Moon, D., Lee, J., Lee, S., Kwon, J., Cho, J., Yoon,
+H., and Lee, J. (2023). Aim: Symmetric primitive for shorter signatures with stronger
+security. In Proceedings of the 2023 ACM SIGSAC Conference on Computer and
+Communications Security, CCS '23, page 401-415, New York, NY, USA. Association
+for Computing Machinery.
+Kwon, J., Lee, S., Lee, B., Seo, H., and Cho, J. (2025). Efficient implementations of aimer
+post-quantum signature scheme for low-end to high-end iot devices. IEEE Internet of
+Things Journal, 12(22):46817-46837.
+López, J. and Dahab, R. (2000). High-speed software multiplication in f2m. In Roy, B.
+and Okamoto, E., editors, Progress in Cryptology -INDOCRYPT 2000, pages 203-212,
+Berlin, Heidelberg. Springer Berlin Heidelberg.
+Marsh, J. (2020). Arm Helium Technology M-Profile Vector Extension (MVE) for Arm
+Cortex-M Processors Reference Book. Arm Education Media.
+NIST (2022). Post-Quantum Cryptography: Additional Digital Signature Schemes.
+https://csrc.nist.gov/projects/pqc-dig-sig.
+Oliveira, T., Aranha, D. F., López, J., and Rodríguez-Henríquez, F. (2014). Fast point
+multiplication algorithms for binary elliptic curves with and without precomputation. In
+Joux, A. and Youssef, A., editors, Selected Areas in Cryptography - SAC 2014, pages
+324-344, Cham. Springer International Publishing.
+Weimerskirch, A., Stebila, D., and Shantz, S. C. (2003). Generic gf (2m) arithmetic in
+software and its application to ecc. In Cryptographic Hardware and Embedded Systems -
+CHES 2003, volume 2779 of Lecture Notes in Computer Science, pages 79-92. Springer.
+A. Helium MVE Instructions
+Table 5 summarizes the Helium instructions used in this work; all operate on 128-bit
+registers.
+Table 5. Helium MVE instructions used in this work.
+Instruction Intrinsic
+Operation
+VMULLB
+umul1bq-po1y-p16
+VMULLT
+vmulitq_poly-p16
+Carry-less multiply of odd 16-bit lanes: (a1b1, a3b3, asbs, a7b7), 32-bit results
+VEOR
+VDUP
+veorg-u32
+Bitwise XOR on all lanes: (ao Dbo, ..., An-1 Obn-1)
+vdupq_n_u16
+roadcasts a scalar to all lanes: (s, s, ..., s
+VST1
+vst1q_u16
+VLD1
+vldlq_u16
+soaes a 128 bit vector froinecomry atadesddres p: memlel + a
+VREV32
+vrev32q-u16
+VREV64
+vrev64g-u16
+VPSEL
+vpselq-u16
+VSHL
+vshlq_n_u32
+....а3 <n)
+VSHR
+vshrq_n_u32
+Right-shifts each 32-bit lane by n bits: (ao »n,...,aз » n)
+VGET
+vgetq-lane_u32
+Extracts a 32-bit lane k from a 128-bit register: lanek (a)
+VSET
+VCREATE
+vsetg.lane_u32
+Inserts a 32-bit value into lane k of a 128-bit register
+voreateq.u16
+Creates a 128-bit register from two 64-bit scalars: (hi, lo)
+Types vary by operand width; suffixes _u8, u1 6, _u32 indicate the lane size used in each context.
+16

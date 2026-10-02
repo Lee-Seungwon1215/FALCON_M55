@@ -1,0 +1,51 @@
+{
+  "changed_crypto_sources": [
+    "kgen_mp31_cm55.s"
+  ],
+  "file_count": 31,
+  "m0_elf_sha256": "109e21d9cc9cf255221fbbc86673d42b75b42e297452ffb60d62322e0fcbab40",
+  "m1_elf_sha256": "03c96595ff8b5c7671e0f79f31d265fed410d73fac15706d610872782f4c9451",
+  "m1_audit_elf_sha256": "aab12b1a73defc245e4264fab59c1f741e850391344fc557be472418a9379edf",
+  "assembly_sha256": "c2227c83890eee1b6c49729910f325a0867cff5c8160481628175aadeed4c2a0",
+  "benchmark_source_sha256": "459ebf83d0821a2367dcc7306f61bb5d4c86e51340bbe9b962921e1f53f884ae",
+  "test_probe_removed_from_performance_elf": true,
+  "functions": {
+    "fndsa_mp_NTT": {
+      "mve_body_instruction_count": 162,
+      "rounding_high": 18,
+      "halving_add": 9,
+      "predicated_normalizations": 27,
+      "scalar_branch_opcodes": [
+        "bcc.w",
+        "beq.n",
+        "bne.n",
+        "b.n",
+        "bge.w",
+        "bne.w",
+        "bne.w",
+        "b.n",
+        "bne.w"
+      ],
+      "memory_operands_unchanged": true
+    },
+    "fndsa_mp_iNTT": {
+      "mve_body_instruction_count": 207,
+      "rounding_high": 18,
+      "halving_add": 9,
+      "predicated_normalizations": 27,
+      "scalar_branch_opcodes": [
+        "bcc.w",
+        "bne.w",
+        "bge.w",
+        "bne.w",
+        "bne.w",
+        "b.n",
+        "beq.n",
+        "bne.n"
+      ],
+      "memory_operands_unchanged": true
+    }
+  },
+  "formal_constant_time_proof": false,
+  "dynamic_timing_leakage_test": false
+}

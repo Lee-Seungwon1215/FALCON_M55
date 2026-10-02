@@ -1,0 +1,45 @@
+DOCUMENT: falcon_m7.pdf PAGE: 3/22
+
+Dilithium and Falcon on the ARM Cortex M7 3
+also provide results for Falcon-1024 sign tree, which does not fit on the Cortex
+M4.
+For Dilithium, we benchmark the code from the pqm4 repository and in the
+same manner provide comparative results of Cortex M4 vs M7 performances.
+We also provide results for Dilithium’s highest parameter set, which does not fit
+on the Cortex M4.
+In Section 4, we profile Dilithium and Falcon to find their performance bot-
+tlenecks on the ARM Cortex M7, providing averages using 1,000 executions of
+each scheme. Specifically for Falcon, we provide what operations and functions
+benefit from using the board’s 64-bit FPU the most. Indeed, we compare the
+profiling results using the Cortex M7’s FPU against the profiling results on the
+same board where floating-point operations are emulated (as it does on the ARM
+Cortex M4). For Dilithium, we cannot compare this way (since it does not require
+floating points) and so we provide plain profiling results.
+The link to code used in this paper has been removed to maintain anonymity.
+The code will be made publicly available after publication.
+2 Background
+Dilithium and Falcon are the two lattice-based signature schemes selected by
+NIST as PQC standards, and two of the three overall signatures selected for
+standardization.
+Dilithium is the primary signature scheme and is based on the Fiat–Shamir
+with aborts paradigm, with its hardness relying on the decisional module-LWE
+and module-SIS problems. Algorithm 1 in Appendix A shows Dilithium’s key
+generation, sign, and verify algorithms. In the third round, Dilithium offered
+three parameter sets satisfying the NIST security levels 2, 3, and 5 for being
+at least as hard to break as SHA-256, AES-192, and AES-256, respectively.
+Dilithium benefits from using the same polynomial ring (Zq [X]/(Xn + 1)) with
+a fixed degree (n = 256) and modulus (q = 8380417) and only requires sampling
+from the uniform distribution, making its implementation significantly simpler
+than for Falcon. Dilithium’s performance profile offers balance for the core oper-
+ations (key generation, signing, and verifying) and also key and signature sizes.
+Furthermore, Dilithium can be implemented with a relatively small amount of
+RAM [GKS20].
+Falcon is based on the hash-then-sign paradigm over lattices, with its hard-
+ness relying on the NTRU assumption. Algorithm 2 in Appendix B shows Fal-
+con’s key generation, sign, and verify algorithms. In the third round, Falcon
+offered two parameter sets (for degree n = 512 and 1024) satisfying the NIST
+security levels 1 and 5 for being as hard to break as AES-128 and AES-256.
+Compared with Dilithium, Falcon is significantly more complex; relying on sam-
+pling over non-uniform distributions, with floating-point operations, and using
+tree data structures. However, Falcon benefits from having much smaller public
+key and signature sizes, while having similar signing and verification times. For

@@ -1,0 +1,50 @@
+DOCUMENT: m55_slothy.pdf PAGE: 22/46
+
+22 Fast and Clean: Auditable high-performance assembly via constraint solving
+model separate execution units for load/store operations. Finally, we incorporate issue-slot
+restrictions, an important example being that most 128-bit Neon instructions are only
+issued on slot 0. Latencies and throughputs are modelled as provided in the SWOG, with
+occasional changes as suggested by our microbenchmarks. We also model the forwarding
+paths for scalar and Neon multiply-accumulate sequences in SLOTHY, including their
+additional constraints identified and highlighted in [Len19].
+Cortex-A72. In contrast to the Cortex-M55, Cortex-M85 and Cortex-A55 microarchitec-
+tures considered above, the Cortex-A72 is a triple-issue, out-of-order microarchitecture.
+We refer to Section 4.10 for the general discussion of the uses SLOTHY can have in this
+context. For Cortex-A72, our SLOTHY model captures a somewhat heuristic combination
+of frontend and backend constraints, as we explain now.
+The first important observation is that the Cortex-A72 has two Neon execution pipelines
+in its out-of-order backend [Armj, Section 2.1], while the frontend can dispatch one micro-
+operation per cycle to the respective issue queues [Armj, Section 4.1]. This implies that
+Neon-heavy workloads, such as the Number Theoretic Transform (NTT), can achieve an
+optimum of 2 Neon Instructions per Cycle (IPC) only if the in-order frontend also achieves
+this throughput — a scheduling sensitive problem amenable to encoding in SLOTHY.
+Concretely, code should be scheduled so that in every cycle, exactly two Neon instructions
+are dispatched, one for each of the two Neon pipelines.
+Motivated by the above, our SLOTHY-model of Cortex-A72 has as “execution units”
+the dispatch slots in the Cortex-A72 in-order frontend (detailed in [Armj, Section 4.1]). In
+this context, the notion of “latency” is not immediately meaningful, as an instruction’s
+readiness for dispatch is independent of its readiness for execution. Similarly, dispatch
+throughput is different from the execution throughput: 128-bit Neon integer multiplication
+instructions dispatch at a rate of 1 IPC, even though execution happens with at most
+1 /2 IPC on Cortex-A72. Despite this semantic discrepancy, we found that modelling the
+frontend latency and throughput constraints in accordance with the backend constraints,
+lead to good results. Intuitively, this is plausible, as a dispatch rate that’s consistently
+higher than the backend’s execution rate would eventually overflow the issue queues.
+6.4 Other (micro)architectures
+M-Profile. Within the space of M-profile CPUs, the Cortex-M4 has received much
+attention in the context of optimized PQC implementations [KPR+]. However, we do
+not see it as particularly promising target for the use of SLOTHY, as the Cortex-M4
+is a non-superscalar microarchitecture with the majority of the instructions completing
+in a single cycle — scheduling of instruction is therefore largely irrelevant (with some
+exceptions, such as loads and stores [Armc]). Similar remarks apply to most of the more
+efficiency-focused M-profile CPUs. The Cortex-M7 CPU, in turn, could be an interesting
+target for future work, as it offers a 6-stage superscalar pipeline with the support for
+dual-issuing, as well as two ALUs with one supporting SIMD instructions [Armd]. Finally,
+SLOTHY could be used as a vehicle to evaluate the performance impact of candidates for
+Arm Custom Instruction (ACI).
+A-Profile. Within the spectrum of A-profile CPUs, we did not cover the Cortex-X series
+of performance-centric, highly out-of-order microarchitectures. Somewhat surprisingly,
+we believe that those high-end processors will also be amenable to optimization through
+SLOTHY for Neon-heavy workloads: Taking Cortex-X1 as an example, it can be seen
+from [Arml] that there are 4 Neon pipelines in the backend, while the frontend also has
+a maximum throughput of 4 Neon-IPC. We are therefore in the situation, outlined in

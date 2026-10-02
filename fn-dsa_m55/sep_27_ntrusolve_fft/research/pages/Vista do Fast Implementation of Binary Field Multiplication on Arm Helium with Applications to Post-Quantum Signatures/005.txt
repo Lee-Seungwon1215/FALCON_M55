@@ -1,0 +1,82 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 5/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Mapping to VMULLB and VMULLT. Equation (2) maps directly to the two polynomial
+multiplication instructions provided by the Helium MVE extension. The VMULLB instruc-
+tion operates on the even lanes of its source register, while VMULLI operates on the odd
+lanes, which we represent as follows: VMULLB(a,bj) = (aobj, a2bj, asbj, a6bj) = Pj(x),
+and VMULLT(a,b;-1) = (a1b;-1, a3bj-1, asbi-1, arbi-1) = 9j-1(x). Performing the
+XOR of the two results yields exactly the coefficient pair required at step j of Equation (2):
+m:(x)=ULLB(0,bj)@VMULLT(a,0;-1)=pj(x) @9j-1(x). Note that VMULLT at
+step j uses bj-1, not bj, because the odd coefficients already accumulated bj-1 in the
+previous step and only require b; in the following iteration. Assigning to + t1 at the end of
+each step ensures that to = bj-1 at the beginning of STEP(j), allowing the value calculated
+in the previous iteration to be reused through a single register copy (in Algorithm 2, to and
+ti correspond to r1 and r2, respectively).
+Sliding-window accumulation. The code uses an accumulator of 16x 16-bit words
+r[0:16] for implementing the shifts xlôi
+', as illustrated in Figure 2. The boundary terms
+po and q7 are treated separately during initialization, and then a loop over j = 1,...,7
+accumulates XOR m; in the window r j:j+8), performing Equation (2) exactly. After all
+the steps, r 0:8 contains the lower half l and r 8:16 the upper half h, which are passed to
+the modular reduction. The routine has no branches, executes in constant time, and keeps
+a in the vector register file throughout the process; see Algorithm 2 for the implementation
+details and Appendix A for a description of the instructions used.
+15
+14
+13
+12
+11
+10
+6
+атbo
+asbo asba
+aдbo
+азbо
+azbo
+a1bo
+apdo
+init
+атby
+a7b7
+аsb7
+asbr
+aзbr
+азby
+a1br
+asb1
+a41 a2bl
+aтbo
+asbo
+aзbo
+agbaa1b2
+apba
+аyb1
+agbı
+азb1
+[a1b1
+a0b1
+a1bo
+j=1
+j=2
+j=3
+arbaasba3ba a1bz
+açbz axbz azz çy
+07/ 0503k
+a1b6
+т[15] т[14] г[13]|г[12]|г[11] г[10]
+r [9]
+T[8]r[7]
+[6][5][4
+j=7
+[З] v[2] [1]
+VMULLB(a, b;): even lanes ao, a2, a1, a6 l
+VMULLT (a, bj-1): odd lanes a1, a3,05,07
+Figure 2. Sliding-window accumulation of STEP(j).
+4.2. Hierarchical multiplication
+An alternative approach implements the 128 x 128-bit carry-less product hierarchically,
+composing 32 × 32-bit multiplications into 64 x 64-bit ones, and those into the final result.
+At the 32-bit level, writing a = анx6 Đar and b = bнx1 © b, the carry-less product
+5

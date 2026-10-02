@@ -1,0 +1,53 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 2/29
+
+2 Polynomial multiplication on embedded vector architectures
+The rise of Post-Quantum Cryptography (PQC) exacerbates the problem. Recalling the
+context first: Large-scale quantum computers are a threat to our current digital security
+infrastructure, especially public-key cryptography (PKC). The reason is that the security
+of today’s predominant public-key cryptography – RSA and Elliptic Curve Cryptography
+(ECC) – rests on the hardness of computational problems which are known [Sho97,PZ03]
+to be solvable in polynomial time using a large quantum computer. Therefore, the National
+Institute of Standards and Technology (NIST) started a standardization procedure [NISa]
+aimed at the standardization of key-encapsulation mechanisms (KEM), public-key encryp-
+tion (PKE) and signature schemes which resist the increased computational abilities of
+quantum computers – those schemes form the field of Post-Quantum Cryptography (PQC).
+These schemes will eventually replace their counterparts RSA and ECC used in our current
+public-key infrastructure. We refer to [NISb,Arm20] for more detailed introductions.
+Post-Quantum Cryptography is highly relevant to the problem of balancing cost,
+performance and security in the IoT since it tends to have a higher resource footprint
+than classical public-key cryptography. It is thus vital to understand the demands and
+performance of PQC on embedded devices. Reflecting this, the Cortex-M4 processor has
+been designated by NIST as the reference platform for PQC on embedded systems.
+ThemostprominentclassofPQCisthatofschemesbasedonstructuredlattices, andthe
+underlying computational workload is the multiplication of polynomials of large degree and
+low coeﬃcient precision. This problem has been studied extensively, and two approaches
+prevailed: Multiplication via the Toom-Cook-Karatsuba algorithms [Too63,Coo66,KO62],
+and multiplication via the Number Theoretic Transform (NTT). We are thus interested in
+the constraints and performance of these algorithms on embedded systems. Structurally,
+both approaches are very similar and amenable to the same tradeoﬀs [KMRV18,KRS19,
+MKV20]. The main benefit of Toom-Cook is the absence of modular arithmetic, which
+the NTT heavily relies on. Its main drawback, and the primary factor determining its
+memory-usage, is that it expands the input both before (“evaluation”) and during (“point
+multiplication”) the core of the multiplication routine, while the NTT operates in-place.
+On high-end processors, performance improvements can often be obtained by leveraging
+Single Instruction Multiple Data (SIMD) instruction set extensions, such as Arm’s Neon
+instruction set on the R- and A-profiles of the Arm architecture, or the Intel® Advanced
+Vector Extension (AVX). On embedded systems, however, SIMD instruction extensions
+are challenging within the usually tight power, cost and area constraints. The M-profile
+Vector Extension (MVE), or Helium vector extension, is a rather recent addition to the
+M-profile of the Arm architecture which promises to introduce the performance benefits of
+vector extensions to embedded systems while maintaining a low gate and power profile.
+The Cortex-M55 processor is the first implementation of the Helium instruction set. The
+primary motivation of this work is to evaluate how this future generation of low-cost and
+low-energy processors fare in the context of the next generation of public key cryptography.
+Contributions We contribute to the study of viability and performance of PQC on
+embedded devices. We study two themes: Firstly, how to reduce the resource demands
+of PQC for low-end embedded devices such as the Cortex-M4 CPU. Secondly, how to
+leverage the Helium instruction set on embedded devices implementing the Helium vector
+extension, focusing on the Cortex-M55 processor. Our specific contributions are as follows:
+• We revive a known but little used variant of Toom-Cook and Karatsuba called striding
+Toom-Cook/Karatsuba to reduce the memory-usage of polynomial multiplication. In
+a nutshell, while expansion during evaluation remains, a suitable input reordering
+allows to avoid size-doubling on the point-multiplication, thereby saving almost 50%
+in memory and also accelerating the interpolation step. See Table 1. We implement
+the striding variant of Toom-Cook/Karatsuba on the Cortex-M4 processor.

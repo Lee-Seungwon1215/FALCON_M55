@@ -1,0 +1,419 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 53572
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :53572 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10001904
+hbreak *0x10004b94
+set $early_fault_bp = $bpnum
+jump *0x10004ba9
+if $pc != 0x10001904
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp5koufy83/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x100018b4
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10004b94
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 53572
+Info : Listening on port 53572 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/53572
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+TWFFT logn=1 inverse=0 batch=32 cutoff=4 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=0 batch=32 cutoff=8 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=0 batch=32 cutoff=16 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=0 batch=64 cutoff=4 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=0 batch=64 cutoff=8 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=0 batch=64 cutoff=16 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=0 batch=128 cutoff=4 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=0 batch=128 cutoff=8 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=0 batch=128 cutoff=16 fixed_min=27 fixed_max=27 trial_min=25 trial_max=25
+TWFFT logn=1 inverse=1 batch=32 cutoff=4 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=1 inverse=1 batch=32 cutoff=8 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=1 inverse=1 batch=32 cutoff=16 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=1 inverse=1 batch=64 cutoff=4 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=1 inverse=1 batch=64 cutoff=8 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=1 inverse=1 batch=64 cutoff=16 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=1 inverse=1 batch=128 cutoff=4 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=1 inverse=1 batch=128 cutoff=8 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=1 inverse=1 batch=128 cutoff=16 fixed_min=41 fixed_max=41 trial_min=48 trial_max=48
+TWFFT logn=2 inverse=0 batch=32 cutoff=4 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=0 batch=32 cutoff=8 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=0 batch=32 cutoff=16 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=0 batch=64 cutoff=4 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=0 batch=64 cutoff=8 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=0 batch=64 cutoff=16 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=0 batch=128 cutoff=4 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=0 batch=128 cutoff=8 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=0 batch=128 cutoff=16 fixed_min=235 fixed_max=235 trial_min=260 trial_max=260
+TWFFT logn=2 inverse=1 batch=32 cutoff=4 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=2 inverse=1 batch=32 cutoff=8 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=2 inverse=1 batch=32 cutoff=16 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=2 inverse=1 batch=64 cutoff=4 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=2 inverse=1 batch=64 cutoff=8 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=2 inverse=1 batch=64 cutoff=16 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=2 inverse=1 batch=128 cutoff=4 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=2 inverse=1 batch=128 cutoff=8 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=2 inverse=1 batch=128 cutoff=16 fixed_min=260 fixed_max=260 trial_min=284 trial_max=284
+TWFFT logn=3 inverse=0 batch=32 cutoff=4 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=0 batch=32 cutoff=8 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=0 batch=32 cutoff=16 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=0 batch=64 cutoff=4 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=0 batch=64 cutoff=8 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=0 batch=64 cutoff=16 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=0 batch=128 cutoff=4 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=0 batch=128 cutoff=8 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=0 batch=128 cutoff=16 fixed_min=688 fixed_max=688 trial_min=777 trial_max=777
+TWFFT logn=3 inverse=1 batch=32 cutoff=4 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=3 inverse=1 batch=32 cutoff=8 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=3 inverse=1 batch=32 cutoff=16 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=3 inverse=1 batch=64 cutoff=4 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=3 inverse=1 batch=64 cutoff=8 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=3 inverse=1 batch=64 cutoff=16 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=3 inverse=1 batch=128 cutoff=4 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=3 inverse=1 batch=128 cutoff=8 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=3 inverse=1 batch=128 cutoff=16 fixed_min=783 fixed_max=783 trial_min=846 trial_max=846
+TWFFT logn=4 inverse=0 batch=32 cutoff=4 fixed_min=1785 fixed_max=1785 trial_min=2230 trial_max=2230
+TWFFT logn=4 inverse=0 batch=32 cutoff=8 fixed_min=1785 fixed_max=1785 trial_min=2029 trial_max=2029
+TWFFT logn=4 inverse=0 batch=32 cutoff=16 fixed_min=1785 fixed_max=1785 trial_min=2029 trial_max=2029
+TWFFT logn=4 inverse=0 batch=64 cutoff=4 fixed_min=1785 fixed_max=1785 trial_min=2230 trial_max=2230
+TWFFT logn=4 inverse=0 batch=64 cutoff=8 fixed_min=1785 fixed_max=1785 trial_min=2029 trial_max=2029
+TWFFT logn=4 inverse=0 batch=64 cutoff=16 fixed_min=1785 fixed_max=1785 trial_min=2029 trial_max=2029
+TWFFT logn=4 inverse=0 batch=128 cutoff=4 fixed_min=1785 fixed_max=1785 trial_min=2230 trial_max=2230
+TWFFT logn=4 inverse=0 batch=128 cutoff=8 fixed_min=1785 fixed_max=1785 trial_min=2029 trial_max=2029
+TWFFT logn=4 inverse=0 batch=128 cutoff=16 fixed_min=1785 fixed_max=1785 trial_min=2029 trial_max=2029
+TWFFT logn=4 inverse=1 batch=32 cutoff=4 fixed_min=2049 fixed_max=2049 trial_min=2331 trial_max=2331
+TWFFT logn=4 inverse=1 batch=32 cutoff=8 fixed_min=2049 fixed_max=2049 trial_min=2216 trial_max=2216
+TWFFT logn=4 inverse=1 batch=32 cutoff=16 fixed_min=2049 fixed_max=2049 trial_min=2216 trial_max=2216
+TWFFT logn=4 inverse=1 batch=64 cutoff=4 fixed_min=2049 fixed_max=2049 trial_min=2331 trial_max=2331
+TWFFT logn=4 inverse=1 batch=64 cutoff=8 fixed_min=2049 fixed_max=2049 trial_min=2216 trial_max=2216
+TWFFT logn=4 inverse=1 batch=64 cutoff=16 fixed_min=2049 fixed_max=2049 trial_min=2216 trial_max=2216
+TWFFT logn=4 inverse=1 batch=128 cutoff=4 fixed_min=2049 fixed_max=2049 trial_min=2331 trial_max=2331
+TWFFT logn=4 inverse=1 batch=128 cutoff=8 fixed_min=2049 fixed_max=2049 trial_min=2216 trial_max=2216
+TWFFT logn=4 inverse=1 batch=128 cutoff=16 fixed_min=2049 fixed_max=2049 trial_min=2216 trial_max=2216
+TWFFT logn=5 inverse=0 batch=32 cutoff=4 fixed_min=4395 fixed_max=4395 trial_min=5599 trial_max=5599
+TWFFT logn=5 inverse=0 batch=32 cutoff=8 fixed_min=4395 fixed_max=4395 trial_min=5197 trial_max=5197
+TWFFT logn=5 inverse=0 batch=32 cutoff=16 fixed_min=4395 fixed_max=4395 trial_min=4992 trial_max=4992
+TWFFT logn=5 inverse=0 batch=64 cutoff=4 fixed_min=4395 fixed_max=4395 trial_min=5599 trial_max=5599
+TWFFT logn=5 inverse=0 batch=64 cutoff=8 fixed_min=4395 fixed_max=4395 trial_min=5197 trial_max=5197
+TWFFT logn=5 inverse=0 batch=64 cutoff=16 fixed_min=4395 fixed_max=4395 trial_min=4992 trial_max=4992
+TWFFT logn=5 inverse=0 batch=128 cutoff=4 fixed_min=4395 fixed_max=4395 trial_min=5599 trial_max=5599
+TWFFT logn=5 inverse=0 batch=128 cutoff=8 fixed_min=4395 fixed_max=4395 trial_min=5197 trial_max=5197
+TWFFT logn=5 inverse=0 batch=128 cutoff=16 fixed_min=4395 fixed_max=4395 trial_min=4992 trial_max=4992
+TWFFT logn=5 inverse=1 batch=32 cutoff=4 fixed_min=5051 fixed_max=5051 trial_min=5775 trial_max=5775
+TWFFT logn=5 inverse=1 batch=32 cutoff=8 fixed_min=5051 fixed_max=5051 trial_min=5505 trial_max=5505
+TWFFT logn=5 inverse=1 batch=32 cutoff=16 fixed_min=5051 fixed_max=5051 trial_min=5470 trial_max=5470
+TWFFT logn=5 inverse=1 batch=64 cutoff=4 fixed_min=5051 fixed_max=5051 trial_min=5775 trial_max=5775
+TWFFT logn=5 inverse=1 batch=64 cutoff=8 fixed_min=5051 fixed_max=5051 trial_min=5505 trial_max=5505
+TWFFT logn=5 inverse=1 batch=64 cutoff=16 fixed_min=5051 fixed_max=5051 trial_min=5470 trial_max=5470
+TWFFT logn=5 inverse=1 batch=128 cutoff=4 fixed_min=5051 fixed_max=5051 trial_min=5775 trial_max=5775
+TWFFT logn=5 inverse=1 batch=128 cutoff=8 fixed_min=5051 fixed_max=5051 trial_min=5505 trial_max=5505
+TWFFT logn=5 inverse=1 batch=128 cutoff=16 fixed_min=5051 fixed_max=5051 trial_min=5470 trial_max=5470
+TWFFT logn=6 inverse=0 batch=32 cutoff=4 fixed_min=10481 fixed_max=10481 trial_min=13293 trial_max=13293
+TWFFT logn=6 inverse=0 batch=32 cutoff=8 fixed_min=10481 fixed_max=10481 trial_min=12481 trial_max=12481
+TWFFT logn=6 inverse=0 batch=32 cutoff=16 fixed_min=10481 fixed_max=10481 trial_min=12072 trial_max=12072
+TWFFT logn=6 inverse=0 batch=64 cutoff=4 fixed_min=10481 fixed_max=10481 trial_min=13293 trial_max=13293
+TWFFT logn=6 inverse=0 batch=64 cutoff=8 fixed_min=10481 fixed_max=10481 trial_min=12481 trial_max=12481
+TWFFT logn=6 inverse=0 batch=64 cutoff=16 fixed_min=10481 fixed_max=10481 trial_min=12072 trial_max=12072
+TWFFT logn=6 inverse=0 batch=128 cutoff=4 fixed_min=10481 fixed_max=10481 trial_min=13293 trial_max=13293
+TWFFT logn=6 inverse=0 batch=128 cutoff=8 fixed_min=10481 fixed_max=10481 trial_min=12481 trial_max=12481
+TWFFT logn=6 inverse=0 batch=128 cutoff=16 fixed_min=10481 fixed_max=10481 trial_min=12072 trial_max=12072
+TWFFT logn=6 inverse=1 batch=32 cutoff=4 fixed_min=12025 fixed_max=12025 trial_min=13578 trial_max=13578
+TWFFT logn=6 inverse=1 batch=32 cutoff=8 fixed_min=12025 fixed_max=12025 trial_min=13037 trial_max=13037
+TWFFT logn=6 inverse=1 batch=32 cutoff=16 fixed_min=12025 fixed_max=12025 trial_min=12903 trial_max=12903
+TWFFT logn=6 inverse=1 batch=64 cutoff=4 fixed_min=12025 fixed_max=12026 trial_min=13578 trial_max=13578
+TWFFT logn=6 inverse=1 batch=64 cutoff=8 fixed_min=12025 fixed_max=12025 trial_min=13037 trial_max=13037
+TWFFT logn=6 inverse=1 batch=64 cutoff=16 fixed_min=12025 fixed_max=12025 trial_min=12903 trial_max=12903
+TWFFT logn=6 inverse=1 batch=128 cutoff=4 fixed_min=12025 fixed_max=12025 trial_min=13578 trial_max=13578
+TWFFT logn=6 inverse=1 batch=128 cutoff=8 fixed_min=12025 fixed_max=12025 trial_min=13037 trial_max=13037
+TWFFT logn=6 inverse=1 batch=128 cutoff=16 fixed_min=12025 fixed_max=12025 trial_min=12903 trial_max=12903
+TWFFT logn=7 inverse=0 batch=32 cutoff=4 fixed_min=24419 fixed_max=24419 trial_min=30589 trial_max=30589
+TWFFT logn=7 inverse=0 batch=32 cutoff=8 fixed_min=24419 fixed_max=24419 trial_min=28982 trial_max=28982
+TWFFT logn=7 inverse=0 batch=32 cutoff=16 fixed_min=24419 fixed_max=24419 trial_min=28150 trial_max=28150
+TWFFT logn=7 inverse=0 batch=64 cutoff=4 fixed_min=24419 fixed_max=24419 trial_min=30589 trial_max=30589
+TWFFT logn=7 inverse=0 batch=64 cutoff=8 fixed_min=24419 fixed_max=24419 trial_min=28982 trial_max=28982
+TWFFT logn=7 inverse=0 batch=64 cutoff=16 fixed_min=24419 fixed_max=24419 trial_min=28150 trial_max=28150
+TWFFT logn=7 inverse=0 batch=128 cutoff=4 fixed_min=24419 fixed_max=24419 trial_min=30589 trial_max=30589
+TWFFT logn=7 inverse=0 batch=128 cutoff=8 fixed_min=24419 fixed_max=24419 trial_min=28982 trial_max=28982
+TWFFT logn=7 inverse=0 batch=128 cutoff=16 fixed_min=24419 fixed_max=24419 trial_min=28150 trial_max=28150
+TWFFT logn=7 inverse=1 batch=32 cutoff=4 fixed_min=27943 fixed_max=27943 trial_min=31030 trial_max=31030
+TWFFT logn=7 inverse=1 batch=32 cutoff=8 fixed_min=27943 fixed_max=27943 trial_min=29956 trial_max=29956
+TWFFT logn=7 inverse=1 batch=32 cutoff=16 fixed_min=27943 fixed_max=27943 trial_min=29683 trial_max=29683
+TWFFT logn=7 inverse=1 batch=64 cutoff=4 fixed_min=27943 fixed_max=27943 trial_min=31030 trial_max=31030
+TWFFT logn=7 inverse=1 batch=64 cutoff=8 fixed_min=27943 fixed_max=27943 trial_min=29956 trial_max=29956
+TWFFT logn=7 inverse=1 batch=64 cutoff=16 fixed_min=27943 fixed_max=27943 trial_min=29683 trial_max=29683
+TWFFT logn=7 inverse=1 batch=128 cutoff=4 fixed_min=27943 fixed_max=27943 trial_min=31030 trial_max=31030
+TWFFT logn=7 inverse=1 batch=128 cutoff=8 fixed_min=27943 fixed_max=27943 trial_min=29956 trial_max=29956
+TWFFT logn=7 inverse=1 batch=128 cutoff=16 fixed_min=27943 fixed_max=27943 trial_min=29683 trial_max=29683
+TWFFT logn=8 inverse=0 batch=32 cutoff=4 fixed_min=55861 fixed_max=55861 trial_min=69259 trial_max=69259
+TWFFT logn=8 inverse=0 batch=32 cutoff=8 fixed_min=55861 fixed_max=55862 trial_min=66046 trial_max=66046
+TWFFT logn=8 inverse=0 batch=32 cutoff=16 fixed_min=55861 fixed_max=55861 trial_min=64403 trial_max=64403
+TWFFT logn=8 inverse=0 batch=64 cutoff=4 fixed_min=55861 fixed_max=55861 trial_min=69049 trial_max=69049
+TWFFT logn=8 inverse=0 batch=64 cutoff=8 fixed_min=55861 fixed_max=55861 trial_min=65836 trial_max=65836
+TWFFT logn=8 inverse=0 batch=64 cutoff=16 fixed_min=55861 fixed_max=55861 trial_min=64193 trial_max=64194
+TWFFT logn=8 inverse=0 batch=128 cutoff=4 fixed_min=55861 fixed_max=55861 trial_min=69049 trial_max=69049
+TWFFT logn=8 inverse=0 batch=128 cutoff=8 fixed_min=55861 fixed_max=55861 trial_min=65836 trial_max=65836
+TWFFT logn=8 inverse=0 batch=128 cutoff=16 fixed_min=55861 fixed_max=55861 trial_min=64193 trial_max=64193
+TWFFT logn=8 inverse=1 batch=32 cutoff=4 fixed_min=63749 fixed_max=63749 trial_min=69872 trial_max=69872
+TWFFT logn=8 inverse=1 batch=32 cutoff=8 fixed_min=63749 fixed_max=63749 trial_min=67732 trial_max=67732
+TWFFT logn=8 inverse=1 batch=32 cutoff=16 fixed_min=63749 fixed_max=63749 trial_min=67196 trial_max=67196
+TWFFT logn=8 inverse=1 batch=64 cutoff=4 fixed_min=63749 fixed_max=63749 trial_min=69654 trial_max=69654
+TWFFT logn=8 inverse=1 batch=64 cutoff=8 fixed_min=63749 fixed_max=63749 trial_min=67514 trial_max=67514
+TWFFT logn=8 inverse=1 batch=64 cutoff=16 fixed_min=63749 fixed_max=63749 trial_min=66978 trial_max=66979
+TWFFT logn=8 inverse=1 batch=128 cutoff=4 fixed_min=63749 fixed_max=63749 trial_min=69654 trial_max=69654
+TWFFT logn=8 inverse=1 batch=128 cutoff=8 fixed_min=63749 fixed_max=63749 trial_min=67514 trial_max=67514
+TWFFT logn=8 inverse=1 batch=128 cutoff=16 fixed_min=63749 fixed_max=63749 trial_min=66978 trial_max=66978
+TWFFT logn=9 inverse=0 batch=32 cutoff=4 fixed_min=125911 fixed_max=125911 trial_min=154777 trial_max=154778
+TWFFT logn=9 inverse=0 batch=32 cutoff=8 fixed_min=125911 fixed_max=125911 trial_min=148356 trial_max=148356
+TWFFT logn=9 inverse=0 batch=32 cutoff=16 fixed_min=125911 fixed_max=125912 trial_min=145071 trial_max=145071
+TWFFT logn=9 inverse=0 batch=64 cutoff=4 fixed_min=125911 fixed_max=125911 trial_min=153935 trial_max=153935
+TWFFT logn=9 inverse=0 batch=64 cutoff=8 fixed_min=125911 fixed_max=125911 trial_min=147514 trial_max=147514
+TWFFT logn=9 inverse=0 batch=64 cutoff=16 fixed_min=125911 fixed_max=125911 trial_min=144229 trial_max=144230
+TWFFT logn=9 inverse=0 batch=128 cutoff=4 fixed_min=125911 fixed_max=125911 trial_min=153725 trial_max=153725
+TWFFT logn=9 inverse=0 batch=128 cutoff=8 fixed_min=125911 fixed_max=125911 trial_min=147304 trial_max=147305
+TWFFT logn=9 inverse=0 batch=128 cutoff=16 fixed_min=125911 fixed_max=125911 trial_min=144019 trial_max=144019
+TWFFT logn=9 inverse=1 batch=32 cutoff=4 fixed_min=143331 fixed_max=143331 trial_min=155488 trial_max=155488
+TWFFT logn=9 inverse=1 batch=32 cutoff=8 fixed_min=143331 fixed_max=143331 trial_min=151204 trial_max=151204
+TWFFT logn=9 inverse=1 batch=32 cutoff=16 fixed_min=143331 fixed_max=143331 trial_min=150142 trial_max=150142
+TWFFT logn=9 inverse=1 batch=64 cutoff=4 fixed_min=143331 fixed_max=143332 trial_min=154600 trial_max=154600
+TWFFT logn=9 inverse=1 batch=64 cutoff=8 fixed_min=143331 fixed_max=143331 trial_min=150316 trial_max=150316
+TWFFT logn=9 inverse=1 batch=64 cutoff=16 fixed_min=143331 fixed_max=143332 trial_min=149254 trial_max=149254
+TWFFT logn=9 inverse=1 batch=128 cutoff=4 fixed_min=143331 fixed_max=143331 trial_min=154382 trial_max=154382
+TWFFT logn=9 inverse=1 batch=128 cutoff=8 fixed_min=143331 fixed_max=143331 trial_min=150098 trial_max=150098
+TWFFT logn=9 inverse=1 batch=128 cutoff=16 fixed_min=143331 fixed_max=143331 trial_min=149036 trial_max=149036
+TWFFT logn=10 inverse=0 batch=32 cutoff=4 fixed_min=280377 fixed_max=280377 trial_min=342199 trial_max=342200
+TWFFT logn=10 inverse=0 batch=32 cutoff=8 fixed_min=280377 fixed_max=280377 trial_min=329362 trial_max=329362
+TWFFT logn=10 inverse=0 batch=32 cutoff=16 fixed_min=280377 fixed_max=280377 trial_min=322798 trial_max=322799
+TWFFT logn=10 inverse=0 batch=64 cutoff=4 fixed_min=280377 fixed_max=280378 trial_min=339668 trial_max=339668
+TWFFT logn=10 inverse=0 batch=64 cutoff=8 fixed_min=280377 fixed_max=280377 trial_min=326831 trial_max=326832
+TWFFT logn=10 inverse=0 batch=64 cutoff=16 fixed_min=280377 fixed_max=280378 trial_min=320267 trial_max=320267
+TWFFT logn=10 inverse=0 batch=128 cutoff=4 fixed_min=280377 fixed_max=280377 trial_min=338826 trial_max=338826
+TWFFT logn=10 inverse=0 batch=128 cutoff=8 fixed_min=280377 fixed_max=280377 trial_min=325989 trial_max=325990
+TWFFT logn=10 inverse=0 batch=128 cutoff=16 fixed_min=280377 fixed_max=280378 trial_min=319425 trial_max=319425
+TWFFT logn=10 inverse=1 batch=32 cutoff=4 fixed_min=318465 fixed_max=318465 trial_min=342584 trial_max=342584
+TWFFT logn=10 inverse=1 batch=32 cutoff=8 fixed_min=318465 fixed_max=318465 trial_min=334028 trial_max=334028
+TWFFT logn=10 inverse=1 batch=32 cutoff=16 fixed_min=318465 fixed_max=318465 trial_min=331899 trial_max=331899
+TWFFT logn=10 inverse=1 batch=64 cutoff=4 fixed_min=318465 fixed_max=318466 trial_min=339907 trial_max=339907
+TWFFT logn=10 inverse=1 batch=64 cutoff=8 fixed_min=318465 fixed_max=318465 trial_min=331351 trial_max=331352
+TWFFT logn=10 inverse=1 batch=64 cutoff=16 fixed_min=318465 fixed_max=318466 trial_min=329222 trial_max=329222
+TWFFT logn=10 inverse=1 batch=128 cutoff=4 fixed_min=318465 fixed_max=318465 trial_min=339019 trial_max=339020
+TWFFT logn=10 inverse=1 batch=128 cutoff=8 fixed_min=318465 fixed_max=318465 trial_min=330463 trial_max=330463
+Info : Deferring arp_examine of stm32n6x.cpu
+TWFFT logn=10 inverse=1 batch=128 cutoff=16 fixed_min=318465 fixed_max=318465 trial_min=328334 trial_max=328335
+TWFFT_DONE cases=2880 failures=0
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x96ec lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x8b2c lma 0x30000980
+Loading section datas, size 0x54 lma 0x300094c0
+Loading section device_states, size 0x2c lma 0x30009514
+Loading section k_mutex_area, size 0x14 lma 0x30009540
+Loading section .last_section, size 0x4 lma 0x30009554
+Start address 0x10004ba8, load size 77652
+Transfer rate: 541 KB/sec, 3882 bytes/write.
+Temporary breakpoint 1 at 0x10001904: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10004b94: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp5koufy83/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x100018b4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10004b94: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984631            9979441
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x300161a8          805396904
+r8             0x300000d0          805306576
+r9             0x300262e8          805462760
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30026298          0x30026298 <z_main_stack+65456>
+lr             0x100018fb          268441851
+pc             0x100018b4          0x100018b4 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x40000             262144
+msp            0x300161a8          0x300161a8 <z_idle_stacks>
+psp            0x30026298          0x30026298 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x300161a8          0x300161a8 <z_idle_stacks>
+psp_s          0x30026298          0x30026298 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x300159a8          0x300159a8 <z_interrupt_stacks>
+psplim_s       0x300162e8          0x300162e8 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x30026298 <z_main_stack+65456>:	0x00000000	0x10001917	0x00000000	0x100082df
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x300161a8
+PSP=0x30026298
+LR=0x100018fb
+PC=0x100018b4
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x300161a8 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x300161b8 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

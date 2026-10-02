@@ -1,0 +1,53 @@
+DOCUMENT: TWfalcon.pdf PAGE: 20/25
+
+20 TWFalcon: Triple-Word Arithmetic for Falcon
+Table 5: Cycle count of arithmetic and conversion operations, for integer emulation and
+TW.
+Arithmetic add add_f add/sub mul mul_f reci div sqrt
+Integer Em. 80 80 100 45 45 460 460 612
+TW 171 99 297 76 59 223 144 244
+Conversion fpr_of rint floor trunc fast trunc acc
+Integer Em. 34 59 33 32 32
+TW 7 55 20 12 155
+all TW functions are optimized in assembly for the ARMv7-M architecture, as used by
+the Cortex-M4F, and fully constant-time based on the rules discussed in Section 4.3.
+The benchmarks are performed by directly calling the assembly functions and measuring
+the number of clock cycles required for execution. This is achieved by reusing the
+benchmarking done by [Por25a] in combination with the benchmark framework in the
+PQM4 library. In summary, the cycle counter is enabled, the CPU frequency is set to 20
+MHz, and the CPU cycle counter is read before and after each operation to compute the
+cycle count.
+Results in Table 5 show that TW arithmetic is generally slower than integer-emulated
+floating-point arithmetic on the Cortex-M4. The core reason is that TW implementations
+rely, besides for some constant-time modifications, exclusively on the FPU, which provides
+only a small set of basic operations: addition, multiplication, division, square root, and
+FMA. Each of these has non-negligible latency, for example, FMA requires three cycles,
+and if its output is used immediately by the next instruction, an additional cycle is
+required. This pipeline sensitivity is common in TW code, where sequences of dependent
+multiplications and additions are unavoidable. Moreover, enforcing constant-time execution
+amplifies these costs: conditional branches must be replaced with masking operations,
+which require moving values between integer and floating-point registers at a cost of one
+cycle per move, and in many cases intermediate results must be saved to and reloaded from
+the stack. These factors accumulate in simple yet frequent operations such as addition
+and add/sub, where TW ends up several times slower.
+By contrast, integer-emulated arithmetic can take advantage of the ARM ALU and DSP
+instruction set, which is far richer and better optimized for multi-word integer arithmetic.
+Instructions such as UMLAL perform 32 ×32 →64 multiplication with accumulation in a
+single cycle. In addition, shifts can be fused into arithmetic instructions at no extra cost,
+andconditionalmovescanberealizedusingtheSEL instruction, thoughthiscanalsobeused
+in the constant-time Merge algorithm for TW. These capabilities allow integer-emulated
+implementations to align mantissas, perform multi-word additions/multiplications, and
+implement conditional swaps at very low cost, while there is also no cycle penalty when the
+output of an instruction is used by the next one, like for the FPU. As a result, the frequent
+basic operations needed in Falcon, such as addition, subtraction, and multiplication, are
+consistently faster in the integer-emulated implementation, despite the apparent simplicity
+of the TW algorithms when expressed at the mathematical level.
+While TW arithmetic is disadvantaged for frequent basic operations, it gains an
+advantage in more complex functions such as reciprocal, division, and square root. In the
+integer-emulated implementation, these operations require iterative bit-by-bit methods over
+multi-word integers, leading to hundreds of cycles of work. In contrast, the TW versions
+use a Newton–Raphson iteration approach, which results in a simpler algorithm that can
+use the single-precision square root and division operation, and use TW multiplication and
+FMA for other parts of the algorithm. As a result, TW implementations of division and
+square root are several times faster than the corresponding integer-emulated algorithms,
+even though they are slower for addition and multiplication.

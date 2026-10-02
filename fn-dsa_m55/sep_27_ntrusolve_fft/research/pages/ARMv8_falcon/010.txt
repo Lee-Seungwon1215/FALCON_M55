@@ -1,0 +1,120 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 10/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+Algorithm 5: Proposed Parallel CT Butterfly Method of NTT Multiplication Utilizing NEON Engine
+Input : In0, In1
+Output: Out0, Out1
+Alg: mq-montymul (step 1-23)
+//z =x ×y z ∈232
+,x,y ∈216
+1 UMULL v26.4s, \In1\().4h, v28.4h 2 UMULL2 v27.4s, \In1\().8h, v28.8h
+//w =((z ×Q0I) & 0xFFFF) ×Q, w ∈232
+3 MUL v25.4s, v26.4s, v30.4s 4 MUL v24.4s, v27.4s, v30.4s
+5 AND v25.16b, v25.16b, v20.16b 6 AND v24.16b, v24.16b, v20.16b
+7 MUL v25.4s, v25.4s, v29.4s 8 MUL v24.4s, v24.4s, v29.4s
+//z =(z +w) ≫16
+9 ADD v26.4s, v26.4s, v25.4s
+10 ADD v27.4s, v27.4s, v24.4s
+11 USHR v26.4s, v26.4s, #16
+12 USHR v27.4s, v27.4s, #16
+//z−=Q
+13 SUB v26.4s,v26.4s,v29.4s 14 SUB v27.4s,v27.4s,v29.4s
+//z+=Q &−(z ≫31)
+15 USHR v23.4s,v26.4s,#31
+16 USHR v22.4s,v27.4s,#31
+17 MOVi v24.16b,#0
+18 SUB v23.4s,v24.4s,v23.4s
+19 SUB v22.4s,v24.4s,v22.4s
+20 AND v23.16b,v29.16b,v23.16b 21 AND v22.16b,v29.16b,v22.16b
+22 ADD v23.4s,v23.4s,v26.4s
+23 ADD v22.4s,v22.4s,v27.4s
+Alg: Parallel Unit Conversion 232 →2·216
+24 MOVi v24.16b,#0
+25 ZIP1 v25.8h, \In0\().8h, v24.8h
+◃ v28: Zetas
+◃ v30: Q0I
+◃ v20: 0xFFFF
+◃ v29: Q
+◃ v29: Q
+◃ v29: Q
+26 ZIP2 v24.8h, \In0\().8h, v24.8h
+Alg: mq-add (step 27-39)
+//d=x +y−Q, d ∈232
+,x,y ∈232
+27 ADD v19.4s,v23.4s,v25.4s
+28 ADD v18.4s,v22.4s,v24.4s
+29 SUB v19.4s,v19.4s,v29.4s 30 SUB v18.4s,v18.4s,v29.4s
+//d+=Q &−(d ≫31), d ∈232
+31 USHR v21.4s,v19.4s,#31
+32 USHR v26.4s,v18.4s,#31
+33 MOVi v27.16b,#0
+34 SUB v21.4s,v27.4s,v21.4s
+35 SUB v26.4s,v27.4s,v26.4s
+36 AND v21.16b,v21.16b,v29.16b 37 AND v26.16b,v26.16b,v29.16b
+38 ADD v19.4s,v19.4s,v21.4s
+39 ADD v18.4s,v18.4s,v26.4s
+Alg: Parallel Integration
+40 UZP1 \Out0\().8h, v19.8h, v18.8h
+Alg: mq-sub (step 41-51)
+//d=x−y, d ∈232
+41 SUB v23.4s,v25.4s,v23.4s
+42 SUB v22.4s,v24.4s,v22.4s
+//d+=Q &−(d ≫31)
+43 USHR v24.4s,v23.4s,#31
+44 USHR v25.4s,v22.4s,#31
+45 MOVi v26.16b,#0
+46 SUB v24.4s,v26.4s,v24.4s
+47 SUB v25.4s,v26.4s,v25.4s
+48 AND v24.16b,v24.16b,v29.16b 49 AND v25.16b,v25.16b,v29.16b
+50 ADD v24.4s,v24.4s,v23.4s
+51 ADD v25.4s,v25.4s,v22.4s
+Alg: Parallel Integration
+52 UZP1 \Out1\().8h, v24.8h, v25.8h
+◃ v29: Q
+◃ v29: Q
+◃ v29: Q
+v0−v31 after some depth, eliminating all possible memory
+accesses.
+Figure 2 shows the proposed memory optimization path of
+FFT/NTT-512 and FFT/NTT-1024. FFT is divided into each
+Real and Image Part for the polynomial to be transformed,
+and each FFT is performed. For example, FFT-512 performs
+each transformation of a 256 degree of polynomial in the Real
+Part and a 256 degree of polynomial in the Image Part. Thus,
+in FFT-512 and FFT-1024, FFT depth for 256 degree of poly-
+nomial and 512 degree of polynomial should be considered.
+In FFT-512, from 256 degree of polynomial transformation
+to 16 degree of polynomial transformation, it reaches with
+only two merging. After that, memory access is not required
+until the FFT is completed by applying the register holding
+technique. In FFT-1024, the depth is odd, so it is impossible
+to reach the register holding depth by utilizing merging tech-
+nique only. Therefore, we added a standard implementation
+technique to reach register holding depth. Because the NTT is
+performed in the integer domain, it is not split into two parts
+for polynomials like the FFT. NTT-512 and NTT-1024 per-
+form transformation of polynomial degree supported by each
+security level. Since depth is odd in NTT-512, like FFT-1024,
+standard implementation is added to suggest optimal memory
+path. In NTT-1024, it reaches register holding with only
+3 merging. Through the proposed memory optimization path,
+we further accelerated performance of FFT/NTT by mini-
+mizing memory access instructions such as LD1 and ST1
+instructions.
+Figure 3 shows the details of the memory optimiza-
+tion technique applied to Falcon’s FFT/NTT. Each point in
+Figure 2 represents a Falcon’s polynomial of the 64th degree,
+and the brown line is the memory access that occurred in
+our FFT/NTT implementation. The black lines are the but-
+terflies that are first-order realized in the merging technique.
+we approach Figure 3 from two perspectives.
+The first is a column-wise fashion FFT/NTT implementa-
+tion. The merging technique can be described as keeping the
+coefficients of the polynomials in the same register so that
+the polynomials needed for the butterfly to be computed in
+the next layer can be computed without additional memory
+access. Therefore, when this method is used, the butterfly
+process is performed on the second layer as soon as all the
+coefficients to be used in the second layer are calculated,
+unlike the standard implementation. If this is repeatedly
+VOLUME 10, 2022 44455

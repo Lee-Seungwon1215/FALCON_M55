@@ -1,0 +1,161 @@
+{
+  "m4": {
+    "sp": 537526272,
+    "entry": 54281,
+    "binary_bytes": 104204,
+    "elf_sha256": "19f2a0722af21e40a8db4b8da38b79f3c16e791a8a4cbcbc90fd875bb5e9449f",
+    "source_manifest_verified": true
+  },
+  "m55": {
+    "sp": 874504192,
+    "entry": 874045449,
+    "binary_bytes": 111180,
+    "elf_sha256": "561f1b4707fe2847fe1ffb83149cf2025a58f5c14c0cb4d90a65becc59996976",
+    "source_manifest_verified": true
+  },
+  "compiler_version": "arm-none-eabi-gcc (Arm GNU Toolchain 13.2.rel1 (Build arm-13.7)) 13.2.1 20231009",
+  "compiler_sha256": "fc7c83a32a7c8be08822941f411fe9fe0104508d2982fa9c5a8775c6d33e73d6",
+  "identical_assembly_text": {
+    "codec_cm4": {
+      "bytes": 228,
+      "sha256": "10b1bec14e88ed5ca9867c5ffbf742929db0a5d012f7552836a92e4b119a872d"
+    },
+    "mq_cm4": {
+      "bytes": 1424,
+      "sha256": "af9083ffc4b7b37f3b6f3c752e6697fa21e59c9df055d5b5c92c72073ef6ed15"
+    },
+    "sha3_cm4": {
+      "bytes": 4184,
+      "sha256": "6260ca987de7e2229cfb7252b3c1d5e3f92658d92d0b47fcc39970b12c7f4661"
+    },
+    "sign_fpr_cm4": {
+      "bytes": 4460,
+      "sha256": "62bcecf3b015600828e8c3d1fb098f5c8da64afb94ac86a445c3675758488e3f"
+    },
+    "sign_sampler_cm4": {
+      "bytes": 904,
+      "sha256": "fd01c9c9c10ee7123e8a68c97a2cb28f823b4e898657fd9d3ad49553634fbd5d"
+    }
+  },
+  "host_oracle": {
+    "warmup_fingerprint": [
+      4053617184,
+      4181047927
+    ],
+    "fingerprint": [
+      3060065408,
+      1579935960
+    ],
+    "output_digest": [
+      [
+        1963737376,
+        1790775184,
+        2950208991,
+        229696536,
+        2294067732,
+        2847423223,
+        2656135959,
+        1971641190
+      ],
+      [
+        3653682871,
+        3602983735,
+        918381161,
+        1865872593,
+        4242628403,
+        1276166694,
+        1418209145,
+        1281629711
+      ]
+    ],
+    "warmup_digest": [
+      [
+        710823756,
+        3161443728,
+        3043565509,
+        864562664,
+        2359685779,
+        3224530124,
+        2158862127,
+        568738672
+      ],
+      [
+        4178381717,
+        2099356519,
+        3791872295,
+        157760929,
+        3129081602,
+        2231489965,
+        3199367593,
+        539664458
+      ]
+    ]
+  },
+  "passed": true
+}
+{
+  "recorded_utc": "2026-09-09T04:38:23.667734+00:00",
+  "rows": [
+    {
+      "degree": 512,
+      "operation": "keygen",
+      "m4_mean_cycles": 61007277.69,
+      "m55_mean_cycles": 338324852.8,
+      "m4_mean_ms": 2541.96990375,
+      "m55_mean_ms": 14096.868866666668,
+      "m55_over_m4_cycle_ratio": 5.5456474311007735,
+      "paired_ratio_median": 5.573318803427359
+    },
+    {
+      "degree": 512,
+      "operation": "sign",
+      "m4_mean_cycles": 17554521.15,
+      "m55_mean_cycles": 75728871.25,
+      "m4_mean_ms": 731.4383812499999,
+      "m55_mean_ms": 3155.369635416667,
+      "m55_over_m4_cycle_ratio": 4.313924065653024,
+      "paired_ratio_median": 4.313821000687776
+    },
+    {
+      "degree": 512,
+      "operation": "verify",
+      "m4_mean_cycles": 375034.5,
+      "m55_mean_cycles": 1635848.73,
+      "m4_mean_ms": 15.6264375,
+      "m55_mean_ms": 68.16036375,
+      "m55_over_m4_cycle_ratio": 4.36186198869704,
+      "paired_ratio_median": 4.353637934367424
+    },
+    {
+      "degree": 1024,
+      "operation": "keygen",
+      "m4_mean_cycles": 248887724.3,
+      "m55_mean_cycles": 1421190661.33,
+      "m4_mean_ms": 10370.321845833334,
+      "m55_mean_ms": 59216.277555416666,
+      "m55_over_m4_cycle_ratio": 5.7101677687283185,
+      "paired_ratio_median": 5.7448739366582275
+    },
+    {
+      "degree": 1024,
+      "operation": "sign",
+      "m4_mean_cycles": 37581871.15,
+      "m55_mean_cycles": 162294327.28,
+      "m4_mean_ms": 1565.9112979166666,
+      "m55_mean_ms": 6762.263636666667,
+      "m55_over_m4_cycle_ratio": 4.318420619139396,
+      "paired_ratio_median": 4.318449896636241
+    },
+    {
+      "degree": 1024,
+      "operation": "verify",
+      "m4_mean_cycles": 736350.55,
+      "m55_mean_cycles": 3248695.75,
+      "m4_mean_ms": 30.681272916666668,
+      "m55_mean_ms": 135.36232291666667,
+      "m55_over_m4_cycle_ratio": 4.411887449530662,
+      "paired_ratio_median": 4.408157001793758
+    }
+  ],
+  "interpretation": "Same implementation under common nominal CPU/bus clock, SRAM and cache-off settings; not pure-core or native-FP64 optimization speedup."
+}

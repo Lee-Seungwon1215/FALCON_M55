@@ -1,0 +1,46 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 13/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 13
+but not their multiply and subtract counterparts. Additionally, extra load instructions are
+required due to the negatively wrapped accumulation which further increases the register
+pressure, which is key to performance [KMRV18,KRS19]. To circumvent this issue, we
+create a custom memory layout where both operands are in consecutive addresses and,
+therefore, only one pointer needs to be kept in a register while coeﬃcients of diﬀerent
+operands can be loaded using immediate oﬀsets.
+The other implementation decision for the polynomial multiplication is the cut-oﬀ
+degree from which Karatsuba is not applied anymore and the multiplication is performed
+using the schoolbook algorithm. Due to the availability of registers to pre-load coeﬃcients
+and the absence of multiply and subtract instructions, we find that the optimal cut-oﬀ
+is degree 16. For higher cut-oﬀs, the performance will be determined by the dominant
+term between the extra load operations required in the striding version of Karatsuba and
+the overhead introduced by the negacyclic convolution during schoolbook multiplication.
+We have verified that the optimal cut-oﬀ is degree 16, with 34,884 clock cycles for a 256
+coeﬃcient polynomial multiplication, while for degree 32 the execution time increases to
+36,340 clock cycles. This choice was expected since 16 was also the optimal cut-oﬀ for
+other multiplications combining Toom-Cook and Karatsuba [KMRV18,KRS19].
+In Section 7 we discuss the performance and memory figures of our proposed multipli-
+cation and compare the impact on the full Saber operation to other implementations in
+Cortex-M4 processors as well as in the new Cortex-M55 processor.
+6 Implementation: Cortex-M55
+In this section, we describe our implementations of large-degree, low-precision polynomial
+multiplication on the Cortex-M55 CPU, leveraging the Helium vector extension.
+6.1 NTT vs. Toom-Cook/Karatsuba on vector architectures
+[CHK+21] demonstrates that for Cortex-M4, polynomial multiplication via NTTs can
+outperform multiplication via Toom-Cook even for coeﬃcient rings not tailored to the
+NTT, such as Z213 . For vectorized implementations, however, the passage to the NTT
+comes at a larger cost than for non-vectorized implementations. We provide some details.
+Setting expectations Since the Helium vector extension operates on 128-bit vectors and
+the Cortex-M55 CPU is single-issue for vector instructions, we consider a 4×speedup a
+theoretical limit for a vectorized 32-bit NTT. However, we do not expect to meet this limit,
+because the NTT relies on long multiplications for modular arithmetic, and few Helium
+instructions can perform more than two 32 ×32 →64 long multiplications. For Toom-
+Cook/Karatsuba based multiplication, we operate on 16-bit lanes, hence get a theoretical
+speedup of 8×over scalar code. However, optimized implementations on the Cortex-M4
+CPU already leverage the DSP extension to treat 32-bit registers as 2 ×16-bit vectors and
+thusoperateontwo16-bitvaluesat once. We thusexpectaspeedupsomewherebetween4×
+and 8×. Considering that NTT-based polynomial and matrix-vector multiplication for the
+Saber rings is around 2×as fast as Toom-Cook/Karatsuba based routines [CHK+21, Table
+5], it is not clear which approach will be faster when implemented using Helium.
+6.2 Vectorizing striding Toom-Cook/Karatsuba
+Recall that 4-way Toom-Cook evaluation is a matrix-vector multiplication
+R7×4 ×R4×(n/4) −→R7×(n/4), R= Z216 ,

@@ -1,0 +1,237 @@
+
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/runs/tcm-root-20260910T023025Z/root.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+34080000 <probe_vectors>:
+34080000:	340bf000 	.word	0x340bf000
+34080004:	34080041 	.word	0x34080041
+34080008:	340800f5 	.word	0x340800f5
+3408000c:	340800f5 	.word	0x340800f5
+34080010:	340800f5 	.word	0x340800f5
+34080014:	340800f5 	.word	0x340800f5
+34080018:	340800f5 	.word	0x340800f5
+3408001c:	340800f5 	.word	0x340800f5
+34080020:	340800f5 	.word	0x340800f5
+34080024:	340800f5 	.word	0x340800f5
+34080028:	340800f5 	.word	0x340800f5
+3408002c:	340800f5 	.word	0x340800f5
+34080030:	340800f5 	.word	0x340800f5
+34080034:	340800f5 	.word	0x340800f5
+34080038:	340800f5 	.word	0x340800f5
+3408003c:	340800f5 	.word	0x340800f5
+
+34080040 <probe_init>:
+34080040:	b672      	cpsid	i
+34080042:	483d      	ldr	r0, [pc, #244]	@ (34080138 <probe_scalarcopy_end>)
+34080044:	493d      	ldr	r1, [pc, #244]	@ (3408013c <probe_scalarcopy_end+0x4>)
+34080046:	6008      	str	r0, [r1, #0]
+34080048:	f3bf 8f4f 	dsb	sy
+3408004c:	f3bf 8f6f 	isb	sy
+34080050:	2200      	movs	r2, #0
+34080052:	2300      	movs	r3, #0
+34080054:	f04f 5080 	mov.w	r0, #268435456	@ 0x10000000
+34080058:	4939      	ldr	r1, [pc, #228]	@ (34080140 <probe_scalarcopy_end+0x8>)
+3408005a:	e8e0 2302 	strd	r2, r3, [r0], #8
+3408005e:	4288      	cmp	r0, r1
+34080060:	d3fb      	bcc.n	3408005a <probe_init+0x1a>
+34080062:	f04f 5040 	mov.w	r0, #805306368	@ 0x30000000
+34080066:	4937      	ldr	r1, [pc, #220]	@ (34080144 <probe_scalarcopy_end+0xc>)
+34080068:	e8e0 2302 	strd	r2, r3, [r0], #8
+3408006c:	4288      	cmp	r0, r1
+3408006e:	d3fb      	bcc.n	34080068 <probe_init+0x28>
+34080070:	f04f 2410 	mov.w	r4, #268439552	@ 0x10001000
+34080074:	4d34      	ldr	r5, [pc, #208]	@ (34080148 <probe_scalarcopy_end+0x10>)
+34080076:	f20f 0089 	addw	r0, pc, #137	@ 0x89
+3408007a:	f020 0001 	bic.w	r0, r0, #1
+3408007e:	e9d0 2300 	ldrd	r2, r3, [r0]
+34080082:	e9c4 2300 	strd	r2, r3, [r4]
+34080086:	e9d0 6702 	ldrd	r6, r7, [r0, #8]
+3408008a:	e9c4 6702 	strd	r6, r7, [r4, #8]
+3408008e:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+34080092:	42ac      	cmp	r4, r5
+34080094:	d3f5      	bcc.n	34080082 <probe_init+0x42>
+34080096:	4a2d      	ldr	r2, [pc, #180]	@ (3408014c <probe_scalarcopy_end+0x14>)
+34080098:	4b2d      	ldr	r3, [pc, #180]	@ (34080150 <probe_scalarcopy_end+0x18>)
+3408009a:	4c2e      	ldr	r4, [pc, #184]	@ (34080154 <probe_scalarcopy_end+0x1c>)
+3408009c:	4d2e      	ldr	r5, [pc, #184]	@ (34080158 <probe_scalarcopy_end+0x20>)
+3408009e:	4622      	mov	r2, r4
+340800a0:	e9c4 2300 	strd	r2, r3, [r4]
+340800a4:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+340800a8:	42ac      	cmp	r4, r5
+340800aa:	d3f8      	bcc.n	3408009e <probe_init+0x5e>
+340800ac:	4c2b      	ldr	r4, [pc, #172]	@ (3408015c <probe_scalarcopy_end+0x24>)
+340800ae:	4d2c      	ldr	r5, [pc, #176]	@ (34080160 <probe_scalarcopy_end+0x28>)
+340800b0:	4622      	mov	r2, r4
+340800b2:	e9c4 2300 	strd	r2, r3, [r4]
+340800b6:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+340800ba:	42ac      	cmp	r4, r5
+340800bc:	d3f8      	bcc.n	340800b0 <probe_init+0x70>
+340800be:	4c29      	ldr	r4, [pc, #164]	@ (34080164 <probe_scalarcopy_end+0x2c>)
+340800c0:	4622      	mov	r2, r4
+340800c2:	e9c4 2300 	strd	r2, r3, [r4]
+340800c6:	f3bf 8f4f 	dsb	sy
+340800ca:	f3bf 8f6f 	isb	sy
+
+340800ce <probe_ready>:
+340800ce:	be00      	bkpt	0x0000
+340800d0:	f7ff bffd 	b.w	340800ce <probe_ready>
+
+340800d4 <probe_call>:
+340800d4:	460e      	mov	r6, r1
+340800d6:	47a0      	blx	r4
+340800d8:	42b0      	cmp	r0, r6
+340800da:	f040 8008 	bne.w	340800ee <probe_mismatch>
+340800de:	3d01      	subs	r5, #1
+340800e0:	d1f9      	bne.n	340800d6 <probe_call+0x2>
+340800e2:	f000 b801 	b.w	340800e8 <probe_done>
+
+340800e6 <probe_memcpy_call>:
+340800e6:	47a0      	blx	r4
+
+340800e8 <probe_done>:
+340800e8:	be00      	bkpt	0x0000
+340800ea:	f7ff bffd 	b.w	340800e8 <probe_done>
+
+340800ee <probe_mismatch>:
+340800ee:	be00      	bkpt	0x0000
+340800f0:	f7ff bffd 	b.w	340800ee <probe_mismatch>
+
+340800f4 <probe_fault>:
+340800f4:	be00      	bkpt	0x0000
+340800f6:	f7ff bffd 	b.w	340800f4 <probe_fault>
+340800fa:	bf00      	nop
+340800fc:	f3af 8000 	nop.w
+
+34080100 <probe_body>:
+34080100:	6808      	ldr	r0, [r1, #0]
+34080102:	4738      	bx	r7
+34080104:	4770      	bx	lr
+34080106:	bf00      	nop
+34080108:	bf00      	nop
+
+3408010a <probe_return>:
+3408010a:	4770      	bx	lr
+3408010c:	bf00      	nop
+3408010e:	bf00      	nop
+34080110:	bf00      	nop
+34080112:	bf00      	nop
+
+34080114 <probe_scalarcopy>:
+34080114:	b4f0      	push	{r4, r5, r6, r7}
+34080116:	4603      	mov	r3, r0
+34080118:	2a10      	cmp	r2, #16
+3408011a:	d303      	bcc.n	34080124 <probe_scalarcopy+0x10>
+3408011c:	c9f0      	ldmia	r1!, {r4, r5, r6, r7}
+3408011e:	c3f0      	stmia	r3!, {r4, r5, r6, r7}
+34080120:	3a10      	subs	r2, #16
+34080122:	e7f9      	b.n	34080118 <probe_scalarcopy+0x4>
+34080124:	2a04      	cmp	r2, #4
+34080126:	d305      	bcc.n	34080134 <probe_scalarcopy+0x20>
+34080128:	f851 4b04 	ldr.w	r4, [r1], #4
+3408012c:	f843 4b04 	str.w	r4, [r3], #4
+34080130:	3a04      	subs	r2, #4
+34080132:	e7f7      	b.n	34080124 <probe_scalarcopy+0x10>
+34080134:	bcf0      	pop	{r4, r5, r6, r7}
+34080136:	4770      	bx	lr
+
+34080138 <probe_scalarcopy_end>:
+34080138:	34080000 	.word	0x34080000
+3408013c:	e000ed08 	.word	0xe000ed08
+34080140:	10040000 	.word	0x10040000
+34080144:	30040000 	.word	0x30040000
+34080148:	10041000 	.word	0x10041000
+3408014c:	13579bdf 	.word	0x13579bdf
+34080150:	2468ace0 	.word	0x2468ace0
+34080154:	10000800 	.word	0x10000800
+34080158:	10040800 	.word	0x10040800
+3408015c:	30000800 	.word	0x30000800
+34080160:	30040800 	.word	0x30040800
+34080164:	34080800 	.word	0x34080800
+
+34080168 <root_prepare>:
+34080168:	4620      	mov	r0, r4
+3408016a:	f816 1b01 	ldrb.w	r1, [r6], #1
+3408016e:	f800 1b01 	strb.w	r1, [r0], #1
+34080172:	3f01      	subs	r7, #1
+34080174:	d1f9      	bne.n	3408016a <root_prepare+0x2>
+34080176:	4640      	mov	r0, r8
+34080178:	2240      	movs	r2, #64	@ 0x40
+3408017a:	4b08      	ldr	r3, [pc, #32]	@ (3408019c <root_call+0x6>)
+3408017c:	ea80 0103 	eor.w	r1, r0, r3
+34080180:	f840 1b04 	str.w	r1, [r0], #4
+34080184:	3a01      	subs	r2, #1
+34080186:	d1f9      	bne.n	3408017c <root_prepare+0x14>
+34080188:	f3bf 8f4f 	dsb	sy
+3408018c:	f3bf 8f6f 	isb	sy
+
+34080190 <root_ready>:
+34080190:	be00      	bkpt	0x0000
+34080192:	f7ff bffd 	b.w	34080190 <root_ready>
+
+34080196 <root_call>:
+34080196:	47a0      	blx	r4
+34080198:	f7ff bfa6 	b.w	340800e8 <probe_done>
+3408019c:	5a5aa5a5 	.word	0x5a5aa5a5
+
+340801a0 <root_ldm_copy>:
+340801a0:	b4f0      	push	{r4, r5, r6, r7}
+340801a2:	4603      	mov	r3, r0
+340801a4:	c9f0      	ldmia	r1!, {r4, r5, r6, r7}
+340801a6:	c3f0      	stmia	r3!, {r4, r5, r6, r7}
+340801a8:	3a10      	subs	r2, #16
+340801aa:	d1fb      	bne.n	340801a4 <root_ldm_copy+0x4>
+340801ac:	bcf0      	pop	{r4, r5, r6, r7}
+340801ae:	4770      	bx	lr
+
+340801b0 <root_ldm_sum>:
+340801b0:	b470      	push	{r4, r5, r6}
+340801b2:	2000      	movs	r0, #0
+340801b4:	c978      	ldmia	r1!, {r3, r4, r5, r6}
+340801b6:	4418      	add	r0, r3
+340801b8:	4420      	add	r0, r4
+340801ba:	4428      	add	r0, r5
+340801bc:	4430      	add	r0, r6
+340801be:	3a10      	subs	r2, #16
+340801c0:	d1f8      	bne.n	340801b4 <root_ldm_sum+0x4>
+340801c2:	bc70      	pop	{r4, r5, r6}
+340801c4:	4770      	bx	lr
+
+340801c6 <root_ldm_sum_end>:
+340801c6:	bf00      	nop
+
+340801c8 <root_ldr_sum>:
+340801c8:	2000      	movs	r0, #0
+340801ca:	f851 3b04 	ldr.w	r3, [r1], #4
+340801ce:	4418      	add	r0, r3
+340801d0:	3a04      	subs	r2, #4
+340801d2:	d1fa      	bne.n	340801ca <root_ldr_sum+0x2>
+340801d4:	4770      	bx	lr
+
+340801d6 <root_ldr_sum_end>:
+340801d6:	bf00      	nop
+
+340801d8 <root_ldrd_sum>:
+340801d8:	b410      	push	{r4}
+340801da:	2000      	movs	r0, #0
+340801dc:	e8f1 3402 	ldrd	r3, r4, [r1], #8
+340801e0:	4418      	add	r0, r3
+340801e2:	4420      	add	r0, r4
+340801e4:	3a08      	subs	r2, #8
+340801e6:	d1f9      	bne.n	340801dc <root_ldrd_sum+0x4>
+340801e8:	bc10      	pop	{r4}
+340801ea:	4770      	bx	lr
+
+340801ec <root_ldr_barrier_sum>:
+340801ec:	2000      	movs	r0, #0
+340801ee:	f851 3b04 	ldr.w	r3, [r1], #4
+340801f2:	f3bf 8f4f 	dsb	sy
+340801f6:	f3bf 8f6f 	isb	sy
+340801fa:	4418      	add	r0, r3
+340801fc:	3a04      	subs	r2, #4
+340801fe:	d1f6      	bne.n	340801ee <root_ldr_barrier_sum+0x2>
+34080200:	4770      	bx	lr
+
+34080202 <root_ldr_barrier_sum_end>:
+34080202:	bf00      	nop

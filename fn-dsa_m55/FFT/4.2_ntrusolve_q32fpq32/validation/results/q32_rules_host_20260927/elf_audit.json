@@ -1,0 +1,76 @@
+{
+  "elf": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/build/extra/zephyr/zephyr.elf",
+  "elf_sha256": "2ddfa3518b5481102463ff1a962910ec64171f3841bce0e28bd3d22bf1cede6c",
+  "scope": "branch screening only; predication, operand timing and whole keygen not proven",
+  "symbols": {
+    "qd_raw_floor": {
+      "conditional_branches": [],
+      "it_blocks": [
+        "1000e1a6:\tbf4c      \tite\tmi",
+        "1000e1d0:\tbf18      \tit\tne",
+        "1000e1dc:\tbfb4      \tite\tlt",
+        "1000e1ea:\tbfb4      \tite\tlt"
+      ],
+      "fp32_arithmetic": 28
+    },
+    "qd_mul": {
+      "conditional_branches": [],
+      "it_blocks": [
+        "1000e306:\tbf34      \tite\tcc"
+      ],
+      "fp32_arithmetic": 46
+    },
+    "fndsa_inner_fxr_div": {
+      "conditional_branches": [],
+      "it_blocks": [],
+      "fp32_arithmetic": 0
+    },
+    "fndsa_ds_reciprocal": {
+      "conditional_branches": [
+        "1000fd3e:\tf47f ace3 \tbne.w\t1000f708 <fndsa_ds_reciprocal+0x50>"
+      ],
+      "it_blocks": [],
+      "fp32_arithmetic": 275
+    },
+    "fndsa_ds_mul": {
+      "conditional_branches": [
+        "10010654:\tf47f aba4 \tbne.w\t1000fda0 <fndsa_ds_mul+0x50>"
+      ],
+      "it_blocks": [],
+      "fp32_arithmetic": 403
+    },
+    "fndsa_ds_div_selfadj": {
+      "conditional_branches": [
+        "1001096c:\tf47f ae98 \tbne.w\t100106a0 <fndsa_ds_div_selfadj+0x3c>"
+      ],
+      "it_blocks": [],
+      "fp32_arithmetic": 111
+    },
+    "fndsa_ds_inverse": {
+      "conditional_branches": [
+        "1000e918:\tf000 8125 \tbeq.w\t1000eb66 <fndsa_ds_inverse+0x262>",
+        "1000e93e:\tf200 8170 \tbhi.w\t1000ec22 <fndsa_ds_inverse+0x31e>",
+        "1000e946:\tf200 8297 \tbhi.w\t1000ee78 <fndsa_ds_inverse+0x574>",
+        "1000e9e0:\td80e      \tbhi.n\t1000ea00 <fndsa_ds_inverse+0xfc>",
+        "1000e9e8:\tf000 80b3 \tbeq.w\t1000eb52 <fndsa_ds_inverse+0x24e>",
+        "1000eb4e:\tf47f af1f \tbne.w\t1000e990 <fndsa_ds_inverse+0x8c>",
+        "1000eb5c:\tf47f aee7 \tbne.w\t1000e92e <fndsa_ds_inverse+0x2a>",
+        "1000eb90:\tf240 81a9 \tbls.w\t1000eee6 <fndsa_ds_inverse+0x5e2>",
+        "1000ebb8:\td90e      \tbls.n\t1000ebd8 <fndsa_ds_inverse+0x2d4>",
+        "1000ebfc:\tf200 8151 \tbhi.w\t1000eea2 <fndsa_ds_inverse+0x59e>",
+        "1000ec06:\tf000 8162 \tbeq.w\t1000eece <fndsa_ds_inverse+0x5ca>",
+        "1000ec2c:\tf000 8154 \tbeq.w\t1000eed8 <fndsa_ds_inverse+0x5d4>",
+        "1000ece8:\td30d      \tbcc.n\t1000ed06 <fndsa_ds_inverse+0x402>",
+        "1000ecf2:\tf000 80bf \tbeq.w\t1000ee74 <fndsa_ds_inverse+0x570>",
+        "1000ee70:\tf47f aefd \tbne.w\t1000ec6e <fndsa_ds_inverse+0x36a>",
+        "1000ee90:\td025      \tbeq.n\t1000eede <fndsa_ds_inverse+0x5da>",
+        "1000ee98:\tf63f aebe \tbhi.w\t1000ec18 <fndsa_ds_inverse+0x314>",
+        "1000eeca:\tf47f ae5f \tbne.w\t1000eb8c <fndsa_ds_inverse+0x288>"
+      ],
+      "it_blocks": [
+        "1000e912:\tbf08      \tit\teq"
+      ],
+      "fp32_arithmetic": 5
+    }
+  }
+}

@@ -1,0 +1,67 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 5/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 5
+Notation. We will denote any “integer approximation”, by which we mean : Q →Z
+with |z− z |≤1 for all z∈Z. Examples include the rounding functions ⌊⌋,⌈⌉, ⌊⌉, but
+also e.g. the 2Z-valued ⌊z⌉2 := 2 z
+2 , which will be of special interest later. Note that we
+do not require z = z for all z∈Z, and it does in fact not hold for ⌊⌉2.
+Let N ∈N, henceforth called the modulus; in our application we will have either
+N = 2k or N= q an odd prime. We denote ZN := Z/NZ (or Fq if N= q is a prime) the
+quotient ring of Z by the equivalence relation x≡N y, identifying two integers which leave
+the same residue after division by N. For z∈Z, we denote z∈ZN its residue class; in the
+case of a 2-power N, we use the notation z instead.
+Both the signed interval SN :=−
+N
+2 ,−
+N
+2 + 1,...,
+N−1
+2−1,
+N−1
+2 and the
+unsigned interval UN := {0,1,...,N−1}are fundamental domains for ≡N; for z∈Z, we
+denote z mod±N ∈SN and z mod+ N ∈UN the unique representatives of z in SN and
+UN and call them canonical signed representative and canonical unsigned representative,
+respectively. For example,−15 mod±13 =−2 and−15 mod+ 13 = 11.
+The canonical signed and unsigned representatives are related to the integer approx-
+imations ⌊⌉and ⌈⌉via z mod± N= z−N z
+N and z mod+ N= z−N z
+N . More
+generally, we can define z mod N := z−N z
+N for any integer approximation .
+Example 1. We consider z mod⌊⌉2 N associated with ⌊z⌉2 = 2 z
+2 . In this case,
+z mod⌊⌉2 N is a representative of z modulo N within {−N,...,N}of the same par-
+ity as z. For example, if z is even, we have z mod⌊⌉2 N= z mod±N if z mod±N is even,
+and z mod⌊⌉2 N= z mod±N−sign(z mod±N)N otherwise.
+If satisfies z+ 1 = z + 1, then z mod N descends to a function ZN →Z; this
+is the case for ⌊⌋and ⌊⌉, and we will also use z mod±N and z mod+ N for z∈ZN.
+We will need the following fact:
+Fact 1. Let R= 2n and x∈ZR. Then the following holds:
+1. If x̸= 2n−1 ∈ZR, then (−x) mod±R=−(x mod±R).
+2. If x= 2n−1 ∈ZR, then (−x) mod±R=−(x mod±R)−R.
+Beyond those canonical representatives, we will also be interested in non-unique
+representatives from intervals {−N′
+,−N′+1,...,N′
+−1,N′}, where N′is suitably bounded
+with respect to N. By “algorithms for arithmetic modulo N” we mean algorithms which
+compute addition and multiplication in ZN in terms of “small” representatives within
+those sets. The primary objective in designing such algorithms is the avoidance of generic
+integer division; a secondary goal is to avoid unnecessary reductions. Our main techniques
+are Montgomery and Barrett reduction, which we recall briefly now.
+2.4.1 Barrett reduction
+We have z mod± N= z−N·
+z
+N . The idea behind Barrett reduction [Bar86] is to
+approximatez
+N = zR
+N/R≈z R
+N /R,so z mod±N ≈z−N· z R
+N /R , where− is a
+choice of integer approximation and R= 2n >N is fixed. Since R
+N can be precomputed,
+this provides an approximation to z mod±N relying solely on division by R= 2n, which
+common hardware can realize as a bitshift. We denote the resulting approximation to
+z mod±N by bar N (z), or bar±
+N(z) if = ⌊⌉. See Algorithm 1.

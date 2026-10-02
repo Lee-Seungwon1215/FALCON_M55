@@ -1,0 +1,291 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 57188
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :57188 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x100174f4
+hbreak *0x1001a784
+set $early_fault_bp = $bpnum
+jump *0x1001a799
+if $pc != 0x100174f4
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpyuoxfrvm/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x100174a4
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x1001a784
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.276064
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 57188
+Info : Listening on port 57188 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/57188
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+BENCH_BEGIN single_api candidate=single_mve inputs=8 repeats=3 verify_batch=32
+BENCH_HW cpu=800000000 ccr=00000611 itcm=00000049 dtcm=00000049 control=00000099 fpscr=00040000 primask=0
+SINGLE n=512 input=0 repeat=0 keygen=50361882 sign=12029979 verify_total=13099385 verify_calls=32
+SINGLE n=512 input=0 repeat=1 keygen=50361894 sign=12029979 verify_total=13099383 verify_calls=32
+SINGLE n=512 input=0 repeat=2 keygen=50360797 sign=12031073 verify_total=13099385 verify_calls=32
+SINGLE n=512 input=1 repeat=0 keygen=68106180 sign=11939978 verify_total=13100535 verify_calls=32
+SINGLE n=512 input=1 repeat=1 keygen=68106175 sign=11939977 verify_total=13100536 verify_calls=32
+SINGLE n=512 input=1 repeat=2 keygen=68106176 sign=11939977 verify_total=13100538 verify_calls=32
+SINGLE n=512 input=2 repeat=0 keygen=69480451 sign=11913546 verify_total=13100090 verify_calls=32
+SINGLE n=512 input=2 repeat=1 keygen=69480452 sign=11913546 verify_total=13100087 verify_calls=32
+SINGLE n=512 input=2 repeat=2 keygen=69480450 sign=11913546 verify_total=13100088 verify_calls=32
+SINGLE n=512 input=3 repeat=0 keygen=48707336 sign=12006159 verify_total=13101052 verify_calls=32
+SINGLE n=512 input=3 repeat=1 keygen=48707335 sign=12006159 verify_total=13101047 verify_calls=32
+SINGLE n=512 input=3 repeat=2 keygen=48707342 sign=12006159 verify_total=13099961 verify_calls=32
+SINGLE n=512 input=4 repeat=0 keygen=48586785 sign=11879612 verify_total=13109851 verify_calls=32
+SINGLE n=512 input=4 repeat=1 keygen=48586785 sign=11879614 verify_total=13109848 verify_calls=32
+SINGLE n=512 input=4 repeat=2 keygen=48586783 sign=11879611 verify_total=13108761 verify_calls=32
+SINGLE n=512 input=5 repeat=0 keygen=46345737 sign=11849891 verify_total=13106585 verify_calls=32
+SINGLE n=512 input=5 repeat=1 keygen=46345745 sign=11848808 verify_total=13106583 verify_calls=32
+SINGLE n=512 input=5 repeat=2 keygen=46345749 sign=11849892 verify_total=13106583 verify_calls=32
+SINGLE n=512 input=6 repeat=0 keygen=75219011 sign=12007023 verify_total=13102394 verify_calls=32
+SINGLE n=512 input=6 repeat=1 keygen=75219014 sign=12005937 verify_total=13102393 verify_calls=32
+SINGLE n=512 input=6 repeat=2 keygen=75219010 sign=12007022 verify_total=13102394 verify_calls=32
+SINGLE n=512 input=7 repeat=0 keygen=46785030 sign=11819512 verify_total=13099702 verify_calls=32
+SINGLE n=512 input=7 repeat=1 keygen=46785028 sign=11819516 verify_total=13099702 verify_calls=32
+SINGLE n=512 input=7 repeat=2 keygen=46785026 sign=11818426 verify_total=13099706 verify_calls=32
+CHECK degree=512 key=32 sign=32 valid=32 tamper=64 guards=PASS
+SINGLE n=1024 input=0 repeat=0 keygen=395008086 sign=25136474 verify_total=25204409 verify_calls=32
+SINGLE n=1024 input=0 repeat=1 keygen=395008098 sign=25136493 verify_total=25204407 verify_calls=32
+SINGLE n=1024 input=0 repeat=2 keygen=395008084 sign=25136478 verify_total=25205495 verify_calls=32
+SINGLE n=1024 input=1 repeat=0 keygen=213074051 sign=25205974 verify_total=25194426 verify_calls=32
+SINGLE n=1024 input=1 repeat=1 keygen=213075106 sign=25205978 verify_total=25194428 verify_calls=32
+SINGLE n=1024 input=1 repeat=2 keygen=213074021 sign=25207074 verify_total=25194423 verify_calls=32
+SINGLE n=1024 input=2 repeat=0 keygen=283007094 sign=25106433 verify_total=25208952 verify_calls=32
+SINGLE n=1024 input=2 repeat=1 keygen=283007088 sign=25106426 verify_total=25208951 verify_calls=32
+SINGLE n=1024 input=2 repeat=2 keygen=283007091 sign=25106426 verify_total=25208950 verify_calls=32
+SINGLE n=1024 input=3 repeat=0 keygen=186628151 sign=24937771 verify_total=24570363 verify_calls=32
+SINGLE n=1024 input=3 repeat=1 keygen=186628140 sign=24937771 verify_total=24570364 verify_calls=32
+SINGLE n=1024 input=3 repeat=2 keygen=186628150 sign=24937773 verify_total=24570361 verify_calls=32
+SINGLE n=1024 input=4 repeat=0 keygen=199986785 sign=24887043 verify_total=25206202 verify_calls=32
+SINGLE n=1024 input=4 repeat=1 keygen=199985687 sign=24888125 verify_total=25206199 verify_calls=32
+SINGLE n=1024 input=4 repeat=2 keygen=199985703 sign=24888125 verify_total=25206207 verify_calls=32
+SINGLE n=1024 input=5 repeat=0 keygen=470133149 sign=25281113 verify_total=24569531 verify_calls=32
+SINGLE n=1024 input=5 repeat=1 keygen=470134248 sign=25281119 verify_total=24569527 verify_calls=32
+SINGLE n=1024 input=5 repeat=2 keygen=470133128 sign=25282202 verify_total=24569529 verify_calls=32
+SINGLE n=1024 input=6 repeat=0 keygen=438751170 sign=25141087 verify_total=25199480 verify_calls=32
+SINGLE n=1024 input=6 repeat=1 keygen=438752272 sign=25139997 verify_total=25200569 verify_calls=32
+SINGLE n=1024 input=6 repeat=2 keygen=438752251 sign=25140001 verify_total=25200574 verify_calls=32
+SINGLE n=1024 input=7 repeat=0 keygen=209480460 sign=25048012 verify_total=25203544 verify_calls=32
+SINGLE n=1024 input=7 repeat=1 keygen=209480470 sign=25049098 verify_total=25202455 verify_calls=32
+SINGLE n=1024 input=7 repeat=2 keygen=209480472 sign=25048007 verify_total=25203544 verify_calls=32
+CHECK degree=1024 key=64 sign=64 valid=64 tamper=128 guards=PASS
+BENCH_DONE result=0 key=64 sign=64 valid=64 tamper=128
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1f35c lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x14d54 lma 0x30000980
+Loading section datas, size 0x4c lma 0x300156e0
+Loading section device_states, size 0x2c lma 0x3001572c
+Loading section k_mutex_area, size 0x14 lma 0x30015758
+Loading section .last_section, size 0x4 lma 0x3001576c
+Start address 0x1001a798, load size 216548
+Transfer rate: 550 KB/sec, 7733 bytes/write.
+Temporary breakpoint 1 at 0x100174f4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x1001a784: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpyuoxfrvm/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x100174a4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x1001a784: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x985e4b            9985611
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x3002c558          805487960
+r8             0x300000d0          805306576
+r9             0x3003c698          805553816
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3003c648          0x3003c648 <z_main_stack+65456>
+lr             0x100174eb          268530923
+pc             0x100174a4          0x100174a4 <nucleo_test_breakpoint>
+xpsr           0x9000000           150994944
+fpscr          0x20040010          537133072
+msp            0x3002c558          0x3002c558 <z_idle_stacks>
+psp            0x3003c648          0x3003c648 <z_main_stack+65456>
+vpr            0xf                 [ P0=15 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x3002c558          0x3002c558 <z_idle_stacks>
+psp_s          0x3003c648          0x3003c648 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x3002bd58          0x3002bd58 <z_interrupt_stacks>
+psplim_s       0x3002c698          0x3002c698 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xf                 15
+0x3003c648 <z_main_stack+65456>:	0x00000000	0x10017507	0x00000000	0x1001df4f
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x3002c558
+PSP=0x3003c648
+LR=0x100174eb
+PC=0x100174a4
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3002c558 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002c568 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

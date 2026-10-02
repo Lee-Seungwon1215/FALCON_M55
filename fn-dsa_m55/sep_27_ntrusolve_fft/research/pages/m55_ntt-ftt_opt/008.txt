@@ -1,0 +1,49 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 8/29
+
+8 Polynomial multiplication on embedded vector architectures
+3.2 Introduction to MVE
+The M-Profile Vector Extension (MVE) is a feature of the Armv8.1-M architecture [Armb,
+Arme], primarily for signal processing and machine learning applications. MVE is also
+referred to as the Helium vector extension, in alignment with the Arm® Neon™ Technology
+architecture extension for A-profile processors [Arma, Section C.3.5]. However, while
+there are similarities between the Helium instruction set and the Neon instruction set, the
+Helium vector extension is a new ground-up architecture design specifically tailored for
+the extreme area and energy eﬃciency required in typical Cortex-M applications.
+The vector file Like the Neon instruction set, the Helium vector extension uses 128-bit
+vector registers. There are 8 vector registers, compared to 32 in the Neon instruction
+set, a design choice which can be approached from multiple angles: Firstly, it results in
+a lower gate count and power profile. Secondly, the lower vector count is compensated
+for by multiple features, including the presence of numerous instructions utilizing both
+vector and scalar registers. The suitability of scalar-vector operations is a main diﬀerence
+between M- and A-profile: On A-profile implementations, the physical distance between
+vector and scalar register file is too large to allow for low-latency scalar-vector operations.
+The smaller scale of M-profile CPUs means that these operations become feasible.
+Implication: Algorithm design A common technique for vectorization of computational
+workloads is batching, whereby multiple instances of a higher-level construct are computed
+in parallel, rather than the computation of a single instance of the construction being
+vectorized and accelerated.
+Since batching tends to use a large number of vector registers but a low number
+of general purpose registers (GPR), we found it not suitable for use with the Helium
+vector extension except for very small computations. Instead, we found that the Helium
+instruction set works well for single-instance speedup, using a mix of vector and GPR file.
+We will see this in the example of schoolbook multiplications below.
+cycles
+0 1 2 3 4
+VLDR
+VMLA
+VLDR
+VMLA
+beats
+0 1 2 3 4 5 6 7 8 9
+Figure 2 Instruction overlapping on a dual-beat implementation of Helium
+Instruction Overlapping The idea of overlapping the execution of instructions is funda-
+mental to CPU microarchitecture and at the heart of the concept of a pipeline. However,
+it is commonly hidden from the programmers. The Helium architecture extension deviates
+from this by making instruction overlapping part of the architecture.
+The execution of each vector instruction is architecturally subdivided into four 32-bit
+parts called beats. The operation of each beat may aﬀect multiple lanes: For example,
+the VADD.u16 operation operates on two 16-bit lanes per beat. The Helium architecture
+extension requires that each beat of an instruction is executed in-order, but it allows
+implementations to execute beats from the following instruction whilst still executing beats
+from the previous instruction [Armb]. For example, a vector load VLDR instruction can be
+overlapped with a vector multiply accumulate VMLA as shown in Figure 2.

@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "kind": "offline post-measurement audit; board restoration relies on recorded verify_image result",
+  "source_commit": "a5f15894bf1a68017074650d5298cecf9bb29a79",
+  "stlink_serial": "066DFF363355473043205442",
+  "fresh_backup_sha256": "8899d461cef13b43b72c548e63fd1259df6d3e4b8bbd8eaeba44b6bdaececdf3",
+  "total_timed_calls": 600,
+  "host_fingerprints_match": true,
+  "binary_difference_from_previous": "WFI to NOP at offset 51998 only; outside measured calls",
+  "comparison_with_previous_flash_run": [
+    {
+      "degree": 512,
+      "operation": "keygen",
+      "mean_cycles": 72795466.49,
+      "previous_mean_cycles": 72795466.52,
+      "difference_percent": -4.12113565495531e-08
+    },
+    {
+      "degree": 512,
+      "operation": "sign",
+      "mean_cycles": 22013521.04,
+      "previous_mean_cycles": 22013521.04,
+      "difference_percent": 0.0
+    },
+    {
+      "degree": 512,
+      "operation": "verify",
+      "mean_cycles": 439739.46,
+      "previous_mean_cycles": 439739.46,
+      "difference_percent": 0.0
+    },
+    {
+      "degree": 1024,
+      "operation": "keygen",
+      "mean_cycles": 295754302.83,
+      "previous_mean_cycles": 295754302.9,
+      "difference_percent": -2.36682895504714e-08
+    },
+    {
+      "degree": 1024,
+      "operation": "sign",
+      "mean_cycles": 47238188.12,
+      "previous_mean_cycles": 47238188.17,
+      "difference_percent": -1.0584657594847613e-07
+    },
+    {
+      "degree": 1024,
+      "operation": "verify",
+      "mean_cycles": 866016.35,
+      "previous_mean_cycles": 866016.35,
+      "difference_percent": 0.0
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+
+/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/q32_trial-perfct/zephyr/zephyr.elf:     file format elf32-littlearm
+
+
+Disassembly of section rom_start:
+
+Disassembly of section text:
+
+10005560 <probe_mul>:
+10005560:	ed9f 7b73 	vldr	d7, [pc, #460]	@ 10005730 <probe_mul+0x1d0>
+10005564:	ee20 0b01 	vmul.f64	d0, d0, d1
+10005568:	ee20 7b07 	vmul.f64	d7, d0, d7
+1000556c:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+10005570:	b083      	sub	sp, #12
+10005572:	ed8d 7b00 	vstr	d7, [sp]
+10005576:	e9dd 1000 	ldrd	r1, r0, [sp]
+1000557a:	f3c0 570a 	ubfx	r7, r0, #20, #11
+1000557e:	f2a7 32ff 	subw	r2, r7, #1023	@ 0x3ff
+10005582:	2a33      	cmp	r2, #51	@ 0x33
+10005584:	f04f 0401 	mov.w	r4, #1
+10005588:	f04f 0500 	mov.w	r5, #0
+1000558c:	bf8c      	ite	hi
+1000558e:	f04f 0c00 	movhi.w	ip, #0
+10005592:	f04f 0c01 	movls.w	ip, #1
+10005596:	f5c7 6386 	rsb	r3, r7, #1072	@ 0x430
+1000559a:	3303      	adds	r3, #3
+1000559c:	f003 033f 	and.w	r3, r3, #63	@ 0x3f
+100055a0:	ea54 350d 	lsll	r4, r5, r3
+100055a4:	0fc6      	lsrs	r6, r0, #31
+100055a6:	f1bc 0f00 	cmp.w	ip, #0
+100055aa:	f000 80b7 	beq.w	1000571c <probe_mul+0x1bc>
+100055ae:	f114 3cff 	adds.w	ip, r4, #4294967295	@ 0xffffffff
+100055b2:	f145 3eff 	adc.w	lr, r5, #4294967295	@ 0xffffffff
+100055b6:	ea0c 0c01 	and.w	ip, ip, r1
+100055ba:	ea0e 0e00 	and.w	lr, lr, r0
+100055be:	ea5c 0c0e 	orrs.w	ip, ip, lr
+100055c2:	f006 0801 	and.w	r8, r6, #1
+100055c6:	f04f 0900 	mov.w	r9, #0
+100055ca:	bf08      	it	eq
+100055cc:	f04f 0800 	moveq.w	r8, #0
+100055d0:	ea58 390d 	lsll	r8, r9, r3
+100055d4:	eb18 0801 	adds.w	r8, r8, r1
+100055d8:	eb40 0c09 	adc.w	ip, r0, r9
+100055dc:	f1d4 0e00 	rsbs	lr, r4, #0
+100055e0:	eb65 0345 	sbc.w	r3, r5, r5, lsl #1
+100055e4:	ea08 040e 	and.w	r4, r8, lr
+100055e8:	ea0c 0c03 	and.w	ip, ip, r3
+100055ec:	f240 33fe 	movw	r3, #1022	@ 0x3fe
+100055f0:	2a33      	cmp	r2, #51	@ 0x33
+100055f2:	bf8c      	ite	hi
+100055f4:	2200      	movhi	r2, #0
+100055f6:	2201      	movls	r2, #1
+100055f8:	429f      	cmp	r7, r3
+100055fa:	bf8c      	ite	hi
+100055fc:	2300      	movhi	r3, #0
+100055fe:	2301      	movls	r3, #1
+10005600:	1e55      	subs	r5, r2, #1
+10005602:	ea05 0200 	and.w	r2, r5, r0
+10005606:	400d      	ands	r5, r1
+10005608:	432c      	orrs	r4, r5
+1000560a:	ea4c 0202 	orr.w	r2, ip, r2
+1000560e:	1e5d      	subs	r5, r3, #1
+10005610:	402c      	ands	r4, r5
+10005612:	402a      	ands	r2, r5
+10005614:	2b00      	cmp	r3, #0
+10005616:	f000 8088 	beq.w	1000572a <probe_mul+0x1ca>
+1000561a:	1849      	adds	r1, r1, r1
+1000561c:	eb40 0300 	adc.w	r3, r0, r0
+10005620:	4319      	orrs	r1, r3
+10005622:	f006 0601 	and.w	r6, r6, #1
+10005626:	bf08      	it	eq
+10005628:	2600      	moveq	r6, #0
+1000562a:	4b47      	ldr	r3, [pc, #284]	@ (10005748 <probe_mul+0x1e8>)
+1000562c:	4276      	negs	r6, r6
+1000562e:	f000 4000 	and.w	r0, r0, #2147483648	@ 0x80000000
+10005632:	4033      	ands	r3, r6
+10005634:	4303      	orrs	r3, r0
+10005636:	4620      	mov	r0, r4
+10005638:	ea42 0103 	orr.w	r1, r2, r3
+1000563c:	ed9f 6b3e 	vldr	d6, [pc, #248]	@ 10005738 <probe_mul+0x1d8>
+10005640:	ec41 0b15 	vmov	d5, r0, r1
+10005644:	ed9f 7b3e 	vldr	d7, [pc, #248]	@ 10005740 <probe_mul+0x1e0>
+10005648:	ee25 0b06 	vmul.f64	d0, d5, d6
+1000564c:	ee30 7b07 	vadd.f64	d7, d0, d7
+10005650:	ee27 7b06 	vmul.f64	d7, d7, d6
+10005654:	ed8d 7b00 	vstr	d7, [sp]
+10005658:	e9dd 1000 	ldrd	r1, r0, [sp]
+1000565c:	f3c0 5e0a 	ubfx	lr, r0, #20, #11
+10005660:	f2ae 32ff 	subw	r2, lr, #1023	@ 0x3ff
+10005664:	2a33      	cmp	r2, #51	@ 0x33
+10005666:	f04f 0401 	mov.w	r4, #1
+1000566a:	f04f 0500 	mov.w	r5, #0
+1000566e:	bf8c      	ite	hi
+10005670:	2600      	movhi	r6, #0
+10005672:	2601      	movls	r6, #1
+10005674:	f5ce 6386 	rsb	r3, lr, #1072	@ 0x430
+10005678:	3303      	adds	r3, #3
+1000567a:	f003 033f 	and.w	r3, r3, #63	@ 0x3f
+1000567e:	ea54 350d 	lsll	r4, r5, r3
+10005682:	ea4f 7cd0 	mov.w	ip, r0, lsr #31
+10005686:	2e00      	cmp	r6, #0
+10005688:	d04d      	beq.n	10005726 <probe_mul+0x1c6>
+1000568a:	1e66      	subs	r6, r4, #1
+1000568c:	f145 37ff 	adc.w	r7, r5, #4294967295	@ 0xffffffff
+10005690:	400e      	ands	r6, r1
+10005692:	4007      	ands	r7, r0
+10005694:	433e      	orrs	r6, r7
+10005696:	f00c 0601 	and.w	r6, ip, #1
+1000569a:	f04f 0700 	mov.w	r7, #0
+1000569e:	bf08      	it	eq
+100056a0:	2600      	moveq	r6, #0
+100056a2:	ea56 370d 	lsll	r6, r7, r3
+100056a6:	eb16 0801 	adds.w	r8, r6, r1
+100056aa:	eb40 0607 	adc.w	r6, r0, r7
+100056ae:	4267      	negs	r7, r4
+100056b0:	eb65 0345 	sbc.w	r3, r5, r5, lsl #1
+100056b4:	ea08 0407 	and.w	r4, r8, r7
+100056b8:	401e      	ands	r6, r3
+100056ba:	f240 33fe 	movw	r3, #1022	@ 0x3fe
+100056be:	2a33      	cmp	r2, #51	@ 0x33
+100056c0:	bf8c      	ite	hi
+100056c2:	2200      	movhi	r2, #0
+100056c4:	2201      	movls	r2, #1
+100056c6:	459e      	cmp	lr, r3
+100056c8:	bf8c      	ite	hi
+100056ca:	2300      	movhi	r3, #0
+100056cc:	2301      	movls	r3, #1
+100056ce:	1e55      	subs	r5, r2, #1
+100056d0:	ea05 0200 	and.w	r2, r5, r0
+100056d4:	400d      	ands	r5, r1
+100056d6:	432c      	orrs	r4, r5
+100056d8:	4332      	orrs	r2, r6
+100056da:	1e5d      	subs	r5, r3, #1
+100056dc:	402c      	ands	r4, r5
+100056de:	402a      	ands	r2, r5
+100056e0:	b1f3      	cbz	r3, 10005720 <probe_mul+0x1c0>
+100056e2:	1849      	adds	r1, r1, r1
+100056e4:	eb40 0300 	adc.w	r3, r0, r0
+100056e8:	4319      	orrs	r1, r3
+100056ea:	f00c 0c01 	and.w	ip, ip, #1
+100056ee:	bf08      	it	eq
+100056f0:	f04f 0c00 	moveq.w	ip, #0
+100056f4:	4b14      	ldr	r3, [pc, #80]	@ (10005748 <probe_mul+0x1e8>)
+100056f6:	f1cc 0c00 	rsb	ip, ip, #0
+100056fa:	f000 4000 	and.w	r0, r0, #2147483648	@ 0x80000000
+100056fe:	ea0c 0303 	and.w	r3, ip, r3
+10005702:	4303      	orrs	r3, r0
+10005704:	4620      	mov	r0, r4
+10005706:	ea42 0103 	orr.w	r1, r2, r3
+1000570a:	ed9f 7b09 	vldr	d7, [pc, #36]	@ 10005730 <probe_mul+0x1d0>
+1000570e:	ec41 0b16 	vmov	d6, r0, r1
+10005712:	ee07 0b46 	vmls.f64	d0, d7, d6
+10005716:	b003      	add	sp, #12
+10005718:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
+1000571c:	4664      	mov	r4, ip
+1000571e:	e765      	b.n	100055ec <probe_mul+0x8c>
+10005720:	f003 03ff 	and.w	r3, r3, #255	@ 0xff
+10005724:	e7ee      	b.n	10005704 <probe_mul+0x1a4>
+10005726:	4634      	mov	r4, r6
+10005728:	e7c7      	b.n	100056ba <probe_mul+0x15a>
+1000572a:	f003 03ff 	and.w	r3, r3, #255	@ 0xff
+1000572e:	e782      	b.n	10005636 <probe_mul+0xd6>
+10005730:	00000000 	.word	0x00000000
+10005734:	41f00000 	.word	0x41f00000
+10005738:	00000000 	.word	0x00000000
+1000573c:	3df00000 	.word	0x3df00000
+10005740:	00000000 	.word	0x00000000
+10005744:	41e00000 	.word	0x41e00000
+10005748:	3ff00000 	.word	0x3ff00000

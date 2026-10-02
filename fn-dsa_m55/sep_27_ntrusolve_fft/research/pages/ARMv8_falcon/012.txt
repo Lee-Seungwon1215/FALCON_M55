@@ -1,0 +1,43 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 12/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+FIGURE 3. Proposed memory optimization technique for FFT/NTT algoritm.
+coefficient can be kept in the NEON register, up to 8; there-
+fore, eight coefficients are calculated simultaneously. In the
+NTT implementation, Montgomery reduction operations are
+still performed. The coefficients of polynomials which is the
+result of NTT are still in the Montgomery domain.
+V. EVALUATION
+A. TARGET DEVICE: JETSON XAVIER
+In this section, we evaluate the performance of Falcon soft-
+ware incorporating the proposed FFT/NTT optimization.
+We measured performance on Jetson Xavier boards. Jetson
+Xaver board is an on-board unit that is widely used in
+autonomous driving environments. The Jetson Xavier CPU
+has 8 ARMv8.2 cores and the same out-of-order pipeline
+as ARMv8. ARMv8.2 supports half-precision floating-point
+processing, RAS, statistical profiling, and an improved mem-
+ory model architecture when compared to ARMv8 [29].
+It has a 64KB L1 data cache, a 128KB L1 instruction
+cache, and a 2MB L2 cache, and it can run at up to
+2.26GHz. We used VScode development tools in Ubuntu
+20.04 environment, and used AArch64-gnu-gcc 7.5.0
+compiler. Until now, most of research of falcon has been
+conducted in the ARM Cortex-M4 environment, and since
+there are no research results in the ARMv8 environment,
+we provide detailed comparison with reference implementa-
+tion of Falcon submitted to the NIST Round 3 Submission.
+The reference implementation is composed of C language
+which uses FP data type and the -O3 option is applied when
+compiling, and the proposed implementation is composed of
+assembly language.
+B. PERFORMANCE ANALYSIS FOR NTT/FFT-BASED
+POLYNOMIAL MULTIPLICATION
+As mentioned in Section II, since the ARMv8 platforms
+supports floating-point operations, the reference code, we are
+comparing, is the optimized version of Falcon submitted
+to 3 Round. Table 3 provides detailed comparison of Falcon
+Round 3 Submission and FFT/NTT-based multiplication of
+the proposed Falcon software. Compared to reference imple-
+mentation in the NTT and InvNTT process, we basically
+VOLUME 10, 2022 44457

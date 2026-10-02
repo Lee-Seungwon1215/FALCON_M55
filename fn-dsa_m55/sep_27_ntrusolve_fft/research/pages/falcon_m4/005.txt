@@ -1,0 +1,24 @@
+DOCUMENT: falcon_m4.pdf PAGE: 5/18
+
+2 Optimization Techniques
+2.1 Cost Statistics
+In order to optimize code, it is useful to know where the CPU time is spent. Figure 1 shows
+the relative cost of hashing (Keccak-f function, which is the core of SHAKE) in key pair gen-
+eration and in verification (considering here the BUFF variant). Figure 2 considers signature
+generation, with a breakdown for individual floating-point operations. Both figures are for
+Falcon-512, but the relative costs for Falcon-1024 are very similar. The values are also for a
+small signed message; for a very long message, the cost of hashing necessarily dominates both
+signature generation and verification.
+6.88% 62.39%
+Fig. 1: Relative cost of SHAKE in key pair generation (left) and signature verification (right).
+This uses the BUFF variant of the verification.
+21.79%
+fpr_div: 4.79%
+Keccak-f: 10.67%
+fpr_scaled: 1.85%
+fpr_add: 22.78%
+fpr_sqrt: 1.42%
+fpr_mul: 21.81%
+fpr_add_sub: 14.89%
+Fig. 2: Relative costs of SHAKE and floating-point operations in signature generation.
+5

@@ -1,0 +1,27 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 34/38
+
+34 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+F Assembly for Interleaved Multi-Layer Butterflies
+Algorithm 34 qq_butterfly_top for 16 parallel 32-bit Montgomery multiplications.
+Inputs:
+a0,...,a3, b0,...,b3, t0,...,t3, mod, z0,l0,h0,...,z3,l3,h3, qS, sS
+Roles of the symbols:
+Operating registers: a0,...,a3,b0,...,b3,t0,...,t3
+Registers with twiddle factors: z0,...,z3
+Indices for twiddle factors: l0,...,l3,h0,...,h3
+Modulus: mod
+Specifiers: (qS,sS) = (.4S,.S)
+Outputs:
+t0= b0ω0 mod±q,...,t3= b3ω3 mod±q
+1: mul t0qS, b0qS, z0sS[h0]
+2: mul t1qS, b1qS, z1sS[h1]
+3: mul t2qS, b2qS, z2sS[h2]
+4: mul t3qS, b3qS, z3sS[h3]
+5: sqrdmulh b0qS, b0qS, z0sS[l0]
+6: sqrdmulh b1qS, b1qS, z1sS[l1]
+7: sqrdmulh b2qS, b2qS, z2sS[l2]
+8: sqrdmulh b3qS, b3qS, z3sS[l3]
+9: mls t0qS, b0qS, modsS[0]
+10: mls t1qS, b1qS, modsS[0]
+11: mls t2qS, b2qS, modsS[0]
+12: mls t3qS, b3qS, modsS[0]

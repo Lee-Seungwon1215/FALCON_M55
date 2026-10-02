@@ -1,0 +1,45 @@
+DOCUMENT: falcon_m4.pdf PAGE: 7/18
+
+– Memory stores can be grouped together to the extent that it is compatible with pipelin-
+ing, but may also be spread out and interleaved with computational instructions so as
+to benefit from the store buffer. n str opcodes, properly pipelined or spread out, will
+execute in n cycles, which is faster than what a “store multiple” opcode (stm or strd)
+can achieve.
+Contention with Instruction Fetching. The M4 must perform memory accesses to
+fetch instructions to execute. In general, this happens in parallel with explicit memory ac-
+cesses, but it may happen that the two accesses somehow compete for the same resources,
+and stalls happen. The exact conditions for this event are not documented. Heuristically, this
+problem can be avoided by ensuring that instructions are 32-bit aligned: individual instruc-
+tions are encoded over either 16 bits or 32 bits; stalls due to contention with the instruction
+fetching unit may happen when instructions with a 32-bit encoding are located at an address
+which is not a multiple of 4. Purely computational routines which work on registers only are
+not impacted by such stalls, and can mix 16-bit and 32-bit instructions freely (and, in general,
+16-bit instructions should be used when possible since that promotes code compacity). How-
+ever, routines that need to perform memory accesses (for instance a Keccak-f implementation
+for SHAKE) should strive to ensure alignment of all 32-bit instructions, by either not using
+any 16-bit instruction, or pairing such instructions together. At the assembly level, most 16-bit
+instructions can be converted to 32-bit instructions by adding a .w suffix to the instruction
+name.
+Floating-Point Registers. The M4 includes a floating-point unit, which is not really us-
+able for Falcon since it supports only the “binary32” IEEE 754 type. However, the floating-
+point registers can be used as a temporary storage area. There are 32 such registers (s0 to
+s31) and, in the call convention (AAPCS), s0 to s15 are caller-saved, i.e. the callee can use
+them without saving them beforehand. The vmov opcode can move a value between a general
+purpose register and a floating-point register in one cycle, which is faster than stack accesses.
+There is a vmov variant that can copy two values (in two cycles), while using only one 32-bit
+instruction, which is good for code compacity.
+Interconnection Matrix and Caches. It is often said that the M4 does not have caches,
+and thus look-up tables with secret addresses should not induce information leaks through
+timing measurements. This is not a correct assertion. The ARM Cortex-M4 is, really, a vir-
+tual design for a CPU (usually called an IP, as “intellectual property”), which a hardware
+vendor will integrate with other elements into an actual physical chip. Typically, that chip
+will be dubbed a SoC (system-on-chip) or a microntroller, and will include some RAM and
+ROM/Flash, as well as various I/O pins and controllers for extra hardware, possibly with
+DMA accesses. The M4 itself does not include caches, but caches may be added by the inte-
+grator.
+Taking as an example the STM32F407VGT6 microcontroller (which is the one in the
+test board that we used for our benchmarks), its datasheet includes the diagram which we
+reproduce on figure 3.
+We see that the CPU itself communicates with its RAM, Flash and peripherals through a
+large interconnection matrix (“Bus matrix-S”) which arbitrates between concurrent accesses.
+7

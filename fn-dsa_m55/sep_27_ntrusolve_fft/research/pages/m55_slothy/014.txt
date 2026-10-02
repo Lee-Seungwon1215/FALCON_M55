@@ -1,0 +1,55 @@
+DOCUMENT: m55_slothy.pdf PAGE: 14/46
+
+14 Fast and Clean: Auditable high-performance assembly via constraint solving
+an input/output argument, thereby creating an unnecessary data dependency between
+the instruction pattern and whatever instruction(s) established the previous value of the
+destination register(s). This, in turn, limits SLOTHY’s renaming and reordering flexibility.
+To address this, SLOTHY allows architecture specifications to modify instructions within
+the context of an entire computational flow graph, in particular allowing for the retroactive
+detection and reclassification of input/output registers as a pure output registers in jointly
+destructive patterns. We leverage this to detect and mark the destination register in
+aforementioned patterns as a pure output for the first instruction of the sequence, thereby
+allowing to reorder it past previous instructions which write to the same register.
+4.5 Loop interleaving aka Software pipelining
+Apowerfulfeatureof SLOTHY issoftwarepipelining, thatis, interleavingmultipleiterations
+inaloop: Someearlyinstructions, suchasinitialloads, aremovedintothepreviousiteration,
+while some late instructions, such as final stores, are deferred to the next iteration. To
+avoid having to unroll the entire loop, periodicity of code has to be maintained.
+Modeling approach. To begin, for each instruction I we add three Boolean variables
+I.pre, I.post and I.core, indicating whether I will be an early/late instruction for
+the previous/next iteration, or whether it stays in its original iteration. Precisely one of
+{I.pre,I.core,I.post}must be set. For periodicity, we first double the loop body C,
+say as C1 and C2, and for an instruction I, we denote I1 and I2 its copies in C1 and C2,
+respectively. Note that this duplication is internal only and does not enforce an unrolling
+of the loop in the final code. We then relate I1 and I2 through the following periodicity
+constraints: First, the choices of I.pre,I.core,I.post and of register allocations
+must be the same for C1 and C2: I1.{pre,core,post} ⇔I2.{pre,core,post} and
+alloc(I1,O,R) ⇔alloc(I2,O,R) for all I ∈C. Second, “core” instructions are placed
+exactly n instructions apart, where n is the length of C: If I.core, then I2.pos=
+I1.pos + n. Third, and perhaps somewhat non-canonically, we force early instructions in
+C1 to become early instructions for the next iteration C3, and late instructions in C2 to
+become late instructions for the previous iteration C0. To achieve that, we constrain that
+for I.pre or I.post, we have I2.pos= I1.pos−n— note the sign! — and “cut” the
+O
+O
+constraints derived from I1
+−→J1 if I.pre, and those derived from I2
+−→J2 if J.post.
+Despite those “cuts”, the required constraints are implied by the remaining periodicity
+constraints, so long as we impose that for I1.pre and I O
+−→J, we have either J.pre
+or J.core, and similar for J2.post — without this condition, dependencies could be
+entirely and incorrectly removed by never setting I.core (a previous version of SLOTHY
+got this wrong). See Figure 5 for an illustration.
+Loop boundary. We do not model looping instructions such as counter decrements
+and compare+jumps: First, we don’t expect those to have a meaningful impact on the
+optimization. Second, onArmv8.1-M+Heliuminparticular, inneriterationsinlowoverhead
+loops do execute as if the loop had been unrolled, including the potential for instruction
+overlapping. By modelling the last and first instructions of two successive iterations as
+adjacent, SLOTHY correctly takes into account the overlapping at the loop boundary.
+Preamble and postamble. With software pipelining, the first and last iterations have to
+be treated especially: Concretely, a loop in which some instructions are being pulled into
+the previous iteration, requires a preamble (also called prologue) consisting of the early
+instructions for the first iteration, and a postamble (also called epilogue), consisting of
+the non-early instructions of the last iteration. Together, preamble and postamble then
+account for one full iteration. If both early and late instructions are used, preamble and

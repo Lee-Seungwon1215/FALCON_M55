@@ -1,0 +1,74 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 26/38
+
+26 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+A Kyber CPA PKE
+Algorithms 20–22 ([ABD+20b]), are the CPA-secure key generation, encryption, and
+decryption for the Kyber PKE.
+Here the module is of dimension ℓ over the ring Rq = Zq[x]/⟨xn + 1⟩, with q= 3329
+and n = 256; SampleU samples from the uniform distribution; SampleB samples from
+a centered binomial (η fair coins); and Expand samples a seed into a uniform matrix of
+polynomials. Notice that A is sampled in (incomplete) NTT domain directly.
+Algorithm 20 Kyber Key Generation
+Algorithm 21 Kyber CPA Encryption
+Output: pk= (seedA,ntt(b)),sk= (ntt(s))
+1: seedA ←SampleU()
+2: ntt(A) ∈Rℓ×ℓ
+q ←Expand(seedA)
+3: s,e∈Rℓ
+q ←SampleB()
+4: b←AT
+·s+ e
+Algorithm 22 Kyber CPA Decryption
+Input: m,r,pk= (seedA,ntt(b))
+Output: ct= (c′,b′′)
+1: ntt(A) ∈Rℓ×ℓ
+q ←Expand(seedA)
+2: s′,e′∈Rℓ
+q,e′′∈Rq ←SampleB(r)
+3: c←As′+ e′
+4: b′←bTs′+ e′′+ m
+5: ct←Compress(c,d1),Compress(b′,d2))
+Input: ct= (c′,b′′),sk= (ntt(s))
+Output: m
+1: c←Decompress(c′,d1)
+2: b′←Decompress(b′′,d2).
+3: m←b′′
+−cTs
+Compress(x,d) = ⌈(2d/q)x⌋mod 2d
+Decompress(x,d) = ⌈(q/2d)x⌋
+B Saber CPA PKE
+Algorithms 23–25 ([DKRV20]), are CPA-secure key generation, encryption, and decryption
+for the Saber PKE. Here, the module is of dimension ℓover the Rq = Zq[x]/⟨xn+ 1⟩, with
+q= 213 and n= 256; SampleU samples from the uniform distribution; SampleB samples
+from a centered binomial (η fair coins); and Expand samples a seed into a uniform matrix
+of polynomials.
+Algorithm 23 Saber Key Generation
+Algorithm 24 Saber CPA Encryption
+Output: pk= (seedA,b),sk= (s)
+1: seedA ←SampleU()
+2: A∈Rℓ×ℓ
+q ←Expand(seedA)
+3: s∈Rℓ
+q ←SampleB()
+4: b←Round(AT
+·s)
+Algorithm 25 Saber CPA Decryption
+Input: m,r,pk= (seedA,b)
+Output: ct= (c,b′)
+1: A∈Rℓ×ℓ
+q ←Expand(seedA)
+2: s′∈Rℓ
+q ←SampleB(r)
+3: b′←Round(As′)
+4: v′←bT(s′ mod p)
+5: c←Round(v′
+−2ϵ−1m)
+Input: ct= (c,b′),sk= (s)
+Output: m
+1: v←b′T(s mod p)
+2: m←Round(v−2ϵp−ϵT c mod p)
+Round is to nearest multiple of T.
+C Dilithium
+Algorithm26, Algorithm27, andAlgorithm28showtheDilithiumkeygeneration, signature
+generation, and verification (resp.). Sη is the uniform distribution {−η,−η+ 1,..., +η}; ∥
+denotes concatenation; and ∥·∥∞the sup-norm. For seed expansion functions ExpandA and

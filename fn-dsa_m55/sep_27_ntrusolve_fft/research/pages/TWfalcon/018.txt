@@ -1,0 +1,52 @@
+DOCUMENT: TWfalcon.pdf PAGE: 18/25
+
+18 TWFalcon: Triple-Word Arithmetic for Falcon
+Due to the varying number of intermediate zero bits between the components of the TW
+representation, it must be determined in which of the three 32-bit integers the precision
+bits of each component should be added or subtracted. In some cases, the bits may span
+across two integers. This results in many possible cases, which should be handled in
+constant-time to ensure timing side-channel resistance. Once all cases are correctly handled
+and the high-precision bit string is constructed, a simple cut can be made at a position
+determined by the exponent of x0. Since the input to this algorithm is always positive,
+this cut directly yields the truncated integer value of the input.
+4.2.6 Additional Algorithms
+The last missing algorithms needed to implement Falcon with TW are division and
+multiplication by 2e, combined addition/subtraction, and addition/multiplication between
+a single-precision floating-point value and a TW value.
+Multiplication and division by 2e increase and respectively decrease each exponent
+by e, by multiplying each component with the exactly representable floating-point value
+2e. While direct bitwise exponent manipulation is possible, on platforms such as the
+Cortex-M4 floating-point multiplication is a single-cycle operation, making this approach
+both simple and efficient.
+Implementing the add_sub algorithm requires special care. In the integer-emulated
+Falcon implementation, addition and subtraction on the same input are merged into a
+single efficient algorithm. This is mostly not possible when using TW representation, since
+the merging step obscures which inputs need negation. The only viable optimization is to
+merge inputs once in a way that serves both operations. Furthermore, to achieve optimal
+performance on the Cortex-M4 custom inline assembly is required to efficiently invoke the
+algorithm, similar to the approach used in the integer-emulated implementation [Por25a].
+This way the stack does not have to be used as all inputs and outputs fit in registers,
+which is not possible under the standard C calling conventions.
+Lastly, we designed additional TW algorithms aimed at improving performance. Where
+possible, our implementation calls the addition and multiplication algorithms with one
+input being a full TW value and the other a result of the fpr_of function. As described
+in Section 4.2.2, this function produces a TW value with one non-zero and two zero
+components. In such cases, x= (x0,x1,x2) and y= (y0,0,0), allowing optimizations by
+skipping operations on zero components. For addition, only four values must be merged
+instead of six, and both vec_sum and vseb reduce to four inputs while still producing the
+required outputs. For the multiplication operation,[FMP19] already presented an algorithm
+using a double-word and TW input; we extended the same technique to a single-precision
+floating-point input and a TW.
+4.3 Constant-Time Implementation
+TW algorithms from [FMP19] are not constant time and need to be revised. The notion
+of constant-time used in this work follows the definition provided by [Por25a]. We make
+the assumption that all computational instructions executed by the FPU, including
+division (vdiv) and square root (vsqrt), are assumed to run in constant-time. These
+two instructions typically execute in 14 cycles, except when no further floating-point
+instructions follow, in which case they complete in a single cycle. However, since the
+instruction sequence is fixed and does not vary with input, the timing remains constant.
+All custom assembly code written for the Cortex-M4F adheres strictly to these rules.
+While the C code is written to follow constant-time principles at the source level, the
+compilermaystillintroducebranchesorinstructionswhoseexecutiontimedependsoninput
+values, potentially leading to timing side channels. Therefore, only the implementation
+using assembly functions on the Cortex-M4F can be confidently considered constant-time.

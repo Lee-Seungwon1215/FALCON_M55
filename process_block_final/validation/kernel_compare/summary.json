@@ -1,0 +1,411 @@
+{
+  "candidate_sha256": "8da25be7532a6c6fc2bcd5977a4548ca58ec4d3afdaedea0dc0933868accefe7",
+  "runs": {
+    "ref-plain": {
+      "path": "results/ref-plain/20261001T115612Z",
+      "manifest": {
+        "variant": "ref-plain",
+        "valid_measurement": true,
+        "errors": [],
+        "elf_sha256": "0ef97619d629e38d97a2650ce3329b2fee453dd0e7115f13f638370b214e4a80",
+        "raw_sha256": "7376eec96032cc8fe486adbfc5fb7c6a6547154ab807f9309a36c1befa12067c",
+        "board_serial": "003C00223335510735383531",
+        "production_sha256": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830"
+      },
+      "audit": {
+        "variant": "ref-plain",
+        "helpers_byte_identical": true,
+        "helpers_bytes": 1284,
+        "scope": {
+          "checkpoint": "N1_io",
+          "helpers_inject_source_unchanged": true,
+          "constants_unchanged": true,
+          "other_crypto_sources_equal_to_process_block": {
+            "sysrng.c": true,
+            "kgen_fft_bridge.c": true,
+            "kgen_mp31.c": true,
+            "fndsa.h": true,
+            "codec.c": true,
+            "kgen_ntru.c": true,
+            "kgen_gauss.c": true,
+            "kgen_fft_mve.c": true,
+            "util.c": true,
+            "test_sign.c": true,
+            "sign_inner.h": true,
+            "kgen_fxp.c": true,
+            "sha3_cm4.s": true,
+            "kgen_mp31_cm55.s": true,
+            "sign_fpoly.c": true,
+            "kgen.c": true,
+            "sign.c": true,
+            "speed_fndsa.c": true,
+            "kgen_fft_cm55.s": true,
+            "kgen_fft_cm55.h": true,
+            "codec_cm4.s": true,
+            "mq.c": true,
+            "kgen_ds.h": true,
+            "test_fndsa.c": true,
+            "sign_fpr.c": true,
+            "sign_fft_cm55.s": true,
+            "fndsa_m55_config.h": true,
+            "sign_sampler_cm4.s": true,
+            "kgen_poly.c": true,
+            "mq_cm55.s": true,
+            "sign_ldl_cm55.s": true,
+            "sha3.c": true,
+            "sign_split_merge_cm55.s": true,
+            "sign_core.c": true,
+            "sign_fpr_cm4.s": true,
+            "inner.h": true,
+            "kgen_zint31.c": true,
+            "vrfy.c": true,
+            "kgen_inner.h": true,
+            "sign_sampler.c": true
+          }
+        },
+        "production_sha256": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+        "production_text_bytes": 4184,
+        "measured_text_bytes": 4184,
+        "entry_address": "0x10000844",
+        "fixed_placements": {
+          "state": "0x30003000",
+          "part_stack_top": "0x30005000"
+        },
+        "probe_scratch": "R0/R1/R2 saved/restored; cursor in fixed memory; flags/Q/P0/LR preserved"
+      },
+      "total_cycles": {
+        "mean": 13383.00015625,
+        "median": 13383.0,
+        "min": 13383.0,
+        "max": 13383.015625,
+        "stdev": 0.0015625
+      },
+      "timing_classes": [
+        {
+          "class": 0,
+          "n": 1000,
+          "sum": 13386001,
+          "sumsq": 179185022773,
+          "min": 13386,
+          "max": 13387
+        },
+        {
+          "class": 1,
+          "n": 1000,
+          "sum": 13386000,
+          "sumsq": 179184996000,
+          "min": 13386,
+          "max": 13386
+        }
+      ]
+    },
+    "mve-plain": {
+      "path": "results/mve-plain/20261001T120617Z",
+      "manifest": {
+        "variant": "mve-plain",
+        "valid_measurement": true,
+        "errors": [],
+        "elf_sha256": "927641e083c7107dd55abcee858d25d5b1bdc578f15283e1325f4302622a20fd",
+        "raw_sha256": "978bc58a3187cdcf2029d5320023a787963c706bf41c12711d4315029a7088c4",
+        "board_serial": "003C00223335510735383531",
+        "production_sha256": "8da25be7532a6c6fc2bcd5977a4548ca58ec4d3afdaedea0dc0933868accefe7"
+      },
+      "audit": {
+        "variant": "mve-plain",
+        "helpers_byte_identical": true,
+        "helpers_bytes": 1284,
+        "scope": {
+          "checkpoint": "N12345_all",
+          "helpers_inject_source_unchanged": true,
+          "constants_unchanged": true,
+          "other_crypto_sources_equal_to_process_block": {
+            "sysrng.c": true,
+            "kgen_fft_bridge.c": true,
+            "kgen_mp31.c": true,
+            "fndsa.h": true,
+            "codec.c": true,
+            "kgen_ntru.c": true,
+            "kgen_gauss.c": true,
+            "kgen_fft_mve.c": true,
+            "util.c": true,
+            "test_sign.c": true,
+            "sign_inner.h": true,
+            "kgen_fxp.c": true,
+            "sha3_cm4.s": true,
+            "kgen_mp31_cm55.s": true,
+            "sign_fpoly.c": true,
+            "kgen.c": true,
+            "sign.c": true,
+            "speed_fndsa.c": true,
+            "kgen_fft_cm55.s": true,
+            "kgen_fft_cm55.h": true,
+            "codec_cm4.s": true,
+            "mq.c": true,
+            "kgen_ds.h": true,
+            "test_fndsa.c": true,
+            "sign_fpr.c": true,
+            "sign_fft_cm55.s": true,
+            "fndsa_m55_config.h": true,
+            "sign_sampler_cm4.s": true,
+            "kgen_poly.c": true,
+            "mq_cm55.s": true,
+            "sign_ldl_cm55.s": true,
+            "sha3.c": true,
+            "sign_split_merge_cm55.s": true,
+            "sign_core.c": true,
+            "sign_fpr_cm4.s": true,
+            "inner.h": true,
+            "kgen_zint31.c": true,
+            "vrfy.c": true,
+            "kgen_inner.h": true,
+            "sign_sampler.c": true
+          }
+        },
+        "production_sha256": "8da25be7532a6c6fc2bcd5977a4548ca58ec4d3afdaedea0dc0933868accefe7",
+        "production_text_bytes": 6384,
+        "measured_text_bytes": 6384,
+        "entry_address": "0x10000844",
+        "fixed_placements": {
+          "state": "0x30003000",
+          "part_stack_top": "0x30005000"
+        },
+        "probe_scratch": "R0/R1/R2 saved/restored; cursor in fixed memory; flags/Q/P0/LR preserved"
+      },
+      "total_cycles": {
+        "mean": 11482.00015625,
+        "median": 11482.0,
+        "min": 11482.0,
+        "max": 11482.015625,
+        "stdev": 0.0015625
+      },
+      "timing_classes": [
+        {
+          "class": 0,
+          "n": 1000,
+          "sum": 11485000,
+          "sumsq": 131905225000,
+          "min": 11485,
+          "max": 11485
+        },
+        {
+          "class": 1,
+          "n": 1000,
+          "sum": 11485000,
+          "sumsq": 131905225000,
+          "min": 11485,
+          "max": 11485
+        }
+      ]
+    },
+    "ref-aligned": {
+      "path": "results/ref-aligned/20261001T120620Z",
+      "manifest": {
+        "variant": "ref-aligned",
+        "valid_measurement": true,
+        "errors": [],
+        "elf_sha256": "1a2765e3e92f920f0c0332af8fef33a773754921c291ff8bceb5860a9532344d",
+        "raw_sha256": "5e639f6c7599249ef3cbac4890e58fe5178bc18f62e0fcfefc85de54a2386e77",
+        "board_serial": "003C00223335510735383531",
+        "production_sha256": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830"
+      },
+      "audit": {
+        "variant": "ref-aligned",
+        "helpers_byte_identical": true,
+        "helpers_bytes": 1284,
+        "scope": {
+          "checkpoint": "N12345_all",
+          "helpers_inject_source_unchanged": true,
+          "constants_unchanged": true,
+          "other_crypto_sources_equal_to_process_block": {
+            "sysrng.c": true,
+            "kgen_fft_bridge.c": true,
+            "kgen_mp31.c": true,
+            "fndsa.h": true,
+            "codec.c": true,
+            "kgen_ntru.c": true,
+            "kgen_gauss.c": true,
+            "kgen_fft_mve.c": true,
+            "util.c": true,
+            "test_sign.c": true,
+            "sign_inner.h": true,
+            "kgen_fxp.c": true,
+            "sha3_cm4.s": true,
+            "kgen_mp31_cm55.s": true,
+            "sign_fpoly.c": true,
+            "kgen.c": true,
+            "sign.c": true,
+            "speed_fndsa.c": true,
+            "kgen_fft_cm55.s": true,
+            "kgen_fft_cm55.h": true,
+            "codec_cm4.s": true,
+            "mq.c": true,
+            "kgen_ds.h": true,
+            "test_fndsa.c": true,
+            "sign_fpr.c": true,
+            "sign_fft_cm55.s": true,
+            "fndsa_m55_config.h": true,
+            "sign_sampler_cm4.s": true,
+            "kgen_poly.c": true,
+            "mq_cm55.s": true,
+            "sign_ldl_cm55.s": true,
+            "sha3.c": true,
+            "sign_split_merge_cm55.s": true,
+            "sign_core.c": true,
+            "sign_fpr_cm4.s": true,
+            "inner.h": true,
+            "kgen_zint31.c": true,
+            "vrfy.c": true,
+            "kgen_inner.h": true,
+            "sign_sampler.c": true
+          }
+        },
+        "production_sha256": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+        "production_text_bytes": 4184,
+        "measured_text_bytes": 5740,
+        "entry_address": "0x10000844",
+        "fixed_placements": {
+          "state": "0x30003000",
+          "part_stack_top": "0x30005000"
+        },
+        "probe_scratch": "R0/R1/R2 saved/restored; cursor in fixed memory; flags/Q/P0/LR preserved"
+      },
+      "total_cycles": {
+        "mean": 13385.00015625,
+        "median": 13385.0,
+        "min": 13385.0,
+        "max": 13385.015625,
+        "stdev": 0.0015625
+      },
+      "timing_classes": [
+        {
+          "class": 0,
+          "n": 1000,
+          "sum": 13388001,
+          "sumsq": 179238570777,
+          "min": 13388,
+          "max": 13389
+        },
+        {
+          "class": 1,
+          "n": 1000,
+          "sum": 13388000,
+          "sumsq": 179238544000,
+          "min": 13388,
+          "max": 13388
+        }
+      ]
+    },
+    "mve-aligned": {
+      "path": "results/mve-aligned/20261001T120624Z",
+      "manifest": {
+        "variant": "mve-aligned",
+        "valid_measurement": true,
+        "errors": [],
+        "elf_sha256": "d889025d5712941e198f9e3708c6c37d0edfaad512eaeda0c5685a864aaa4b0c",
+        "raw_sha256": "7d47dbe81dbc4c1065f7276917f0c6246e4622fcc2e8a1b07021f7b8fc5fa69b",
+        "board_serial": "003C00223335510735383531",
+        "production_sha256": "8da25be7532a6c6fc2bcd5977a4548ca58ec4d3afdaedea0dc0933868accefe7"
+      },
+      "audit": {
+        "variant": "mve-aligned",
+        "helpers_byte_identical": true,
+        "helpers_bytes": 1284,
+        "scope": {
+          "checkpoint": "N12345_all",
+          "helpers_inject_source_unchanged": true,
+          "constants_unchanged": true,
+          "other_crypto_sources_equal_to_process_block": {
+            "sysrng.c": true,
+            "kgen_fft_bridge.c": true,
+            "kgen_mp31.c": true,
+            "fndsa.h": true,
+            "codec.c": true,
+            "kgen_ntru.c": true,
+            "kgen_gauss.c": true,
+            "kgen_fft_mve.c": true,
+            "util.c": true,
+            "test_sign.c": true,
+            "sign_inner.h": true,
+            "kgen_fxp.c": true,
+            "sha3_cm4.s": true,
+            "kgen_mp31_cm55.s": true,
+            "sign_fpoly.c": true,
+            "kgen.c": true,
+            "sign.c": true,
+            "speed_fndsa.c": true,
+            "kgen_fft_cm55.s": true,
+            "kgen_fft_cm55.h": true,
+            "codec_cm4.s": true,
+            "mq.c": true,
+            "kgen_ds.h": true,
+            "test_fndsa.c": true,
+            "sign_fpr.c": true,
+            "sign_fft_cm55.s": true,
+            "fndsa_m55_config.h": true,
+            "sign_sampler_cm4.s": true,
+            "kgen_poly.c": true,
+            "mq_cm55.s": true,
+            "sign_ldl_cm55.s": true,
+            "sha3.c": true,
+            "sign_split_merge_cm55.s": true,
+            "sign_core.c": true,
+            "sign_fpr_cm4.s": true,
+            "inner.h": true,
+            "kgen_zint31.c": true,
+            "vrfy.c": true,
+            "kgen_inner.h": true,
+            "sign_sampler.c": true
+          }
+        },
+        "production_sha256": "8da25be7532a6c6fc2bcd5977a4548ca58ec4d3afdaedea0dc0933868accefe7",
+        "production_text_bytes": 6384,
+        "measured_text_bytes": 6848,
+        "entry_address": "0x10000844",
+        "fixed_placements": {
+          "state": "0x30003000",
+          "part_stack_top": "0x30005000"
+        },
+        "probe_scratch": "R0/R1/R2 saved/restored; cursor in fixed memory; flags/Q/P0/LR preserved"
+      },
+      "total_cycles": {
+        "mean": 11484.00015625,
+        "median": 11484.0,
+        "min": 11484.0,
+        "max": 11484.015625,
+        "stdev": 0.0015625
+      },
+      "timing_classes": [
+        {
+          "class": 0,
+          "n": 1000,
+          "sum": 11487000,
+          "sumsq": 131951169000,
+          "min": 11487,
+          "max": 11487
+        },
+        {
+          "class": 1,
+          "n": 1000,
+          "sum": 11487000,
+          "sumsq": 131951169000,
+          "min": 11487,
+          "max": 11487
+        }
+      ]
+    }
+  },
+  "comparisons": {
+    "plain": {
+      "reference": 13383.0,
+      "candidate": 11482.0,
+      "speedup": 1.165563490681066,
+      "cycle_reduction_percent": 14.204587910035116
+    },
+    "aligned": {
+      "reference": 13385.0,
+      "candidate": 11484.0,
+      "speedup": 1.1655346569139673,
+      "cycle_reduction_percent": 14.202465446395218
+    }
+  }
+}

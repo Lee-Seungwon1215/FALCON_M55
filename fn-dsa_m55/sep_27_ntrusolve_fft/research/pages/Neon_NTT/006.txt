@@ -1,0 +1,79 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 6/38
+
+6 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 1 Barrett reduction
+Algorithm 2 Montgomery reduction
+.
+Require: N modulus, R= 2n >N
+Require: R
+N ∈Z approx. of R
+N.
+Require: z∈Z, |z|≤R, to be reduced
+Ensure: z′≡z (mod N), |z′|< 3
+2 N.
+1: t← z R
+N /R
+2: c←Nt
+3: bar N (z) := z′←z−c
+Require: N odd, R= 2n >N
+Require: T ∈Z, T ≡±N−1 (mod R)
+Require: z∈Z, to be reduced
+Ensure: z′≡zR−1 (mod N), |z′|≤|z|
+2n + N
+2.
+1: k←zT mod±R
+2: c←kN
+3: mont±
+N(z) := z′←z∓c
+R
+Fact 2. For any choice of integer approximation , we have
+|z mod±N−bar N (z)|≤N |z|
+R
+In particular, if |z|≤R, we have |bar N (z)|< 3
+2 N.
+Proof. The left hand side is equal to N z
+N− z R
+N /R= N zR
+N/R− z R
+N /R.
+Now, apply |⌊a⌉−⌊b⌉|≤⌈a−b⌉and the defining property |R
+N−
+R
+N |≤1.
+Implementation considerations. In the context of Algorithm 1, the result has absolute
+value |c−t|< 3
+2 N. If N < R
+3 , c−t is a signed canonical representative modulo R= 2n
+,
+and thus uniquely determined by its residue modulo 2n. This observation allows us to
+perform steps 2 and 3 in Algorithm 1 in single-width arithmetic, leading to the presentation
+of Barrett reduction in terms of single-width operations alone (Algorithm 3).
+Algorithm 3 Barrett reduction, implementation-view
+Require: N modulus, R= 2n s.t. N < R
+3.
+Require: R
+N ∈Z precomputed integer approximation of R
+N.
+Require: z∈Z representative mod N with |z|≤R, to be reduced
+Ensure: bar N (z) representative of z with |bar N (z)|< 3
+2 N < R
+2.
+1: t← z R
+N /R ◃ Signed multiply-high with rounding
+2: c←N·t ◃ Unsigned single-width multiply
+3: z←z−c ◃ Unsigned single-width subtract
+4: bar N (z) ←z mod±R ◃ Canonical signed representative
+2.4.2 Montgomery reduction
+Like Barrett reduction, Montgomery reduction [Mon85] provides a way to trade expensive
+division by N for cheap division by a power of two.
+The idea is simple: Assume we would like to reduce z ∈Z with respect to the odd
+modulus N, and that z happens to be a multiple of R = 2n ∈Z. Then the (cheaply
+computed) integer divisionz
+R is a representative of z·R−1 ∈ZN which is shorter than
+z by n bits. In other words, if we accept “twisting” our target residue z by some factor
+R−1 ∈ZN, we can shorten its representative.2
+If the given representative z∈Z is not evenly divisible by R, we can turn it into one
+through the following correction step: We need to find some k such that z−kN is divisible
+2Note that ZN is unordered. We only talk about smallness of representatives of elements of ZN , not
+the elements of ZN themselves. In particular, one should not consider the multiplication by R−1 as some
+form of scaling, but instead as an abstract permutation of ZN.

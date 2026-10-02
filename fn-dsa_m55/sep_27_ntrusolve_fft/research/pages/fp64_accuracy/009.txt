@@ -1,0 +1,52 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 9/18
+
+Formal Verification of Emulated Floating-Point Arithmetic in Falcon 9
+if(test_smallness(a) == 0)
+return -1;
+a128 = (1ULL << 52) + (a & 0xfffffffffffff);
+t128 = 1; t128 <<= 105;
+b128 = t128 / a128;
+if( a128 * b128 + (1ULL << 51) < t128)
+return -1;
+t = ( 1023 - ((a >> 52) & 0x7ff) ) << 52;
+t |= b128 - (1ULL << 52);
+*b = t;
+return 1;
+}
+3.3 An Example in Falcon
+In Falcon, we need to approximate the real number 1
+√2 for representing the
+πi
+complex number e
+1
+4 =
+√2 + i
+√2 . The real number 1
+√2 is approximated by
+the floating-point number s|e|m= 0|1022|1865452045155277. Since 1 ≤e ≤
+1022, 1 ≤m ≤252
+−2, and 2105
+252 +m
+252 + m = 6369051672525772 252 + m ≥
+2105
+−251, we know that if the other operand is the floating-point number
+0|1|6369051672525772, the result is incorrectly zeroized. One can pass the
+pair 1022·252 + 1865452045155277, 252 + 6369051672525772 as arguments of
+the emulated floating-point multiplication in Falcon and compare the result with
+the native floating-point multiplication to see the difference.
+4 Is it Relevant to Falcon?
+In previous section, we demonstrate that the emulated floating-point multiplica-
+tion doesn’t honor its claim where some non-zero floating-point numbers are ze-
+roized. An immediate question is its impact to Falcon implementations. Among
+the functions in Falcon, we are interested in the complex FFT in the signa-
+ture generation where the inputs are polynomials with integer coefficients in
+−215
+, 215 . After going through the tests for all the floating-point constants in
+the complex FFT, we find that 692 out of 2048 floating-point constants admit
+floating-point operands leading to incorrect zeroization. Nevertheless, we model
+the floating-point addition, subtraction, and multiplication in CryptoLine, and
+show that all non-zero intermediate floating-point numbers have absolute values
+lie in
+2−529
+, 2−26(252 + 605182448294568),
+far away from triggering incorrect zeroizations.

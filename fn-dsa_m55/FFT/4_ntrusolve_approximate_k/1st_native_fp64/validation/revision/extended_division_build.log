@@ -1,0 +1,218 @@
+-- Found Python3: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python3.12 (found version "3.12.14") found components: Interpreter
+Loading Zephyr default modules (Zephyr base).
+-- Application: /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation
+-- CMake version: 3.31.6
+-- Found Python3: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python3.12 (found suitable version "3.12.14", minimum required is "3.12") found components: Interpreter
+-- Cache files will be written to: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/.cache
+-- Zephyr version: 4.4.1 (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1)
+-- Board: nucleo_n657x0_q, qualifiers: stm32n657xx
+-- Found toolchain: gnuarmemb (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi)
+-- Could NOT find Dtc (missing: DTC) (Required is at least version "1.4.6")
+Hint: The project() command has not yet been called.  It sets up system-specific search paths.
+-- Found BOARD.dts: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/boards/st/nucleo_n657x0_q/nucleo_n657x0_q.dts
+-- Found devicetree overlay: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/nucleo_n657x0_q.overlay
+-- Generated zephyr.dts: /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels/zephyr/zephyr.dts
+-- Generated pickled edt: /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels/zephyr/edt.pickle
+-- Generated devicetree_generated.h: /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels/zephyr/include/generated/zephyr/devicetree_generated.h
+Parsing /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/Kconfig
+Loaded configuration '/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels/zephyr/.config'
+No change to configuration in '/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels/zephyr/.config'
+No change to Kconfig header in '/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels/zephyr/include/generated/zephyr/autoconf.h'
+-- Found GnuLd: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/arm-none-eabi/bin/ld.bfd (found version "2.45.1")
+-- The C compiler identification is GNU 15.2.1
+-- The CXX compiler identification is GNU 15.2.1
+-- The ASM compiler identification is GNU
+-- Found assembler: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/CMakeLists.txt:688 (message):
+  
+  ZEPHYR_BASE=/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1
+  doesn't appear to be a git repository, please specify
+  '-DBUILD_VERSION=<version>'
+
+
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/soc/st/stm32/stm32n6x/CMakeLists.txt:31 (message):
+  
+
+        Signing Image tool (STM32_SigningTool_CLI) is not available.
+        Signed image will not be generated.
+        You won't be able to run application on the board.
+        Refer to board documentation for more information.
+      
+
+
+-- Found gen_kobject_list: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/scripts/build/gen_kobject_list.py
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/CMakeLists.txt:1081 (message):
+  No SOURCES given to Zephyr library: drivers__console
+
+  Excluding target from build.
+
+
+-- Configuring done (4.1s)
+-- Generating done (0.3s)
+-- Build files have been written to: /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels
+[1/170] Generating misc/generated/syscalls.json, misc/generated/struct_tags.json
+[2/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sysrng.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sysrng.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[3/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sha3.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sha3.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[4/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/codec.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/codec.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[5/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/util.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/util.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[6/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/mq.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/mq.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[7/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_gauss.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_gauss.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[8/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[9/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_mp31.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_mp31.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[10/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_fxp.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_fxp.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[11/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_core.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_core.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[12/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_zint31.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_zint31.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[13/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign.c.obj
+[14/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_fpr.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_fpr.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[15/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_sampler.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_sampler.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[16/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/vrfy.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/vrfy.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[17/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_poly.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_poly.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[18/36] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/codec_cm4.s.obj
+[19/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_fpoly.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_fpoly.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[20/36] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/mq_cm55.s.obj
+[21/36] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sha3_cm4.s.obj
+[22/36] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_fpr_cm4.s.obj
+[23/36] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/sign_sampler_cm4.s.obj
+[24/36] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_mp31_cm55.s.obj
+[25/36] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/dtcm_startup.s.obj
+[26/36] Building C object CMakeFiles/app.dir/measure.c.obj
+[27/36] Generating linker_zephyr_pre0.cmd
+[28/36] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/irq_multilevel.h:15,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/devicetree.h:21,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/arch/arm/cortex_m/nvic.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core_m.h:22,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:17:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/__assert.h:35:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   35 | void __printf_like(1, 2) assert_print(const char *fmt, ...);
+      | ^~~~
+[29/36] Building C object CMakeFiles/app.dir/kernel_bench.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/irq_multilevel.h:15,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/devicetree.h:21,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/arch/arm/cortex_m/nvic.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core_m.h:22,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/kernel_bench.c:6:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/__assert.h:35:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   35 | void __printf_like(1, 2) assert_print(const char *fmt, ...);
+      | ^~~~
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/kernel_bench.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[30/36] Building C object CMakeFiles/app.dir/generated/kgen_ntru.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels/generated/kgen_ntru.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[31/36] Linking C static library app/libapp.a
+[32/36] Linking C executable zephyr/zephyr_pre0.elf
+[33/36] Generating linker.cmd
+[34/36] Generating isr_tables.c, isr_tables_vt.ld, isr_tables_swi.ld
+[35/36] Building C object zephyr/CMakeFiles/zephyr_final.dir/isr_tables.c.obj
+[36/36] Linking C executable zephyr/zephyr.elf
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       39708 B       256 KB     15.15%
+             RAM:      222624 B       256 KB     84.92%
+        AXISRAM1:           0 B         2 MB      0.00%
+        AXISRAM2:           0 B       511 KB      0.00%
+            ITCM:           0 B       256 KB      0.00%
+            DTCM:           0 B       256 KB      0.00%
+  NUCLEO_AXISRAM:           0 B       192 KB      0.00%
+        IDT_LIST:           0 B        32 KB      0.00%
+Generating files from /Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/validation/build/kernels/zephyr/zephyr.elf for board: nucleo_n657x0_q/stm32n657xx

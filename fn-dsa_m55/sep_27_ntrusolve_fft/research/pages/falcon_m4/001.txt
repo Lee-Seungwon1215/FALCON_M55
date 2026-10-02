@@ -1,0 +1,32 @@
+DOCUMENT: falcon_m4.pdf PAGE: 1/18
+
+Falcon on ARM Cortex-M4: an Update
+Thomas Pornin
+NCC Group, thomas.pornin@nccgroup.com
+29 January, 2025
+Abstract. This note reports new implementation results for the Falcon signature
+algorithm on an ARM Cortex-M4 microcontroller. Compared with our previous im-
+plementation (in 2019), runtime cost has been about halved.
+1 Results
+The Falcon signature scheme[5] is one of the signature algorithms selected by the NIST
+Post-Quantum Cryptography standardization project[12]. The scheme is known for its im-
+plementation complexity, especially its use of floating-point operations, making it challeng-
+ing to implement safely and efficiently on small microcontrollers. In 2019, we reported some
+performance figures for a constant-time implementation of Falcon on various platforms,
+including a microcontroller using an ARM Cortex-M4 CPU[13]. We reworked this M4 im-
+plementation with more optimizations; the result is available (and dedicated to the public
+domain) at:
+https://github.com/pornin/c-fn-dsa
+In a nutshell, this new implementation is about twice faster than the 2019 code. Table 1
+lists the achieved performance.
+Operation Falcon-512 Falcon-1024
+speed (cycles) RAM (bytes) speed (cycles) RAM (bytes)
+keygen sign verify (orig) verify (BUFF) 71943764 22008433 255306 358517 13343 + 928 39967 +2048 2079 + 872 2079 + 872 284031714 47778012 518594 724171 26655 + 928
+79903 +2160
+4127 + 872
+4127 + 872
+Table 1: Average speed (clock cycles) and RAM usage (bytes) of Falcon on ARM Cortex-
+M4. RAM consists of a configurable transient work area, and some additional stack use.
+Hardware. The used hardware is an STM32F407G-DISC1 microcontroller board, using
+a STM32F407VGT6 microcontroller. All speed measurements have been taken by using the
+board at 24 MHz speed, as is customary in the literature[11]; at that relatively low frequency

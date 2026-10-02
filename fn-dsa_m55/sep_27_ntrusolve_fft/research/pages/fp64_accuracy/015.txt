@@ -1,0 +1,44 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 15/18
+
+Formal Verification of Emulated Floating-Point Arithmetic in Falcon 15
+Signature generation. Inthesignaturegeneration,theroleofthecomplexFFTis
+quite different. Essentially, the sampler in Falcon converts the sampling task over
+the NTRU lattice into several one-dimensional sampling task and the complex
+FFT is involed in this conversion. If one wants to replace the floating-point
+FFT with scaled fixed-point arithmetic, one has to thoroughly revise the range
+analysis of the scaling, potentially use a much higher precision, and revise the
+security analysis from the implementational perspective. We have not seen effort
+from the community deploying the scaled fixed-point arithmetic and analyzing
+the accompanied security impact.
+6.3 Possible Future Extensions
+We briefly outline several possible future extensions of this paper.
+Verifying additional constant-time emulations of floating-point arithmetic. This
+paper demonstrates the formal verification of the software emulation of floating-
+point addition, subtraction, and multiplication with respect to our CryptoLine
+model. Our approach extends to several interesting floating-point arithmetic, in-
+cludingnegation,halvingandfusedmultiply-add/sub.Ourapproachalsoapplies
+to other rounding rules. As for the floating-point division, it will be interesting
+to explore the formal verification of the bit-by-bit division by [Por19].
+Applications to ffLDL∗and ffSampling. Inthispaper,weverifytherangeofthe
+complex FFT computation with input integer polynomials. An immediate ques-
+tionistheapplicabilityofourverificationapproachtotheoperationsffLDL∗and
+ffSampling in the signature generation. For ffLDL∗, it is a straightline program
+with floating-point divisions so we can only verify the computation once floating-
+point division is verified. For ffSampling, it is built upon the one-dimensional
+discrete Gaussian sampler with a rejection loop. Therefore, CryptoLine along
+cannot verify this operation. We believe CryptoLine should be used as a plug-in
+of formal verification tools handling the rejection loop.
+6.4 Applications to Other Lattice-Based Schemes
+Our formal verification approach applies to several digital signature schemes.
+For ModFalcon [CPSWX20], since it also relies on the fast Fourier sampling
+from [DP16], one needs to apply FFT in a similar fashion as in Falcon’s signature
+generation. For Mitaka [Esp+22], there are two samplers proposed by [Esp+22]:
+the hybrid sampler built upon the Gram-Schmidt orthogonalization with the
+aid of complex FFT and the integer arithmetic friendly sampler built upon
+the integral Gram decomposition by [DGPY20]. For the former, our verifica-
+tion approach applies since one needs to apply complex FFT. For the latter,
+integral Gram decomposition reduces to writing a positive integer as a sum
+of four squared integers and the fastest know algorithms are the randomized
+ones [PT18]. It seems difficult to find an unconditional deterministic algorithm
+for the problem [PT18, Section 5]. Therefore, it is unclear to us whether the
+integral version of Mitaka can be implemented securely and efficiently.

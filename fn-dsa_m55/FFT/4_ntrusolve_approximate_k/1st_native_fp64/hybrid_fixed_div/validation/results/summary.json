@@ -1,0 +1,341 @@
+{
+  "source_sha256": "e89f626245ac2163dabcfdc3ba1dfbfd777061b04887fd2562efbfa811a6b9d1",
+  "performance": [
+    {
+      "kind": "whole_keygen",
+      "degree": 512,
+      "baseline_mean": 57007002.14,
+      "hybrid_mean": 56416873.45,
+      "cycle_reduction_percent": 1.0351863242180959,
+      "speedup": 1.0104601452351487,
+      "baseline_median": 48150560,
+      "hybrid_median": 47577164
+    },
+    {
+      "kind": "prepare",
+      "degree": 512,
+      "baseline_mean": 1083009.8,
+      "hybrid_mean": 479530.38,
+      "cycle_reduction_percent": 55.72243390595357,
+      "speedup": 2.2584800570925245,
+      "calls": 879
+    },
+    {
+      "kind": "repeat",
+      "degree": 512,
+      "baseline_mean": 4738595.99,
+      "hybrid_mean": 4738595.99,
+      "cycle_reduction_percent": 0.0,
+      "speedup": 1.0,
+      "calls": 92174
+    },
+    {
+      "kind": "whole_keygen",
+      "degree": 1024,
+      "baseline_mean": 243375295.54,
+      "hybrid_mean": 242190644.58,
+      "cycle_reduction_percent": 0.48675891995180187,
+      "speedup": 1.0048913985181154,
+      "baseline_median": 195772943,
+      "hybrid_median": 194623806
+    },
+    {
+      "kind": "prepare",
+      "degree": 1024,
+      "baseline_mean": 2201665.75,
+      "hybrid_mean": 990346.89,
+      "cycle_reduction_percent": 55.018290582937034,
+      "speedup": 2.2231258281630994,
+      "calls": 1107
+    },
+    {
+      "kind": "repeat",
+      "degree": 1024,
+      "baseline_mean": 13437443.83,
+      "hybrid_mean": 13437443.83,
+      "cycle_reduction_percent": 0.0,
+      "speedup": 1.0,
+      "calls": 251354
+    }
+  ],
+  "timing": [
+    {
+      "op": 0,
+      "input_classes": 24,
+      "repeats": 256,
+      "min_batch_cycles": 451588,
+      "max_batch_jitter": 1,
+      "limitation": "Finite input classes, not a whole-algorithm constant-time proof"
+    },
+    {
+      "op": 1,
+      "input_classes": 24,
+      "repeats": 256,
+      "min_batch_cycles": 156932,
+      "max_batch_jitter": 1,
+      "limitation": "Finite input classes, not a whole-algorithm constant-time proof"
+    }
+  ],
+  "kernel_cases": [
+    {
+      "case": 0,
+      "logn": 1,
+      "old_prepare": 359500,
+      "new_prepare": 129300,
+      "old_repeat": 18000,
+      "new_repeat": 18100
+    },
+    {
+      "case": 1,
+      "logn": 1,
+      "old_prepare": 359500,
+      "new_prepare": 129300,
+      "old_repeat": 18000,
+      "new_repeat": 18100
+    },
+    {
+      "case": 2,
+      "logn": 2,
+      "old_prepare": 735500,
+      "new_prepare": 275400,
+      "old_repeat": 69400,
+      "new_repeat": 69500
+    },
+    {
+      "case": 3,
+      "logn": 2,
+      "old_prepare": 735500,
+      "new_prepare": 275400,
+      "old_repeat": 69400,
+      "new_repeat": 69500
+    },
+    {
+      "case": 4,
+      "logn": 3,
+      "old_prepare": 1491100,
+      "new_prepare": 571000,
+      "old_repeat": 184200,
+      "new_repeat": 184300
+    },
+    {
+      "case": 5,
+      "logn": 3,
+      "old_prepare": 1491100,
+      "new_prepare": 571000,
+      "old_repeat": 184200,
+      "new_repeat": 184300
+    },
+    {
+      "case": 6,
+      "logn": 4,
+      "old_prepare": 3021400,
+      "new_prepare": 1181300,
+      "old_repeat": 454900,
+      "new_repeat": 455000
+    },
+    {
+      "case": 7,
+      "logn": 4,
+      "old_prepare": 3021400,
+      "new_prepare": 1181300,
+      "old_repeat": 454900,
+      "new_repeat": 455000
+    },
+    {
+      "case": 8,
+      "logn": 5,
+      "old_prepare": 6123600,
+      "new_prepare": 2443500,
+      "old_repeat": 1084900,
+      "new_repeat": 1085000
+    },
+    {
+      "case": 9,
+      "logn": 5,
+      "old_prepare": 6123601,
+      "new_prepare": 2443500,
+      "old_repeat": 1084900,
+      "new_repeat": 1085000
+    },
+    {
+      "case": 10,
+      "logn": 6,
+      "old_prepare": 12414600,
+      "new_prepare": 5054500,
+      "old_repeat": 2528500,
+      "new_repeat": 2528600
+    },
+    {
+      "case": 11,
+      "logn": 6,
+      "old_prepare": 12414600,
+      "new_prepare": 5054500,
+      "old_repeat": 2528500,
+      "new_repeat": 2528600
+    },
+    {
+      "case": 12,
+      "logn": 7,
+      "old_prepare": 25173200,
+      "new_prepare": 10453100,
+      "old_repeat": 5789301,
+      "new_repeat": 5789400
+    },
+    {
+      "case": 13,
+      "logn": 7,
+      "old_prepare": 25173200,
+      "new_prepare": 10453100,
+      "old_repeat": 5789301,
+      "new_repeat": 5789400
+    },
+    {
+      "case": 14,
+      "logn": 8,
+      "old_prepare": 51047000,
+      "new_prepare": 21606899,
+      "old_repeat": 13064500,
+      "new_repeat": 13064600
+    },
+    {
+      "case": 15,
+      "logn": 8,
+      "old_prepare": 51047001,
+      "new_prepare": 21606901,
+      "old_repeat": 13064500,
+      "new_repeat": 13064599
+    },
+    {
+      "case": 16,
+      "logn": 9,
+      "old_prepare": 103511202,
+      "new_prepare": 44631100,
+      "old_repeat": 29128500,
+      "new_repeat": 29128600
+    },
+    {
+      "case": 17,
+      "logn": 9,
+      "old_prepare": 103511201,
+      "new_prepare": 44631101,
+      "old_repeat": 29128500,
+      "new_repeat": 29128599
+    },
+    {
+      "case": 18,
+      "logn": 2,
+      "old_prepare": 735500,
+      "new_prepare": 275400,
+      "old_repeat": 69400,
+      "new_repeat": 69500
+    }
+  ],
+  "board_kat": "300/300",
+  "matching_key_signature_digests": 200,
+  "division": {
+    "pairs": 1036896,
+    "zero_denominator_magnitudes": 188,
+    "result": "PASS",
+    "source_sha256": "e89f626245ac2163dabcfdc3ba1dfbfd777061b04887fd2562efbfa811a6b9d1",
+    "oracle": "Python unbounded integers with magnitude rounding; legacy C bit-loop; all four signs",
+    "domain": "|x|,|y|<=2^63; y=0 legacy semantics or |x|<|y|*2^32"
+  },
+  "run_dirs": {
+    "ref-perf": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/ref-perf/20260918T061623Z",
+    "hybrid-perf": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/hybrid-perf/20260918T061534Z",
+    "ref-profile": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/ref-profile/20260918T061149Z",
+    "hybrid-profile": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/hybrid-profile/20260918T061238Z",
+    "kernels": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/kernels/20260918T061326Z",
+    "kat": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/kat/20260918T060843Z"
+  },
+  "replicates": {
+    "ref-perf": [
+      {
+        "path": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/ref-perf/20260918T061012Z/run.json",
+        "totals": [
+          {
+            "degree": 512,
+            "runs": 100,
+            "cycles": 5700700216,
+            "median": 48150560,
+            "min": 41158869,
+            "max": 124195710
+          },
+          {
+            "degree": 1024,
+            "runs": 100,
+            "cycles": 24337529554,
+            "median": 195772943,
+            "min": 139492971,
+            "max": 743361711
+          }
+        ]
+      },
+      {
+        "path": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/ref-perf/20260918T061623Z/run.json",
+        "totals": [
+          {
+            "degree": 512,
+            "runs": 100,
+            "cycles": 5700700214,
+            "median": 48150560,
+            "min": 41158869,
+            "max": 124195710
+          },
+          {
+            "degree": 1024,
+            "runs": 100,
+            "cycles": 24337529554,
+            "median": 195772943,
+            "min": 139492971,
+            "max": 743361711
+          }
+        ]
+      }
+    ],
+    "hybrid-perf": [
+      {
+        "path": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/hybrid-perf/20260918T061101Z/run.json",
+        "totals": [
+          {
+            "degree": 512,
+            "runs": 100,
+            "cycles": 5641687341,
+            "median": 47577164,
+            "min": 40585474,
+            "max": 123048920
+          },
+          {
+            "degree": 1024,
+            "runs": 100,
+            "cycles": 24219064458,
+            "median": 194623806,
+            "min": 138343834,
+            "max": 742150500
+          }
+        ]
+      },
+      {
+        "path": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div/validation/results/hybrid-perf/20260918T061534Z/run.json",
+        "totals": [
+          {
+            "degree": 512,
+            "runs": 100,
+            "cycles": 5641687345,
+            "median": 47577164,
+            "min": 40585474,
+            "max": 123048920
+          },
+          {
+            "degree": 1024,
+            "runs": 100,
+            "cycles": 24219064458,
+            "median": 194623806,
+            "min": 138343834,
+            "max": 742150500
+          }
+        ]
+      }
+    ]
+  }
+}

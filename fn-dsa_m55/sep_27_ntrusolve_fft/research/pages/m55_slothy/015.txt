@@ -1,0 +1,42 @@
+DOCUMENT: m55_slothy.pdf PAGE: 15/46
+
+Abdulrahman, Becker, Kannwischer, Klein 15
+Figure 5: Modelling software pipelining in SLOTHY. Left: Illustration of movement
+of early/core/late parts forced by periodicity. Middle/Right: Illustration of lost and
+retained dependencies after applying periodicity.
+postamble account for two full iterations. In either case, the loop counter needs to be
+adjusted accordingly.
+A downside of the addition of preamble and postamble is an increased code-size. If
+this is problematic, an alternative is to replace the postamble by a full iteration of the
+optimized loop body, leaving only the (typically small) preamble as a code-size overhead.
+This approach is viable if (a) it is safe to read a fixed amount past the input buffer (e.g.
+because it is padded by the caller), and (b) the preamble does not include store instructions
+(which can be forced in the SLOTHY model). This approach is used e.g. in [Arme].
+4.6 Performance/µArch constraints: Latencies
+In this and the following section, we describe how we incorporate performance constraints
+into our model. For simplicity, we focus on the case of single-issue, in-order microarchi-
+tectures first. Superscalar, in-order microarchitectures are discussed in Section 4.9 below,
+and Section 4.10 comments on out-of-order microarchitectures.
+In the context of a single-issue, in-order microarchitecture, an ideal, stall-free program
+execution would see the execution time difference (in cycles) between two instructions
+match their distance in program order. We therefore model latencies by requiring that for
+any I O
+−→J, we have J.pos ≥I.pos + latency(I O
+−→J). Note that this supersedes the
+previously introduced functional correctness constraint J.pos ≥I.pos. We also note
+that while latency(I O
+−→J) often depends on I only, dedicated forwarding paths provide
+examples where latency(I O
+−→J) may be smaller than the “generic” latency of I: On the
+Cortex-M55 CPU, for example, vector multiplication instructions typically have a latency
+of 2 cycles, yet sequences VMULx; VSTRx run stall-free.
+4.7 Modelling stalls
+Performance constraints such as the ones discussed in Section 4.6 may not be satisfiable:
+Sometimes, stalls are unavoidable. We model stalls by allowing the set of program
+order positions to have gaps, constraining pos to be an injective map {0,...,|code|}→
+{0,...,|code|+ maxgaps}rather than a permutation on {0,...,|code|}. The integer
+variable maxgaps models the maximum stall “allowance”.
+We consider two approaches for minimizing maxgaps: In the first approach, we fix
+maxgaps at model construction time. If the resulting model has a solution, we try again
+with a smaller value for maxgaps; otherwise, we increase it. Using binary search, a small
+number of iterations should reveal the minimum stall allowance. In the second approach,

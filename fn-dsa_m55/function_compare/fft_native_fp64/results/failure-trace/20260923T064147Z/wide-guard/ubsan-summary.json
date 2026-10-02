@@ -1,0 +1,65 @@
+{
+  "command": [
+    "clang",
+    "-O2",
+    "-g",
+    "-ffp-contract=off",
+    "-fno-fast-math",
+    "-fno-strict-aliasing",
+    "-DFNDSA_AVX2=0",
+    "-fsanitize=undefined",
+    "-fno-sanitize-recover=all",
+    "-I/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/codec.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/mq.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sha3.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sysrng.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/util.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_fxp.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_gauss.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_mp31.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_poly.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_zint31.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_core.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpoly.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpr.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_sampler.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/vrfy.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/results/failure-trace/20260923T064147Z/wide-guard/ntru.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/failure_trace/guard_wide.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/extended_keys.c",
+    "-lm",
+    "-o",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/results/failure-trace/20260923T064147Z/wide-guard/ubsan"
+  ],
+  "runs": [
+    {
+      "index": 1198,
+      "returncode": 0,
+      "log_sha256": "e4431e0008c27395be1d95405246a07bfd6f90682ba32d3cb49a3fdc98caea51"
+    },
+    {
+      "index": 7470,
+      "returncode": 0,
+      "log_sha256": "7303058de9aa4031c6b86abe4a1fb1e173ecd0040382dddbb675d256b72831f3"
+    },
+    {
+      "index": 1691,
+      "returncode": 0,
+      "log_sha256": "d01559b953dc9f70303cec2e42929e5113f7580fa5b142e1d20042c64df579de"
+    },
+    {
+      "index": 4395,
+      "returncode": 0,
+      "log_sha256": "15ee0b20d0ecdbef4c6f5b294843c19c946fed3395c202f26d48c6b6cbb45aa6"
+    },
+    {
+      "index": 10491,
+      "returncode": 0,
+      "log_sha256": "f41a6e8f9cdaed520077a3a104fd1d560a21ccf2367a37bd0e105aae715cb6fa"
+    }
+  ],
+  "all_pass": true
+}

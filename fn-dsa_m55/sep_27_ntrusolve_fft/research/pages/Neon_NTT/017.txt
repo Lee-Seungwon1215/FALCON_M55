@@ -1,0 +1,43 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 17/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 17
+Table 3: Summary of butterflies for NTTs and NTT−1s.
+NTT NTT−1
+kyber 4-layer-CT + 3-layer-CT 3-layer-GS + 4-layer-GS
+saber 2×3-layer-CT 2×3-layer-CT
+dilithium 2×4-layer-CT 2×4-layer-GS
+4.2 Asymmetric Multiplication
+We introduce an idea that we call asymmetric multiplication for improving the eﬃciency
+of matrix-to-vector polynomial multiplication based on incomplete NTTs, and in general
+whenever incomplete NTTs are cached. It is thus applicable to Kyber and Saber, but not
+to Dilithium.
+Recall that for Kyber and Saber, we can compute As′as NTT−1(NTT(A)◦NTT(s′)), where
+k= 2 and 4 for Kyber and Saber, respectively. As with any matrix-to-vector product, every
+entry of NTT(s′) will be multiplied with ℓ entries from NTT(A). It is therefore beneficial
+to cache NTT(s′), which is indeed a known and common optimization technique for NTT-
+based multiplication. Asymmetric multiplication extends this observation by caching more
+computations on the multiplicands of one side.
+Specifically, note that when computing the product of a= iaixi and s= isixi in
+F[x]/xk
+−ω , we need to compute and sum aisj for i+ j <k and ωaisj= ai(ωsj) for
+i+ j ≥k. It is therefore beneficial to precompute and cache the scaled ωs along with
+s. After the precomputation, the arithmetic cost for products in F[x]/⟨xk
+−ω⟩is then
+eﬀectively reduced to that of products in F[x]/⟨xk
+−1⟩. Note that this is diﬀerent from the
+isomorphism F[x]/⟨xk
+−ω⟩∼
+= F[y]/⟨yk
+−1⟩, which doesn’t work for Kyber as there is no
+k-th roots for ω. We call the multiplication strategy “asymmetric” because it requires the
+s-input in expanded form (s,ωs), while the a-input in the usual form. Algorithm 16 is an
+illustration. Note again the arithmetical similarity between Algorithm 15 and Algorithm 16.
+We denote NTT_heavy the composition of the incomplete NTT with the computation
+s→(s,ωs),andasymmetric_mulimplementingasymmetric_mul(NTT(a),NTT_heavy(s)) =
+NTT(a)◦NTT(s) in the asymmetric fashion. Then As′can be computed as
+As′
+= NTT−1 (asymmetric_mul(NTT(A),NTT_heavy(s′))).
+Lastly, we extend the idea of better accumulation for schoolbook multiplication in [CHK+21]
+to better accumulation for asymmetric multiplication, giving the 64-bit results and reducing
+them to 32-bit after computing all the corresponding asymmetric multiplications. See
+Algorithm 33.

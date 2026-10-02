@@ -1,0 +1,89 @@
+
+/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/q32_trial-perfct/zephyr/zephyr.elf:     file format elf32-littlearm
+
+
+Disassembly of section rom_start:
+
+Disassembly of section text:
+
+100079e8 <probe_floor>:
+100079e8:	b5f0      	push	{r4, r5, r6, r7, lr}
+100079ea:	b083      	sub	sp, #12
+100079ec:	ed8d 0b00 	vstr	d0, [sp]
+100079f0:	e9dd 1000 	ldrd	r1, r0, [sp]
+100079f4:	f3c0 5e0a 	ubfx	lr, r0, #20, #11
+100079f8:	f2ae 32ff 	subw	r2, lr, #1023	@ 0x3ff
+100079fc:	2a33      	cmp	r2, #51	@ 0x33
+100079fe:	f04f 0401 	mov.w	r4, #1
+10007a02:	f04f 0500 	mov.w	r5, #0
+10007a06:	bf8c      	ite	hi
+10007a08:	2600      	movhi	r6, #0
+10007a0a:	2601      	movls	r6, #1
+10007a0c:	f5ce 6386 	rsb	r3, lr, #1072	@ 0x430
+10007a10:	3303      	adds	r3, #3
+10007a12:	f003 033f 	and.w	r3, r3, #63	@ 0x3f
+10007a16:	ea54 350d 	lsll	r4, r5, r3
+10007a1a:	ea4f 7cd0 	mov.w	ip, r0, lsr #31
+10007a1e:	2e00      	cmp	r6, #0
+10007a20:	d043      	beq.n	10007aaa <probe_floor+0xc2>
+10007a22:	1e66      	subs	r6, r4, #1
+10007a24:	f145 37ff 	adc.w	r7, r5, #4294967295	@ 0xffffffff
+10007a28:	400e      	ands	r6, r1
+10007a2a:	4007      	ands	r7, r0
+10007a2c:	433e      	orrs	r6, r7
+10007a2e:	f00c 0601 	and.w	r6, ip, #1
+10007a32:	f04f 0700 	mov.w	r7, #0
+10007a36:	bf08      	it	eq
+10007a38:	2600      	moveq	r6, #0
+10007a3a:	ea56 370d 	lsll	r6, r7, r3
+10007a3e:	1873      	adds	r3, r6, r1
+10007a40:	9300      	str	r3, [sp, #0]
+10007a42:	eb40 0607 	adc.w	r6, r0, r7
+10007a46:	4267      	negs	r7, r4
+10007a48:	9c00      	ldr	r4, [sp, #0]
+10007a4a:	eb65 0345 	sbc.w	r3, r5, r5, lsl #1
+10007a4e:	403c      	ands	r4, r7
+10007a50:	401e      	ands	r6, r3
+10007a52:	f240 33fe 	movw	r3, #1022	@ 0x3fe
+10007a56:	2a33      	cmp	r2, #51	@ 0x33
+10007a58:	bf8c      	ite	hi
+10007a5a:	2200      	movhi	r2, #0
+10007a5c:	2201      	movls	r2, #1
+10007a5e:	459e      	cmp	lr, r3
+10007a60:	bf8c      	ite	hi
+10007a62:	2300      	movhi	r3, #0
+10007a64:	2301      	movls	r3, #1
+10007a66:	1e55      	subs	r5, r2, #1
+10007a68:	ea05 0200 	and.w	r2, r5, r0
+10007a6c:	400d      	ands	r5, r1
+10007a6e:	432c      	orrs	r4, r5
+10007a70:	4332      	orrs	r2, r6
+10007a72:	1e5d      	subs	r5, r3, #1
+10007a74:	402c      	ands	r4, r5
+10007a76:	402a      	ands	r2, r5
+10007a78:	b1cb      	cbz	r3, 10007aae <probe_floor+0xc6>
+10007a7a:	1849      	adds	r1, r1, r1
+10007a7c:	eb40 0300 	adc.w	r3, r0, r0
+10007a80:	4319      	orrs	r1, r3
+10007a82:	f00c 0c01 	and.w	ip, ip, #1
+10007a86:	bf08      	it	eq
+10007a88:	f04f 0c00 	moveq.w	ip, #0
+10007a8c:	4b0c      	ldr	r3, [pc, #48]	@ (10007ac0 <probe_floor+0xd8>)
+10007a8e:	f1cc 0c00 	rsb	ip, ip, #0
+10007a92:	f000 4000 	and.w	r0, r0, #2147483648	@ 0x80000000
+10007a96:	ea0c 0303 	and.w	r3, ip, r3
+10007a9a:	4303      	orrs	r3, r0
+10007a9c:	4620      	mov	r0, r4
+10007a9e:	ea42 0103 	orr.w	r1, r2, r3
+10007aa2:	ec41 0b10 	vmov	d0, r0, r1
+10007aa6:	b003      	add	sp, #12
+10007aa8:	bdf0      	pop	{r4, r5, r6, r7, pc}
+10007aaa:	4634      	mov	r4, r6
+10007aac:	e7d1      	b.n	10007a52 <probe_floor+0x6a>
+10007aae:	4620      	mov	r0, r4
+10007ab0:	f003 03ff 	and.w	r3, r3, #255	@ 0xff
+10007ab4:	ea42 0103 	orr.w	r1, r2, r3
+10007ab8:	ec41 0b10 	vmov	d0, r0, r1
+10007abc:	b003      	add	sp, #12
+10007abe:	bdf0      	pop	{r4, r5, r6, r7, pc}
+10007ac0:	3ff00000 	.word	0x3ff00000

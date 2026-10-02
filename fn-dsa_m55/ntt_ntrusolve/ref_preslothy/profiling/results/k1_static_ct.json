@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "scope": "fndsa_mp_iNTT K0 half-iGM versus K1 full-iGM",
+  "baseline_elf_sha256": "98dcfe6d8850a3bb36748b9c982621f0f081f1bcdad6ac8dc846bbe430ff79b1",
+  "candidate_elf_sha256": "10e732b8262a10c127862669942947faee4ddf2e07f58ff78ba7ecd42447704e",
+  "machine_code_bytes": {
+    "K0": 1770,
+    "K1": 1562,
+    "delta": -208
+  },
+  "branch_instruction_counts": {
+    "K0": {"b.n": 4, "bcc.w": 1, "beq.w": 2, "bgt.w": 1, "bne.n": 2, "bne.w": 5},
+    "K1": {"b.n": 4, "bcc.w": 1, "beq.w": 2, "bgt.w": 1, "bne.n": 2, "bne.w": 5}
+  },
+  "memory_instruction_counts": {
+    "K0": {"ldmia.w": 1, "ldr": 13, "ldr.w": 2, "stmdb": 1, "str": 4, "vld40.32": 3, "vld41.32": 3, "vld42.32": 3, "vld43.32": 3, "vldrw.u32": 15, "vstrw.32": 18},
+    "K1": {"ldmia.w": 1, "ldr": 13, "ldr.w": 2, "stmdb": 1, "str": 4, "vld40.32": 3, "vld41.32": 3, "vld42.32": 3, "vld43.32": 3, "vldrw.u32": 15, "vstrw.32": 18}
+  },
+  "source_diff": "Only full-root comments and removal of fixed modular-doubling arithmetic in the assembly kernel; C root generation/oracle uses public logn and public modulus.",
+  "new_secret_dependent_branch": false,
+  "new_secret_dependent_address": false,
+  "limitations": "Static structural regression only; not a formal constant-time proof, dudect, TVLA, power or EM assessment."
+}

@@ -1,0 +1,55 @@
+DOCUMENT: falcon_m4.pdf PAGE: 13/18
+
+must be right-shifted by e−e′bits before being added to x (or subtracted from x, if x and
+y have opposite signs). The shift count can be large, even larger than 256, which is the
+limit for shift counts in the ARMv7 shift opcodes. For constant-time discipline, which
+case the shift count falls on must not be disclosed through timing differences or a distinct
+memory access pattern, hence such a shift must process all cases in parallel and select the
+right one.
+– Once the operation has been computed over the mantissas (with enough extra bits for
+proper rounding), the result must be normalized with a left or right shift, so that the value
+falls within the [252
+, 253
+−1]range that is expected by the format. This again entails secret
+shift counts.
+A contrario, in a multiplication, the product of the source mantissas (with their +252 offset)
+is necessarily in the [2104
+, 2106
+−1]range and its normalization is easier to perform efficiently.
+The underlying 64 ×64 →128 integer multiplication can be performed in only 4 cycles with
+two umull and two umaal opcodes.
+The expensive shifts involved in addition can be somewhat optimized with, again, the
+DSP opcodes in the M4. Let’s consider the second shift in the addition process: an integer
+value has been assembled in register pair r6:r7 (low word in r6, high word in r7); that value
+is less than 257 but can be much lower, even equal to zero. We want to left-shift it such that
+we get a value in [263
+, 264
+−1](or exactly zero). The normal 64-bit shift sequence (that the
+compiler generates when shifting a uint64_t) is 8 instructions, and getting the number of
+leading zeros would require 4 or 5 more; but we can do the whole operation in 10 instructions
+(hence 10 cycles for execution):
+clz r2, r7 @ r2 <- leading zeros of high word
+clz r3, r6 @ r3 <- leading zeros of low word
+sbfx r0, r2, #5, #1 @ r5 <- -1 if high word is zero, or 0
+@ At this point, if r7 is non-zero, then we want to keep r2
+@ as is, and r0 = 0, so the umlal below does not change r2.
+@ Otherwise, if r7 = 0, then r2 = 32 and we want to add r3
+@ to r2; in that case, r0 = 0xFFFFFFFF and the umlal computes
+@ r2*2^32 + r3 + r3*(2^32 - 1) = (r2 + r3)*2^32, which sets
+@ the high word (r2) to exactly the value we want.
+umlal r3, r2, r3, r0
+@ Shift r6:r7 to the left by r2 bits.
+@ If r2 >= 32, then r7 = 0 and r0 = -1, so the umlal below
+@ moves r6 into r7 (and clears r6). Otherwise, r7 != 0, r0 = 0,
+@ and r6 and r7 are unchanged.
+umlal r6, r7, r6, r0
+@ Left-shift by r2 mod 32
+and r2, r2, #31
+movs r1, #1
+lsls r1, r2
+@ We do a shift by n bits with a multiplication by 2^
+n.
+@ Result is in r6:r12
+umull r6, r12, r6, r1
+umlal r12, r7, r7, r1
+13

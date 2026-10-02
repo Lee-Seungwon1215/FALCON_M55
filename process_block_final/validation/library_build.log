@@ -1,0 +1,142 @@
+mkdir -p build
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c codec.c -o build/codec.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c mq.c -o build/mq.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c sha3.c -o build/sha3.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c sysrng.c -o build/sysrng.o
+In file included from inner.h:6,
+                 from sysrng.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from sha3.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from codec.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from mq.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c util.c -o build/util.o
+In file included from inner.h:6,
+                 from util.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen.c -o build/kgen.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_fxp.c -o build/kgen_fxp.o
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_gauss.c -o build/kgen_gauss.o
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_fxp.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_mp31.c -o build/kgen_mp31.o
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_gauss.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_mp31.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_ntru.c -o build/kgen_ntru.o
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_ntru.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_poly.c -o build/kgen_poly.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_zint31.c -o build/kgen_zint31.o
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_poly.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_zint31.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_fft_mve.c -o build/kgen_fft_mve.o
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_ds.h:7,
+                 from kgen_fft_mve.c:6:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_fft_bridge.c -o build/kgen_fft_bridge.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c sign.c -o build/sign.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c sign_core.c -o build/sign_core.o
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_ds.h:7,
+                 from kgen_fft_bridge.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from sign_inner.h:10,
+                 from sign_core.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c sign_fpoly.c -o build/sign_fpoly.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c sign_fpr.c -o build/sign_fpr.o
+In file included from inner.h:6,
+                 from sign_inner.h:10,
+                 from sign_fpr.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c sign_sampler.c -o build/sign_sampler.o
+In file included from inner.h:6,
+                 from sign_inner.h:10,
+                 from sign_fpoly.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c vrfy.c -o build/vrfy.o
+In file included from inner.h:6,
+                 from sign_inner.h:10,
+                 from sign_sampler.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from vrfy.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c codec_cm4.s -o build/codec_cm4.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c sha3_cm55.s -o build/sha3_cm55.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c sign_fpr_cm4.s -o build/sign_fpr_cm4.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c sign_sampler_cm4.s -o build/sign_sampler_cm4.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c mq_cm55.s -o build/mq_cm55.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c kgen_mp31_cm55.s -o build/kgen_mp31_cm55.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c kgen_fft_cm55.s -o build/kgen_fft_cm55.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c sign_fft_cm55.s -o build/sign_fft_cm55.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c sign_ldl_cm55.s -o build/sign_ldl_cm55.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -c sign_split_merge_cm55.s -o build/sign_split_merge_cm55.o
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-ar rcs build/libfndsa_m55.a build/codec.o build/mq.o build/sha3.o build/sysrng.o build/util.o build/kgen.o build/kgen_fxp.o build/kgen_gauss.o build/kgen_mp31.o build/kgen_ntru.o build/kgen_poly.o build/kgen_zint31.o build/kgen_fft_mve.o build/kgen_fft_bridge.o build/sign.o build/sign_core.o build/sign_fpoly.o build/sign_fpr.o build/sign_sampler.o build/vrfy.o build/codec_cm4.o build/sha3_cm55.o build/sign_fpr_cm4.o build/sign_sampler_cm4.o build/mq_cm55.o build/kgen_mp31_cm55.o build/kgen_fft_cm55.o build/sign_fft_cm55.o build/sign_ldl_cm55.o build/sign_split_merge_cm55.o

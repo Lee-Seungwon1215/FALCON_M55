@@ -1,0 +1,61 @@
+cmake_minimum_required(VERSION 3.20.0)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+set(BOARD_LINKER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/fndsa_dtcm_linker.ld")
+execute_process(COMMAND ${Python3_EXECUTABLE} "${COMMON_MEAS}/app/generate_dtcm_linker.py"
+  "$ENV{ZEPHYR_BASE}/include/zephyr/arch/arm/cortex_m/scripts/linker.ld"
+  "${BOARD_LINKER_SCRIPT}" COMMAND_ERROR_IS_FATAL ANY)
+if(PIN_INTEGER_LAYOUT)
+  execute_process(COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/pin_integer_layout.py"
+    "${BOARD_LINKER_SCRIPT}" COMMAND_ERROR_IS_FATAL ANY)
+endif()
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+project(fndsa_q32_boundary C ASM)
+zephyr_link_libraries(-Wl,--wrap=soc_early_reset_hook -Wl,--wrap=printf
+  -Wl,--wrap=fprintf -Wl,--wrap=puts -Wl,--wrap=putchar -Wl,--wrap=fflush -Wl,--wrap=exit)
+set(C_NAMES codec mq sha3 sysrng util kgen kgen_fxp kgen_gauss kgen_mp31
+  kgen_ntru kgen_poly kgen_zint31 sign sign_core sign_fpoly sign_fpr sign_sampler vrfy)
+set(S_NAMES codec_cm4 sha3_cm4 sign_fpr_cm4 sign_sampler_cm4)
+if(BASELINE_KIND STREQUAL "m55_ref")
+  list(APPEND S_NAMES mq_cm4)
+else()
+  list(APPEND S_NAMES mq_cm55 kgen_mp31_cm55)
+endif()
+if(BASELINE_KIND STREQUAL "candidate")
+  list(APPEND C_NAMES kgen_fft_mve)
+  list(APPEND S_NAMES kgen_fft_cm55)
+endif()
+set(CRYPTO_FILES)
+foreach(n IN LISTS C_NAMES)
+  list(APPEND CRYPTO_FILES "${CRYPTO_SOURCE}/${n}.c")
+endforeach()
+foreach(n IN LISTS S_NAMES)
+  list(APPEND CRYPTO_FILES "${CRYPTO_SOURCE}/${n}.s")
+endforeach()
+set(SHIM "$ENV{MLKEM_NATIVE_PINNED_ROOT}/test/zephyr/app/shim_nucleo_n657x0_q.c")
+target_sources(app PRIVATE ${CRYPTO_FILES} ${BENCH_SOURCE}
+  "${COMMON_MEAS}/app/dtcm_startup.s" "${SHIM}")
+set(TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${BENCH_SOURCE}")
+if(BENCH_SOURCE STREQUAL "board_bridge_compare.c")
+  # Measurement controls only: reversible, audited namespace copies of TW.
+  set(BRIDGE_CONTROLS bridge_control/control_tw32_fft_mve.c
+    bridge_control/control_tw32_gm_ds32.c bridge_control/control_tw32_bridge.c
+    bridge_control/control_tw32_primitives_cm55.s)
+  target_sources(app PRIVATE ${BRIDGE_CONTROLS})
+  foreach(n IN LISTS BRIDGE_CONTROLS)
+    list(APPEND TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/${n}")
+  endforeach()
+endif()
+if(BENCH_SOURCE STREQUAL "board_kernels.c" OR BENCH_SOURCE STREQUAL "board_breakdown.c")
+  target_sources(app PRIVATE ref_fxp.c)
+  list(APPEND TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/ref_fxp.c")
+endif()
+target_include_directories(app PRIVATE "${CRYPTO_SOURCE}" "${CMAKE_CURRENT_SOURCE_DIR}/generated")
+target_compile_definitions(app PRIVATE FNDSA_ASM_CORTEXM4=1 FNDSA_ASM_CORTEXM55=1
+  AUDIT_BOARD=1 printf=__wrap_printf fprintf=__wrap_fprintf puts=__wrap_puts
+  putchar=__wrap_putchar fflush=__wrap_fflush exit=__wrap_exit)
+if(NOT BASELINE_KIND STREQUAL "m55_ref")
+  target_compile_definitions(app PRIVATE FNDSA_MVE_MP31=1)
+endif()
+zephyr_compile_definitions(USER_VECT_TAB_ADDRESS VECT_TAB_BASE_ADDRESS=0x10000000 VECT_TAB_OFFSET=0x0)
+set_property(SOURCE ${CRYPTO_FILES} ${TEST_FILES} ${SHIM} APPEND PROPERTY
+  COMPILE_OPTIONS -O3 -mfpu=fpv5-d16 -ffp-contract=off -fno-fast-math -fno-strict-aliasing)

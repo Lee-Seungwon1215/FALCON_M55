@@ -1,0 +1,64 @@
+DOCUMENT: m55_slothy.pdf PAGE: 25/46
+
+Abdulrahman, Becker, Kannwischer, Klein 25
+.syntax unified
+.global cmplx_mag_sqr_fx
+.type cmplx_mag_sqr_fx, %function
+// Aliases for readability
+out .req r0
+in .req r1
+size .req r2
+.text
+cmplx_mag_sqr_fx:
+push {lr}
+vpush {d8-d15}
+lsr lr, size, #2
+wls lr, lr, end
+.p2align 2 // Ensure loop alignment
+start:
+// deinterleave real/imag
+vld20.32 {qreal, qimag}, [in]
+vld21.32 {qreal, qimag}, [in]!
+// square real/imag components
+vmulh.s32 qtmp, qreal, qreal
+vmulh.s32 qout, qimag, qimag
+// accumulate & halving
+vhadd.s32 qout, qout, qtmp
+// store result
+vstrw.32 qout, [out], #16
+le lr, start
+end:
+vpop {d8-d15}
+pop {lr}
+Listing 3: “Base” implementation of vectorized squared-magnitude function in Helium.
+1 > for uarch in M55 M85; do for i in 1 2 4; do
+2 slothy-cli Arm_v81M Arm_Cortex_${uarch} examples/naive/cmplx_mag_sqr/cmplx_mag_sqr_fx.s \
+3 -l start -c sw_pipelining.enabled=True -c sw_pipelining.unroll=${i} -c timeout=5 \
+4 -r cmplx_mag_sqr_fx,cmplx_mag_sqr_fx_opt_${uarch}_unroll${i} \
+5 -o cmplx_mag_sqr_fx_opt_${uarch}_unroll${i}.s ;
+6 done; done
+Listing 4: slothy command line for the optimization of sqmag “base” implementation
+for Cortex-M55 and Cortex-M85, with different levels of unrolling.
+this is desirable as it allows the base implementation to be used as a functional reference. In
+more complex cases, the instantiation of symbolics has to be conducted in conjunction with
+optimization, as the template version of the code might not have sufficient free registers.
+7.3 Toy example
+Weillustratetheintendedusageof slothy byoptimizingasimpleDigitalSignalProcessing
+(DSP) kernel on the Armv8.1-M+Helium Cortex-M55 and Cortex-M85 CPUs.
+The workload. We are optimizing a vectorized squared magnitude sqmag : (z1,...,zn) →
+(|z1|2
+,...,|zn|2),zi ∈C. Specifically, we consider an implementation in 32-bit fixed point
+arithmetic, where the real and imaginary components of the zi are represented in the
+Q1.31 fixed point format and where the outputs |zi|2 are stored in Q3.29.
+The base implementation. Listing 3 shows a straightforward and largely self-explanatory
+implementation of sqmag in Armv8.1-M, using symbolic registers during the core compu-
+tation (the allocation of the input arguments is fixed as part of the calling convention and
+must not be left to slothy). While readable, however, we note that the code is poorly
+scheduled from the perspective of instruction overlapping (recall Section 3.2.2).
+Performance expectations. Each iteration performs 4 squared-magnitude operations
+z →|z|2 via 6 Helium instructions. Moreover, 3 of those instructions are arithmetic,
+while the other 3 are load/store, which suggests a theoretical optimum of 1.5 cycles per
+squared-magnitude operation on dual-beat CPUs like Cortex-M55 and Cortex-M85 —
+provided instruction scheduling is done carefully to achieve good instruction overlapping.
+Optimization. Listing 4 shows the command line optimizing our sqmag base implemen-
+tation for Cortex-M55 and Cortex-M85. After choosing target architecture and microar-

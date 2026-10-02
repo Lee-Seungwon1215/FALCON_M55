@@ -1,0 +1,52 @@
+DOCUMENT: TWfalcon.pdf PAGE: 16/25
+
+16 TWFalcon: Triple-Word Arithmetic for Falcon
+Therefore, we can conclude that all calls to fpr_of fall within [2−24
+,224]. There-
+fore, input values can be exactly represented using a single-precision floating-point for-
+mat, and a new TW variable can be created where the first component is the input
+value converted to a single-precision floating-point number and the others are set to
+0. This conversion can be done on the Cortex-M4 through the assembly instruction
+VCVT.u32.f32 <Sd>, <Sm> [Arm14].
+4.2.3 Round
+Rounding operations on TW can be implemented most efficiently if only the first component
+of the TW representation is relevant for determining the integer part of the rounding
+and the halfway point. The second component then only influences whether rounding up
+or down should occur when the value of the first component lies exactly at the halfway
+point. This means that the third component does not influence the result at all, and
+can be ignored. This is guaranteed when the accurate output value lies within the range
+[−223
+,223], since the largest single-precision floating-point number that can represent a
+halfway point exactly is 223
+−0.5. Depending on the value of the second TW component,
+this rounds either to 223 or 223
+−1. Fortunately, the output of the rounding function is
+always treated as a 16-bit integer, which comfortably fits within this range.
+The rounding algorithm is slightly more complex than the conversion from an integer
+to a TW value. First, it must be determined whether the first floating-point component,
+x0, represents a halfway point. This is done by checking whether x0 −⌊x0⌋= 0.5. If this
+condition is not met, the value x0 can simply be rounded to the nearest integer. However,
+if the condition is true, a more involved procedure is required. In this case, x0 is first
+truncated (i.e., its fractional part is discarded). Then, depending on whether the signs
+of x0 and x1 are equal, the truncated value is either incremented or decremented. This
+ensures that the rounding decision is correctly influenced by the second component of the
+TW representation, resulting in an accurately rounded value. This results in Algorithm 3,
+which can be made constant-time in software easily.
+Algorithm 3 RoundTW(x0,x1)
+1: f ←x0 −⌊x0⌋
+2: if f ̸= 0.5 then
+3: return round(x0)
+4: end if
+5: t←truncate(x0)
+6: if sign(x0) = sign(x1) then
+7: return t+ 1
+8: else
+9: return t−1
+10: end if
+On the FPU of the Cortex-M4, there is no hardware support for rounding or flooring a
+floating-point value to an integer. The only available operation is truncation, which can
+be performed using the instruction VCVT.f32.s32 <Sd>, <Sm> [Arm14]. To achieve an
+efficient, and later, constant-time, implementation of the floor and round operations on
+a single-precision floating-point value, the constant-time integer-emulated double-precision
+versions from [Por25a] were adapted for single-precision values, resulting in an efficient
+and constant-time implementation.

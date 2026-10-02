@@ -1,0 +1,412 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 56744
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :56744 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x1000f40c
+hbreak *0x1001269c
+set $early_fault_bp = $bpnum
+jump *0x100126b1
+if $pc != 0x1000f40c
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp_kjgqs41/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x1000f3bc
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x1001269c
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.276064
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 56744
+Info : Listening on port 56744 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/56744
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+BENCH_BEGIN candidate=serial
+BENCH_HW cpu=800000000 ccr=00000611 itcm=00000049 dtcm=00000049 control=00000099 fpscr=00040000
+CHECK permutation=PASS states=512
+CHECK shake256x4=PASS seeds=8 bytes_per_seed=2176 mixed_width_boundary=PASS guards=PASS
+KERNEL sample=0 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=1 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=2 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=3 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=4 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=5 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=6 batch=32 permutation4=1948649 refill544=2114444
+KERNEL sample=7 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=8 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=9 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=10 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=11 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=12 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=13 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=14 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=15 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=16 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=17 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=18 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=19 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=20 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=21 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=22 batch=32 permutation4=1948648 refill544=2114445
+KERNEL sample=23 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=24 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=25 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=26 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=27 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=28 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=29 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=30 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=31 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=32 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=33 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=34 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=35 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=36 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=37 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=38 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=39 batch=32 permutation4=1948649 refill544=2114444
+KERNEL sample=40 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=41 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=42 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=43 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=44 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=45 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=46 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=47 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=48 batch=32 permutation4=1948648 refill544=2114444
+KERNEL sample=49 batch=32 permutation4=1948648 refill544=2114444
+PRNG sample=0 bytes=32768 cycles=4355078
+PRNG sample=1 bytes=32768 cycles=4355078
+PRNG sample=2 bytes=32768 cycles=4355078
+PRNG sample=3 bytes=32768 cycles=4355078
+PRNG sample=4 bytes=32768 cycles=4355078
+PRNG sample=5 bytes=32768 cycles=4355079
+PRNG sample=6 bytes=32768 cycles=4355078
+PRNG sample=7 bytes=32768 cycles=4355078
+PRNG sample=8 bytes=32768 cycles=4355078
+PRNG sample=9 bytes=32768 cycles=4355078
+PRNG sample=10 bytes=32768 cycles=4355078
+PRNG sample=11 bytes=32768 cycles=4355078
+PRNG sample=12 bytes=32768 cycles=4355078
+PRNG sample=13 bytes=32768 cycles=4355078
+PRNG sample=14 bytes=32768 cycles=4355078
+PRNG sample=15 bytes=32768 cycles=4355078
+PRNG sample=16 bytes=32768 cycles=4355078
+PRNG sample=17 bytes=32768 cycles=4355078
+PRNG sample=18 bytes=32768 cycles=4355078
+PRNG sample=19 bytes=32768 cycles=4355078
+PRNG sample=20 bytes=32768 cycles=4355078
+PRNG sample=21 bytes=32768 cycles=4355078
+PRNG sample=22 bytes=32768 cycles=4355079
+PRNG sample=23 bytes=32768 cycles=4355078
+PRNG sample=24 bytes=32768 cycles=4355078
+PRNG sample=25 bytes=32768 cycles=4355078
+PRNG sample=26 bytes=32768 cycles=4355078
+PRNG sample=27 bytes=32768 cycles=4355078
+PRNG sample=28 bytes=32768 cycles=4355078
+PRNG sample=29 bytes=32768 cycles=4355078
+PRNG sample=30 bytes=32768 cycles=4355078
+PRNG sample=31 bytes=32768 cycles=4355078
+PRNG sample=32 bytes=32768 cycles=4355078
+PRNG sample=33 bytes=32768 cycles=4355078
+PRNG sample=34 bytes=32768 cycles=4355078
+PRNG sample=35 bytes=32768 cycles=4355078
+PRNG sample=36 bytes=32768 cycles=4355078
+PRNG sample=37 bytes=32768 cycles=4355078
+PRNG sample=38 bytes=32768 cycles=4355078
+PRNG sample=39 bytes=32768 cycles=4355079
+PRNG sample=40 bytes=32768 cycles=4355078
+PRNG sample=41 bytes=32768 cycles=4355078
+PRNG sample=42 bytes=32768 cycles=4355078
+PRNG sample=43 bytes=32768 cycles=4355078
+PRNG sample=44 bytes=32768 cycles=4355078
+PRNG sample=45 bytes=32768 cycles=4355078
+PRNG sample=46 bytes=32768 cycles=4355078
+PRNG sample=47 bytes=32768 cycles=4355078
+PRNG sample=48 bytes=32768 cycles=4355078
+PRNG sample=49 bytes=32768 cycles=4355078
+DIGEST key n=512 value=b2c71afb11be9f22ac497dc004671d60c2ff4b9bb9775c7f4744807d6866d095
+SIGN n=512 sample=0 cycles=11422981 verify=PASS tamper=PASS
+SIGN n=512 sample=1 cycles=11378358 verify=PASS tamper=PASS
+SIGN n=512 sample=2 cycles=11608184 verify=PASS tamper=PASS
+SIGN n=512 sample=3 cycles=11392982 verify=PASS tamper=PASS
+SIGN n=512 sample=4 cycles=11398303 verify=PASS tamper=PASS
+SIGN n=512 sample=5 cycles=11399194 verify=PASS tamper=PASS
+SIGN n=512 sample=6 cycles=11259751 verify=PASS tamper=PASS
+SIGN n=512 sample=7 cycles=11299030 verify=PASS tamper=PASS
+SIGN n=512 sample=8 cycles=11299267 verify=PASS tamper=PASS
+SIGN n=512 sample=9 cycles=11294979 verify=PASS tamper=PASS
+SIGN n=512 sample=10 cycles=11397076 verify=PASS tamper=PASS
+SIGN n=512 sample=11 cycles=11272403 verify=PASS tamper=PASS
+SIGN n=512 sample=12 cycles=11403217 verify=PASS tamper=PASS
+SIGN n=512 sample=13 cycles=11387910 verify=PASS tamper=PASS
+SIGN n=512 sample=14 cycles=11265051 verify=PASS tamper=PASS
+SIGN n=512 sample=15 cycles=11495622 verify=PASS tamper=PASS
+SIGN n=512 sample=16 cycles=11394758 verify=PASS tamper=PASS
+SIGN n=512 sample=17 cycles=11283353 verify=PASS tamper=PASS
+SIGN n=512 sample=18 cycles=11280699 verify=PASS tamper=PASS
+SIGN n=512 sample=19 cycles=11398238 verify=PASS tamper=PASS
+SIGN n=512 sample=20 cycles=11283269 verify=PASS tamper=PASS
+SIGN n=512 sample=21 cycles=11299100 verify=PASS tamper=PASS
+SIGN n=512 sample=22 cycles=11268280 verify=PASS tamper=PASS
+SIGN n=512 sample=23 cycles=11494466 verify=PASS tamper=PASS
+SIGN n=512 sample=24 cycles=11297090 verify=PASS tamper=PASS
+SIGN n=512 sample=25 cycles=11277498 verify=PASS tamper=PASS
+SIGN n=512 sample=26 cycles=11421933 verify=PASS tamper=PASS
+SIGN n=512 sample=27 cycles=11368130 verify=PASS tamper=PASS
+SIGN n=512 sample=28 cycles=11385044 verify=PASS tamper=PASS
+SIGN n=512 sample=29 cycles=11269951 verify=PASS tamper=PASS
+SIGN n=512 sample=30 cycles=11258943 verify=PASS tamper=PASS
+SIGN n=512 sample=31 cycles=11510605 verify=PASS tamper=PASS
+DIGEST signature n=512 value=837f184be9cd2dd6eed2f8f16b16e751dd3c4e45ffd0eb6e08688297f3db6edd
+DIGEST key n=1024 value=9220ca561d96f61bdc1de20240c22c3445433a57e1010027e550a6f6c092282c
+SIGN n=1024 sample=0 cycles=23414046 verify=PASS tamper=PASS
+SIGN n=1024 sample=1 cycles=23528606 verify=PASS tamper=PASS
+SIGN n=1024 sample=2 cycles=23736986 verify=PASS tamper=PASS
+SIGN n=1024 sample=3 cycles=23722272 verify=PASS tamper=PASS
+SIGN n=1024 sample=4 cycles=23512638 verify=PASS tamper=PASS
+SIGN n=1024 sample=5 cycles=23386273 verify=PASS tamper=PASS
+SIGN n=1024 sample=6 cycles=23636116 verify=PASS tamper=PASS
+SIGN n=1024 sample=7 cycles=23596470 verify=PASS tamper=PASS
+SIGN n=1024 sample=8 cycles=23655564 verify=PASS tamper=PASS
+SIGN n=1024 sample=9 cycles=23829964 verify=PASS tamper=PASS
+SIGN n=1024 sample=10 cycles=23746374 verify=PASS tamper=PASS
+SIGN n=1024 sample=11 cycles=23425035 verify=PASS tamper=PASS
+SIGN n=1024 sample=12 cycles=23499692 verify=PASS tamper=PASS
+SIGN n=1024 sample=13 cycles=23647235 verify=PASS tamper=PASS
+SIGN n=1024 sample=14 cycles=23517865 verify=PASS tamper=PASS
+SIGN n=1024 sample=15 cycles=23752539 verify=PASS tamper=PASS
+SIGN n=1024 sample=16 cycles=23746035 verify=PASS tamper=PASS
+SIGN n=1024 sample=17 cycles=23629629 verify=PASS tamper=PASS
+SIGN n=1024 sample=18 cycles=23615416 verify=PASS tamper=PASS
+SIGN n=1024 sample=19 cycles=23633937 verify=PASS tamper=PASS
+SIGN n=1024 sample=20 cycles=23635413 verify=PASS tamper=PASS
+SIGN n=1024 sample=21 cycles=23624651 verify=PASS tamper=PASS
+SIGN n=1024 sample=22 cycles=23503299 verify=PASS tamper=PASS
+SIGN n=1024 sample=23 cycles=23512825 verify=PASS tamper=PASS
+SIGN n=1024 sample=24 cycles=23621910 verify=PASS tamper=PASS
+SIGN n=1024 sample=25 cycles=23507681 verify=PASS tamper=PASS
+SIGN n=1024 sample=26 cycles=23652411 verify=PASS tamper=PASS
+SIGN n=1024 sample=27 cycles=23834094 verify=PASS tamper=PASS
+SIGN n=1024 sample=28 cycles=23602874 verify=PASS tamper=PASS
+SIGN n=1024 sample=29 cycles=23732815 verify=PASS tamper=PASS
+SIGN n=1024 sample=30 cycles=23643970 verify=PASS tamper=PASS
+SIGN n=1024 sample=31 cycles=23647271 verify=PASS tamper=PASS
+DIGEST signature n=1024 value=914042beb4187c9dc1d036e989eb0e595873acb18d0af42dc71f66fdf06091f5
+CHECK signature=PASS valid=68 rejected=136
+BENCH_DONE result=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x171f4 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xbe94 lma 0x30000980
+Loading section datas, size 0x50 lma 0x3000c820
+Loading section device_states, size 0x2c lma 0x3000c870
+Loading section k_mutex_area, size 0x14 lma 0x3000c89c
+Loading section .last_section, size 0x4 lma 0x3000c8b0
+Start address 0x100126b0, load size 146880
+Transfer rate: 549 KB/sec, 6120 bytes/write.
+Temporary breakpoint 1 at 0x1000f40c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x1001269c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp_kjgqs41/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x1000f3bc: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x1001269c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984632            9979442
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30028518          805471512
+r8             0x300000d0          805306576
+r9             0x30038658          805537368
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30038608          0x30038608 <z_main_stack+65456>
+lr             0x1000f403          268497923
+pc             0x1000f3bc          0x1000f3bc <nucleo_test_breakpoint>
+xpsr           0x9060000           151388160
+fpscr          0x40010             262160
+msp            0x30028518          0x30028518 <z_idle_stacks>
+psp            0x30038608          0x30038608 <z_main_stack+65456>
+vpr            0xf0c3              [ P0=61635 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30028518          0x30028518 <z_idle_stacks>
+psp_s          0x30038608          0x30038608 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30027d18          0x30027d18 <z_interrupt_stacks>
+psplim_s       0x30028658          0x30028658 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xf0c3              -3901
+0x30038608 <z_main_stack+65456>:	0x00000000	0x1000f41f	0x00000000	0x10015de7
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30028518
+PSP=0x30038608
+LR=0x1000f403
+PC=0x1000f3bc
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30028518 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30028528 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

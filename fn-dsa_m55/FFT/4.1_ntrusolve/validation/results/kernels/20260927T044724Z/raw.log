@@ -1,0 +1,481 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 62503
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :62503 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10003890
+hbreak *0x10006fe4
+set $early_fault_bp = $bpnum
+jump *0x10006ff9
+if $pc != 0x10003890
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp1w_t0i2w/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10003840
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10006fe4
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.279255
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 62503
+Info : Listening on port 62503 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/62503
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+HYBRID_KERNEL logn=1 op=0 backend=0 calls=100 total=2400 min=24 max=24 diff=0 max_lsb=0
+HYBRID_KERNEL logn=1 op=0 backend=1 calls=100 total=2400 min=24 max=24 diff=0 max_lsb=0
+HYBRID_KERNEL logn=1 op=1 backend=0 calls=100 total=4800 min=48 max=48 diff=0 max_lsb=0
+HYBRID_KERNEL logn=1 op=1 backend=1 calls=100 total=4900 min=49 max=49 diff=0 max_lsb=0
+HYBRID_KERNEL logn=1 op=2 backend=0 calls=100 total=188700 min=1887 max=1887 diff=0 max_lsb=0
+HYBRID_KERNEL logn=1 op=2 backend=1 calls=100 total=55400 min=554 max=554 diff=0 max_lsb=0
+HYBRID_KERNEL logn=2 op=0 backend=0 calls=100 total=23400 min=234 max=234 diff=0 max_lsb=0
+HYBRID_KERNEL logn=2 op=0 backend=1 calls=100 total=23400 min=234 max=234 diff=0 max_lsb=0
+HYBRID_KERNEL logn=2 op=1 backend=0 calls=100 total=26700 min=267 max=267 diff=0 max_lsb=0
+HYBRID_KERNEL logn=2 op=1 backend=1 calls=100 total=26800 min=268 max=268 diff=0 max_lsb=0
+HYBRID_KERNEL logn=2 op=2 backend=0 calls=100 total=370700 min=3707 max=3707 diff=0 max_lsb=0
+HYBRID_KERNEL logn=2 op=2 backend=1 calls=100 total=102000 min=1020 max=1020 diff=0 max_lsb=0
+HYBRID_KERNEL logn=3 op=0 backend=0 calls=100 total=68700 min=687 max=687 diff=0 max_lsb=0
+HYBRID_KERNEL logn=3 op=0 backend=1 calls=100 total=68700 min=687 max=687 diff=0 max_lsb=0
+HYBRID_KERNEL logn=3 op=1 backend=0 calls=100 total=79000 min=790 max=790 diff=0 max_lsb=0
+HYBRID_KERNEL logn=3 op=1 backend=1 calls=100 total=79100 min=791 max=791 diff=0 max_lsb=0
+HYBRID_KERNEL logn=3 op=2 backend=0 calls=100 total=734700 min=7347 max=7347 diff=0 max_lsb=0
+HYBRID_KERNEL logn=3 op=2 backend=1 calls=100 total=195200 min=1952 max=1952 diff=0 max_lsb=0
+HYBRID_KERNEL logn=4 op=0 backend=0 calls=100 total=178400 min=1784 max=1784 diff=0 max_lsb=0
+HYBRID_KERNEL logn=4 op=0 backend=1 calls=100 total=178400 min=1784 max=1784 diff=0 max_lsb=0
+HYBRID_KERNEL logn=4 op=0 backend=2 calls=100 total=285500 min=2855 max=2855 diff=1081 max_lsb=6
+HYBRID_KERNEL logn=4 op=1 backend=0 calls=100 total=205600 min=2056 max=2056 diff=0 max_lsb=0
+HYBRID_KERNEL logn=4 op=1 backend=1 calls=100 total=205700 min=2057 max=2057 diff=0 max_lsb=0
+HYBRID_KERNEL logn=4 op=1 backend=2 calls=100 total=304400 min=3044 max=3044 diff=853 max_lsb=3
+HYBRID_KERNEL logn=4 op=2 backend=0 calls=100 total=1462700 min=14627 max=14627 diff=0 max_lsb=0
+HYBRID_KERNEL logn=4 op=2 backend=1 calls=100 total=381600 min=3816 max=3816 diff=0 max_lsb=0
+HYBRID_KERNEL logn=5 op=0 backend=0 calls=100 total=439400 min=4394 max=4394 diff=0 max_lsb=0
+HYBRID_KERNEL logn=5 op=0 backend=1 calls=100 total=439400 min=4394 max=4394 diff=0 max_lsb=0
+HYBRID_KERNEL logn=5 op=0 backend=2 calls=100 total=609200 min=6092 max=6092 diff=2535 max_lsb=11
+HYBRID_KERNEL logn=5 op=1 backend=0 calls=100 total=505800 min=5058 max=5058 diff=0 max_lsb=0
+HYBRID_KERNEL logn=5 op=1 backend=1 calls=100 total=505900 min=5059 max=5059 diff=0 max_lsb=0
+HYBRID_KERNEL logn=5 op=1 backend=2 calls=100 total=650000 min=6500 max=6500 diff=1940 max_lsb=3
+HYBRID_KERNEL logn=5 op=2 backend=0 calls=100 total=2918699 min=29186 max=29187 diff=0 max_lsb=0
+HYBRID_KERNEL logn=5 op=2 backend=1 calls=100 total=754400 min=7544 max=7544 diff=0 max_lsb=0
+HYBRID_KERNEL logn=6 op=0 backend=0 calls=100 total=1048000 min=10480 max=10480 diff=0 max_lsb=0
+HYBRID_KERNEL logn=6 op=0 backend=1 calls=100 total=1048000 min=10480 max=10480 diff=0 max_lsb=0
+HYBRID_KERNEL logn=6 op=0 backend=2 calls=100 total=1322100 min=13221 max=13221 diff=5398 max_lsb=22
+HYBRID_KERNEL logn=6 op=1 backend=0 calls=100 total=1203200 min=12032 max=12032 diff=0 max_lsb=0
+HYBRID_KERNEL logn=6 op=1 backend=1 calls=100 total=1203300 min=12033 max=12033 diff=0 max_lsb=0
+HYBRID_KERNEL logn=6 op=1 backend=2 calls=100 total=1413300 min=14133 max=14133 diff=4193 max_lsb=3
+HYBRID_KERNEL logn=6 op=2 backend=0 calls=100 total=5830700 min=58307 max=58307 diff=0 max_lsb=0
+HYBRID_KERNEL logn=6 op=2 backend=1 calls=100 total=1500000 min=15000 max=15000 diff=0 max_lsb=0
+HYBRID_KERNEL logn=7 op=0 backend=0 calls=100 total=2441800 min=24418 max=24418 diff=0 max_lsb=0
+HYBRID_KERNEL logn=7 op=0 backend=1 calls=100 total=2441801 min=24418 max=24419 diff=0 max_lsb=0
+HYBRID_KERNEL logn=7 op=0 backend=2 calls=100 total=2883300 min=28833 max=28833 diff=11398 max_lsb=40
+HYBRID_KERNEL logn=7 op=1 backend=0 calls=100 total=2795000 min=27950 max=27950 diff=0 max_lsb=0
+HYBRID_KERNEL logn=7 op=1 backend=1 calls=100 total=2795100 min=27951 max=27951 diff=0 max_lsb=0
+HYBRID_KERNEL logn=7 op=1 backend=2 calls=100 total=3087600 min=30876 max=30876 diff=8818 max_lsb=4
+HYBRID_KERNEL logn=7 op=2 backend=0 calls=100 total=11654700 min=116547 max=116547 diff=0 max_lsb=0
+HYBRID_KERNEL logn=7 op=2 backend=1 calls=100 total=2991200 min=29912 max=29912 diff=0 max_lsb=0
+HYBRID_KERNEL logn=8 op=0 backend=0 calls=100 total=5586000 min=55860 max=55860 diff=0 max_lsb=0
+HYBRID_KERNEL logn=8 op=0 backend=1 calls=100 total=5586000 min=55860 max=55860 diff=0 max_lsb=0
+HYBRID_KERNEL logn=8 op=0 backend=2 calls=100 total=6281100 min=62811 max=62811 diff=23450 max_lsb=69
+HYBRID_KERNEL logn=8 op=1 backend=0 calls=100 total=6375599 min=63755 max=63756 diff=0 max_lsb=0
+HYBRID_KERNEL logn=8 op=1 backend=1 calls=100 total=6375700 min=63757 max=63757 diff=0 max_lsb=0
+HYBRID_KERNEL logn=8 op=1 backend=2 calls=100 total=6735100 min=67351 max=67351 diff=17987 max_lsb=4
+HYBRID_KERNEL logn=8 op=2 backend=0 calls=100 total=23302699 min=233026 max=233027 diff=0 max_lsb=0
+HYBRID_KERNEL logn=8 op=2 backend=1 calls=100 total=5973601 min=59736 max=59737 diff=0 max_lsb=0
+HYBRID_KERNEL logn=9 op=0 backend=0 calls=100 total=12591000 min=125910 max=125910 diff=0 max_lsb=0
+HYBRID_KERNEL logn=9 op=0 backend=1 calls=100 total=12590999 min=125909 max=125910 diff=0 max_lsb=0
+HYBRID_KERNEL logn=9 op=0 backend=2 calls=100 total=13632100 min=136321 max=136321 diff=48205 max_lsb=134
+HYBRID_KERNEL logn=9 op=1 backend=0 calls=100 total=14333799 min=143337 max=143338 diff=0 max_lsb=0
+HYBRID_KERNEL logn=9 op=1 backend=1 calls=100 total=14333900 min=143339 max=143339 diff=0 max_lsb=0
+HYBRID_KERNEL logn=9 op=1 backend=2 calls=100 total=14631399 min=146313 max=146314 diff=36363 max_lsb=4
+HYBRID_KERNEL logn=9 op=2 backend=0 calls=100 total=46598698 min=465986 max=465987 diff=0 max_lsb=0
+HYBRID_KERNEL logn=9 op=2 backend=1 calls=100 total=11938399 min=119383 max=119384 diff=0 max_lsb=0
+HYBRID_KERNEL logn=10 op=0 backend=0 calls=100 total=28037601 min=280376 max=280377 diff=0 max_lsb=0
+HYBRID_KERNEL logn=10 op=0 backend=1 calls=100 total=28037599 min=280375 max=280376 diff=0 max_lsb=0
+HYBRID_KERNEL logn=10 op=0 backend=2 calls=100 total=29449500 min=294495 max=294495 diff=98026 max_lsb=268
+HYBRID_KERNEL logn=10 op=1 backend=0 calls=100 total=31847199 min=318471 max=318472 diff=0 max_lsb=0
+HYBRID_KERNEL logn=10 op=1 backend=1 calls=100 total=31847299 min=318472 max=318473 diff=0 max_lsb=0
+HYBRID_KERNEL logn=10 op=1 backend=2 calls=100 total=31630098 min=316300 max=316301 diff=73324 max_lsb=4
+HYBRID_KERNEL logn=10 op=2 backend=0 calls=100 total=93190697 min=931906 max=931907 diff=0 max_lsb=0
+HYBRID_KERNEL logn=10 op=2 backend=1 calls=100 total=23867999 min=238679 max=238681 diff=0 max_lsb=0
+HYBRID_TIMING logn=4 op=0 class=0 calls=100 total=285500 min=2855 max=2855
+HYBRID_TIMING logn=4 op=0 class=1 calls=100 total=285500 min=2855 max=2855
+HYBRID_TIMING logn=4 op=0 class=2 calls=100 total=285500 min=2855 max=2855
+HYBRID_TIMING logn=4 op=0 class=3 calls=100 total=285500 min=2855 max=2855
+HYBRID_TIMING logn=4 op=0 class=4 calls=100 total=285500 min=2855 max=2855
+HYBRID_TIMING logn=4 op=0 class=5 calls=100 total=285500 min=2855 max=2855
+HYBRID_TIMING logn=4 op=0 class=6 calls=100 total=285500 min=2855 max=2855
+HYBRID_TIMING logn=4 op=0 class=7 calls=100 total=285500 min=2855 max=2855
+HYBRID_TIMING logn=4 op=1 class=0 calls=100 total=304400 min=3044 max=3044
+HYBRID_TIMING logn=4 op=1 class=1 calls=100 total=304400 min=3044 max=3044
+HYBRID_TIMING logn=4 op=1 class=2 calls=100 total=304400 min=3044 max=3044
+HYBRID_TIMING logn=4 op=1 class=3 calls=100 total=304400 min=3044 max=3044
+HYBRID_TIMING logn=4 op=1 class=4 calls=100 total=304400 min=3044 max=3044
+HYBRID_TIMING logn=4 op=1 class=5 calls=100 total=304400 min=3044 max=3044
+HYBRID_TIMING logn=4 op=1 class=6 calls=100 total=304400 min=3044 max=3044
+HYBRID_TIMING logn=4 op=1 class=7 calls=100 total=304400 min=3044 max=3044
+HYBRID_TIMING logn=4 op=2 class=0 calls=100 total=381600 min=3816 max=3816
+HYBRID_TIMING logn=4 op=2 class=1 calls=100 total=381600 min=3816 max=3816
+HYBRID_TIMING logn=4 op=2 class=2 calls=100 total=381600 min=3816 max=3816
+HYBRID_TIMING logn=4 op=2 class=3 calls=100 total=381600 min=3816 max=3816
+HYBRID_TIMING logn=4 op=2 class=4 calls=100 total=381600 min=3816 max=3816
+HYBRID_TIMING logn=4 op=2 class=5 calls=100 total=381600 min=3816 max=3816
+HYBRID_TIMING logn=4 op=2 class=6 calls=100 total=381600 min=3816 max=3816
+HYBRID_TIMING logn=4 op=2 class=7 calls=100 total=381600 min=3816 max=3816
+HYBRID_TIMING logn=5 op=0 class=0 calls=100 total=609200 min=6092 max=6092
+HYBRID_TIMING logn=5 op=0 class=1 calls=100 total=609200 min=6092 max=6092
+HYBRID_TIMING logn=5 op=0 class=2 calls=100 total=609200 min=6092 max=6092
+HYBRID_TIMING logn=5 op=0 class=3 calls=100 total=609200 min=6092 max=6092
+HYBRID_TIMING logn=5 op=0 class=4 calls=100 total=609200 min=6092 max=6092
+HYBRID_TIMING logn=5 op=0 class=5 calls=100 total=609200 min=6092 max=6092
+HYBRID_TIMING logn=5 op=0 class=6 calls=100 total=609200 min=6092 max=6092
+HYBRID_TIMING logn=5 op=0 class=7 calls=100 total=609200 min=6092 max=6092
+HYBRID_TIMING logn=5 op=1 class=0 calls=100 total=650000 min=6500 max=6500
+HYBRID_TIMING logn=5 op=1 class=1 calls=100 total=650000 min=6500 max=6500
+HYBRID_TIMING logn=5 op=1 class=2 calls=100 total=650000 min=6500 max=6500
+HYBRID_TIMING logn=5 op=1 class=3 calls=100 total=650000 min=6500 max=6500
+HYBRID_TIMING logn=5 op=1 class=4 calls=100 total=650000 min=6500 max=6500
+HYBRID_TIMING logn=5 op=1 class=5 calls=100 total=650000 min=6500 max=6500
+HYBRID_TIMING logn=5 op=1 class=6 calls=100 total=650000 min=6500 max=6500
+HYBRID_TIMING logn=5 op=1 class=7 calls=100 total=650000 min=6500 max=6500
+HYBRID_TIMING logn=5 op=2 class=0 calls=100 total=754400 min=7544 max=7544
+HYBRID_TIMING logn=5 op=2 class=1 calls=100 total=754400 min=7544 max=7544
+HYBRID_TIMING logn=5 op=2 class=2 calls=100 total=754400 min=7544 max=7544
+HYBRID_TIMING logn=5 op=2 class=3 calls=100 total=754400 min=7544 max=7544
+HYBRID_TIMING logn=5 op=2 class=4 calls=100 total=754400 min=7544 max=7544
+HYBRID_TIMING logn=5 op=2 class=5 calls=100 total=754400 min=7544 max=7544
+HYBRID_TIMING logn=5 op=2 class=6 calls=100 total=754400 min=7544 max=7544
+HYBRID_TIMING logn=5 op=2 class=7 calls=100 total=754400 min=7544 max=7544
+HYBRID_TIMING logn=6 op=0 class=0 calls=100 total=1322100 min=13221 max=13221
+HYBRID_TIMING logn=6 op=0 class=1 calls=100 total=1322100 min=13221 max=13221
+HYBRID_TIMING logn=6 op=0 class=2 calls=100 total=1322100 min=13221 max=13221
+HYBRID_TIMING logn=6 op=0 class=3 calls=100 total=1322100 min=13221 max=13221
+HYBRID_TIMING logn=6 op=0 class=4 calls=100 total=1322100 min=13221 max=13221
+HYBRID_TIMING logn=6 op=0 class=5 calls=100 total=1322100 min=13221 max=13221
+HYBRID_TIMING logn=6 op=0 class=6 calls=100 total=1322100 min=13221 max=13221
+HYBRID_TIMING logn=6 op=0 class=7 calls=100 total=1322100 min=13221 max=13221
+HYBRID_TIMING logn=6 op=1 class=0 calls=100 total=1413300 min=14133 max=14133
+HYBRID_TIMING logn=6 op=1 class=1 calls=100 total=1413300 min=14133 max=14133
+HYBRID_TIMING logn=6 op=1 class=2 calls=100 total=1413300 min=14133 max=14133
+HYBRID_TIMING logn=6 op=1 class=3 calls=100 total=1413300 min=14133 max=14133
+HYBRID_TIMING logn=6 op=1 class=4 calls=100 total=1413300 min=14133 max=14133
+HYBRID_TIMING logn=6 op=1 class=5 calls=100 total=1413300 min=14133 max=14133
+HYBRID_TIMING logn=6 op=1 class=6 calls=100 total=1413300 min=14133 max=14133
+HYBRID_TIMING logn=6 op=1 class=7 calls=100 total=1413300 min=14133 max=14133
+HYBRID_TIMING logn=6 op=2 class=0 calls=100 total=1500000 min=15000 max=15000
+HYBRID_TIMING logn=6 op=2 class=1 calls=100 total=1500000 min=15000 max=15000
+HYBRID_TIMING logn=6 op=2 class=2 calls=100 total=1500000 min=15000 max=15000
+HYBRID_TIMING logn=6 op=2 class=3 calls=100 total=1500000 min=15000 max=15000
+HYBRID_TIMING logn=6 op=2 class=4 calls=100 total=1500000 min=15000 max=15000
+HYBRID_TIMING logn=6 op=2 class=5 calls=100 total=1500000 min=15000 max=15000
+HYBRID_TIMING logn=6 op=2 class=6 calls=100 total=1500000 min=15000 max=15000
+HYBRID_TIMING logn=6 op=2 class=7 calls=100 total=1500000 min=15000 max=15000
+HYBRID_TIMING logn=7 op=0 class=0 calls=100 total=2883300 min=28833 max=28833
+HYBRID_TIMING logn=7 op=0 class=1 calls=100 total=2883300 min=28833 max=28833
+HYBRID_TIMING logn=7 op=0 class=2 calls=100 total=2883300 min=28833 max=28833
+HYBRID_TIMING logn=7 op=0 class=3 calls=100 total=2883300 min=28833 max=28833
+HYBRID_TIMING logn=7 op=0 class=4 calls=100 total=2883301 min=28833 max=28834
+HYBRID_TIMING logn=7 op=0 class=5 calls=100 total=2883300 min=28833 max=28833
+HYBRID_TIMING logn=7 op=0 class=6 calls=100 total=2883300 min=28833 max=28833
+HYBRID_TIMING logn=7 op=0 class=7 calls=100 total=2883300 min=28833 max=28833
+HYBRID_TIMING logn=7 op=1 class=0 calls=100 total=3087600 min=30876 max=30876
+HYBRID_TIMING logn=7 op=1 class=1 calls=100 total=3087600 min=30876 max=30876
+HYBRID_TIMING logn=7 op=1 class=2 calls=100 total=3087600 min=30876 max=30876
+HYBRID_TIMING logn=7 op=1 class=3 calls=100 total=3087600 min=30876 max=30876
+HYBRID_TIMING logn=7 op=1 class=4 calls=100 total=3087600 min=30876 max=30876
+HYBRID_TIMING logn=7 op=1 class=5 calls=100 total=3087600 min=30876 max=30876
+HYBRID_TIMING logn=7 op=1 class=6 calls=100 total=3087600 min=30876 max=30876
+HYBRID_TIMING logn=7 op=1 class=7 calls=100 total=3087600 min=30876 max=30876
+HYBRID_TIMING logn=7 op=2 class=0 calls=100 total=2991200 min=29912 max=29912
+HYBRID_TIMING logn=7 op=2 class=1 calls=100 total=2991200 min=29912 max=29912
+HYBRID_TIMING logn=7 op=2 class=2 calls=100 total=2991200 min=29912 max=29912
+HYBRID_TIMING logn=7 op=2 class=3 calls=100 total=2991200 min=29912 max=29912
+HYBRID_TIMING logn=7 op=2 class=4 calls=100 total=2991200 min=29912 max=29912
+HYBRID_TIMING logn=7 op=2 class=5 calls=100 total=2991200 min=29912 max=29912
+HYBRID_TIMING logn=7 op=2 class=6 calls=100 total=2991201 min=29912 max=29913
+HYBRID_TIMING logn=7 op=2 class=7 calls=100 total=2991200 min=29912 max=29912
+HYBRID_TIMING logn=8 op=0 class=0 calls=100 total=6281100 min=62811 max=62811
+HYBRID_TIMING logn=8 op=0 class=1 calls=100 total=6281100 min=62811 max=62811
+HYBRID_TIMING logn=8 op=0 class=2 calls=100 total=6281100 min=62811 max=62811
+HYBRID_TIMING logn=8 op=0 class=3 calls=100 total=6281100 min=62811 max=62811
+HYBRID_TIMING logn=8 op=0 class=4 calls=100 total=6281100 min=62811 max=62811
+HYBRID_TIMING logn=8 op=0 class=5 calls=100 total=6281100 min=62811 max=62811
+HYBRID_TIMING logn=8 op=0 class=6 calls=100 total=6281100 min=62811 max=62811
+HYBRID_TIMING logn=8 op=0 class=7 calls=100 total=6281100 min=62811 max=62811
+HYBRID_TIMING logn=8 op=1 class=0 calls=100 total=6735100 min=67351 max=67351
+HYBRID_TIMING logn=8 op=1 class=1 calls=100 total=6735101 min=67351 max=67352
+HYBRID_TIMING logn=8 op=1 class=2 calls=100 total=6735100 min=67351 max=67351
+HYBRID_TIMING logn=8 op=1 class=3 calls=100 total=6735100 min=67351 max=67351
+HYBRID_TIMING logn=8 op=1 class=4 calls=100 total=6735100 min=67351 max=67351
+HYBRID_TIMING logn=8 op=1 class=5 calls=100 total=6735100 min=67351 max=67351
+HYBRID_TIMING logn=8 op=1 class=6 calls=100 total=6735100 min=67351 max=67351
+HYBRID_TIMING logn=8 op=1 class=7 calls=100 total=6735100 min=67351 max=67351
+HYBRID_TIMING logn=8 op=2 class=0 calls=100 total=5973600 min=59736 max=59736
+HYBRID_TIMING logn=8 op=2 class=1 calls=100 total=5973600 min=59736 max=59736
+HYBRID_TIMING logn=8 op=2 class=2 calls=100 total=5973601 min=59736 max=59737
+HYBRID_TIMING logn=8 op=2 class=3 calls=100 total=5973600 min=59736 max=59736
+HYBRID_TIMING logn=8 op=2 class=4 calls=100 total=5973600 min=59736 max=59736
+HYBRID_TIMING logn=8 op=2 class=5 calls=100 total=5973600 min=59736 max=59736
+HYBRID_TIMING logn=8 op=2 class=6 calls=100 total=5973600 min=59736 max=59736
+HYBRID_TIMING logn=8 op=2 class=7 calls=100 total=5973600 min=59736 max=59736
+HYBRID_TIMING logn=9 op=0 class=0 calls=100 total=13632100 min=136321 max=136321
+HYBRID_TIMING logn=9 op=0 class=1 calls=100 total=13632100 min=136321 max=136321
+HYBRID_TIMING logn=9 op=0 class=2 calls=100 total=13632101 min=136321 max=136322
+HYBRID_TIMING logn=9 op=0 class=3 calls=100 total=13632100 min=136321 max=136321
+HYBRID_TIMING logn=9 op=0 class=4 calls=100 total=13632100 min=136321 max=136321
+HYBRID_TIMING logn=9 op=0 class=5 calls=100 total=13632100 min=136321 max=136321
+HYBRID_TIMING logn=9 op=0 class=6 calls=100 total=13632100 min=136321 max=136321
+HYBRID_TIMING logn=9 op=0 class=7 calls=100 total=13632101 min=136321 max=136322
+HYBRID_TIMING logn=9 op=1 class=0 calls=100 total=14631400 min=146314 max=146314
+HYBRID_TIMING logn=9 op=1 class=1 calls=100 total=14631400 min=146314 max=146314
+HYBRID_TIMING logn=9 op=1 class=2 calls=100 total=14631400 min=146314 max=146314
+HYBRID_TIMING logn=9 op=1 class=3 calls=100 total=14631401 min=146314 max=146315
+HYBRID_TIMING logn=9 op=1 class=4 calls=100 total=14631400 min=146314 max=146314
+HYBRID_TIMING logn=9 op=1 class=5 calls=100 total=14631400 min=146314 max=146314
+HYBRID_TIMING logn=9 op=1 class=6 calls=100 total=14631400 min=146314 max=146314
+HYBRID_TIMING logn=9 op=1 class=7 calls=100 total=14631400 min=146314 max=146314
+HYBRID_TIMING logn=9 op=2 class=0 calls=100 total=11938401 min=119384 max=119385
+HYBRID_TIMING logn=9 op=2 class=1 calls=100 total=11938400 min=119384 max=119384
+HYBRID_TIMING logn=9 op=2 class=2 calls=100 total=11938400 min=119384 max=119384
+HYBRID_TIMING logn=9 op=2 class=3 calls=100 total=11938400 min=119384 max=119384
+HYBRID_TIMING logn=9 op=2 class=4 calls=100 total=11938400 min=119384 max=119384
+HYBRID_TIMING logn=9 op=2 class=5 calls=100 total=11938400 min=119384 max=119384
+HYBRID_TIMING logn=9 op=2 class=6 calls=100 total=11911200 min=119112 max=119112
+HYBRID_TIMING logn=9 op=2 class=7 calls=100 total=11938400 min=119384 max=119384
+HYBRID_TIMING logn=10 op=0 class=0 calls=100 total=29449500 min=294495 max=294495
+HYBRID_TIMING logn=10 op=0 class=1 calls=100 total=29449501 min=294495 max=294496
+HYBRID_TIMING logn=10 op=0 class=2 calls=100 total=29449500 min=294495 max=294495
+HYBRID_TIMING logn=10 op=0 class=3 calls=100 total=29449501 min=294495 max=294496
+HYBRID_TIMING logn=10 op=0 class=4 calls=100 total=29449500 min=294495 max=294495
+HYBRID_TIMING logn=10 op=0 class=5 calls=100 total=29449500 min=294495 max=294495
+HYBRID_TIMING logn=10 op=0 class=6 calls=100 total=29449501 min=294495 max=294496
+HYBRID_TIMING logn=10 op=0 class=7 calls=100 total=29449500 min=294495 max=294495
+HYBRID_TIMING logn=10 op=1 class=0 calls=100 total=31630101 min=316301 max=316302
+HYBRID_TIMING logn=10 op=1 class=1 calls=100 total=31630100 min=316301 max=316301
+HYBRID_TIMING logn=10 op=1 class=2 calls=100 total=31630101 min=316301 max=316302
+HYBRID_TIMING logn=10 op=1 class=3 calls=100 total=31630100 min=316301 max=316301
+HYBRID_TIMING logn=10 op=1 class=4 calls=100 total=31630100 min=316301 max=316301
+HYBRID_TIMING logn=10 op=1 class=5 calls=100 total=31630100 min=316301 max=316301
+HYBRID_TIMING logn=10 op=1 class=6 calls=100 total=31630100 min=316301 max=316301
+HYBRID_TIMING logn=10 op=1 class=7 calls=100 total=31630101 min=316301 max=316302
+HYBRID_TIMING logn=10 op=2 class=0 calls=100 total=23868000 min=238680 max=238680
+HYBRID_TIMING logn=10 op=2 class=1 calls=100 total=23868001 min=238680 max=238681
+HYBRID_TIMING logn=10 op=2 class=2 calls=100 total=23868000 min=238680 max=238680
+HYBRID_TIMING logn=10 op=2 class=3 calls=100 total=23868000 min=238680 max=238680
+HYBRID_TIMING logn=10 op=2 class=4 calls=100 total=23868001 min=238680 max=238681
+HYBRID_TIMING logn=10 op=2 class=5 calls=100 total=23868000 min=238680 max=238680
+HYBRID_TIMING logn=10 op=2 class=6 calls=100 total=23695200 min=236952 max=236952
+HYBRID_TIMING logn=10 op=2 class=7 calls=100 total=23868001 min=238680 max=238681
+HYBRID_KERNEL_DONE
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xbaf8 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xeb30 lma 0x30000980
+Loading section datas, size 0x50 lma 0x3000f4c0
+Loading section device_states, size 0x2c lma 0x3000f510
+Loading section k_mutex_area, size 0x14 lma 0x3000f53c
+Loading section .last_section, size 0x4 lma 0x3000f550
+Start address 0x10006ff8, load size 111456
+Transfer rate: 549 KB/sec, 5307 bytes/write.
+Temporary breakpoint 1 at 0x10003890: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10006fe4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp1w_t0i2w/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10003840: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10006fe4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984631            9979441
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x3001e178          805429624
+r8             0x300000d0          805306576
+r9             0x3002e2b8          805495480
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3002e268          0x3002e268 <z_main_stack+65456>
+lr             0x10003887          268449927
+pc             0x10003840          0x10003840 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x40010             262160
+msp            0x3001e178          0x3001e178 <z_idle_stacks>
+psp            0x3002e268          0x3002e268 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x3001e178          0x3001e178 <z_idle_stacks>
+psp_s          0x3002e268          0x3002e268 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x3001d978          0x3001d978 <z_interrupt_stacks>
+psplim_s       0x3001e2b8          0x3001e2b8 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x3002e268 <z_main_stack+65456>:	0x00000000	0x100038a3	0x00000000	0x1000a6eb
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x3001e178
+PSP=0x3002e268
+LR=0x10003887
+PC=0x10003840
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3002e268 <z_main_stack+65456>:	0x00000000	0x100038a3	0x00000000	0x1000a6eb
+0x3002e278 <z_main_stack+65472>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

@@ -1,0 +1,40 @@
+DOCUMENT: falcon_m7.pdf PAGE: 1/22
+
+Benchmarking and Analysing the NIST PQC
+Lattice-Based Signature Schemes Standards on
+the ARM Cortex M7
+James Howe1 and Bas Westerbaan2⋆
+1 SandboxAQ, Palo Alto, USA.
+james.howe@sandboxaq.com
+2 Cloudflare, Amsterdam, The Netherlands.
+bas@westerbaan.name
+Abstract. This paper presents an analysis of the two lattice-based dig-
+ital signature schemes, Dilithium and Falcon, which have been cho-
+sen by NIST for standardization, on the ARM Cortex M7 using the
+STM32F767ZI NUCLEO-144 development board. This research is mo-
+tivated by the ARM Cortex M7 device being the only processor in the
+Cortex-M family to offer a double precision (i.e., 64-bit) floating-point
+unit, making Falcon’s implementations, requiring 53 bits of double preci-
+sion, able to fully run native floating-point operations without any emu-
+lation. When benchmarking natively, Falcon shows significant speed-ups
+between 6.2–8.3x in clock cycles, 6.2-11.8x in runtime, and Dilithium
+does not show much improvement other than those gained by the slightly
+faster processor. We then present profiling results of the two schemes on
+the ARM Cortex M7 to show their respective bottlenecks and operations
+where the improvements are and can be made. This demonstrates, for
+example, that some operations in Falcon’s procedures observe speed-ups
+by an order of magnitude. Finally, since Falcon’s use of floating points
+is so rare in cryptography, we test the native FPU instructions on 4 dif-
+ferent STM32 development boards with the ARM Cortex M7 and also a
+Raspberry Pi 3 which is used in some of Falcon’s oﬀicial benchmarking
+results. We find constant-time irregularities in all of these devices, which
+makes Falcon insecure on these devices for applications where signature
+generation can be timed by an attacker.
+1 Introduction
+Since NIST began their Post-Quantum Cryptography (PQC) Standardization
+Project [NIST15] there have been a number of instances where they have called
+for benchmarking and evaluations of the candidates on differing hardware plat-
+forms [NIST16; AAAS+19; AASA+20]. This prompted research into implement-
+ing these schemes on a variety of platforms in software, for example see PQ-
+Clean [PQClean], SUPERCOP [SupCop], liboqs [liboqs], and pqm4 [pqm4], and
+⋆ The research in this paper was carried out while employed at PQShield.

@@ -1,0 +1,407 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 63510
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :63510 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10005374
+hbreak *0x100085e0
+set $early_fault_bp = $bpnum
+jump *0x100085f5
+if $pc != 0x10005374
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp2q5de4cy/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10005324
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x100085e0
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.280851
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 63510
+Info : Listening on port 63510 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/63510
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=0 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=0 phase=f_fft differences=32 max_lsb_ceil=10 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=0 phase=inverse differences=32 max_lsb_ceil=6983483732443136 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=0 phase=F_fft differences=32 max_lsb_ceil=8 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=0 phase=pointwise differences=32 max_lsb_ceil=274068437102 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=0 phase=ifft differences=32 max_lsb_ceil=17528430815 saturated=0
+C_FIXTURE name=1024-test7 logn=5 mode=0 valid=1 k_differences=30
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=1 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=1 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=1 phase=inverse differences=32 max_lsb_ceil=6983280983983392 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=1 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=1 phase=pointwise differences=32 max_lsb_ceil=274025635880 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=1 phase=ifft differences=32 max_lsb_ceil=17525830540 saturated=0
+C_FIXTURE name=1024-test7 logn=5 mode=1 valid=1 k_differences=30
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=2 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=2 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=2 phase=inverse differences=2 max_lsb_ceil=32 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=2 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=2 phase=pointwise differences=32 max_lsb_ceil=2 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=2 phase=ifft differences=32 max_lsb_ceil=2 saturated=0
+C_FIXTURE name=1024-test7 logn=5 mode=2 valid=1 k_differences=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=3 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=3 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=3 phase=inverse differences=2 max_lsb_ceil=32 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=3 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=3 phase=pointwise differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test7 logn=5 mode=3 phase=ifft differences=32 max_lsb_ceil=2 saturated=0
+C_FIXTURE name=1024-test7 logn=5 mode=3 valid=1 k_differences=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=0 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=0 phase=f_fft differences=16 max_lsb_ceil=3 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=0 phase=inverse differences=16 max_lsb_ceil=22644215813130016 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=0 phase=F_fft differences=16 max_lsb_ceil=6 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=0 phase=pointwise differences=16 max_lsb_ceil=62321021113 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=0 phase=ifft differences=16 max_lsb_ceil=9161893806 saturated=0
+C_FIXTURE name=1024-test74 logn=4 mode=0 valid=1 k_differences=12
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=1 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=1 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=1 phase=inverse differences=16 max_lsb_ceil=22644904148295968 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=1 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=1 phase=pointwise differences=16 max_lsb_ceil=62237303395 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=1 phase=ifft differences=16 max_lsb_ceil=9153237749 saturated=0
+C_FIXTURE name=1024-test74 logn=4 mode=1 valid=1 k_differences=12
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=2 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=2 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=2 phase=inverse differences=3 max_lsb_ceil=224 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=2 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=2 phase=pointwise differences=16 max_lsb_ceil=2 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=2 phase=ifft differences=16 max_lsb_ceil=4 saturated=0
+C_FIXTURE name=1024-test74 logn=4 mode=2 valid=1 k_differences=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=3 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=3 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=3 phase=inverse differences=3 max_lsb_ceil=224 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=3 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=3 phase=pointwise differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test74 logn=4 mode=3 phase=ifft differences=16 max_lsb_ceil=4 saturated=0
+C_FIXTURE name=1024-test74 logn=4 mode=3 valid=1 k_differences=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=0 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=0 phase=f_fft differences=16 max_lsb_ceil=4 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=0 phase=inverse differences=16 max_lsb_ceil=951059454306508800 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=0 phase=F_fft differences=16 max_lsb_ceil=4 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=0 phase=pointwise differences=16 max_lsb_ceil=576654043855 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=0 phase=ifft differences=16 max_lsb_ceil=99278550528 saturated=0
+C_FIXTURE name=1024-test79 logn=4 mode=0 valid=1 k_differences=15
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=1 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=1 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=1 phase=inverse differences=16 max_lsb_ceil=951060319289112576 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=1 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=1 phase=pointwise differences=16 max_lsb_ceil=576691607251 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=1 phase=ifft differences=16 max_lsb_ceil=99272489068 saturated=0
+C_FIXTURE name=1024-test79 logn=4 mode=1 valid=1 k_differences=15
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=2 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=2 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=2 phase=inverse differences=1 max_lsb_ceil=8 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=2 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=2 phase=pointwise differences=14 max_lsb_ceil=1 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=2 phase=ifft differences=16 max_lsb_ceil=3 saturated=0
+C_FIXTURE name=1024-test79 logn=4 mode=2 valid=1 k_differences=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=3 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=3 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=3 phase=inverse differences=1 max_lsb_ceil=8 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=3 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=3 phase=pointwise differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test79 logn=4 mode=3 phase=ifft differences=16 max_lsb_ceil=3 saturated=0
+C_FIXTURE name=1024-test79 logn=4 mode=3 valid=1 k_differences=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=0 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=0 phase=f_fft differences=16 max_lsb_ceil=7 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=0 phase=inverse differences=16 max_lsb_ceil=16659094746046976 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=0 phase=F_fft differences=16 max_lsb_ceil=5 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=0 phase=pointwise differences=16 max_lsb_ceil=41729739312 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=0 phase=ifft differences=16 max_lsb_ceil=5754156343 saturated=0
+C_FIXTURE name=1024-test80 logn=4 mode=0 valid=1 k_differences=9
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=1 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=1 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=1 phase=inverse differences=16 max_lsb_ceil=16658317493474304 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=1 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=1 phase=pointwise differences=16 max_lsb_ceil=41691415052 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=1 phase=ifft differences=16 max_lsb_ceil=5745445535 saturated=0
+C_FIXTURE name=1024-test80 logn=4 mode=1 valid=1 k_differences=9
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=2 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=2 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=2 phase=inverse differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=2 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=2 phase=pointwise differences=14 max_lsb_ceil=2 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=2 phase=ifft differences=16 max_lsb_ceil=2 saturated=0
+C_FIXTURE name=1024-test80 logn=4 mode=2 valid=1 k_differences=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=3 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=3 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=3 phase=inverse differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=3 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=3 phase=pointwise differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=1024-test80 logn=4 mode=3 phase=ifft differences=16 max_lsb_ceil=2 saturated=0
+C_FIXTURE name=1024-test80 logn=4 mode=3 valid=1 k_differences=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=0 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=0 phase=f_fft differences=16 max_lsb_ceil=4 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=0 phase=inverse differences=16 max_lsb_ceil=404860075633368 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=0 phase=F_fft differences=16 max_lsb_ceil=6 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=0 phase=pointwise differences=16 max_lsb_ceil=2547614068 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=0 phase=ifft differences=16 max_lsb_ceil=421010100 saturated=0
+C_FIXTURE name=512-test78 logn=4 mode=0 valid=1 k_differences=1
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=1 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=1 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=1 phase=inverse differences=16 max_lsb_ceil=405060365061880 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=1 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=1 phase=pointwise differences=16 max_lsb_ceil=2612780654 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=1 phase=ifft differences=16 max_lsb_ceil=425647811 saturated=0
+C_FIXTURE name=512-test78 logn=4 mode=1 valid=1 k_differences=1
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=2 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=2 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=2 phase=inverse differences=2 max_lsb_ceil=40 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=2 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=2 phase=pointwise differences=16 max_lsb_ceil=2 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=2 phase=ifft differences=16 max_lsb_ceil=2 saturated=0
+C_FIXTURE name=512-test78 logn=4 mode=2 valid=1 k_differences=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=3 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=3 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=3 phase=inverse differences=2 max_lsb_ceil=40 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=3 phase=F_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=3 phase=pointwise differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=512-test78 logn=4 mode=3 phase=ifft differences=16 max_lsb_ceil=2 saturated=0
+C_FIXTURE name=512-test78 logn=4 mode=3 valid=1 k_differences=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=0 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=0 phase=f_fft differences=64 max_lsb_ceil=17 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=0 phase=inverse differences=64 max_lsb_ceil=12030 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=0 phase=F_fft differences=63 max_lsb_ceil=122 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=0 phase=pointwise differences=64 max_lsb_ceil=18446744073709551615 saturated=2
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=0 phase=ifft differences=64 max_lsb_ceil=1630477234660715776 saturated=0
+C_FIXTURE name=residual-512-test58 logn=6 mode=0 valid=1 k_differences=64
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=1 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=1 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=1 phase=inverse differences=64 max_lsb_ceil=466 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=1 phase=F_fft differences=1 max_lsb_ceil=16 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=1 phase=pointwise differences=64 max_lsb_ceil=18446744073709551615 saturated=2
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=1 phase=ifft differences=64 max_lsb_ceil=1630477227901029632 saturated=0
+C_FIXTURE name=residual-512-test58 logn=6 mode=1 valid=1 k_differences=63
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=2 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=2 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=2 phase=inverse differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=2 phase=F_fft differences=1 max_lsb_ceil=16 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=2 phase=pointwise differences=64 max_lsb_ceil=18446744073709551615 saturated=2
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=2 phase=ifft differences=64 max_lsb_ceil=1630477228179455232 saturated=0
+C_FIXTURE name=residual-512-test58 logn=6 mode=2 valid=1 k_differences=63
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=3 phase=input differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=3 phase=f_fft differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=3 phase=inverse differences=0 max_lsb_ceil=0 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=3 phase=F_fft differences=1 max_lsb_ceil=16 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=3 phase=pointwise differences=1 max_lsb_ceil=1024 saturated=0
+C_FIXTURE_STAGE name=residual-512-test58 logn=6 mode=3 phase=ifft differences=63 max_lsb_ceil=2176 saturated=0
+C_FIXTURE name=residual-512-test58 logn=6 mode=3 valid=1 k_differences=0
+C_FIXTURE_DONE cases=6 modes=4
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xd130 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xc12c lma 0x30000980
+Loading section datas, size 0x4c lma 0x3000cac0
+Loading section device_states, size 0x2c lma 0x3000cb0c
+Loading section k_mutex_area, size 0x14 lma 0x3000cb38
+Loading section .last_section, size 0x4 lma 0x3000cb4c
+Start address 0x100085f4, load size 106384
+Transfer rate: 546 KB/sec, 4835 bytes/write.
+Temporary breakpoint 1 at 0x10005374: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x100085e0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp2q5de4cy/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10005324: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x100085e0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984632            9979442
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x3001f768          805435240
+r8             0x300000d0          805306576
+r9             0x3002f8a8          805501096
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3002f858          0x3002f858 <z_main_stack+65456>
+lr             0x1000536b          268456811
+pc             0x10005324          0x10005324 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x80040010          -2147221488
+msp            0x3001f768          0x3001f768 <z_idle_stacks>
+psp            0x3002f858          0x3002f858 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x3001f768          0x3001f768 <z_idle_stacks>
+psp_s          0x3002f858          0x3002f858 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x3001ef68          0x3001ef68 <z_interrupt_stacks>
+psplim_s       0x3001f8a8          0x3001f8a8 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x3002f858 <z_main_stack+65456>:	0x00000000	0x10005387	0x00000000	0x1000bce7
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x3001f768
+PSP=0x3002f858
+LR=0x1000536b
+PC=0x10005324
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3001f768 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3001f778 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

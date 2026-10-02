@@ -1,0 +1,53 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 3/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 3
+Table 1: Kyber and Saber Parameter Sets
+name l (d1,d2) η(s|s′) η(e|e′|e”)
+name l T = 2ϵT η
+Kyber512 Kyber768 Kyber1024 2 (10,4) 3 (10,4) 4 (11,5) 6 4
+4 4
+4 4
+LightSaber 2 23 10
+Saber 3 24 8
+FireSaber 4 26 6
+which form the basis of almost all lattice-based PQC. Recently, NISTPQC third-round
+candidates have been implemented for the Arm Cortex-M3 and Cortex-M4 using NTTs.
+The most relevant works are Botros et al. [BKS19] and Alkim et al. [ABCG20] on Kyber,
+Greconici et al. [GKS21] on Dilithium, Chung et al. [CHK+21] on Saber and NTRU, and
+Alkim et al. [ACC+21] on NTRU Prime.
+Addendum: Related work. One of our contributions, the “Barrett multiplication” al-
+gorithm, is very close to Shoup’s modular multiplication algorithm [Har14, Algorithm
+3], a fact which we got aware of only after finalizing the camera-ready version of this
+paper. Like Barrett multiplication, Shoup’s multiplication computes a one-known-factor
+modular multiplication with essentially three integer multiplications, at the expense of a
+precomputation on the known factor. Our work furthers the understanding and concrete
+implementation of this eﬃcient technique by (a) applying it in the signed context, (b)
+establishing a relation with Montgomery multiplication which we believe has not been noted
+before, and (c) by allowing an arbitrary integer approximation which is essential in making
+the algorithm amenable for implementation through common fixed-point instructions. We
+appreciate any clarification about other prior art that we might have missed.
+Structure of the paper. This paper is structured as follows: Section 2 introduces the
+schemes we implement, the Armv8-A microarchitecture, and the mathematical background
+on NTTs. In Section 3, we present more mathematics in the form of reductions for the
+implementations used in this paper. In Section 4, we go through the implementation
+details of the diﬀerent schemes. In Section 5, we show performance numbers and conclude.
+2 Preliminaries
+2.1 Kyber
+Kyber [ABD+20b] is a NISTPQC finalist candidate lattice-based key encapsulation mech-
+anism based on the Module Learning With Errors (M-LWE) problem. The module is of
+dimension ℓ×ℓover the ring Rq = Fq[x]/⟨xn+ 1⟩, with q= 3329 and n= 256. The Kyber
+KEM is derived a la [HHK17] from a CPA-secure Public-Key Encryption (PKE) .
+Please refer to algorithmic descriptions of the PKE in in Appendix A. In the CPA-secure
+key generation and encryption the rate-determining operations are (ℓ×ℓ) ×(ℓ×1) matrix-
+to-vector polynomial multiplications AT
+·s and As′(MatrixVectorMul). In decryption, it
+is the ℓ×1 inner product of polynomials b′T
+·s(InnerProd). Note that [ABD+20b] specifies
+that we do all multiplications via incomplete NTT, and NTT results are in bit-reversed
+order. The public matrix A is sampled in (incomplete) NTT domain by expanding a
+seed using the extendable-output function (XOF) SHAKE128. There is 1 matrix-to-vector
+polynomial multiplication and 0, 1, and 2 inner products of polynomials in each of key
+generation, encapsulation, and decapsulation respectively.
+Parameters. The module dimension ℓ, the rounding parameters (d1,d2), and the width
+of the centered binomial distribution η vary according to the parameter sets Kyber-512,
+-768, and -1024 (targeting the NIST security levels 1, 3, and 5 respectively, cf. Table 1).

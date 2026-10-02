@@ -1,0 +1,51 @@
+{
+  "candidate": "s1a",
+  "baseline": "ntt_opt",
+  "source_scope": {
+    "changed_files": [
+      "mq_cm55.s"
+    ],
+    "paired_sites": 10,
+    "paired_products": 20,
+    "new_secret_dependent_branches": 0,
+    "new_memory_accesses": 0
+  },
+  "mq_object": {
+    "baseline_text_bytes": 10500,
+    "candidate_text_bytes": 10500,
+    "baseline_instruction_counts": {
+      "branch": 86,
+      "memory": 377,
+      "vqrdmulh": 57,
+      "vmul": 117,
+      "vmla": 57,
+      "vector_push_pop": 4
+    },
+    "candidate_instruction_counts": {
+      "branch": 86,
+      "memory": 377,
+      "vqrdmulh": 57,
+      "vmul": 117,
+      "vmla": 57,
+      "vector_push_pop": 4
+    }
+  },
+  "hashes": {
+    "baseline_mq_cm55_sha256": "b4f5834ac4cb72c6d51f62bf4c9746b58350e668ebcb193bf1e51272ae9fbbc3",
+    "candidate_mq_cm55_sha256": "94dfb2e39788b4def40f2ab8919e6a1c5eb9579535b649180c55f9d6dd21c490",
+    "candidate_elf_sha256": "0cd106f75baeaca8a69e0ce4d9449519901d8635b75d2208267694180fc86cac",
+    "candidate_raw_log_sha256": "f4831b73d29af06404d2e8b00f2583f1edd045defa6eec3bd90f933592b1d549"
+  },
+  "validation": {
+    "barrett_pair_mismatches": 0,
+    "forward_ntt_mismatches": 0,
+    "inverse_roundtrip_mismatches": 0,
+    "max_modular_error": 0,
+    "host_kat_digests_match": true,
+    "sign_verify": "PASS",
+    "tamper_rejection": "PASS",
+    "fault_registers_zero": true,
+    "stack_used_upper_bound_bytes": 9624
+  },
+  "limitations": "Static constant-time structure audit only; power/EM TVLA was not performed."
+}

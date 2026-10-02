@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "scope": "static constant-time regression from K1 full-iGM to K2 root-preparation scheduling",
+  "baseline": {
+    "run": "d1-k1_full_igm_audit_v2-audit/runs/pilot-20260916T074406Z",
+    "elf_sha256": "559fea8dd5ae7f13729d8d0f9a8fe5e64d7989731e931fdf67d2dc8e1b5a5909"
+  },
+  "candidate": {
+    "run": "d1-k2_root_pipeline_audit-audit/runs/pilot-20260916T082122Z",
+    "elf_sha256": "d53cd515657c17a593a8532d2d2b36ca774492b4acf2f2524c4995857d5ec1da"
+  },
+  "whole_perf_elf_layout": {
+    "common_named_symbols": 499,
+    "address_or_size_changes": 0,
+    "symbols_only_in_k1": 0,
+    "symbols_only_in_k2": 0
+  },
+  "functions": {
+    "fndsa_mp_NTT": {
+      "address_k1": "0x10000330",
+      "address_k2": "0x10000330",
+      "size_bytes_k1": 1166,
+      "size_bytes_k2": 1166,
+      "instructions_k1": 312,
+      "instructions_k2": 312,
+      "branches_k1": 11,
+      "branches_k2": 11,
+      "memory_instructions_k1": 49,
+      "memory_instructions_k2": 49,
+      "mnemonic_multiset_equal": true,
+      "branch_offset_and_mnemonic_sequence_equal": true,
+      "memory_address_multiset_equal": true
+    },
+    "fndsa_mp_iNTT": {
+      "address_k1": "0x100007c0",
+      "address_k2": "0x100007c0",
+      "size_bytes_k1": 1562,
+      "size_bytes_k2": 1562,
+      "instructions_k1": 418,
+      "instructions_k2": 418,
+      "branches_k1": 15,
+      "branches_k2": 15,
+      "memory_instructions_k1": 64,
+      "memory_instructions_k2": 64,
+      "mnemonic_multiset_equal": true,
+      "branch_offset_and_mnemonic_sequence_equal": true,
+      "memory_address_multiset_equal": false,
+      "memory_address_difference": {
+        "k1": "vldrw.u32 q4, [r11, q7]",
+        "k2": "vldrw.u32 q4, [r11, q6]",
+        "reason": "q6 receives the same public constant stride vector before the load; this is a scheduling register rename, not a coefficient-derived address"
+      }
+    }
+  },
+  "reasoning": [
+    "K2 changes only instruction order and one temporary stride register.",
+    "No compare, predicate, conditional branch, indirect branch, call, coefficient load, root load, or store was added or removed.",
+    "All loop bounds and branch predicates remain functions of public logn and public counters.",
+    "No coefficient value is introduced into an address calculation."
+  ],
+  "limitation": "This is a disassembly-level structural regression check, not a formal constant-time proof and not a dynamic leakage test such as dudect or TVLA."
+}

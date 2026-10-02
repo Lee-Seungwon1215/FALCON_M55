@@ -1,0 +1,108 @@
+{
+  "status": "REQUESTED_FIVE_CHECKS_COMPLETE_WITH_REPORTED_LIMITATIONS",
+  "claim": "Cleanup regression, not security certification or all-input equivalence",
+  "runs": {
+    "keygen": {
+      "directory": "validation/results/A_tw_bridge/keygen/20260928T045736Z",
+      "run": "20260928T045736Z"
+    },
+    "kat": {
+      "directory": "validation/results/A_tw_bridge/kat/20260928T045823Z",
+      "run": "20260928T045823Z"
+    },
+    "extra": {
+      "directory": "validation/results/A_tw_bridge/extra/20260928T050051Z",
+      "run": "20260928T050051Z"
+    },
+    "sigkat": {
+      "directory": "validation/results/A_tw_bridge/sigkat/20260928T050140Z",
+      "run": "20260928T050140Z"
+    },
+    "kernel": {
+      "directory": "validation/results/A_tw_bridge/kernel/20260928T050155Z",
+      "run": "20260928T050155Z"
+    },
+    "profile": {
+      "directory": "validation/results/A_tw_bridge/profile/20260928T050312Z",
+      "run": "20260928T050312Z"
+    },
+    "fixed_input": {
+      "directory": "validation/results/A_tw_bridge/fixed_input/20260928T050202Z",
+      "run": "20260928T050202Z"
+    },
+    "input_pair": {
+      "directory": "validation/results/A_tw_bridge/input_pair/20260928T050212Z",
+      "run": "20260928T050212Z"
+    },
+    "input_predicate": {
+      "directory": "validation/results/A_tw_bridge/input_predicate/20260928T050219Z",
+      "run": "20260928T050219Z"
+    },
+    "fixed_division": {
+      "directory": "validation/results/A_tw_bridge/fixed_division/20260928T050236Z",
+      "run": "20260928T050236Z"
+    },
+    "fixed_fft": {
+      "directory": "validation/results/A_tw_bridge/fixed_fft/20260928T050246Z",
+      "run": "20260928T050246Z"
+    },
+    "rootmul": {
+      "directory": "validation/results/A_tw_bridge/rootmul/20260928T050254Z",
+      "run": "20260928T050254Z"
+    },
+    "invnorm": {
+      "directory": "validation/results/A_tw_bridge/invnorm/20260928T050301Z",
+      "run": "20260928T050301Z"
+    },
+    "security_api": {
+      "directory": "validation/results/A_tw_bridge/security_api/20260928T050358Z",
+      "run": "20260928T050358Z"
+    },
+    "security_invnorm": {
+      "directory": "validation/results/A_tw_bridge/security_invnorm/20260928T050423Z",
+      "run": "20260928T050423Z"
+    }
+  },
+  "speed": {
+    "512": {
+      "before": 51437565.73,
+      "after": 51437073.05,
+      "change_percent": -0.0009578213762795329,
+      "m55_ref_speedup": 1.2197086774166674
+    },
+    "1024": {
+      "before": 224193235.43,
+      "after": 224191126.63,
+      "change_percent": -0.0009406171403769648,
+      "m55_ref_speedup": 1.1673808574142674
+    }
+  },
+  "size": {
+    "before_source_bytes": 1536117,
+    "after_source_bytes": 1510306,
+    "before_source_lines": 40680,
+    "after_source_lines": 39888,
+    "removed_diagnostic_bytes": 64
+  },
+  "elf_sections": {
+    "before": {
+      "text": 110988,
+      "rodata": 81352,
+      "datas": 76,
+      "bss": 61351,
+      "noinit": 67904
+    },
+    "after": {
+      "text": 110924,
+      "rodata": 81352,
+      "datas": 76,
+      "bss": 61351,
+      "noinit": 67904
+    }
+  },
+  "before_keygen": "validation/results/A_tw_bridge/keygen/20260928T033015Z",
+  "baseline_keygen": "validation/results/baseline_m55/keygen/20260927T141357Z",
+  "max_abs_welch_t": 2.825587116600395,
+  "scope_check": "scope.json",
+  "security_analysis": "security/summary.json"
+}

@@ -1,0 +1,22 @@
+0x2000c7d2 in HAL_RCC_OscConfig (RCC_OscInitStruct=0x0) at /Users/seungwon/.platformio/packages/framework-arduinoststm32/system/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rcc.c:604
+604	        __HAL_RCC_HSI_CALIBRATIONVALUE_ADJUST(RCC_OscInitStruct->HSICalibrationValue);
+Unable to match requested speed 500 kHz, using 480 kHz
+Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080113f4 msp: 0x200a0000
+Loading section .isr_vector, size 0x1bc lma 0x20000000
+Loading section .text, size 0xcffc lma 0x200001c0
+Loading section .rodata, size 0xb8a0 lma 0x2000d1c0
+Loading section .init_array, size 0x4 lma 0x20018a60
+Loading section .fini_array, size 0x4 lma 0x20018a64
+Loading section .data, size 0xc lma 0x20018a68
+Start address 0x2000c4a0, load size 100972
+Transfer rate: 32 KB/sec, 9179 bytes/write.
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+platform_finish () at platform_m4.c:65
+65	    __BKPT(0);
+FNDSA_JSON_BEGIN
+{"state":1611464704,"error":0,"profile_error":0,"core_clock_hz":120000000,"cpuid":1091551809,"device_id":270492784,"cache_control":1541,"fingerprint":567370050,"operations":[{"calls":10,"total_cycles":953174799,"minimum_cycles":83645336,"maximum_cycles":130993224,"cycles":[953174799,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"entries":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"calls":100,"total_cycles":6977363842,"minimum_cycles":69161343,"maximum_cycles":70352542,"cycles":[6977363842,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"entries":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"calls":100,"total_cycles":117811300,"minimum_cycles":1178113,"maximum_cycles":1178113,"cycles":[117811300,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"entries":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}]}
+FNDSA_JSON_END
+[Inferior 1 (Remote target) detached]

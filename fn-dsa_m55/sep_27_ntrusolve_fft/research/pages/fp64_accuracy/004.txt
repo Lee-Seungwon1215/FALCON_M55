@@ -1,0 +1,72 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 4/18
+
+4 Hwang
+Algorithm 2: Falcon signature generation from the reference implementation.
+Inputs: A message m and a secret key sk.
+Outputs: A signature sig.
+1: r←{0,1}320 uniformly ▷ Salt.
+2: c= HashToPoint(r||m)
+3:ˆ
+c= FFT(c)
+4: B=
+g−f
+G−F
+ˆ
+5:ˆ
+B=
+ˆ
+g−
+f
+ˆ
+G−
+F= FFT(B)
+ˆ
+6: T= ffLDL∗
+ˆ
+Bˆ
+B
+∗
+7: T= Normalize(T)
+8: t=
+ˆ
+−cˆ
+F
+q ,ˆ
+cˆ
+f
+q
+▷ t = (ˆ c,0)
+ˆ
+B−1
+9: do
+10: do
+11: z = ffSampling(t,T)
+ˆ
+12: s = (t−z)
+B
+13: while ||s||2 > β2
+14: (s1,s2) = iFFT(s)
+15: s= Compress(s2,8·sbytelen−328)
+16: while s== ⊥
+17: sig = (r,s)
+18: return sig
+2.4 CryptoLine
+CryptoLineisadomainspecificlanguageformodelingstraightlinecryptographic
+programs. It was introduced by [TWY17; PTWY18] for verifying elliptic-curve
+arithmetic with assembly programs optimized “in the wild.” In other words,
+assembly optimized programs were first delivered by experts in assembly pro-
+gramming without considerations on verification, and verification effort was
+later devoted to verifying the resulting programs. CryptoLine was extended
+by[LSTWY19]forverifyingelliptic-curveCimplementations,andby[FLSTWY19]
+for signed arithmetic. Recently, [Hwa+22] extended CryptoLine with compo-
+sitional reasoning for verifying large dimensional number-theoretic transforms,
+and [LLSTWY23] extended CryptoLine with logical equivalence checking for the
+stream cipher ChaCha20 [Ber08] and the cryptographic hash functions SHA-2
+and SHA-3.
+In CryptoLine, there are various instructions implementing basic arithmetic,
+includingsigned/unsignedaddition/subtraction/multiplication,logical/arithmetic
+shift,bit-wiseor/exclusive-or/and/not,bit-fieldsplitting/concatenation,signed/un-
+signed extension, and conditional move. These instructions effectively capture
+the commonly used assembly instructions in cryptographic programs. We trans-
+late the target assembly programs into strings of CryptoLine instructions, and
+argue the properties of the strings of CryptoLine instructions.

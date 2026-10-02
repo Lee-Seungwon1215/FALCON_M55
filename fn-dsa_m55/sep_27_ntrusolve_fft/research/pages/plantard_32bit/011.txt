@@ -1,0 +1,118 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 11/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY term has already existed in the original polynomial vector ˆs. In
+this work, we show that the extra memory space is unnecessary
+on low-end 32-bit platforms. We propose using poly half
+and polyvec half to cacheˆ
+s2i+1ζ2br7 (i)+1 only, where each
+poly half consists of 128 instead of 256 coefficients and each
+polyvec half consists of k poly half. Our approach results
+in a halving of stack usage to cache the temporary terms.
+Specifically, by using the polyvec half to cache all terms
+ˆ
+s2i+1ζ2br7 (i)+1 for one secret vector in the speed-version code,
+we could reduce the stack usage by 0.5KiB, 0.75KiB, and
+1KiB, in three PKC protocols of Kyber512, Kyber768, and
+Kyber1024, respectively.
+In addition to the memory optimized technique described
+above, we propose another approach to reduce the memory
+usage for the better accumulation technique used in the IND-
+CPA key generation protocol of Kyber, which utilizes a tem-
+porary 32-bit array with 256 entries to store the intermediate
+accumulation result of the vector inner product. We observe
+that in the IND-CPA key generation protocol, the memory
+space reserved for the 32-bit temporary array and polynomial
+pkp can be merged, where pkp is a temporary polynomial in
+the key generation protocol. We introduce a new data structure
+called poly double that can hold 512 16-bit coefficients,
+which has the same memory footprint as the temporary 32-bit
+array. By leveraging data type conversion, we can re-purpose
+the memory allocated for the temporary array to store pkp,
+reducing its memory usage by 0.5KiB in the key generation
+protocol.
+Together, these two memory optimizations improve the
+feasibility of the speed-version implementation on memory-
+constrained IoT devices significantly, such as the selected
+16KiB SiFive board. Notably, while the second approach only
+applies to the KEM key generation protocol, the first technique
+can be applied to all three KEM protocols of Kyber.
+C. Extensibility and Security
+Although this paper primarily focuses on the efficient
+implementations of Kyber on Cortex-M3 and RISC-V, the
+Plantard arithmetic with enlarged input range, as described in
+Algorithm 3, is not limited to Kyber. The proposed Plantard
+arithmetic can be applied to other LBC schemes with 16-
+bit odd moduli, e.g., NewHope [9] and NTTRU [34] etc..
+The optimization techniques proposed in Section IV provide
+several solutions for the efficient implementation of Plantard
+arithmetic. These techniques are able to extend to other 32-
+bit platforms that share similar instruction sets, making it
+possible to supersede the Montgomery and Barrett arithmetic
+by the Plantard arithmetic and further speed up LBC. Besides,
+most of the optimizations for NTT/INTT can be extended
+to other LBC schemes with 16-bit NTT, with the exception
+that the lazy reduction strategy may need to redesign. This
+is because the Plantard arithmetic may have different input
+ranges for different moduli used in other LBC schemes. Last
+but not least, the memory optimizations proposed for the
+speed-version Kyber implementation can also be extended to
+other low-end IoT platforms with similar memory constraints.
+However, the proposed optimizations cannot be directly
+applied to the 32-bit NTT in Dilithium on 32-bit platforms.
+11
+The Plantard arithmetic for 32-bit modulus would require
+computing 32×64-bit multiplication, which must be separately
+computed with at least two instructions on 32-bit platforms and
+thus wipe out the gains of the Plantard arithmetic. However,
+we believe our optimizations could be applied to Dilithium on
+64-bit platforms that can efficiently implement the 32 ×64-
+bit multiplication. Moreover, recent research [14] shows that
+the computation of csi in Dilithium can be implemented with
+16-bit NTT. Therefore, the proposed optimizations are also
+applicable to these operations on 32-bit platforms.
+In order to resist side-channel attack, our implementation
+avoids the use of non-constant-time instructions on Cortex-M3.
+Additionally, we ensure that all the secret-related operations in
+our implementation are constant-time on both platforms, and
+our implementation does not leak more sensitive information
+compared to the reference work, making it secure against
+simple power analysis and timing side-channel attacks.
+VI. RESULTS AND COMPARISONS
+This section presents and discusses the experimental results
+of Kyber on the ARM Cortex-M3 and two RISC-V platforms:
+the SiFive Freedom E310 board and PQRISCV. All the results
+on the same platform are obtained under the same environ-
+ment.
+A. Experimental Setup
+Cortex-M3 setup: For the Cortex-M3 platform, we utilize
+the ATSAM3X8E microcontroller on an Arduino Due board
+[27] as the testbed. Our implementation is based on the PQM3
+repository [33], and the GCC v10.2.1 is used to compile the
+code. We leverage the hardware random number generators
+available on Cortex-M3 to obtain the necessary random num-
+bers for the Kyber implementation. Stack usage is measured
+following the methodology outlined in [33]. Additionally,
+SHA3 and SHAKE are implemented using the optimized as-
+sembly Keccak permutation token from the eXtended Keccak
+Code Package (XKCP)5
+.
+RISC-V setup: The realistic RISC-V platform we choose
+is the SiFive Freedom E310 board, which is equipped with
+a 32-bit E31 RISC-V core [29]. Due to its limited 16KiB
+memory, a direct deployment of Kyber on this platform is in-
+feasible. Hence, in order to provide detailed comparisons with
+the existing Kyber implementation on RISC-V, we also present
+experimental results obtained from the RISC-V simulator used
+in PQRISCV [35], which uses a RISC-V CPU implemented
+in pqriscv-vexriscv6 as the PQC benchmarking platform. The
+GCC compiler we used for RISC-V is the RISC-V GNU
+v10.2.0. Since both of the RISC-V platforms do not have
+hardware random number generators, we reuse the function
+in PQRISCV [35] to generate the random numbers in Kyber.
+Furthermore, for the implementation of SHA3 and SHAKE,
+we rely on the optimized Keccak permutation provided by Ko
+[36] in PQRISCV.
+To support the Kyber-90s variants, we adopt the optimized
+AES implementation presented in [37] on Cortex-M3 and
+5https://github.com/XKCP/XKCP
+6https://github.com/mupq/pqriscv-vexriscv

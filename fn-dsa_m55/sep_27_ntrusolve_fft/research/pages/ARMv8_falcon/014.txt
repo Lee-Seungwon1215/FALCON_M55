@@ -1,0 +1,133 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 14/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+FFT/NTT calls increases as the security level increases. If all
+optimized FFT/NTT implementations are applied to perform
+performance measurement, the higher the security level, the
+greater the benefit of the optimization implementation. Com-
+pared to Falcon’s competitor, Crystals-Dilithium, despite the
+optimization method applied, KeyGen process requires a
+high cost. However, this is not a big consideration since the
+number of calls to KeyGen in the actual field is very small
+compared to Sign and Verify process.
+VI. CONCLUSION
+In this paper, We proposed a optimal software of NTT/FFT,
+which is the core operation of Falcon Round 3. From an
+NTT point of view, it took full advantage of the NEON
+vector register to process eight coefficients simultaneously,
+accelerating performance over a reference implementation.
+From the FFT point of view, we proposed a parallel imple-
+mentation that processes two coefficients using the Floating
+Point Instruction Set and NEON vector register supported by
+the target device. In addition, the Falcon algorithm isn’t based
+on a module structure but NTRU lattice, so the degree of the
+operation-based polynomial for each security level is differ-
+ent. It is based on the 512 degree polynomial operation (res.
+1024 degree polynomial operation) by Security Level 1 (res.
+Security Level 5). Therefore, a memory-optimized path con-
+sidering FFT/NTT depth for each security level is required.
+We propose memory optimization paths for each FFT/NTT
+for each security level, minimizing the memory access over-
+heads that occurs during transform. Through these contri-
+butions, we achieved a performance improvement of 210%
+by Falcon-512 in NTT and 250% by Falcon-512 in FFT
+multiplication compared to the FFT/NTT implementation of
+Falcon Round 3 Submission. As a result, integrating the
+proposed FFT/NTT optimal implementation technique into
+Falcon, we achieved 15.1%, 16.5%, and 65.4% performance
+improvement in KeyGen, Sign, and Verify, respectively,
+compared to Falcon Round 3 Submission based on Falcon-
+512. The proposed FFT implementation methodology and the
+optimization method using the merging and register-holding
+technique of NTT can be applied to all ARMv8-based devices
+including ARM-Cortex A series. Our study is meaningful in
+the results of optimizing FFT/NTT-based multiplication, the
+core operation of Falcon, for the first time in the ARMv8-A
+environment. In the future, we plan to optimally implement
+various PQC algorithms such as lattice-based, code-based,
+and multi-variable-based in the ARMv8-A environment.
+REFERENCES
+[1] P. W. Shor, ‘‘Algorithms for quantum computation: Discrete logarithms
+and factoring,’’ in Proc. 35th Annu. Symp. Found. Comput. Sci., 1994,
+pp. 124–134.
+[2] N. Bindel, ‘‘Suitability of 3rd round signature candidates
+for vehicle-to-vehicle communication,’’ in Proc. 3rd PQC
+Standardization Conf., 2021. [Online]. Available: https://csrc.nist.gov/
+Presentations/2021/suitability-of-3rd-round-signa%ture-candidates-for
+[3] D. Sikeridis, P. Kampanakis, and M. Devetsikiotis, ‘‘Post-quantum authen-
+tication in TLS 1.3: A performance study,’’ Cryptol. ePrint Arch.,
+Tech. Rep. 2020/071, 2020. [Online]. Available: https://ia.cr/2020/071
+[4] M. J. Kannwischer, J. Rijneveld, P. Schwabe, and K. Stoffelen, ‘‘pqm4:
+Testing and benchmarking NIST PQC on ARM cortex-M4,’’ IACR Cryp-
+tol. ePrint Arch., vol. 2019, p. 844, Jul. 2019.
+[5] (2021). PQClean. [Online]. Available: https://github.com/PQClean/
+PQClean
+[6] (2021). Liboqs. [Online]. Available: https://github.com/open-quantum-
+safe/liboqs
+[7] J. W. Cooley and J. W. Tukey, ‘‘An algorithm for the machine calculation
+of complex Fourier series,’’ Math. Comput., vol. 19, no. 90, pp. 297–301,
+1965.
+[8] W. M. Gentleman and G. Sande, ‘‘Fast Fourier transforms: For fun and
+profit,’’ in Proc. November Fall Joint Comput. Conf. XX AFIPS (Fall),
+1966, pp. 563–578.
+[9] T. Prest, P.-A. Fouque, J. Hoffstein, P. Kirchner, V. Lyubashevsky,
+T. Pornin, T. Ricosset, G. Seiler, W. Whyte, and Z. Zhang. (2020). Falcon
+Specifications and Supporting Documentation. [Online]. Available:
+https://csrc.nist.gov/projects/post-quantum-cryptography/round-3-
+submis%sions
+[10] H. Nejatollahi, N. Dutt, S. Ray, F. Regazzoni, I. Banerjee, and
+R. Cammarota, ‘‘Post-quantum lattice-based cryptography implementa-
+tions: A survey,’’ ACM Comput. Surv., vol. 51, no. 6, pp. 1–41, Feb. 2019.
+[11] ARM. (2020). Asimd Vector Instructions. [Online]. Available:
+https://developer.arm.com/documentation/ddi0596/2020-12/SIMD-
+FP-Instruc%tions
+[12] ARM. (2020). A64 Instructions. [Online]. Available: https://developer.
+arm.com/documentation/ddi0596/2020-12/Base-Instructio%ns
+[13] T. Oder, J. Speith, K. Höltgen, and T. Güneysu, ‘‘Towards practical
+microcontroller implementation of the signature scheme falcon,’’ in Post-
+Quantum Cryptography, J. Ding and R. Steinwandt, Eds. Cham, Switzer-
+land: Springer, 2019, pp. 65–80.
+[14] S. Streit and F. D. Santis, ‘‘Post-quantum key exchange on ARMv8-A: A
+new hope for NEON made simple,’’ IEEE Trans. Comput., vol. 67, no. 11,
+pp. 1651–1662, Nov. 2018.
+[15] P. Sanal, E. Karagoz, H. Seo, R. Azarderakhsh, and M. Mozaffari-Kermani,
+‘‘Kyber on ARM64: Compact implementations of Kyber on 64-bit ARM
+Cortex-A processors,’’ Cryptol. ePrint Arch., Tech. Rep. 2021/561, 2021.
+[Online]. Available: https://ia.cr/2021/561
+[16] H. Becker, V. Hwang, M. J. Kannwischer, B.-Y. Yang, and S.-Y. Yang,
+‘‘Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple
+M1,’’ IACR Trans. Cryptograph. Hardw. Embedded Syst., vol. 2022, no. 1,
+pp. 221–244, 2021, doi: 10.46586/tches.v2022.i1.221-244.
+[17] D. T. Nguyen and K. Gaj, ‘‘Optimized software implementations of
+CRYSTALS-Kyber, NTRU, and Saber using NEON-based special instruc-
+tions of ARMv8,’’ in Proc. NIST 3rd PQC Standardization Conf. (NIST
+PQC), Jun. 2021, pp. 1–24.
+[18] N. Gupta, A. Jati, A. K. Chauhan, and A. Chattopadhyay, ‘‘PQC accelera-
+tion using GPUs: FrodoKEM, NewHope, and kyber,’’ IEEE Trans. Parallel
+Distrib. Syst., vol. 32, no. 3, pp. 575–586, Mar. 2021.
+[19] S. An and S. C. Seo, ‘‘Efficient parallel implementations of LWE-based
+post-quantum cryptosystems on graphics processing units,’’ Mathematics,
+vol. 8, no. 10, p. 1781, Oct. 2020.
+[20] P. Duong-Ngoc, T. N. Tan, and H. Lee, ‘‘Efficient NewHope cryptog-
+raphy based facial security system on a GPU,’’ IEEE Access, vol. 8,
+pp. 108158–108168, 2020.
+[21] S. C. Seo, ‘‘SIKE on GPU: Accelerating supersingular isogeny-based
+key encapsulation mechanism on graphic processing units,’’ IEEE Access,
+vol. 9, pp. 116731–116744, 2021.
+[22] W.-K. Lee, S. Akleylek, W.-S. Yap, and B.-M. Goi, ‘‘Accelerating number
+theoretic transform in GPU platform for qTESLA scheme,’’ in Information
+Security Practice and Experience, S.-H. Heng and J. Lopez, Eds. Cham,
+Switzerland: Springer, 2019, pp. 41–55.
+[23] H. Cheng, J. Großschädl, P. B. Rønne, and P. Y. A. Ryan, ‘‘AVRN-
+TRU: Lightweight NTRU-based post-quantum cryptography for 8-bit
+AVR microcontrollers,’’ in Proc. Design, Automat. Test Eur. Conf. Exhib.
+(DATE), 2021, pp. 1272–1277, doi: 10.23919/DATE51398.2021.9474033.
+[24] N. Gura, A. Patel, A. Wander, H. Eberle, and S. C. Shantz, ‘‘Comparing
+elliptic curve cryptography and RSA on 8-bit cpus,’’ in Cryptographic
+Hardware and Embedded Systems CHES, M. Joye and J.-J. Quisquater,
+Eds. Berlin, Germany: Springer, 2004, pp. 119–132.
+[25] C.-M.-M. Chung, V. Hwang, M. J. Kannwischer, G. Seiler, C.-J. Shih, and
+B.-Y. Yang, ‘‘NTT multiplication for NTT-unfriendly rings: New speed
+records for saber and NTRU on cortex-M4 and AVX2,’’ IACR Trans.
+Cryptograph. Hardw. Embedded Syst., vol. 2021, pp. 159–188, Feb. 2021.
+VOLUME 10, 2022 44459

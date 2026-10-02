@@ -1,0 +1,52 @@
+DOCUMENT: m55_slothy.pdf PAGE: 5/46
+
+Abdulrahman, Becker, Kannwischer, Klein 5
+appears somewhat dormant since. Attempting a renaissance, this work firmly belongs to
+the realm of fixed-instruction superoptimization.
+Reconsidering fixed-instruction superoptimization. There are multiple reasons to re-
+consider fixed-instruction superoptimization with this work. First, despite the availability
+of highly out-of-order CPUs, the class of microarchitectures that are highly sensitive to
+instruction scheduling remains large to-date, encompassing embedded CPUs, in-order
+application CPUs, domain-specific accelerators, and (as we show) even some out-of-order
+CPUs. For those microarchitectures, fixed-instruction superoptimization is a complex and
+impactful problem worth study in its own right.
+Second, in the realm of cryptographic engineering – which is the central theme of the
+examples studied here – fine-grained control over instructions and instruction patterns
+is often necessary to avoid side-channels, and that control is at risk of being lost with
+synthesizing superoptimization: E.g., synthesis might undo masking techniques or switch to
+instructions with data-dependent timing. SLOTHY, in turn, keeps the developer in control
+over the choice of instructions and the constraints by which code may be rearranged.
+Third,whenrestrictingtofixed-instructionsuperoptimization,theuseofcomplete search
+procedures by way of constraint-solving becomes feasible. Synthesizing superoptimizers, in
+turn, typically use incomplete search procedures such as stochastic search [SSA13], genetic
+improvement [BGL+20, KEG+23], or machine-learning based synthesis [MMZ+23].
+ComparisontoRecentWork. Afairquantitativecomparisonbetweenourfixed-instruction
+superoptimization and recent synthesizing superoptimization is not readily possible due
+to the different target architectures: While we focus on M- and A-class Arm CPUs here,
+[SCC+17, SSA13, BGL+20, KEG+23, MMZ+23] focus on CPUs implementing the x86-64
+architecture. It would be interesting to see how synthesizing superoptimization fares in
+comparison with SLOTHY when implemented on the same (micro)architecture.
+The SLOTHY approach to fixed-instruction superoptimization presently requires a
+handwritten model of the target microarchitecture (see Section 6), and thereby differs from
+recent synthesizing superoptimizers: E.g., [SCC+17] operates on the level of the LLVM
+IR and is not target specific, [SSA13] uses simplified cost-models for rapid evaluation of
+candidate optimizations, while [BGL+20, KEG+23] simply run candidate optimizations
+on the target. Finally, [MMZ+23] uses a pretrained latency estimator. We believe that a
+detailed microarchitectural model — either handwritten, auto-generated, or even learned
+— is essential to unlock highest performance for the CPUs considered in this paper.
+The development flow advocated for here is close to [BGL+20]: They propose that
+developers write a “clean” and an optimized piece of assembly, the former being amenable to
+formal verification and the connection between the two verified via “verified transformers”,
+leveraging hints from the developer. They also study the use of genetic improvement to
+automate optimization, similar to [KEG+23]. While so far specific to x86-64, [BGL+20]
+may be adaptable to handle the verification of the transformations found by SLOTHY,
+based on the “hints” SLOTHY produces; see Section 5.2.
+Fixed-instruction Superoptimization via Constraint-Solving. As mentioned above, the
+use of constraint programming (and Integer Linear Programming (ILP) in particular)
+for fixed-instruction superoptimization is not new, yet the field appears dormant after
+[GN92, WGB94, Alt95, GAG96, Sto96, GW96, AGG98, KL99, KW98, NG07]. The ap-
+proach presented here was developed independently, and is, to the best of our knowledge,
+significantly different from prior art, as we now explain.
+First, our approach to software pipelining rests on the simplifying constraint that only
+neighbouring iterations may overlap. In contrast, prior ILP-formulations for software
+pipelining, as well as heuristic software pipelining algorithms, typically allow arbitrarily

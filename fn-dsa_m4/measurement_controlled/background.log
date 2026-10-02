@@ -1,0 +1,67 @@
+2026-09-09T02:15:51.054290+00:00 OpenOCD: halt
+2026-09-09T02:15:52.041389+00:00 OpenOCD: dump_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/logs/flash_before.bin} 0x08000000 0x200000
+2026-09-09T02:16:24.537107+00:00 dumped 2097152 bytes in 32.493965s (63.027 KiB/s)
+2026-09-09T02:16:24.544222+00:00 OpenOCD: reset halt
+2026-09-09T02:16:24.727852+00:00 OpenOCD: load_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/build/firmware.bin} 0x20000400 bin
+2026-09-09T02:16:27.829983+00:00 104204 bytes written at address 0x20000400
+downloaded 104204 bytes in 3.100800s (32.818 KiB/s)
+2026-09-09T02:16:27.831141+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/build/firmware.bin} 0x20000400 bin
+2026-09-09T02:16:30.903835+00:00 verified 104204 bytes in 3.071494s (33.131 KiB/s)
+2026-09-09T02:16:30.906298+00:00 OpenOCD: write_memory 0x40021060 32 {0x00000001}
+2026-09-09T02:16:30.908918+00:00 OpenOCD: write_memory 0x40010000 32 {0x00000003}
+2026-09-09T02:16:30.910298+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/build/firmware.bin} 0x00000400 bin
+2026-09-09T02:16:34.044621+00:00 verified 104204 bytes in 3.133218s (32.478 KiB/s)
+2026-09-09T02:16:34.045541+00:00 OpenOCD: reg sp 0x200a0000
+2026-09-09T02:16:34.046359+00:00 sp (/32): 0x200a0000
+2026-09-09T02:16:34.046806+00:00 OpenOCD: reg msp 0x200a0000
+2026-09-09T02:16:34.047154+00:00 msp (/32): 0x200a0000
+2026-09-09T02:16:34.047371+00:00 OpenOCD: reg psp 0x200a0000
+2026-09-09T02:16:34.047690+00:00 psp (/32): 0x200a0000
+2026-09-09T02:16:34.047887+00:00 OpenOCD: reg xpsr 0x01000000
+2026-09-09T02:16:34.048154+00:00 xpsr (/32): 0x01000000
+2026-09-09T02:16:34.048321+00:00 OpenOCD: reg primask 0x00000000
+2026-09-09T02:16:34.048565+00:00 primask (/1): 0x00
+2026-09-09T02:16:34.048837+00:00 OpenOCD: reg basepri 0x00000000
+2026-09-09T02:16:34.049269+00:00 basepri (/8): 0x00
+2026-09-09T02:16:34.049528+00:00 OpenOCD: reg faultmask 0x00000000
+2026-09-09T02:16:34.049943+00:00 faultmask (/1): 0x00
+2026-09-09T02:16:34.050201+00:00 OpenOCD: reg control 0x00000000
+2026-09-09T02:16:34.050608+00:00 control (/3): 0x00
+2026-09-09T02:16:34.050863+00:00 OpenOCD: resume 0x0000d408
+2026-09-09T02:17:00.280009+00:00 READY: both warmups, output SHAKE256 digests, tampered-signature rejection, clocks and cache settings passed.
+2026-09-09T02:17:00.281068+00:00 clock probe: {"elapsed_seconds": 3.011877395999999, "observed_cycles": 72286483, "inferred_hz": 24000473.291509777, "read_time_uncertainty_seconds": 0.0018344790000028866}
+2026-09-09T02:17:00.281564+00:00 TIM2 probe: {"inferred_hz": 999911.5775673884, "timer_cnt_address": 1073741860}
+2026-09-09T02:17:00.625685+00:00 OpenOCD: write_memory 0x20030088 32 {0x474f3130}
+2026-09-09T02:17:00.638431+00:00 counts=[[0, 0, 0], [0, 0, 0]] degree=512 index=0 op=0 state=0x52554e21
+2026-09-09T02:18:00.662788+00:00 counts=[[19, 19, 19], [0, 0, 0]] degree=512 index=19 op=0 state=0x52554e21
+2026-09-09T02:19:00.748693+00:00 counts=[[35, 35, 35], [0, 0, 0]] degree=512 index=35 op=0 state=0x52554e21
+2026-09-09T02:20:00.773417+00:00 counts=[[54, 54, 54], [0, 0, 0]] degree=512 index=54 op=0 state=0x52554e21
+2026-09-09T02:21:00.801526+00:00 counts=[[72, 72, 72], [0, 0, 0]] degree=512 index=72 op=0 state=0x52554e21
+2026-09-09T02:22:00.830582+00:00 counts=[[92, 91, 91], [0, 0, 0]] degree=512 index=91 op=1 state=0x52554e21
+2026-09-09T02:23:00.856546+00:00 counts=[[100, 100, 100], [2, 2, 2]] degree=1024 index=2 op=0 state=0x52554e21
+2026-09-09T02:24:00.888954+00:00 counts=[[100, 100, 100], [6, 6, 6]] degree=1024 index=6 op=0 state=0x52554e21
+2026-09-09T02:25:00.912968+00:00 counts=[[100, 100, 100], [11, 11, 11]] degree=1024 index=11 op=0 state=0x52554e21
+2026-09-09T02:26:00.935532+00:00 counts=[[100, 100, 100], [17, 17, 17]] degree=1024 index=17 op=0 state=0x52554e21
+2026-09-09T02:27:00.967806+00:00 counts=[[100, 100, 100], [23, 23, 23]] degree=1024 index=23 op=0 state=0x52554e21
+2026-09-09T02:28:00.994589+00:00 counts=[[100, 100, 100], [27, 26, 26]] degree=1024 index=26 op=1 state=0x52554e21
+2026-09-09T02:29:01.018155+00:00 counts=[[100, 100, 100], [33, 33, 33]] degree=1024 index=33 op=0 state=0x52554e21
+2026-09-09T02:30:01.042861+00:00 counts=[[100, 100, 100], [38, 38, 38]] degree=1024 index=38 op=0 state=0x52554e21
+2026-09-09T02:31:01.076727+00:00 counts=[[100, 100, 100], [42, 42, 42]] degree=1024 index=42 op=0 state=0x52554e21
+2026-09-09T02:32:01.108763+00:00 counts=[[100, 100, 100], [47, 47, 47]] degree=1024 index=47 op=0 state=0x52554e21
+2026-09-09T02:33:01.131565+00:00 counts=[[100, 100, 100], [53, 52, 52]] degree=1024 index=52 op=1 state=0x52554e21
+2026-09-09T02:34:01.154464+00:00 counts=[[100, 100, 100], [58, 58, 58]] degree=1024 index=58 op=0 state=0x52554e21
+2026-09-09T02:35:01.176526+00:00 counts=[[100, 100, 100], [64, 64, 64]] degree=1024 index=64 op=0 state=0x52554e21
+2026-09-09T02:36:01.198220+00:00 counts=[[100, 100, 100], [67, 67, 67]] degree=1024 index=67 op=0 state=0x52554e21
+2026-09-09T02:37:01.222246+00:00 counts=[[100, 100, 100], [72, 71, 71]] degree=1024 index=71 op=1 state=0x52554e21
+2026-09-09T02:38:01.244926+00:00 counts=[[100, 100, 100], [76, 76, 76]] degree=1024 index=76 op=0 state=0x52554e21
+2026-09-09T02:39:01.268570+00:00 counts=[[100, 100, 100], [81, 80, 80]] degree=1024 index=80 op=1 state=0x52554e21
+2026-09-09T02:40:01.302535+00:00 counts=[[100, 100, 100], [87, 86, 86]] degree=1024 index=86 op=1 state=0x52554e21
+2026-09-09T02:41:01.328230+00:00 counts=[[100, 100, 100], [93, 93, 93]] degree=1024 index=93 op=0 state=0x52554e21
+2026-09-09T02:42:01.356782+00:00 counts=[[100, 100, 100], [97, 97, 97]] degree=1024 index=97 op=0 state=0x52554e21
+2026-09-09T02:43:01.380372+00:00 counts=[[100, 100, 100], [100, 100, 100]] degree=1024 index=99 op=2 state=0x600d0000
+2026-09-09T02:43:01.389969+00:00 OpenOCD: halt
+2026-09-09T02:43:02.027874+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/logs/flash_before.bin} 0x08000000 bin
+2026-09-09T02:43:12.177541+00:00 verified 2097152 bytes in 10.148883s (201.796 KiB/s)
+2026-09-09T02:43:12.185180+00:00 DONE: 600 samples validated; output digests match host; SRAM-only experiment complete.
+2026-09-09T02:43:12.191723+00:00 OpenOCD: halt
+2026-09-09T02:43:12.193202+00:00 OpenOCD: shutdown

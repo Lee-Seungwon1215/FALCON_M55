@@ -1,0 +1,3460 @@
+
+/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_4thStage/combinations/results/S1B_S2B_S3C/static/before.o:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <fndsa_mqpoly_small_to_int>:
+       0:	b4f0      	push	{r4, r5, r6, r7}
+       2:	2301      	movs	r3, #1
+       4:	4083      	lsls	r3, r0
+       6:	f243 0001 	movw	r0, #12289	@ 0x3001
+       a:	f2c3 0001 	movt	r0, #12289	@ 0x3001
+       e:	f04f 1701 	mov.w	r7, #65537	@ 0x10001
+
+00000012 <fndsa_mqpoly_small_to_int__L1>:
+      12:	f851 5b04 	ldr.w	r5, [r1], #4
+      16:	fa2f f485 	sxtb16	r4, r5
+      1a:	fa94 f600 	sadd16	r6, r4, r0
+      1e:	fad4 fc07 	ssub16	ip, r4, r7
+      22:	faa4 f486 	sel	r4, r4, r6
+      26:	fa2f f595 	sxtb16	r5, r5, ror #8
+      2a:	fa95 f600 	sadd16	r6, r5, r0
+      2e:	fad5 fc07 	ssub16	ip, r5, r7
+      32:	faa5 f586 	sel	r5, r5, r6
+      36:	eac5 4624 	pkhtb	r6, r5, r4, asr #16
+      3a:	eac4 4505 	pkhbt	r5, r4, r5, lsl #16
+      3e:	e8e2 5602 	strd	r5, r6, [r2], #8
+      42:	3b04      	subs	r3, #4
+      44:	d1e5      	bne.n	12 <fndsa_mqpoly_small_to_int__L1>
+      46:	bcf0      	pop	{r4, r5, r6, r7}
+      48:	4770      	bx	lr
+      4a:	bf00      	nop
+
+0000004c <fndsa_mqpoly_signed_to_int>:
+      4c:	b470      	push	{r4, r5, r6}
+      4e:	2301      	movs	r3, #1
+      50:	4083      	lsls	r3, r0
+      52:	f243 0001 	movw	r0, #12289	@ 0x3001
+      56:	f2c3 0001 	movt	r0, #12289	@ 0x3001
+      5a:	f04f 1201 	mov.w	r2, #65537	@ 0x10001
+
+0000005e <fndsa_mqpoly_signed_to_int__L1>:
+      5e:	e9d1 4500 	ldrd	r4, r5, [r1]
+      62:	fa94 f600 	sadd16	r6, r4, r0
+      66:	fad4 fc02 	ssub16	ip, r4, r2
+      6a:	faa4 f486 	sel	r4, r4, r6
+      6e:	fa95 f600 	sadd16	r6, r5, r0
+      72:	fad5 fc02 	ssub16	ip, r5, r2
+      76:	faa5 f586 	sel	r5, r5, r6
+      7a:	e8e1 4502 	strd	r4, r5, [r1], #8
+      7e:	3b04      	subs	r3, #4
+      80:	d1ed      	bne.n	5e <fndsa_mqpoly_signed_to_int__L1>
+      82:	bc70      	pop	{r4, r5, r6}
+      84:	4770      	bx	lr
+      86:	bf00      	nop
+
+00000088 <fndsa_mqpoly_int_to_ext>:
+      88:	e92d 0070 	stmdb	sp!, {r4, r5, r6}
+      8c:	2301      	movs	r3, #1
+      8e:	4083      	lsls	r3, r0
+      90:	f243 0001 	movw	r0, #12289	@ 0x3001
+      94:	f2c3 0001 	movt	r0, #12289	@ 0x3001
+      98:	f04f 32ff 	mov.w	r2, #4294967295	@ 0xffffffff
+      9c:	f240 0600 	movw	r6, #0
+
+000000a0 <fndsa_mqpoly_int_to_ext__L1>:
+      a0:	e9d1 4500 	ldrd	r4, r5, [r1]
+      a4:	fad4 fc00 	ssub16	ip, r4, r0
+      a8:	faa6 f484 	sel	r4, r6, r4
+      ac:	fad5 fc00 	ssub16	ip, r5, r0
+      b0:	faa6 f585 	sel	r5, r6, r5
+      b4:	e8e1 4502 	strd	r4, r5, [r1], #8
+      b8:	3b04      	subs	r3, #4
+      ba:	d1f1      	bne.n	a0 <fndsa_mqpoly_int_to_ext__L1>
+      bc:	bc70      	pop	{r4, r5, r6}
+      be:	4770      	bx	lr
+
+000000c0 <fndsa_mqpoly_mul_ntt>:
+      c0:	e92d 45f0 	stmdb	sp!, {r4, r5, r6, r7, r8, sl, lr}
+      c4:	2301      	movs	r3, #1
+      c6:	4083      	lsls	r3, r0
+      c8:	f243 0a01 	movw	sl, #12289	@ 0x3001
+      cc:	f642 7eff 	movw	lr, #12287	@ 0x2fff
+      d0:	f2cf 7e00 	movt	lr, #63232	@ 0xf700
+      d4:	f241 6020 	movw	r0, #5664	@ 0x1620
+
+000000d8 <fndsa_mqpoly_mul_ntt__L1>:
+      d8:	680d      	ldr	r5, [r1, #0]
+      da:	684e      	ldr	r6, [r1, #4]
+      dc:	f852 7b04 	ldr.w	r7, [r2], #4
+      e0:	f852 8b04 	ldr.w	r8, [r2], #4
+      e4:	fb15 f407 	smulbb	r4, r5, r7
+      e8:	fb15 f537 	smultt	r5, r5, r7
+      ec:	fb04 fc0e 	mul.w	ip, r4, lr
+      f0:	fbec e46a 	umaal	lr, r4, ip, sl
+      f4:	fb05 fc0e 	mul.w	ip, r5, lr
+      f8:	fbec e56a 	umaal	lr, r5, ip, sl
+      fc:	4344      	muls	r4, r0
+      fe:	4345      	muls	r5, r0
+     100:	fb04 fc0e 	mul.w	ip, r4, lr
+     104:	fbec e46a 	umaal	lr, r4, ip, sl
+     108:	fb05 fc0e 	mul.w	ip, r5, lr
+     10c:	fbec e56a 	umaal	lr, r5, ip, sl
+     110:	eac4 4705 	pkhbt	r7, r4, r5, lsl #16
+     114:	f841 7b04 	str.w	r7, [r1], #4
+     118:	fb16 f408 	smulbb	r4, r6, r8
+     11c:	fb16 f538 	smultt	r5, r6, r8
+     120:	fb04 fc0e 	mul.w	ip, r4, lr
+     124:	fbec e46a 	umaal	lr, r4, ip, sl
+     128:	fb05 fc0e 	mul.w	ip, r5, lr
+     12c:	fbec e56a 	umaal	lr, r5, ip, sl
+     130:	4344      	muls	r4, r0
+     132:	4345      	muls	r5, r0
+     134:	fb04 fc0e 	mul.w	ip, r4, lr
+     138:	fbec e46a 	umaal	lr, r4, ip, sl
+     13c:	fb05 fc0e 	mul.w	ip, r5, lr
+     140:	fbec e56a 	umaal	lr, r5, ip, sl
+     144:	eac4 4805 	pkhbt	r8, r4, r5, lsl #16
+     148:	f841 8b04 	str.w	r8, [r1], #4
+     14c:	3b04      	subs	r3, #4
+     14e:	d1c3      	bne.n	d8 <fndsa_mqpoly_mul_ntt__L1>
+     150:	e8bd 85f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, sl, pc}
+
+00000154 <fndsa_mqpoly_sub>:
+     154:	e92d 40f0 	stmdb	sp!, {r4, r5, r6, r7, lr}
+     158:	2301      	movs	r3, #1
+     15a:	4083      	lsls	r3, r0
+     15c:	f240 0000 	movw	r0, #0
+     160:	f243 0e01 	movw	lr, #12289	@ 0x3001
+     164:	f2c3 0e01 	movt	lr, #12289	@ 0x3001
+
+00000168 <fndsa_mqpoly_sub__L1>:
+     168:	680c      	ldr	r4, [r1, #0]
+     16a:	684d      	ldr	r5, [r1, #4]
+     16c:	f852 6b04 	ldr.w	r6, [r2], #4
+     170:	f852 7b04 	ldr.w	r7, [r2], #4
+     174:	fad4 f406 	ssub16	r4, r4, r6
+     178:	faa0 fc8e 	sel	ip, r0, lr
+     17c:	fa94 f40c 	sadd16	r4, r4, ip
+     180:	f841 4b04 	str.w	r4, [r1], #4
+     184:	fad5 f507 	ssub16	r5, r5, r7
+     188:	faa0 fc8e 	sel	ip, r0, lr
+     18c:	fa95 f50c 	sadd16	r5, r5, ip
+     190:	f841 5b04 	str.w	r5, [r1], #4
+     194:	3b04      	subs	r3, #4
+     196:	d1e7      	bne.n	168 <fndsa_mqpoly_sub__L1>
+     198:	bdf0      	pop	{r4, r5, r6, r7, pc}
+     19a:	bf00      	nop
+
+0000019c <fndsa_mqpoly_add>:
+     19c:	e92d 40f0 	stmdb	sp!, {r4, r5, r6, r7, lr}
+     1a0:	2301      	movs	r3, #1
+     1a2:	4083      	lsls	r3, r0
+     1a4:	f243 0e01 	movw	lr, #12289	@ 0x3001
+     1a8:	f2c3 0e01 	movt	lr, #12289	@ 0x3001
+
+000001ac <fndsa_mqpoly_add__L1>:
+     1ac:	680c      	ldr	r4, [r1, #0]
+     1ae:	684d      	ldr	r5, [r1, #4]
+     1b0:	f852 6b04 	ldr.w	r6, [r2], #4
+     1b4:	f852 7b04 	ldr.w	r7, [r2], #4
+     1b8:	fa94 f406 	sadd16	r4, r4, r6
+     1bc:	fad4 fc0e 	ssub16	ip, r4, lr
+     1c0:	faac f484 	sel	r4, ip, r4
+     1c4:	f841 4b04 	str.w	r4, [r1], #4
+     1c8:	fa95 f507 	sadd16	r5, r5, r7
+     1cc:	fad5 fc0e 	ssub16	ip, r5, lr
+     1d0:	faac f585 	sel	r5, ip, r5
+     1d4:	f841 5b04 	str.w	r5, [r1], #4
+     1d8:	3b04      	subs	r3, #4
+     1da:	d1e7      	bne.n	1ac <fndsa_mqpoly_add__L1>
+     1dc:	bdf0      	pop	{r4, r5, r6, r7, pc}
+     1de:	bf00      	nop
+
+000001e0 <fndsa_mqpoly_sqnorm_signed>:
+     1e0:	2301      	movs	r3, #1
+     1e2:	4083      	lsls	r3, r0
+     1e4:	f240 0000 	movw	r0, #0
+
+000001e8 <fndsa_mqpoly_sqnorm_signed__L1>:
+     1e8:	e8f1 2c02 	ldrd	r2, ip, [r1], #8
+     1ec:	fb22 0002 	smlad	r0, r2, r2, r0
+     1f0:	fb2c 000c 	smlad	r0, ip, ip, r0
+     1f4:	3b04      	subs	r3, #4
+     1f6:	d1f7      	bne.n	1e8 <fndsa_mqpoly_sqnorm_signed__L1>
+     1f8:	4770      	bx	lr
+     1fa:	bf00      	nop
+
+000001fc <fndsa_mqpoly_sqnorm_binf_int>:
+     1fc:	e92d 40f0 	stmdb	sp!, {r4, r5, r6, r7, lr}
+     200:	2301      	movs	r3, #1
+     202:	4083      	lsls	r3, r0
+     204:	f243 0501 	movw	r5, #12289	@ 0x3001
+     208:	f2c3 0501 	movt	r5, #12289	@ 0x3001
+     20c:	f641 0601 	movw	r6, #6145	@ 0x1801
+     210:	f6c1 0601 	movt	r6, #6145	@ 0x1801
+     214:	f240 3e48 	movw	lr, #840	@ 0x348
+     218:	f2c0 3e48 	movt	lr, #840	@ 0x348
+     21c:	f240 0000 	movw	r0, #0
+     220:	f380 8800 	msr	CPSR_f, r0
+
+00000224 <fndsa_mqpoly_sqnorm_binf_int__L1>:
+     224:	e8f1 2402 	ldrd	r2, r4, [r1], #8
+     228:	fad2 f705 	ssub16	r7, r2, r5
+     22c:	fad2 fc06 	ssub16	ip, r2, r6
+     230:	faa7 f282 	sel	r2, r7, r2
+     234:	fad4 f705 	ssub16	r7, r4, r5
+     238:	fad4 fc06 	ssub16	ip, r4, r6
+     23c:	faa7 f484 	sel	r4, r7, r4
+     240:	fb22 0002 	smlad	r0, r2, r2, r0
+     244:	fb24 0004 	smlad	r0, r4, r4, r0
+     248:	fade f702 	ssub16	r7, lr, r2
+     24c:	fa9e f202 	sadd16	r2, lr, r2
+     250:	f3a7 070f 	usat16	r7, #15, r7
+     254:	f3a2 020f 	usat16	r2, #15, r2
+     258:	fade f704 	ssub16	r7, lr, r4
+     25c:	fa9e f404 	sadd16	r4, lr, r4
+     260:	f3a7 070f 	usat16	r7, #15, r7
+     264:	f3a4 040f 	usat16	r4, #15, r4
+     268:	3b04      	subs	r3, #4
+     26a:	d1db      	bne.n	224 <fndsa_mqpoly_sqnorm_binf_int__L1>
+     26c:	f3ef 8100 	mrs	r1, APSR
+     270:	f341 61c0 	sbfx	r1, r1, #27, #1
+     274:	4308      	orrs	r0, r1
+     276:	bdf0      	pop	{r4, r5, r6, r7, pc}
+
+00000278 <fndsa_mqpoly_sqnorm_int_to_signed>:
+     278:	e92d 00f0 	stmdb	sp!, {r4, r5, r6, r7}
+     27c:	2301      	movs	r3, #1
+     27e:	4083      	lsls	r3, r0
+     280:	f243 0501 	movw	r5, #12289	@ 0x3001
+     284:	f2c3 0501 	movt	r5, #12289	@ 0x3001
+     288:	f641 0601 	movw	r6, #6145	@ 0x1801
+     28c:	f6c1 0601 	movt	r6, #6145	@ 0x1801
+     290:	f240 0000 	movw	r0, #0
+     294:	f380 8800 	msr	CPSR_f, r0
+
+00000298 <fndsa_mqpoly_sqnorm_int_to_signed__L1>:
+     298:	e9d1 2400 	ldrd	r2, r4, [r1]
+     29c:	fad2 f705 	ssub16	r7, r2, r5
+     2a0:	fad2 fc06 	ssub16	ip, r2, r6
+     2a4:	faa7 f282 	sel	r2, r7, r2
+     2a8:	f841 2b04 	str.w	r2, [r1], #4
+     2ac:	fad4 f705 	ssub16	r7, r4, r5
+     2b0:	fad4 fc06 	ssub16	ip, r4, r6
+     2b4:	faa7 f484 	sel	r4, r7, r4
+     2b8:	f841 4b04 	str.w	r4, [r1], #4
+     2bc:	fb22 0002 	smlad	r0, r2, r2, r0
+     2c0:	fb24 0004 	smlad	r0, r4, r4, r0
+     2c4:	3b04      	subs	r3, #4
+     2c6:	d1e7      	bne.n	298 <fndsa_mqpoly_sqnorm_int_to_signed__L1>
+     2c8:	f3ef 8100 	mrs	r1, APSR
+     2cc:	f341 61c0 	sbfx	r1, r1, #27, #1
+     2d0:	4308      	orrs	r0, r1
+     2d2:	bcf0      	pop	{r4, r5, r6, r7}
+     2d4:	4770      	bx	lr
+     2d6:	bf00      	nop
+
+000002d8 <fndsa_mqpoly_int_to_ntt__gmaddr_plus1_near>:
+     2d8:	00000002 	.word	0x00000002
+
+000002dc <fndsa_mqpoly_int_to_ntt__stage3_gmaddrs>:
+	...
+
+000002e4 <fndsa_mqpoly_int_to_ntt>:
+     2e4:	e92d 4ff1 	stmdb	sp!, {r0, r4, r5, r6, r7, r8, r9, sl, fp, lr}
+     2e8:	ed2d 8b10 	vpush	{d8-d15}
+     2ec:	ee00 0a10 	vmov	s0, r0
+     2f0:	ee01 1a10 	vmov	s2, r1
+     2f4:	2201      	movs	r2, #1
+     2f6:	4082      	lsls	r2, r0
+     2f8:	f240 0001 	movw	r0, #1
+     2fc:	ee01 0a90 	vmov	s3, r0
+     300:	f240 0000 	movw	r0, #0
+     304:	f243 0a01 	movw	sl, #12289	@ 0x3001
+     308:	ea4a 4b0a 	orr.w	fp, sl, sl, lsl #16
+     30c:	f642 7eff 	movw	lr, #12287	@ 0x2fff
+     310:	f2cf 7e00 	movt	lr, #63232	@ 0xf700
+     314:	ee10 ca10 	vmov	ip, s0
+     318:	f1bc 0f09 	cmp.w	ip, #9
+     31c:	d308      	bcc.n	330 <fndsa_mqpoly_int_to_ntt__legacy_gm>
+     31e:	f2af 0c44 	subw	ip, pc, #68	@ 0x44
+     322:	e89c 0300 	ldmia.w	ip, {r8, r9}
+     326:	eba9 0908 	sub.w	r9, r9, r8
+     32a:	f108 0802 	add.w	r8, r8, #2
+     32e:	e005      	b.n	33c <fndsa_mqpoly_int_to_ntt__gm_ready>
+
+00000330 <fndsa_mqpoly_int_to_ntt__legacy_gm>:
+     330:	f2af 085c 	subw	r8, pc, #92	@ 0x5c
+     334:	f8d8 8000 	ldr.w	r8, [r8]
+     338:	f05f 0900 	movs.w	r9, #0
+
+0000033c <fndsa_mqpoly_int_to_ntt__gm_ready>:
+     33c:	f5b2 7f00 	cmp.w	r2, #512	@ 0x200
+     340:	f040 81a6 	bne.w	690 <fndsa_mqpoly_int_to_ntt__L512_not>
+     344:	f240 1200 	movw	r2, #256	@ 0x100
+     348:	f05f 0b01 	movs.w	fp, #1
+     34c:	f108 0002 	add.w	r0, r8, #2
+     350:	ee11 1a10 	vmov	r1, s2
+
+00000354 <fndsa_mqpoly_int_to_ntt__L512_CT2_pass>:
+     354:	ee01 ba90 	vmov	s3, fp
+
+00000358 <fndsa_mqpoly_int_to_ntt__L512_CT2_group>:
+     358:	f8b8 5000 	ldrh.w	r5, [r8]
+     35c:	eb08 0e09 	add.w	lr, r8, r9
+     360:	f8be e000 	ldrh.w	lr, [lr]
+     364:	ea45 450e 	orr.w	r5, r5, lr, lsl #16
+     368:	f108 0802 	add.w	r8, r8, #2
+     36c:	8806      	ldrh	r6, [r0, #0]
+     36e:	eb00 0e09 	add.w	lr, r0, r9
+     372:	f8be e000 	ldrh.w	lr, [lr]
+     376:	ea46 460e 	orr.w	r6, r6, lr, lsl #16
+     37a:	f100 0002 	add.w	r0, r0, #2
+     37e:	8807      	ldrh	r7, [r0, #0]
+     380:	eb00 0e09 	add.w	lr, r0, r9
+     384:	f8be e000 	ldrh.w	lr, [lr]
+     388:	ea47 470e 	orr.w	r7, r7, lr, lsl #16
+     38c:	f100 0002 	add.w	r0, r0, #2
+     390:	ea4f 1312 	mov.w	r3, r2, lsr #4
+     394:	ed91 3e80 	vldrh.u16	q1, [r1, #0]
+     398:	eb01 0402 	add.w	r4, r1, r2
+     39c:	ed94 5e80 	vldrh.u16	q2, [r4, #0]
+     3a0:	eb04 0402 	add.w	r4, r4, r2
+     3a4:	ed94 7e80 	vldrh.u16	q3, [r4, #0]
+     3a8:	eb04 0402 	add.w	r4, r4, r2
+     3ac:	ed94 9e80 	vldrh.u16	q4, [r4, #0]
+     3b0:	3b01      	subs	r3, #1
+     3b2:	f000 80b1 	beq.w	518 <fndsa_mqpoly_int_to_ntt__L512_CT2_chunk_epilogue>
+
+000003b6 <fndsa_mqpoly_int_to_ntt__L512_CT2_chunk_steady>:
+     3b6:	eeae 5b30 	vdup.16	q7, r5
+     3ba:	ea4f 4e25 	mov.w	lr, r5, asr #16
+     3be:	eeac eb30 	vdup.16	q6, lr
+     3c2:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+     3c6:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     3ca:	ef16 695e 	vmul.i16	q3, q3, q7
+     3ce:	ef18 895e 	vmul.i16	q4, q4, q7
+     3d2:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+     3d6:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+     3da:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+     3de:	fe71 0f4d 	vpst
+     3e2:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+     3e6:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     3ea:	fe71 0f4d 	vpst
+     3ee:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     3f2:	eeae ab30 	vdup.16	q7, sl
+     3f6:	ef12 a846 	vadd.i16	q5, q1, q3
+     3fa:	ff1a a84e 	vsub.i16	q5, q5, q7
+     3fe:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     402:	fe71 0f4d 	vpst
+     406:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     40a:	ff12 6846 	vsub.i16	q3, q1, q3
+     40e:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+     412:	fe71 0f4d 	vpst
+     416:	ef16 684e 	vaddt.i16	q3, q3, q7
+     41a:	ef2a 215a 	vmov	q1, q5
+     41e:	ef14 a848 	vadd.i16	q5, q2, q4
+     422:	ff1a a84e 	vsub.i16	q5, q5, q7
+     426:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     42a:	fe71 0f4d 	vpst
+     42e:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     432:	ff14 8848 	vsub.i16	q4, q2, q4
+     436:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     43a:	fe71 0f4d 	vpst
+     43e:	ef18 884e 	vaddt.i16	q4, q4, q7
+     442:	ea4f 4e26 	mov.w	lr, r6, asr #16
+     446:	eeac eb30 	vdup.16	q6, lr
+     44a:	ff1a 4b4c 	vqrdmulh.s16	q2, q5, q6
+     44e:	ea4f 4e27 	mov.w	lr, r7, asr #16
+     452:	eeac eb30 	vdup.16	q6, lr
+     456:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     45a:	eeae 6b30 	vdup.16	q7, r6
+     45e:	ef1a a95e 	vmul.i16	q5, q5, q7
+     462:	eeae 7b30 	vdup.16	q7, r7
+     466:	ef18 895e 	vmul.i16	q4, q4, q7
+     46a:	ee15 ae4a 	vmla.i16	q5, q2, sl
+     46e:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+     472:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     476:	fe71 0f4d 	vpst
+     47a:	ee1b af4a 	vaddt.i16	q5, q5, sl
+     47e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     482:	fe71 0f4d 	vpst
+     486:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     48a:	ef2a 415a 	vmov	q2, q5
+     48e:	eeae ab30 	vdup.16	q7, sl
+     492:	ef12 a844 	vadd.i16	q5, q1, q2
+     496:	ff1a a84e 	vsub.i16	q5, q5, q7
+     49a:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     49e:	fe71 0f4d 	vpst
+     4a2:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     4a6:	ff12 4844 	vsub.i16	q2, q1, q2
+     4aa:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+     4ae:	fe71 0f4d 	vpst
+     4b2:	ef14 484e 	vaddt.i16	q2, q2, q7
+     4b6:	ef2a 215a 	vmov	q1, q5
+     4ba:	ef16 a848 	vadd.i16	q5, q3, q4
+     4be:	ff1a a84e 	vsub.i16	q5, q5, q7
+     4c2:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     4c6:	fe71 0f4d 	vpst
+     4ca:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     4ce:	ff16 8848 	vsub.i16	q4, q3, q4
+     4d2:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     4d6:	fe71 0f4d 	vpst
+     4da:	ef18 884e 	vaddt.i16	q4, q4, q7
+     4de:	ef2a 615a 	vmov	q3, q5
+     4e2:	ed81 3e80 	vstrh.16	q1, [r1, #0]
+     4e6:	ed91 3e88 	vldrh.u16	q1, [r1, #16]
+     4ea:	eb01 0c02 	add.w	ip, r1, r2
+     4ee:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+     4f2:	ed9c 5e88 	vldrh.u16	q2, [ip, #16]
+     4f6:	eb0c 0c02 	add.w	ip, ip, r2
+     4fa:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+     4fe:	ed9c 7e88 	vldrh.u16	q3, [ip, #16]
+     502:	eb0c 0c02 	add.w	ip, ip, r2
+     506:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+     50a:	ed9c 9e88 	vldrh.u16	q4, [ip, #16]
+     50e:	f101 0110 	add.w	r1, r1, #16
+     512:	3b01      	subs	r3, #1
+     514:	f47f af4f 	bne.w	3b6 <fndsa_mqpoly_int_to_ntt__L512_CT2_chunk_steady>
+
+00000518 <fndsa_mqpoly_int_to_ntt__L512_CT2_chunk_epilogue>:
+     518:	eeae 5b30 	vdup.16	q7, r5
+     51c:	ea4f 4e25 	mov.w	lr, r5, asr #16
+     520:	eeac eb30 	vdup.16	q6, lr
+     524:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+     528:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     52c:	ef16 695e 	vmul.i16	q3, q3, q7
+     530:	ef18 895e 	vmul.i16	q4, q4, q7
+     534:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+     538:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+     53c:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+     540:	fe71 0f4d 	vpst
+     544:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+     548:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     54c:	fe71 0f4d 	vpst
+     550:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     554:	eeae ab30 	vdup.16	q7, sl
+     558:	ef12 a846 	vadd.i16	q5, q1, q3
+     55c:	ff1a a84e 	vsub.i16	q5, q5, q7
+     560:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     564:	fe71 0f4d 	vpst
+     568:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     56c:	ff12 6846 	vsub.i16	q3, q1, q3
+     570:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+     574:	fe71 0f4d 	vpst
+     578:	ef16 684e 	vaddt.i16	q3, q3, q7
+     57c:	ef2a 215a 	vmov	q1, q5
+     580:	ef14 a848 	vadd.i16	q5, q2, q4
+     584:	ff1a a84e 	vsub.i16	q5, q5, q7
+     588:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     58c:	fe71 0f4d 	vpst
+     590:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     594:	ff14 8848 	vsub.i16	q4, q2, q4
+     598:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     59c:	fe71 0f4d 	vpst
+     5a0:	ef18 884e 	vaddt.i16	q4, q4, q7
+     5a4:	ea4f 4e26 	mov.w	lr, r6, asr #16
+     5a8:	eeac eb30 	vdup.16	q6, lr
+     5ac:	ff1a 4b4c 	vqrdmulh.s16	q2, q5, q6
+     5b0:	ea4f 4e27 	mov.w	lr, r7, asr #16
+     5b4:	eeac eb30 	vdup.16	q6, lr
+     5b8:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     5bc:	eeae 6b30 	vdup.16	q7, r6
+     5c0:	ef1a a95e 	vmul.i16	q5, q5, q7
+     5c4:	eeae 7b30 	vdup.16	q7, r7
+     5c8:	ef18 895e 	vmul.i16	q4, q4, q7
+     5cc:	ee15 ae4a 	vmla.i16	q5, q2, sl
+     5d0:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+     5d4:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     5d8:	fe71 0f4d 	vpst
+     5dc:	ee1b af4a 	vaddt.i16	q5, q5, sl
+     5e0:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     5e4:	fe71 0f4d 	vpst
+     5e8:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     5ec:	ef2a 415a 	vmov	q2, q5
+     5f0:	eeae ab30 	vdup.16	q7, sl
+     5f4:	ef12 a844 	vadd.i16	q5, q1, q2
+     5f8:	ff1a a84e 	vsub.i16	q5, q5, q7
+     5fc:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     600:	fe71 0f4d 	vpst
+     604:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     608:	ff12 4844 	vsub.i16	q2, q1, q2
+     60c:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+     610:	fe71 0f4d 	vpst
+     614:	ef14 484e 	vaddt.i16	q2, q2, q7
+     618:	ef2a 215a 	vmov	q1, q5
+     61c:	ef16 a848 	vadd.i16	q5, q3, q4
+     620:	ff1a a84e 	vsub.i16	q5, q5, q7
+     624:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     628:	fe71 0f4d 	vpst
+     62c:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     630:	ff16 8848 	vsub.i16	q4, q3, q4
+     634:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     638:	fe71 0f4d 	vpst
+     63c:	ef18 884e 	vaddt.i16	q4, q4, q7
+     640:	ef2a 615a 	vmov	q3, q5
+     644:	ed81 3e80 	vstrh.16	q1, [r1, #0]
+     648:	eb01 0402 	add.w	r4, r1, r2
+     64c:	ed84 5e80 	vstrh.16	q2, [r4, #0]
+     650:	eb04 0402 	add.w	r4, r4, r2
+     654:	ed84 7e80 	vstrh.16	q3, [r4, #0]
+     658:	eb04 0402 	add.w	r4, r4, r2
+     65c:	ed84 9e80 	vstrh.16	q4, [r4, #0]
+     660:	f101 0110 	add.w	r1, r1, #16
+     664:	eb01 0142 	add.w	r1, r1, r2, lsl #1
+     668:	eb01 0102 	add.w	r1, r1, r2
+     66c:	ee11 3a90 	vmov	r3, s3
+     670:	3b01      	subs	r3, #1
+     672:	ee01 3a90 	vmov	s3, r3
+     676:	f47f ae6f 	bne.w	358 <fndsa_mqpoly_int_to_ntt__L512_CT2_group>
+     67a:	eb08 088b 	add.w	r8, r8, fp, lsl #2
+     67e:	eb00 00cb 	add.w	r0, r0, fp, lsl #3
+     682:	ea4f 0b8b 	mov.w	fp, fp, lsl #2
+     686:	ea4f 0292 	mov.w	r2, r2, lsr #2
+     68a:	ee11 1a10 	vmov	r1, s2
+     68e:	e08e      	b.n	7ae <fndsa_mqpoly_int_to_ntt__L3x512>
+
+00000690 <fndsa_mqpoly_int_to_ntt__L512_not>:
+     690:	f5b2 6f80 	cmp.w	r2, #1024	@ 0x400
+     694:	f000 8469 	beq.w	f6a <fndsa_mqpoly_int_to_ntt__F2_setup>
+     698:	2a04      	cmp	r2, #4
+     69a:	f000 86bb 	beq.w	1414 <fndsa_mqpoly_int_to_ntt__L4>
+
+0000069e <fndsa_mqpoly_int_to_ntt__L1>:
+     69e:	ee11 3a90 	vmov	r3, s3
+     6a2:	ea4f 0643 	mov.w	r6, r3, lsl #1
+     6a6:	ee01 6a90 	vmov	s3, r6
+     6aa:	2b04      	cmp	r3, #4
+     6ac:	d103      	bne.n	6b6 <fndsa_mqpoly_int_to_ntt__L2>
+     6ae:	ee10 4a10 	vmov	r4, s0
+     6b2:	2c09      	cmp	r4, #9
+     6b4:	d07b      	beq.n	7ae <fndsa_mqpoly_int_to_ntt__L3x512>
+
+000006b6 <fndsa_mqpoly_int_to_ntt__L2>:
+     6b6:	f838 6b02 	ldrh.w	r6, [r8], #2
+     6ba:	ea4f 0752 	mov.w	r7, r2, lsr #1
+     6be:	2f08      	cmp	r7, #8
+     6c0:	d344      	bcc.n	74c <fndsa_mqpoly_int_to_ntt__L3>
+
+000006c2 <fndsa_mqpoly_int_to_ntt__L3_mve>:
+     6c2:	eb01 0402 	add.w	r4, r1, r2
+     6c6:	ed91 3e80 	vldrh.u16	q1, [r1, #0]
+     6ca:	ed94 5e80 	vldrh.u16	q2, [r4, #0]
+     6ce:	ef80 6050 	vmov.i32	q3, #0	@ 0x00000000
+     6d2:	fe15 0f06 	vcmp.i16	eq, q2, q3
+     6d6:	eea6 6b30 	vdup.16	q3, r6
+     6da:	fe15 8e07 	vmulh.u16	q4, q2, q3
+     6de:	ef14 4956 	vmul.i16	q2, q2, q3
+     6e2:	eea6 eb30 	vdup.16	q3, lr
+     6e6:	fe15 6e07 	vmulh.u16	q3, q2, q3
+     6ea:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+     6ee:	ee15 5e6c 	vmul.i16	q2, q2, ip
+     6f2:	ee19 9e6e 	vmul.i16	q4, q4, lr
+     6f6:	ef14 4848 	vadd.i16	q2, q2, q4
+     6fa:	ef14 4846 	vadd.i16	q2, q2, q3
+     6fe:	eea6 ab30 	vdup.16	q3, sl
+     702:	fe15 4e07 	vmulh.u16	q2, q2, q3
+     706:	f05f 0c01 	movs.w	ip, #1
+     70a:	ee15 4f4c 	vadd.i16	q2, q2, ip
+     70e:	fe71 0f4d 	vpst
+     712:	ee15 5f4c 	vsubt.i16	q2, q2, ip
+     716:	ef12 8844 	vadd.i16	q4, q1, q2
+     71a:	ff18 8846 	vsub.i16	q4, q4, q3
+     71e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     722:	fe71 0f4d 	vpst
+     726:	ef18 8846 	vaddt.i16	q4, q4, q3
+     72a:	ed81 9e80 	vstrh.16	q4, [r1, #0]
+     72e:	ff12 8844 	vsub.i16	q4, q1, q2
+     732:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     736:	fe71 0f4d 	vpst
+     73a:	ef18 8846 	vaddt.i16	q4, q4, q3
+     73e:	ed84 9e80 	vstrh.16	q4, [r4, #0]
+     742:	f101 0110 	add.w	r1, r1, #16
+     746:	3f08      	subs	r7, #8
+     748:	d1bb      	bne.n	6c2 <fndsa_mqpoly_int_to_ntt__L3_mve>
+     74a:	e023      	b.n	794 <fndsa_mqpoly_int_to_ntt__L3_done>
+
+0000074c <fndsa_mqpoly_int_to_ntt__L3>:
+     74c:	f851 4002 	ldr.w	r4, [r1, r2]
+     750:	fb14 f526 	smultb	r5, r4, r6
+     754:	fb05 fc0e 	mul.w	ip, r5, lr
+     758:	fbec e56a 	umaal	lr, r5, ip, sl
+     75c:	fb14 f406 	smulbb	r4, r4, r6
+     760:	fb04 fc0e 	mul.w	ip, r4, lr
+     764:	fbec e46a 	umaal	lr, r4, ip, sl
+     768:	eac4 4505 	pkhbt	r5, r4, r5, lsl #16
+     76c:	f8d1 4000 	ldr.w	r4, [r1]
+     770:	fa94 fc05 	sadd16	ip, r4, r5
+     774:	fad4 f505 	ssub16	r5, r4, r5
+     778:	faa0 f48b 	sel	r4, r0, fp
+     77c:	fa95 f504 	sadd16	r5, r5, r4
+     780:	f841 5002 	str.w	r5, [r1, r2]
+     784:	fadc f40b 	ssub16	r4, ip, fp
+     788:	faa4 f48c 	sel	r4, r4, ip
+     78c:	f841 4b04 	str.w	r4, [r1], #4
+     790:	3f02      	subs	r7, #2
+     792:	d1db      	bne.n	74c <fndsa_mqpoly_int_to_ntt__L3>
+
+00000794 <fndsa_mqpoly_int_to_ntt__L3_done>:
+     794:	eb01 0102 	add.w	r1, r1, r2
+     798:	3b01      	subs	r3, #1
+     79a:	d18c      	bne.n	6b6 <fndsa_mqpoly_int_to_ntt__L2>
+     79c:	ee11 1a10 	vmov	r1, s2
+     7a0:	ea4f 0252 	mov.w	r2, r2, lsr #1
+     7a4:	2a04      	cmp	r2, #4
+     7a6:	f47f af7a 	bne.w	69e <fndsa_mqpoly_int_to_ntt__L1>
+     7aa:	f000 be33 	b.w	1414 <fndsa_mqpoly_int_to_ntt__L4>
+
+000007ae <fndsa_mqpoly_int_to_ntt__L3x512>:
+     7ae:	b084      	sub	sp, #16
+     7b0:	ee11 ca10 	vmov	ip, s2
+     7b4:	f8cd 8000 	str.w	r8, [sp]
+     7b8:	f108 0408 	add.w	r4, r8, #8
+     7bc:	9401      	str	r4, [sp, #4]
+     7be:	f108 0418 	add.w	r4, r8, #24
+     7c2:	9402      	str	r4, [sp, #8]
+     7c4:	f8cd c00c 	str.w	ip, [sp, #12]
+     7c8:	4661      	mov	r1, ip
+     7ca:	2304      	movs	r3, #4
+
+000007cc <fndsa_mqpoly_int_to_ntt__L3x512_block>:
+     7cc:	f8dd c000 	ldr.w	ip, [sp]
+     7d0:	f8bc 4000 	ldrh.w	r4, [ip]
+     7d4:	eb0c 0e09 	add.w	lr, ip, r9
+     7d8:	f8be e000 	ldrh.w	lr, [lr]
+     7dc:	ea44 440e 	orr.w	r4, r4, lr, lsl #16
+     7e0:	f10c 0c02 	add.w	ip, ip, #2
+     7e4:	f8cd c000 	str.w	ip, [sp]
+     7e8:	f8dd c004 	ldr.w	ip, [sp, #4]
+     7ec:	f8bc 5000 	ldrh.w	r5, [ip]
+     7f0:	eb0c 0e09 	add.w	lr, ip, r9
+     7f4:	f8be e000 	ldrh.w	lr, [lr]
+     7f8:	ea45 450e 	orr.w	r5, r5, lr, lsl #16
+     7fc:	f10c 0c02 	add.w	ip, ip, #2
+     800:	f8bc 6000 	ldrh.w	r6, [ip]
+     804:	eb0c 0e09 	add.w	lr, ip, r9
+     808:	f8be e000 	ldrh.w	lr, [lr]
+     80c:	ea46 460e 	orr.w	r6, r6, lr, lsl #16
+     810:	f10c 0c02 	add.w	ip, ip, #2
+     814:	f8cd c004 	str.w	ip, [sp, #4]
+     818:	f8dd c008 	ldr.w	ip, [sp, #8]
+     81c:	f8bc 7000 	ldrh.w	r7, [ip]
+     820:	eb0c 0e09 	add.w	lr, ip, r9
+     824:	f8be e000 	ldrh.w	lr, [lr]
+     828:	ea47 470e 	orr.w	r7, r7, lr, lsl #16
+     82c:	f10c 0c02 	add.w	ip, ip, #2
+     830:	f8bc 8000 	ldrh.w	r8, [ip]
+     834:	eb0c 0e09 	add.w	lr, ip, r9
+     838:	f8be e000 	ldrh.w	lr, [lr]
+     83c:	ea48 480e 	orr.w	r8, r8, lr, lsl #16
+     840:	f10c 0c02 	add.w	ip, ip, #2
+     844:	f8bc b000 	ldrh.w	fp, [ip]
+     848:	eb0c 0e09 	add.w	lr, ip, r9
+     84c:	f8be e000 	ldrh.w	lr, [lr]
+     850:	ea4b 4b0e 	orr.w	fp, fp, lr, lsl #16
+     854:	f10c 0c02 	add.w	ip, ip, #2
+     858:	f8bc 0000 	ldrh.w	r0, [ip]
+     85c:	eb0c 0e09 	add.w	lr, ip, r9
+     860:	f8be e000 	ldrh.w	lr, [lr]
+     864:	ea40 400e 	orr.w	r0, r0, lr, lsl #16
+     868:	f10c 0c02 	add.w	ip, ip, #2
+     86c:	f8cd c008 	str.w	ip, [sp, #8]
+     870:	2202      	movs	r2, #2
+
+00000872 <fndsa_mqpoly_int_to_ntt__L3x512_lanes>:
+     872:	ed91 1e80 	vldrh.u16	q0, [r1, #0]
+     876:	f101 0c20 	add.w	ip, r1, #32
+     87a:	ed9c 3e80 	vldrh.u16	q1, [ip, #0]
+     87e:	f101 0c40 	add.w	ip, r1, #64	@ 0x40
+     882:	ed9c 5e80 	vldrh.u16	q2, [ip, #0]
+     886:	f101 0c60 	add.w	ip, r1, #96	@ 0x60
+     88a:	ed9c 7e80 	vldrh.u16	q3, [ip, #0]
+     88e:	f101 0c80 	add.w	ip, r1, #128	@ 0x80
+     892:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+     896:	eeac 4b30 	vdup.16	q6, r4
+     89a:	ea4f 4e24 	mov.w	lr, r4, asr #16
+     89e:	eeaa eb30 	vdup.16	q5, lr
+     8a2:	ff18 ab4a 	vqrdmulh.s16	q5, q4, q5
+     8a6:	ef18 895c 	vmul.i16	q4, q4, q6
+     8aa:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+     8ae:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     8b2:	fe71 0f4d 	vpst
+     8b6:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     8ba:	ff10 a848 	vsub.i16	q5, q0, q4
+     8be:	ef10 0848 	vadd.i16	q0, q0, q4
+     8c2:	eeac ab30 	vdup.16	q6, sl
+     8c6:	ff10 084c 	vsub.i16	q0, q0, q6
+     8ca:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+     8ce:	fe71 0f4d 	vpst
+     8d2:	ef10 084c 	vaddt.i16	q0, q0, q6
+     8d6:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     8da:	fe71 0f4d 	vpst
+     8de:	ef1a a84c 	vaddt.i16	q5, q5, q6
+     8e2:	ef2a 815a 	vmov	q4, q5
+     8e6:	f101 0c80 	add.w	ip, r1, #128	@ 0x80
+     8ea:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+     8ee:	f101 0ca0 	add.w	ip, r1, #160	@ 0xa0
+     8f2:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+     8f6:	eeac 4b30 	vdup.16	q6, r4
+     8fa:	ea4f 4e24 	mov.w	lr, r4, asr #16
+     8fe:	eeaa eb30 	vdup.16	q5, lr
+     902:	ff18 ab4a 	vqrdmulh.s16	q5, q4, q5
+     906:	ef18 895c 	vmul.i16	q4, q4, q6
+     90a:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+     90e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     912:	fe71 0f4d 	vpst
+     916:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     91a:	ff12 a848 	vsub.i16	q5, q1, q4
+     91e:	ef12 2848 	vadd.i16	q1, q1, q4
+     922:	eeac ab30 	vdup.16	q6, sl
+     926:	ff12 284c 	vsub.i16	q1, q1, q6
+     92a:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+     92e:	fe71 0f4d 	vpst
+     932:	ef12 284c 	vaddt.i16	q1, q1, q6
+     936:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     93a:	fe71 0f4d 	vpst
+     93e:	ef1a a84c 	vaddt.i16	q5, q5, q6
+     942:	ef2a 815a 	vmov	q4, q5
+     946:	f101 0ca0 	add.w	ip, r1, #160	@ 0xa0
+     94a:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+     94e:	f101 0cc0 	add.w	ip, r1, #192	@ 0xc0
+     952:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+     956:	eeac 4b30 	vdup.16	q6, r4
+     95a:	ea4f 4e24 	mov.w	lr, r4, asr #16
+     95e:	eeaa eb30 	vdup.16	q5, lr
+     962:	ff18 ab4a 	vqrdmulh.s16	q5, q4, q5
+     966:	ef18 895c 	vmul.i16	q4, q4, q6
+     96a:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+     96e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     972:	fe71 0f4d 	vpst
+     976:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     97a:	ff14 a848 	vsub.i16	q5, q2, q4
+     97e:	ef14 4848 	vadd.i16	q2, q2, q4
+     982:	eeac ab30 	vdup.16	q6, sl
+     986:	ff14 484c 	vsub.i16	q2, q2, q6
+     98a:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+     98e:	fe71 0f4d 	vpst
+     992:	ef14 484c 	vaddt.i16	q2, q2, q6
+     996:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     99a:	fe71 0f4d 	vpst
+     99e:	ef1a a84c 	vaddt.i16	q5, q5, q6
+     9a2:	ea4f 4e25 	mov.w	lr, r5, asr #16
+     9a6:	eeae eb30 	vdup.16	q7, lr
+     9aa:	ff14 8b4e 	vqrdmulh.s16	q4, q2, q7
+     9ae:	ea4f 4e26 	mov.w	lr, r6, asr #16
+     9b2:	eeae eb30 	vdup.16	q7, lr
+     9b6:	ff1a eb4e 	vqrdmulh.s16	q7, q5, q7
+     9ba:	eeac 5b30 	vdup.16	q6, r5
+     9be:	ef14 495c 	vmul.i16	q2, q2, q6
+     9c2:	eeac 6b30 	vdup.16	q6, r6
+     9c6:	ef1a a95c 	vmul.i16	q5, q5, q6
+     9ca:	ee19 4e4a 	vmla.i16	q2, q4, sl
+     9ce:	ee1f ae4a 	vmla.i16	q5, q7, sl
+     9d2:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+     9d6:	fe71 0f4d 	vpst
+     9da:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+     9de:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     9e2:	fe71 0f4d 	vpst
+     9e6:	ee1b af4a 	vaddt.i16	q5, q5, sl
+     9ea:	ef2a 815a 	vmov	q4, q5
+     9ee:	f101 0cc0 	add.w	ip, r1, #192	@ 0xc0
+     9f2:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+     9f6:	f101 0ce0 	add.w	ip, r1, #224	@ 0xe0
+     9fa:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+     9fe:	eeac 4b30 	vdup.16	q6, r4
+     a02:	ea4f 4e24 	mov.w	lr, r4, asr #16
+     a06:	eeaa eb30 	vdup.16	q5, lr
+     a0a:	ff18 ab4a 	vqrdmulh.s16	q5, q4, q5
+     a0e:	ef18 895c 	vmul.i16	q4, q4, q6
+     a12:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+     a16:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     a1a:	fe71 0f4d 	vpst
+     a1e:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     a22:	ff16 a848 	vsub.i16	q5, q3, q4
+     a26:	ef16 6848 	vadd.i16	q3, q3, q4
+     a2a:	eeac ab30 	vdup.16	q6, sl
+     a2e:	ff16 684c 	vsub.i16	q3, q3, q6
+     a32:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+     a36:	fe71 0f4d 	vpst
+     a3a:	ef16 684c 	vaddt.i16	q3, q3, q6
+     a3e:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     a42:	fe71 0f4d 	vpst
+     a46:	ef1a a84c 	vaddt.i16	q5, q5, q6
+     a4a:	ea4f 4e25 	mov.w	lr, r5, asr #16
+     a4e:	eeae eb30 	vdup.16	q7, lr
+     a52:	ff16 8b4e 	vqrdmulh.s16	q4, q3, q7
+     a56:	ea4f 4e26 	mov.w	lr, r6, asr #16
+     a5a:	eeae eb30 	vdup.16	q7, lr
+     a5e:	ff1a eb4e 	vqrdmulh.s16	q7, q5, q7
+     a62:	eeac 5b30 	vdup.16	q6, r5
+     a66:	ef16 695c 	vmul.i16	q3, q3, q6
+     a6a:	eeac 6b30 	vdup.16	q6, r6
+     a6e:	ef1a a95c 	vmul.i16	q5, q5, q6
+     a72:	ee19 6e4a 	vmla.i16	q3, q4, sl
+     a76:	ee1f ae4a 	vmla.i16	q5, q7, sl
+     a7a:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+     a7e:	fe71 0f4d 	vpst
+     a82:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+     a86:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     a8a:	fe71 0f4d 	vpst
+     a8e:	ee1b af4a 	vaddt.i16	q5, q5, sl
+     a92:	ef2a 815a 	vmov	q4, q5
+     a96:	f101 0ce0 	add.w	ip, r1, #224	@ 0xe0
+     a9a:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+     a9e:	ff10 8844 	vsub.i16	q4, q0, q2
+     aa2:	ef10 0844 	vadd.i16	q0, q0, q2
+     aa6:	eeaa ab30 	vdup.16	q5, sl
+     aaa:	ff10 084a 	vsub.i16	q0, q0, q5
+     aae:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+     ab2:	fe71 0f4d 	vpst
+     ab6:	ef10 084a 	vaddt.i16	q0, q0, q5
+     aba:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     abe:	fe71 0f4d 	vpst
+     ac2:	ef18 884a 	vaddt.i16	q4, q4, q5
+     ac6:	ef28 4158 	vmov	q2, q4
+     aca:	ff12 8846 	vsub.i16	q4, q1, q3
+     ace:	ef12 2846 	vadd.i16	q1, q1, q3
+     ad2:	eeaa ab30 	vdup.16	q5, sl
+     ad6:	ff12 284a 	vsub.i16	q1, q1, q5
+     ada:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+     ade:	fe71 0f4d 	vpst
+     ae2:	ef12 284a 	vaddt.i16	q1, q1, q5
+     ae6:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     aea:	fe71 0f4d 	vpst
+     aee:	ef18 884a 	vaddt.i16	q4, q4, q5
+     af2:	ea4f 4e27 	mov.w	lr, r7, asr #16
+     af6:	eeac eb30 	vdup.16	q6, lr
+     afa:	ff12 6b4c 	vqrdmulh.s16	q3, q1, q6
+     afe:	ea4f 4e28 	mov.w	lr, r8, asr #16
+     b02:	eeac eb30 	vdup.16	q6, lr
+     b06:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     b0a:	eeaa 7b30 	vdup.16	q5, r7
+     b0e:	ef12 295a 	vmul.i16	q1, q1, q5
+     b12:	eeaa 8b30 	vdup.16	q5, r8
+     b16:	ef18 895a 	vmul.i16	q4, q4, q5
+     b1a:	ee17 2e4a 	vmla.i16	q1, q3, sl
+     b1e:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+     b22:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+     b26:	fe71 0f4d 	vpst
+     b2a:	ee13 2f4a 	vaddt.i16	q1, q1, sl
+     b2e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     b32:	fe71 0f4d 	vpst
+     b36:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     b3a:	ef28 6158 	vmov	q3, q4
+     b3e:	ff10 8842 	vsub.i16	q4, q0, q1
+     b42:	ef10 0842 	vadd.i16	q0, q0, q1
+     b46:	eeaa ab30 	vdup.16	q5, sl
+     b4a:	ff10 084a 	vsub.i16	q0, q0, q5
+     b4e:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+     b52:	fe71 0f4d 	vpst
+     b56:	ef10 084a 	vaddt.i16	q0, q0, q5
+     b5a:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     b5e:	fe71 0f4d 	vpst
+     b62:	ef18 884a 	vaddt.i16	q4, q4, q5
+     b66:	ef28 2158 	vmov	q1, q4
+     b6a:	ff14 8846 	vsub.i16	q4, q2, q3
+     b6e:	ef14 4846 	vadd.i16	q2, q2, q3
+     b72:	eeaa ab30 	vdup.16	q5, sl
+     b76:	ff14 484a 	vsub.i16	q2, q2, q5
+     b7a:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+     b7e:	fe71 0f4d 	vpst
+     b82:	ef14 484a 	vaddt.i16	q2, q2, q5
+     b86:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     b8a:	fe71 0f4d 	vpst
+     b8e:	ef18 884a 	vaddt.i16	q4, q4, q5
+     b92:	ef28 6158 	vmov	q3, q4
+     b96:	ed81 1e80 	vstrh.16	q0, [r1, #0]
+     b9a:	f101 0c20 	add.w	ip, r1, #32
+     b9e:	ed8c 3e80 	vstrh.16	q1, [ip, #0]
+     ba2:	f101 0c40 	add.w	ip, r1, #64	@ 0x40
+     ba6:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+     baa:	f101 0c60 	add.w	ip, r1, #96	@ 0x60
+     bae:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+     bb2:	f101 0c80 	add.w	ip, r1, #128	@ 0x80
+     bb6:	ed9c 1e80 	vldrh.u16	q0, [ip, #0]
+     bba:	f101 0ca0 	add.w	ip, r1, #160	@ 0xa0
+     bbe:	ed9c 3e80 	vldrh.u16	q1, [ip, #0]
+     bc2:	f101 0cc0 	add.w	ip, r1, #192	@ 0xc0
+     bc6:	ed9c 5e80 	vldrh.u16	q2, [ip, #0]
+     bca:	f101 0ce0 	add.w	ip, r1, #224	@ 0xe0
+     bce:	ed9c 7e80 	vldrh.u16	q3, [ip, #0]
+     bd2:	ff10 8844 	vsub.i16	q4, q0, q2
+     bd6:	ef10 0844 	vadd.i16	q0, q0, q2
+     bda:	eeaa ab30 	vdup.16	q5, sl
+     bde:	ff10 084a 	vsub.i16	q0, q0, q5
+     be2:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+     be6:	fe71 0f4d 	vpst
+     bea:	ef10 084a 	vaddt.i16	q0, q0, q5
+     bee:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     bf2:	fe71 0f4d 	vpst
+     bf6:	ef18 884a 	vaddt.i16	q4, q4, q5
+     bfa:	ef28 4158 	vmov	q2, q4
+     bfe:	ff12 8846 	vsub.i16	q4, q1, q3
+     c02:	ef12 2846 	vadd.i16	q1, q1, q3
+     c06:	eeaa ab30 	vdup.16	q5, sl
+     c0a:	ff12 284a 	vsub.i16	q1, q1, q5
+     c0e:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+     c12:	fe71 0f4d 	vpst
+     c16:	ef12 284a 	vaddt.i16	q1, q1, q5
+     c1a:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     c1e:	fe71 0f4d 	vpst
+     c22:	ef18 884a 	vaddt.i16	q4, q4, q5
+     c26:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+     c2a:	eeac eb30 	vdup.16	q6, lr
+     c2e:	ff12 6b4c 	vqrdmulh.s16	q3, q1, q6
+     c32:	ea4f 4e20 	mov.w	lr, r0, asr #16
+     c36:	eeac eb30 	vdup.16	q6, lr
+     c3a:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     c3e:	eeaa bb30 	vdup.16	q5, fp
+     c42:	ef12 295a 	vmul.i16	q1, q1, q5
+     c46:	eeaa 0b30 	vdup.16	q5, r0
+     c4a:	ef18 895a 	vmul.i16	q4, q4, q5
+     c4e:	ee17 2e4a 	vmla.i16	q1, q3, sl
+     c52:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+     c56:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+     c5a:	fe71 0f4d 	vpst
+     c5e:	ee13 2f4a 	vaddt.i16	q1, q1, sl
+     c62:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     c66:	fe71 0f4d 	vpst
+     c6a:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     c6e:	ef28 6158 	vmov	q3, q4
+     c72:	ff10 8842 	vsub.i16	q4, q0, q1
+     c76:	ef10 0842 	vadd.i16	q0, q0, q1
+     c7a:	eeaa ab30 	vdup.16	q5, sl
+     c7e:	ff10 084a 	vsub.i16	q0, q0, q5
+     c82:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+     c86:	fe71 0f4d 	vpst
+     c8a:	ef10 084a 	vaddt.i16	q0, q0, q5
+     c8e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     c92:	fe71 0f4d 	vpst
+     c96:	ef18 884a 	vaddt.i16	q4, q4, q5
+     c9a:	ef28 2158 	vmov	q1, q4
+     c9e:	ff14 8846 	vsub.i16	q4, q2, q3
+     ca2:	ef14 4846 	vadd.i16	q2, q2, q3
+     ca6:	eeaa ab30 	vdup.16	q5, sl
+     caa:	ff14 484a 	vsub.i16	q2, q2, q5
+     cae:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+     cb2:	fe71 0f4d 	vpst
+     cb6:	ef14 484a 	vaddt.i16	q2, q2, q5
+     cba:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     cbe:	fe71 0f4d 	vpst
+     cc2:	ef18 884a 	vaddt.i16	q4, q4, q5
+     cc6:	ef28 6158 	vmov	q3, q4
+     cca:	f101 0c80 	add.w	ip, r1, #128	@ 0x80
+     cce:	ed8c 1e80 	vstrh.16	q0, [ip, #0]
+     cd2:	f101 0ca0 	add.w	ip, r1, #160	@ 0xa0
+     cd6:	ed8c 3e80 	vstrh.16	q1, [ip, #0]
+     cda:	f101 0cc0 	add.w	ip, r1, #192	@ 0xc0
+     cde:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+     ce2:	f101 0ce0 	add.w	ip, r1, #224	@ 0xe0
+     ce6:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+     cea:	f101 0110 	add.w	r1, r1, #16
+     cee:	3a01      	subs	r2, #1
+     cf0:	f47f adbf 	bne.w	872 <fndsa_mqpoly_int_to_ntt__L3x512_lanes>
+     cf4:	f101 01e0 	add.w	r1, r1, #224	@ 0xe0
+     cf8:	3b01      	subs	r3, #1
+     cfa:	f47f ad67 	bne.w	7cc <fndsa_mqpoly_int_to_ntt__L3x512_block>
+     cfe:	f8dd 8008 	ldr.w	r8, [sp, #8]
+     d02:	9903      	ldr	r1, [sp, #12]
+     d04:	b004      	add	sp, #16
+     d06:	ee01 1a10 	vmov	s2, r1
+
+00000d0a <fndsa_mqpoly_int_to_ntt__L512_CT2_packed>:
+     d0a:	4644      	mov	r4, r8
+     d0c:	f108 0040 	add.w	r0, r8, #64	@ 0x40
+     d10:	2210      	movs	r2, #16
+     d12:	ee11 1a10 	vmov	r1, s2
+
+00000d16 <fndsa_mqpoly_int_to_ntt__L512_CT2_packed_loop>:
+     d16:	8825      	ldrh	r5, [r4, #0]
+     d18:	eb04 0e09 	add.w	lr, r4, r9
+     d1c:	f8be e000 	ldrh.w	lr, [lr]
+     d20:	ea45 450e 	orr.w	r5, r5, lr, lsl #16
+     d24:	f104 0402 	add.w	r4, r4, #2
+     d28:	8826      	ldrh	r6, [r4, #0]
+     d2a:	eb04 0e09 	add.w	lr, r4, r9
+     d2e:	f8be e000 	ldrh.w	lr, [lr]
+     d32:	ea46 460e 	orr.w	r6, r6, lr, lsl #16
+     d36:	f104 0402 	add.w	r4, r4, #2
+     d3a:	8807      	ldrh	r7, [r0, #0]
+     d3c:	eb00 0e09 	add.w	lr, r0, r9
+     d40:	f8be e000 	ldrh.w	lr, [lr]
+     d44:	ea47 470e 	orr.w	r7, r7, lr, lsl #16
+     d48:	f100 0002 	add.w	r0, r0, #2
+     d4c:	f8b0 8000 	ldrh.w	r8, [r0]
+     d50:	eb00 0e09 	add.w	lr, r0, r9
+     d54:	f8be e000 	ldrh.w	lr, [lr]
+     d58:	ea48 480e 	orr.w	r8, r8, lr, lsl #16
+     d5c:	f100 0002 	add.w	r0, r0, #2
+     d60:	f8b0 b000 	ldrh.w	fp, [r0]
+     d64:	eb00 0e09 	add.w	lr, r0, r9
+     d68:	f8be e000 	ldrh.w	lr, [lr]
+     d6c:	ea4b 4b0e 	orr.w	fp, fp, lr, lsl #16
+     d70:	f100 0002 	add.w	r0, r0, #2
+     d74:	8803      	ldrh	r3, [r0, #0]
+     d76:	eb00 0e09 	add.w	lr, r0, r9
+     d7a:	f8be e000 	ldrh.w	lr, [lr]
+     d7e:	ea43 430e 	orr.w	r3, r3, lr, lsl #16
+     d82:	f100 0002 	add.w	r0, r0, #2
+     d86:	ed91 2b00 	vldr	d2, [r1]
+     d8a:	ed91 3b08 	vldr	d3, [r1, #32]
+     d8e:	ed91 4b02 	vldr	d4, [r1, #8]
+     d92:	ed91 5b0a 	vldr	d5, [r1, #40]	@ 0x28
+     d96:	ed91 6b04 	vldr	d6, [r1, #16]
+     d9a:	ed91 7b0c 	vldr	d7, [r1, #48]	@ 0x30
+     d9e:	ed91 8b06 	vldr	d8, [r1, #24]
+     da2:	ed91 9b0e 	vldr	d9, [r1, #56]	@ 0x38
+     da6:	eeae 5b30 	vdup.16	q7, r5
+     daa:	ea4f 4e25 	mov.w	lr, r5, asr #16
+     dae:	eeac eb30 	vdup.16	q6, lr
+     db2:	fa1f fc86 	uxth.w	ip, r6
+     db6:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+     dba:	ec4c cb1f 	vmov	d15, ip, ip
+     dbe:	ea4f 4c26 	mov.w	ip, r6, asr #16
+     dc2:	fa1f fc8c 	uxth.w	ip, ip
+     dc6:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+     dca:	ec4c cb1d 	vmov	d13, ip, ip
+     dce:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+     dd2:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     dd6:	ef16 695e 	vmul.i16	q3, q3, q7
+     dda:	ef18 895e 	vmul.i16	q4, q4, q7
+     dde:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+     de2:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+     de6:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+     dea:	fe71 0f4d 	vpst
+     dee:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+     df2:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     df6:	fe71 0f4d 	vpst
+     dfa:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     dfe:	eeae ab30 	vdup.16	q7, sl
+     e02:	ef12 a846 	vadd.i16	q5, q1, q3
+     e06:	ff1a a84e 	vsub.i16	q5, q5, q7
+     e0a:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     e0e:	fe71 0f4d 	vpst
+     e12:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     e16:	ff12 6846 	vsub.i16	q3, q1, q3
+     e1a:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+     e1e:	fe71 0f4d 	vpst
+     e22:	ef16 684e 	vaddt.i16	q3, q3, q7
+     e26:	ef2a 215a 	vmov	q1, q5
+     e2a:	ef14 a848 	vadd.i16	q5, q2, q4
+     e2e:	ff1a a84e 	vsub.i16	q5, q5, q7
+     e32:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     e36:	fe71 0f4d 	vpst
+     e3a:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     e3e:	ff14 8848 	vsub.i16	q4, q2, q4
+     e42:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     e46:	fe71 0f4d 	vpst
+     e4a:	ef18 884e 	vaddt.i16	q4, q4, q7
+     e4e:	ea4f 4e27 	mov.w	lr, r7, asr #16
+     e52:	eeac eb30 	vdup.16	q6, lr
+     e56:	ea4f 4c2b 	mov.w	ip, fp, asr #16
+     e5a:	fa1f fc8c 	uxth.w	ip, ip
+     e5e:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+     e62:	ec4c cb1d 	vmov	d13, ip, ip
+     e66:	ff1a 4b4c 	vqrdmulh.s16	q2, q5, q6
+     e6a:	ea4f 4e28 	mov.w	lr, r8, asr #16
+     e6e:	eeac eb30 	vdup.16	q6, lr
+     e72:	ea4f 4c23 	mov.w	ip, r3, asr #16
+     e76:	fa1f fc8c 	uxth.w	ip, ip
+     e7a:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+     e7e:	ec4c cb1d 	vmov	d13, ip, ip
+     e82:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     e86:	eeae 7b30 	vdup.16	q7, r7
+     e8a:	fa1f fc8b 	uxth.w	ip, fp
+     e8e:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+     e92:	ec4c cb1f 	vmov	d15, ip, ip
+     e96:	ef1a a95e 	vmul.i16	q5, q5, q7
+     e9a:	eeae 8b30 	vdup.16	q7, r8
+     e9e:	fa1f fc83 	uxth.w	ip, r3
+     ea2:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+     ea6:	ec4c cb1f 	vmov	d15, ip, ip
+     eaa:	ef18 895e 	vmul.i16	q4, q4, q7
+     eae:	ee15 ae4a 	vmla.i16	q5, q2, sl
+     eb2:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+     eb6:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     eba:	fe71 0f4d 	vpst
+     ebe:	ee1b af4a 	vaddt.i16	q5, q5, sl
+     ec2:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     ec6:	fe71 0f4d 	vpst
+     eca:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+     ece:	ef2a 415a 	vmov	q2, q5
+     ed2:	eeae ab30 	vdup.16	q7, sl
+     ed6:	ef12 a844 	vadd.i16	q5, q1, q2
+     eda:	ff1a a84e 	vsub.i16	q5, q5, q7
+     ede:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     ee2:	fe71 0f4d 	vpst
+     ee6:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     eea:	ff12 4844 	vsub.i16	q2, q1, q2
+     eee:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+     ef2:	fe71 0f4d 	vpst
+     ef6:	ef14 484e 	vaddt.i16	q2, q2, q7
+     efa:	ef2a 215a 	vmov	q1, q5
+     efe:	ef16 a848 	vadd.i16	q5, q3, q4
+     f02:	ff1a a84e 	vsub.i16	q5, q5, q7
+     f06:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+     f0a:	fe71 0f4d 	vpst
+     f0e:	ef1a a84e 	vaddt.i16	q5, q5, q7
+     f12:	ff16 8848 	vsub.i16	q4, q3, q4
+     f16:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+     f1a:	fe71 0f4d 	vpst
+     f1e:	ef18 884e 	vaddt.i16	q4, q4, q7
+     f22:	ef2a 615a 	vmov	q3, q5
+     f26:	ed81 2b00 	vstr	d2, [r1]
+     f2a:	ed81 3b08 	vstr	d3, [r1, #32]
+     f2e:	ed81 4b02 	vstr	d4, [r1, #8]
+     f32:	ed81 5b0a 	vstr	d5, [r1, #40]	@ 0x28
+     f36:	ed81 6b04 	vstr	d6, [r1, #16]
+     f3a:	ed81 7b0c 	vstr	d7, [r1, #48]	@ 0x30
+     f3e:	ed81 8b06 	vstr	d8, [r1, #24]
+     f42:	ed81 9b0e 	vstr	d9, [r1, #56]	@ 0x38
+     f46:	f101 0140 	add.w	r1, r1, #64	@ 0x40
+     f4a:	3a01      	subs	r2, #1
+     f4c:	f47f aee3 	bne.w	d16 <fndsa_mqpoly_int_to_ntt__L512_CT2_packed_loop>
+     f50:	4680      	mov	r8, r0
+     f52:	ee11 1a10 	vmov	r1, s2
+     f56:	2380      	movs	r3, #128	@ 0x80
+     f58:	ee01 3a90 	vmov	s3, r3
+     f5c:	2204      	movs	r2, #4
+     f5e:	2000      	movs	r0, #0
+     f60:	f243 0a01 	movw	sl, #12289	@ 0x3001
+     f64:	ea4a 4b0a 	orr.w	fp, sl, sl, lsl #16
+     f68:	e254      	b.n	1414 <fndsa_mqpoly_int_to_ntt__L4>
+
+00000f6a <fndsa_mqpoly_int_to_ntt__F2_setup>:
+     f6a:	2601      	movs	r6, #1
+     f6c:	ee01 6a90 	vmov	s3, r6
+
+00000f70 <fndsa_mqpoly_int_to_ntt__F2_outer>:
+     f70:	ee11 1a10 	vmov	r1, s2
+     f74:	ee11 6a90 	vmov	r6, s3
+     f78:	4633      	mov	r3, r6
+     f7a:	eb08 0746 	add.w	r7, r8, r6, lsl #1
+     f7e:	ea4f 0452 	mov.w	r4, r2, lsr #1
+
+00000f82 <fndsa_mqpoly_int_to_ntt__F2_middle>:
+     f82:	f8b8 5000 	ldrh.w	r5, [r8]
+     f86:	eb08 0e09 	add.w	lr, r8, r9
+     f8a:	f8be e000 	ldrh.w	lr, [lr]
+     f8e:	ea45 450e 	orr.w	r5, r5, lr, lsl #16
+     f92:	f108 0802 	add.w	r8, r8, #2
+     f96:	f8b7 b000 	ldrh.w	fp, [r7]
+     f9a:	eb07 0e09 	add.w	lr, r7, r9
+     f9e:	f8be e000 	ldrh.w	lr, [lr]
+     fa2:	ea4b 4b0e 	orr.w	fp, fp, lr, lsl #16
+     fa6:	f107 0702 	add.w	r7, r7, #2
+     faa:	883e      	ldrh	r6, [r7, #0]
+     fac:	eb07 0e09 	add.w	lr, r7, r9
+     fb0:	f8be e000 	ldrh.w	lr, [lr]
+     fb4:	ea46 460e 	orr.w	r6, r6, lr, lsl #16
+     fb8:	f107 0702 	add.w	r7, r7, #2
+     fbc:	2a10      	cmp	r2, #16
+     fbe:	f000 8167 	beq.w	1290 <fndsa_mqpoly_int_to_ntt__F2_half>
+     fc2:	ea4f 1052 	mov.w	r0, r2, lsr #5
+     fc6:	ed91 3e80 	vldrh.u16	q1, [r1, #0]
+     fca:	eb01 0c04 	add.w	ip, r1, r4
+     fce:	ed9c 5e80 	vldrh.u16	q2, [ip, #0]
+     fd2:	eb0c 0c04 	add.w	ip, ip, r4
+     fd6:	ed9c 7e80 	vldrh.u16	q3, [ip, #0]
+     fda:	eb0c 0c04 	add.w	ip, ip, r4
+     fde:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+     fe2:	3801      	subs	r0, #1
+     fe4:	f000 80ad 	beq.w	1142 <fndsa_mqpoly_int_to_ntt__F2_vector_epilogue>
+
+00000fe8 <fndsa_mqpoly_int_to_ntt__F2_vector_steady>:
+     fe8:	eeae 5b30 	vdup.16	q7, r5
+     fec:	ea4f 4e25 	mov.w	lr, r5, asr #16
+     ff0:	eeac eb30 	vdup.16	q6, lr
+     ff4:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+     ff8:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+     ffc:	ef16 695e 	vmul.i16	q3, q3, q7
+    1000:	ef18 895e 	vmul.i16	q4, q4, q7
+    1004:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    1008:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+    100c:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    1010:	fe71 0f4d 	vpst
+    1014:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    1018:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    101c:	fe71 0f4d 	vpst
+    1020:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1024:	ef12 a846 	vadd.i16	q5, q1, q3
+    1028:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    102c:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1030:	fe71 0f4d 	vpst
+    1034:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1038:	ff12 6846 	vsub.i16	q3, q1, q3
+    103c:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    1040:	fe71 0f4d 	vpst
+    1044:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    1048:	ef2a 215a 	vmov	q1, q5
+    104c:	ef14 a848 	vadd.i16	q5, q2, q4
+    1050:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1054:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1058:	fe71 0f4d 	vpst
+    105c:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1060:	ff14 8848 	vsub.i16	q4, q2, q4
+    1064:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1068:	fe71 0f4d 	vpst
+    106c:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1070:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    1074:	eeac eb30 	vdup.16	q6, lr
+    1078:	ff1a 4b4c 	vqrdmulh.s16	q2, q5, q6
+    107c:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    1080:	eeac eb30 	vdup.16	q6, lr
+    1084:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+    1088:	eeae bb30 	vdup.16	q7, fp
+    108c:	ef1a a95e 	vmul.i16	q5, q5, q7
+    1090:	eeae 6b30 	vdup.16	q7, r6
+    1094:	ef18 895e 	vmul.i16	q4, q4, q7
+    1098:	ee15 ae4a 	vmla.i16	q5, q2, sl
+    109c:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+    10a0:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    10a4:	fe71 0f4d 	vpst
+    10a8:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    10ac:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    10b0:	fe71 0f4d 	vpst
+    10b4:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    10b8:	ef2a 415a 	vmov	q2, q5
+    10bc:	ef12 a844 	vadd.i16	q5, q1, q2
+    10c0:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    10c4:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    10c8:	fe71 0f4d 	vpst
+    10cc:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    10d0:	ff12 4844 	vsub.i16	q2, q1, q2
+    10d4:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    10d8:	fe71 0f4d 	vpst
+    10dc:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    10e0:	ef2a 215a 	vmov	q1, q5
+    10e4:	ef16 a848 	vadd.i16	q5, q3, q4
+    10e8:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    10ec:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    10f0:	fe71 0f4d 	vpst
+    10f4:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    10f8:	ff16 8848 	vsub.i16	q4, q3, q4
+    10fc:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1100:	fe71 0f4d 	vpst
+    1104:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1108:	ef2a 615a 	vmov	q3, q5
+    110c:	ed81 3e80 	vstrh.16	q1, [r1, #0]
+    1110:	ed91 3e88 	vldrh.u16	q1, [r1, #16]
+    1114:	eb01 0c04 	add.w	ip, r1, r4
+    1118:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+    111c:	ed9c 5e88 	vldrh.u16	q2, [ip, #16]
+    1120:	eb0c 0c04 	add.w	ip, ip, r4
+    1124:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+    1128:	ed9c 7e88 	vldrh.u16	q3, [ip, #16]
+    112c:	eb0c 0c04 	add.w	ip, ip, r4
+    1130:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+    1134:	ed9c 9e88 	vldrh.u16	q4, [ip, #16]
+    1138:	f101 0110 	add.w	r1, r1, #16
+    113c:	3801      	subs	r0, #1
+    113e:	f47f af53 	bne.w	fe8 <fndsa_mqpoly_int_to_ntt__F2_vector_steady>
+
+00001142 <fndsa_mqpoly_int_to_ntt__F2_vector_epilogue>:
+    1142:	eeae 5b30 	vdup.16	q7, r5
+    1146:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    114a:	eeac eb30 	vdup.16	q6, lr
+    114e:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    1152:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+    1156:	ef16 695e 	vmul.i16	q3, q3, q7
+    115a:	ef18 895e 	vmul.i16	q4, q4, q7
+    115e:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    1162:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+    1166:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    116a:	fe71 0f4d 	vpst
+    116e:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    1172:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1176:	fe71 0f4d 	vpst
+    117a:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    117e:	ef12 a846 	vadd.i16	q5, q1, q3
+    1182:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1186:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    118a:	fe71 0f4d 	vpst
+    118e:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1192:	ff12 6846 	vsub.i16	q3, q1, q3
+    1196:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    119a:	fe71 0f4d 	vpst
+    119e:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    11a2:	ef2a 215a 	vmov	q1, q5
+    11a6:	ef14 a848 	vadd.i16	q5, q2, q4
+    11aa:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    11ae:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    11b2:	fe71 0f4d 	vpst
+    11b6:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    11ba:	ff14 8848 	vsub.i16	q4, q2, q4
+    11be:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    11c2:	fe71 0f4d 	vpst
+    11c6:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    11ca:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    11ce:	eeac eb30 	vdup.16	q6, lr
+    11d2:	ff1a 4b4c 	vqrdmulh.s16	q2, q5, q6
+    11d6:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    11da:	eeac eb30 	vdup.16	q6, lr
+    11de:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+    11e2:	eeae bb30 	vdup.16	q7, fp
+    11e6:	ef1a a95e 	vmul.i16	q5, q5, q7
+    11ea:	eeae 6b30 	vdup.16	q7, r6
+    11ee:	ef18 895e 	vmul.i16	q4, q4, q7
+    11f2:	ee15 ae4a 	vmla.i16	q5, q2, sl
+    11f6:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+    11fa:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    11fe:	fe71 0f4d 	vpst
+    1202:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1206:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    120a:	fe71 0f4d 	vpst
+    120e:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1212:	ef2a 415a 	vmov	q2, q5
+    1216:	ef12 a844 	vadd.i16	q5, q1, q2
+    121a:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    121e:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1222:	fe71 0f4d 	vpst
+    1226:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    122a:	ff12 4844 	vsub.i16	q2, q1, q2
+    122e:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    1232:	fe71 0f4d 	vpst
+    1236:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    123a:	ef2a 215a 	vmov	q1, q5
+    123e:	ef16 a848 	vadd.i16	q5, q3, q4
+    1242:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1246:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    124a:	fe71 0f4d 	vpst
+    124e:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1252:	ff16 8848 	vsub.i16	q4, q3, q4
+    1256:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    125a:	fe71 0f4d 	vpst
+    125e:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1262:	ef2a 615a 	vmov	q3, q5
+    1266:	ed81 3e80 	vstrh.16	q1, [r1, #0]
+    126a:	eb01 0c04 	add.w	ip, r1, r4
+    126e:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+    1272:	eb0c 0c04 	add.w	ip, ip, r4
+    1276:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+    127a:	eb0c 0c04 	add.w	ip, ip, r4
+    127e:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+    1282:	f101 0110 	add.w	r1, r1, #16
+    1286:	eb01 0144 	add.w	r1, r1, r4, lsl #1
+    128a:	eb01 0104 	add.w	r1, r1, r4
+    128e:	e0af      	b.n	13f0 <fndsa_mqpoly_int_to_ntt__F2_middle_done>
+
+00001290 <fndsa_mqpoly_int_to_ntt__F2_half>:
+    1290:	ed91 2b00 	vldr	d2, [r1]
+    1294:	eb01 0c04 	add.w	ip, r1, r4
+    1298:	ed9c 4b00 	vldr	d4, [ip]
+    129c:	eb0c 0c04 	add.w	ip, ip, r4
+    12a0:	ed9c 6b00 	vldr	d6, [ip]
+    12a4:	eb0c 0c04 	add.w	ip, ip, r4
+    12a8:	ed9c 8b00 	vldr	d8, [ip]
+    12ac:	eeae 5b30 	vdup.16	q7, r5
+    12b0:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    12b4:	eeac eb30 	vdup.16	q6, lr
+    12b8:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    12bc:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+    12c0:	ef16 695e 	vmul.i16	q3, q3, q7
+    12c4:	ef18 895e 	vmul.i16	q4, q4, q7
+    12c8:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    12cc:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+    12d0:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    12d4:	fe71 0f4d 	vpst
+    12d8:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    12dc:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    12e0:	fe71 0f4d 	vpst
+    12e4:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    12e8:	ef12 a846 	vadd.i16	q5, q1, q3
+    12ec:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    12f0:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    12f4:	fe71 0f4d 	vpst
+    12f8:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    12fc:	ff12 6846 	vsub.i16	q3, q1, q3
+    1300:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    1304:	fe71 0f4d 	vpst
+    1308:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    130c:	ef2a 215a 	vmov	q1, q5
+    1310:	ef14 a848 	vadd.i16	q5, q2, q4
+    1314:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1318:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    131c:	fe71 0f4d 	vpst
+    1320:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1324:	ff14 8848 	vsub.i16	q4, q2, q4
+    1328:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    132c:	fe71 0f4d 	vpst
+    1330:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1334:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    1338:	eeac eb30 	vdup.16	q6, lr
+    133c:	ff1a 4b4c 	vqrdmulh.s16	q2, q5, q6
+    1340:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    1344:	eeac eb30 	vdup.16	q6, lr
+    1348:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+    134c:	eeae bb30 	vdup.16	q7, fp
+    1350:	ef1a a95e 	vmul.i16	q5, q5, q7
+    1354:	eeae 6b30 	vdup.16	q7, r6
+    1358:	ef18 895e 	vmul.i16	q4, q4, q7
+    135c:	ee15 ae4a 	vmla.i16	q5, q2, sl
+    1360:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+    1364:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1368:	fe71 0f4d 	vpst
+    136c:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1370:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1374:	fe71 0f4d 	vpst
+    1378:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    137c:	ef2a 415a 	vmov	q2, q5
+    1380:	ef12 a844 	vadd.i16	q5, q1, q2
+    1384:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1388:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    138c:	fe71 0f4d 	vpst
+    1390:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1394:	ff12 4844 	vsub.i16	q2, q1, q2
+    1398:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    139c:	fe71 0f4d 	vpst
+    13a0:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    13a4:	ef2a 215a 	vmov	q1, q5
+    13a8:	ef16 a848 	vadd.i16	q5, q3, q4
+    13ac:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    13b0:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    13b4:	fe71 0f4d 	vpst
+    13b8:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    13bc:	ff16 8848 	vsub.i16	q4, q3, q4
+    13c0:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    13c4:	fe71 0f4d 	vpst
+    13c8:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    13cc:	ef2a 615a 	vmov	q3, q5
+    13d0:	ed81 2b00 	vstr	d2, [r1]
+    13d4:	eb01 0c04 	add.w	ip, r1, r4
+    13d8:	ed8c 4b00 	vstr	d4, [ip]
+    13dc:	eb0c 0c04 	add.w	ip, ip, r4
+    13e0:	ed8c 6b00 	vstr	d6, [ip]
+    13e4:	eb0c 0c04 	add.w	ip, ip, r4
+    13e8:	ed8c 8b00 	vstr	d8, [ip]
+    13ec:	eb01 0184 	add.w	r1, r1, r4, lsl #2
+
+000013f0 <fndsa_mqpoly_int_to_ntt__F2_middle_done>:
+    13f0:	3b01      	subs	r3, #1
+    13f2:	f47f adc6 	bne.w	f82 <fndsa_mqpoly_int_to_ntt__F2_middle>
+    13f6:	46b8      	mov	r8, r7
+    13f8:	ee11 6a90 	vmov	r6, s3
+    13fc:	ea4f 0686 	mov.w	r6, r6, lsl #2
+    1400:	ee01 6a90 	vmov	s3, r6
+    1404:	ea4f 0292 	mov.w	r2, r2, lsr #2
+    1408:	2a04      	cmp	r2, #4
+    140a:	f47f adb1 	bne.w	f70 <fndsa_mqpoly_int_to_ntt__F2_outer>
+    140e:	ee11 1a10 	vmov	r1, s2
+    1412:	e7ff      	b.n	1414 <fndsa_mqpoly_int_to_ntt__L4>
+
+00001414 <fndsa_mqpoly_int_to_ntt__L4>:
+    1414:	ee11 3a90 	vmov	r3, s3
+    1418:	eb08 0743 	add.w	r7, r8, r3, lsl #1
+    141c:	2b08      	cmp	r3, #8
+    141e:	f0c0 81b2 	bcc.w	1786 <fndsa_mqpoly_int_to_ntt__L5>
+    1422:	f1b9 0f00 	cmp.w	r9, #0
+    1426:	f000 80b2 	beq.w	158e <fndsa_mqpoly_int_to_ntt__L5_mve>
+
+0000142a <fndsa_mqpoly_int_to_ntt__L5_mve_stage3>:
+    142a:	fc91 3e81 	vld40.16	{q1, q2, q3, q4}, [r1]
+    142e:	fc91 3ea1 	vld41.16	{q1, q2, q3, q4}, [r1]
+    1432:	fc91 3ec1 	vld42.16	{q1, q2, q3, q4}, [r1]
+    1436:	fc91 3ee1 	vld43.16	{q1, q2, q3, q4}, [r1]
+    143a:	ed98 fe80 	vldrh.u16	q7, [r8, #0]
+    143e:	eb08 0c09 	add.w	ip, r8, r9
+    1442:	ed9c de80 	vldrh.u16	q6, [ip, #0]
+    1446:	f108 0810 	add.w	r8, r8, #16
+    144a:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    144e:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+    1452:	ef16 695e 	vmul.i16	q3, q3, q7
+    1456:	ef18 895e 	vmul.i16	q4, q4, q7
+    145a:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    145e:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+    1462:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    1466:	fe71 0f4d 	vpst
+    146a:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    146e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1472:	fe71 0f4d 	vpst
+    1476:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    147a:	eeac ab30 	vdup.16	q6, sl
+    147e:	ef12 a846 	vadd.i16	q5, q1, q3
+    1482:	ff1a a84c 	vsub.i16	q5, q5, q6
+    1486:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    148a:	fe71 0f4d 	vpst
+    148e:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    1492:	ff12 6846 	vsub.i16	q3, q1, q3
+    1496:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    149a:	fe71 0f4d 	vpst
+    149e:	ef16 684c 	vaddt.i16	q3, q3, q6
+    14a2:	ef2a 215a 	vmov	q1, q5
+    14a6:	ef14 a848 	vadd.i16	q5, q2, q4
+    14aa:	ff1a a84c 	vsub.i16	q5, q5, q6
+    14ae:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    14b2:	fe71 0f4d 	vpst
+    14b6:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    14ba:	ff14 8848 	vsub.i16	q4, q2, q4
+    14be:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    14c2:	fe71 0f4d 	vpst
+    14c6:	ef18 884c 	vaddt.i16	q4, q4, q6
+    14ca:	ef2a 415a 	vmov	q2, q5
+    14ce:	fc97 be80 	vld20.16	{q5, q6}, [r7]
+    14d2:	fc97 bea0 	vld21.16	{q5, q6}, [r7]
+    14d6:	eb07 0c09 	add.w	ip, r7, r9
+    14da:	fc9c de80 	vld20.16	{q6, q7}, [ip]
+    14de:	fc9c dea0 	vld21.16	{q6, q7}, [ip]
+    14e2:	ff14 cb4c 	vqrdmulh.s16	q6, q2, q6
+    14e6:	ef14 495a 	vmul.i16	q2, q2, q5
+    14ea:	ee1d 4e4a 	vmla.i16	q2, q6, sl
+    14ee:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    14f2:	fe71 0f4d 	vpst
+    14f6:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    14fa:	fc97 be80 	vld20.16	{q5, q6}, [r7]
+    14fe:	fc97 bea0 	vld21.16	{q5, q6}, [r7]
+    1502:	f107 0720 	add.w	r7, r7, #32
+    1506:	ff18 eb4e 	vqrdmulh.s16	q7, q4, q7
+    150a:	ef18 895c 	vmul.i16	q4, q4, q6
+    150e:	ee1f 8e4a 	vmla.i16	q4, q7, sl
+    1512:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1516:	fe71 0f4d 	vpst
+    151a:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    151e:	eeac ab30 	vdup.16	q6, sl
+    1522:	ef12 a844 	vadd.i16	q5, q1, q2
+    1526:	ff1a a84c 	vsub.i16	q5, q5, q6
+    152a:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    152e:	fe71 0f4d 	vpst
+    1532:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    1536:	ff12 4844 	vsub.i16	q2, q1, q2
+    153a:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    153e:	fe71 0f4d 	vpst
+    1542:	ef14 484c 	vaddt.i16	q2, q2, q6
+    1546:	ef2a 215a 	vmov	q1, q5
+    154a:	ef16 a848 	vadd.i16	q5, q3, q4
+    154e:	ff1a a84c 	vsub.i16	q5, q5, q6
+    1552:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1556:	fe71 0f4d 	vpst
+    155a:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    155e:	ff16 8848 	vsub.i16	q4, q3, q4
+    1562:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1566:	fe71 0f4d 	vpst
+    156a:	ef18 884c 	vaddt.i16	q4, q4, q6
+    156e:	ef2a 615a 	vmov	q3, q5
+    1572:	fc81 3e81 	vst40.16	{q1, q2, q3, q4}, [r1]
+    1576:	fc81 3ea1 	vst41.16	{q1, q2, q3, q4}, [r1]
+    157a:	fc81 3ec1 	vst42.16	{q1, q2, q3, q4}, [r1]
+    157e:	fc81 3ee1 	vst43.16	{q1, q2, q3, q4}, [r1]
+    1582:	f101 0140 	add.w	r1, r1, #64	@ 0x40
+    1586:	3b08      	subs	r3, #8
+    1588:	f47f af4f 	bne.w	142a <fndsa_mqpoly_int_to_ntt__L5_mve_stage3>
+    158c:	e143      	b.n	1816 <fndsa_mqpoly_int_to_ntt__Lend>
+
+0000158e <fndsa_mqpoly_int_to_ntt__L5_mve>:
+    158e:	fc91 3e81 	vld40.16	{q1, q2, q3, q4}, [r1]
+    1592:	fc91 3ea1 	vld41.16	{q1, q2, q3, q4}, [r1]
+    1596:	fc91 3ec1 	vld42.16	{q1, q2, q3, q4}, [r1]
+    159a:	fc91 3ee1 	vld43.16	{q1, q2, q3, q4}, [r1]
+    159e:	ed98 fe80 	vldrh.u16	q7, [r8, #0]
+    15a2:	f108 0810 	add.w	r8, r8, #16
+    15a6:	ef80 a050 	vmov.i32	q5, #0	@ 0x00000000
+    15aa:	fe17 0f0a 	vcmp.i16	eq, q3, q5
+    15ae:	fe17 ae0f 	vmulh.u16	q5, q3, q7
+    15b2:	ef16 695e 	vmul.i16	q3, q3, q7
+    15b6:	eeac eb30 	vdup.16	q6, lr
+    15ba:	fe17 ce0d 	vmulh.u16	q6, q3, q6
+    15be:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    15c2:	ee17 7e6c 	vmul.i16	q3, q3, ip
+    15c6:	ee1b be6e 	vmul.i16	q5, q5, lr
+    15ca:	ef16 684a 	vadd.i16	q3, q3, q5
+    15ce:	ef16 684c 	vadd.i16	q3, q3, q6
+    15d2:	eeac ab30 	vdup.16	q6, sl
+    15d6:	fe17 6e0d 	vmulh.u16	q3, q3, q6
+    15da:	f05f 0c01 	movs.w	ip, #1
+    15de:	ee17 6f4c 	vadd.i16	q3, q3, ip
+    15e2:	fe71 0f4d 	vpst
+    15e6:	ee17 7f4c 	vsubt.i16	q3, q3, ip
+    15ea:	ef80 a050 	vmov.i32	q5, #0	@ 0x00000000
+    15ee:	fe19 0f0a 	vcmp.i16	eq, q4, q5
+    15f2:	fe19 ae0f 	vmulh.u16	q5, q4, q7
+    15f6:	ef18 895e 	vmul.i16	q4, q4, q7
+    15fa:	eeac eb30 	vdup.16	q6, lr
+    15fe:	fe19 ce0d 	vmulh.u16	q6, q4, q6
+    1602:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    1606:	ee19 9e6c 	vmul.i16	q4, q4, ip
+    160a:	ee1b be6e 	vmul.i16	q5, q5, lr
+    160e:	ef18 884a 	vadd.i16	q4, q4, q5
+    1612:	ef18 884c 	vadd.i16	q4, q4, q6
+    1616:	eeac ab30 	vdup.16	q6, sl
+    161a:	fe19 8e0d 	vmulh.u16	q4, q4, q6
+    161e:	f05f 0c01 	movs.w	ip, #1
+    1622:	ee19 8f4c 	vadd.i16	q4, q4, ip
+    1626:	fe71 0f4d 	vpst
+    162a:	ee19 9f4c 	vsubt.i16	q4, q4, ip
+    162e:	eeac ab30 	vdup.16	q6, sl
+    1632:	ef12 a846 	vadd.i16	q5, q1, q3
+    1636:	ff1a a84c 	vsub.i16	q5, q5, q6
+    163a:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    163e:	fe71 0f4d 	vpst
+    1642:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    1646:	ff12 6846 	vsub.i16	q3, q1, q3
+    164a:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    164e:	fe71 0f4d 	vpst
+    1652:	ef16 684c 	vaddt.i16	q3, q3, q6
+    1656:	ef2a 215a 	vmov	q1, q5
+    165a:	ef14 a848 	vadd.i16	q5, q2, q4
+    165e:	ff1a a84c 	vsub.i16	q5, q5, q6
+    1662:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1666:	fe71 0f4d 	vpst
+    166a:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    166e:	ff14 8848 	vsub.i16	q4, q2, q4
+    1672:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1676:	fe71 0f4d 	vpst
+    167a:	ef18 884c 	vaddt.i16	q4, q4, q6
+    167e:	ef2a 415a 	vmov	q2, q5
+    1682:	fc97 be80 	vld20.16	{q5, q6}, [r7]
+    1686:	fc97 bea0 	vld21.16	{q5, q6}, [r7]
+    168a:	f107 0720 	add.w	r7, r7, #32
+    168e:	ef80 e050 	vmov.i32	q7, #0	@ 0x00000000
+    1692:	fe15 0f0e 	vcmp.i16	eq, q2, q7
+    1696:	fe15 ee0b 	vmulh.u16	q7, q2, q5
+    169a:	ef14 495a 	vmul.i16	q2, q2, q5
+    169e:	eeaa eb30 	vdup.16	q5, lr
+    16a2:	fe15 ae0b 	vmulh.u16	q5, q2, q5
+    16a6:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    16aa:	ee15 5e6c 	vmul.i16	q2, q2, ip
+    16ae:	ee1f fe6e 	vmul.i16	q7, q7, lr
+    16b2:	ef14 484e 	vadd.i16	q2, q2, q7
+    16b6:	ef14 484a 	vadd.i16	q2, q2, q5
+    16ba:	eeaa ab30 	vdup.16	q5, sl
+    16be:	fe15 4e0b 	vmulh.u16	q2, q2, q5
+    16c2:	f05f 0c01 	movs.w	ip, #1
+    16c6:	ee15 4f4c 	vadd.i16	q2, q2, ip
+    16ca:	fe71 0f4d 	vpst
+    16ce:	ee15 5f4c 	vsubt.i16	q2, q2, ip
+    16d2:	ef80 e050 	vmov.i32	q7, #0	@ 0x00000000
+    16d6:	fe19 0f0e 	vcmp.i16	eq, q4, q7
+    16da:	fe19 ee0d 	vmulh.u16	q7, q4, q6
+    16de:	ef18 895c 	vmul.i16	q4, q4, q6
+    16e2:	eeac eb30 	vdup.16	q6, lr
+    16e6:	fe19 ce0d 	vmulh.u16	q6, q4, q6
+    16ea:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    16ee:	ee19 9e6c 	vmul.i16	q4, q4, ip
+    16f2:	ee1f fe6e 	vmul.i16	q7, q7, lr
+    16f6:	ef18 884e 	vadd.i16	q4, q4, q7
+    16fa:	ef18 884c 	vadd.i16	q4, q4, q6
+    16fe:	eeac ab30 	vdup.16	q6, sl
+    1702:	fe19 8e0d 	vmulh.u16	q4, q4, q6
+    1706:	f05f 0c01 	movs.w	ip, #1
+    170a:	ee19 8f4c 	vadd.i16	q4, q4, ip
+    170e:	fe71 0f4d 	vpst
+    1712:	ee19 9f4c 	vsubt.i16	q4, q4, ip
+    1716:	eeac ab30 	vdup.16	q6, sl
+    171a:	ef12 a844 	vadd.i16	q5, q1, q2
+    171e:	ff1a a84c 	vsub.i16	q5, q5, q6
+    1722:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1726:	fe71 0f4d 	vpst
+    172a:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    172e:	ff12 4844 	vsub.i16	q2, q1, q2
+    1732:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    1736:	fe71 0f4d 	vpst
+    173a:	ef14 484c 	vaddt.i16	q2, q2, q6
+    173e:	ef2a 215a 	vmov	q1, q5
+    1742:	ef16 a848 	vadd.i16	q5, q3, q4
+    1746:	ff1a a84c 	vsub.i16	q5, q5, q6
+    174a:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    174e:	fe71 0f4d 	vpst
+    1752:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    1756:	ff16 8848 	vsub.i16	q4, q3, q4
+    175a:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    175e:	fe71 0f4d 	vpst
+    1762:	ef18 884c 	vaddt.i16	q4, q4, q6
+    1766:	ef2a 615a 	vmov	q3, q5
+    176a:	fc81 3e81 	vst40.16	{q1, q2, q3, q4}, [r1]
+    176e:	fc81 3ea1 	vst41.16	{q1, q2, q3, q4}, [r1]
+    1772:	fc81 3ec1 	vst42.16	{q1, q2, q3, q4}, [r1]
+    1776:	fc81 3ee1 	vst43.16	{q1, q2, q3, q4}, [r1]
+    177a:	f101 0140 	add.w	r1, r1, #64	@ 0x40
+    177e:	3b08      	subs	r3, #8
+    1780:	f47f af05 	bne.w	158e <fndsa_mqpoly_int_to_ntt__L5_mve>
+    1784:	e047      	b.n	1816 <fndsa_mqpoly_int_to_ntt__Lend>
+
+00001786 <fndsa_mqpoly_int_to_ntt__L5>:
+    1786:	f8d1 5004 	ldr.w	r5, [r1, #4]
+    178a:	f838 6b02 	ldrh.w	r6, [r8], #2
+    178e:	fb15 f406 	smulbb	r4, r5, r6
+    1792:	fb04 fc0e 	mul.w	ip, r4, lr
+    1796:	fbec e46a 	umaal	lr, r4, ip, sl
+    179a:	fb15 f526 	smultb	r5, r5, r6
+    179e:	fb05 fc0e 	mul.w	ip, r5, lr
+    17a2:	fbec e56a 	umaal	lr, r5, ip, sl
+    17a6:	eac4 4505 	pkhbt	r5, r4, r5, lsl #16
+    17aa:	f8d1 4000 	ldr.w	r4, [r1]
+    17ae:	fa94 fc05 	sadd16	ip, r4, r5
+    17b2:	fad4 f505 	ssub16	r5, r4, r5
+    17b6:	faa0 f48b 	sel	r4, r0, fp
+    17ba:	fa95 f504 	sadd16	r5, r5, r4
+    17be:	fadc f40b 	ssub16	r4, ip, fp
+    17c2:	faa4 f48c 	sel	r4, r4, ip
+    17c6:	f857 6b04 	ldr.w	r6, [r7], #4
+    17ca:	eac4 4205 	pkhbt	r2, r4, r5, lsl #16
+    17ce:	fb14 f426 	smultb	r4, r4, r6
+    17d2:	fb04 fc0e 	mul.w	ip, r4, lr
+    17d6:	fbec e46a 	umaal	lr, r4, ip, sl
+    17da:	fb15 f536 	smultt	r5, r5, r6
+    17de:	fb05 fc0e 	mul.w	ip, r5, lr
+    17e2:	fbec e56a 	umaal	lr, r5, ip, sl
+    17e6:	eac4 4505 	pkhbt	r5, r4, r5, lsl #16
+    17ea:	fa92 f405 	sadd16	r4, r2, r5
+    17ee:	fad4 fc0b 	ssub16	ip, r4, fp
+    17f2:	faac f484 	sel	r4, ip, r4
+    17f6:	fad2 f505 	ssub16	r5, r2, r5
+    17fa:	faa0 fc8b 	sel	ip, r0, fp
+    17fe:	fa95 f50c 	sadd16	r5, r5, ip
+    1802:	eac4 4c05 	pkhbt	ip, r4, r5, lsl #16
+    1806:	f841 cb04 	str.w	ip, [r1], #4
+    180a:	eac5 4c24 	pkhtb	ip, r5, r4, asr #16
+    180e:	f841 cb04 	str.w	ip, [r1], #4
+    1812:	3b01      	subs	r3, #1
+    1814:	d1b7      	bne.n	1786 <fndsa_mqpoly_int_to_ntt__L5>
+
+00001816 <fndsa_mqpoly_int_to_ntt__Lend>:
+    1816:	ecbd 8b10 	vpop	{d8-d15}
+    181a:	e8bd 8ff1 	ldmia.w	sp!, {r0, r4, r5, r6, r7, r8, r9, sl, fp, pc}
+    181e:	bf00      	nop
+
+00001820 <fndsa_mqpoly_ntt_to_int__igmaddr_near>:
+    1820:	00000000 	.word	0x00000000
+
+00001824 <fndsa_mqpoly_ntt_to_int__stage3_igmaddrs>:
+	...
+
+0000182c <fndsa_mqpoly_ntt_to_int>:
+    182c:	e92d 4ff1 	stmdb	sp!, {r0, r4, r5, r6, r7, r8, r9, sl, fp, lr}
+    1830:	ed2d 8b10 	vpush	{d8-d15}
+    1834:	ee00 0a10 	vmov	s0, r0
+    1838:	ee01 1a10 	vmov	s2, r1
+    183c:	2809      	cmp	r0, #9
+    183e:	d306      	bcc.n	184e <fndsa_mqpoly_ntt_to_int__legacy_igm>
+    1840:	f2af 0c20 	subw	ip, pc, #32
+    1844:	e89c 0300 	ldmia.w	ip, {r8, r9}
+    1848:	eba9 0908 	sub.w	r9, r9, r8
+    184c:	e005      	b.n	185a <fndsa_mqpoly_ntt_to_int__igm_ready>
+
+0000184e <fndsa_mqpoly_ntt_to_int__legacy_igm>:
+    184e:	f2af 0830 	subw	r8, pc, #48	@ 0x30
+    1852:	f8d8 8000 	ldr.w	r8, [r8]
+    1856:	f05f 0900 	movs.w	r9, #0
+
+0000185a <fndsa_mqpoly_ntt_to_int__igm_ready>:
+    185a:	2301      	movs	r3, #1
+    185c:	3801      	subs	r0, #1
+    185e:	fa03 f000 	lsl.w	r0, r3, r0
+    1862:	eb08 0800 	add.w	r8, r8, r0
+    1866:	ea4f 0350 	mov.w	r3, r0, lsr #1
+    186a:	ee01 3a90 	vmov	s3, r3
+    186e:	f240 0000 	movw	r0, #0
+    1872:	f243 0a01 	movw	sl, #12289	@ 0x3001
+    1876:	ea4a 4b0a 	orr.w	fp, sl, sl, lsl #16
+    187a:	f642 7eff 	movw	lr, #12287	@ 0x2fff
+    187e:	f2cf 7e00 	movt	lr, #63232	@ 0xf700
+    1882:	eb08 0743 	add.w	r7, r8, r3, lsl #1
+    1886:	2b08      	cmp	r3, #8
+    1888:	f0c0 8204 	bcc.w	1c94 <fndsa_mqpoly_ntt_to_int__L0>
+    188c:	f1b9 0f00 	cmp.w	r9, #0
+    1890:	f000 80e0 	beq.w	1a54 <fndsa_mqpoly_ntt_to_int__L0_mve>
+
+00001894 <fndsa_mqpoly_ntt_to_int__L0_mve_stage3>:
+    1894:	fc91 3e81 	vld40.16	{q1, q2, q3, q4}, [r1]
+    1898:	fc91 3ea1 	vld41.16	{q1, q2, q3, q4}, [r1]
+    189c:	fc91 3ec1 	vld42.16	{q1, q2, q3, q4}, [r1]
+    18a0:	fc91 3ee1 	vld43.16	{q1, q2, q3, q4}, [r1]
+    18a4:	fc97 be80 	vld20.16	{q5, q6}, [r7]
+    18a8:	fc97 bea0 	vld21.16	{q5, q6}, [r7]
+    18ac:	eb07 0c09 	add.w	ip, r7, r9
+    18b0:	fc9c de80 	vld20.16	{q6, q7}, [ip]
+    18b4:	fc9c dea0 	vld21.16	{q6, q7}, [ip]
+    18b8:	ef12 e844 	vadd.i16	q7, q1, q2
+    18bc:	ee1f ff4a 	vsub.i16	q7, q7, sl
+    18c0:	fe1f 1fcf 	vcmp.s16	lt, q7, zr
+    18c4:	fe71 0f4d 	vpst
+    18c8:	ee1f ef4a 	vaddt.i16	q7, q7, sl
+    18cc:	ff12 4844 	vsub.i16	q2, q1, q2
+    18d0:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    18d4:	fe71 0f4d 	vpst
+    18d8:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    18dc:	ef80 2851 	vmov.i16	q1, #1	@ 0x0001
+    18e0:	ef0e 2152 	vand	q1, q7, q1
+    18e4:	fe13 0fcf 	vcmp.i16	ne, q1, zr
+    18e8:	fe71 0f4d 	vpst
+    18ec:	ee1f ef4a 	vaddt.i16	q7, q7, sl
+    18f0:	ff9f 205e 	vshr.u16	q1, q7, #1
+    18f4:	ff14 cb4c 	vqrdmulh.s16	q6, q2, q6
+    18f8:	ef14 495a 	vmul.i16	q2, q2, q5
+    18fc:	ee1d 4e4a 	vmla.i16	q2, q6, sl
+    1900:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    1904:	fe71 0f4d 	vpst
+    1908:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    190c:	ef16 a848 	vadd.i16	q5, q3, q4
+    1910:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1914:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1918:	fe71 0f4d 	vpst
+    191c:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1920:	ff16 8848 	vsub.i16	q4, q3, q4
+    1924:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1928:	fe71 0f4d 	vpst
+    192c:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1930:	ef80 6851 	vmov.i16	q3, #1	@ 0x0001
+    1934:	ef0a 6156 	vand	q3, q5, q3
+    1938:	fe17 0fcf 	vcmp.i16	ne, q3, zr
+    193c:	fe71 0f4d 	vpst
+    1940:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1944:	ff9f 605a 	vshr.u16	q3, q5, #1
+    1948:	eb07 0c09 	add.w	ip, r7, r9
+    194c:	fc9c de80 	vld20.16	{q6, q7}, [ip]
+    1950:	fc9c dea0 	vld21.16	{q6, q7}, [ip]
+    1954:	fc97 be80 	vld20.16	{q5, q6}, [r7]
+    1958:	fc97 bea0 	vld21.16	{q5, q6}, [r7]
+    195c:	f107 0720 	add.w	r7, r7, #32
+    1960:	ff18 eb4e 	vqrdmulh.s16	q7, q4, q7
+    1964:	ef18 895c 	vmul.i16	q4, q4, q6
+    1968:	ee1f 8e4a 	vmla.i16	q4, q7, sl
+    196c:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1970:	fe71 0f4d 	vpst
+    1974:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1978:	ed98 fe80 	vldrh.u16	q7, [r8, #0]
+    197c:	eb08 0c09 	add.w	ip, r8, r9
+    1980:	ed9c de80 	vldrh.u16	q6, [ip, #0]
+    1984:	f108 0810 	add.w	r8, r8, #16
+    1988:	ef12 a846 	vadd.i16	q5, q1, q3
+    198c:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1990:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1994:	fe71 0f4d 	vpst
+    1998:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    199c:	ff12 6846 	vsub.i16	q3, q1, q3
+    19a0:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    19a4:	fe71 0f4d 	vpst
+    19a8:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    19ac:	ef80 2851 	vmov.i16	q1, #1	@ 0x0001
+    19b0:	ef0a 2152 	vand	q1, q5, q1
+    19b4:	fe13 0fcf 	vcmp.i16	ne, q1, zr
+    19b8:	fe71 0f4d 	vpst
+    19bc:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    19c0:	ff9f 205a 	vshr.u16	q1, q5, #1
+    19c4:	ef14 a848 	vadd.i16	q5, q2, q4
+    19c8:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    19cc:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    19d0:	fe71 0f4d 	vpst
+    19d4:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    19d8:	ff14 8848 	vsub.i16	q4, q2, q4
+    19dc:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    19e0:	fe71 0f4d 	vpst
+    19e4:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    19e8:	ef80 4851 	vmov.i16	q2, #1	@ 0x0001
+    19ec:	ef0a 4154 	vand	q2, q5, q2
+    19f0:	fe15 0fcf 	vcmp.i16	ne, q2, zr
+    19f4:	fe71 0f4d 	vpst
+    19f8:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    19fc:	ff9f 405a 	vshr.u16	q2, q5, #1
+    1a00:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    1a04:	ff18 cb4c 	vqrdmulh.s16	q6, q4, q6
+    1a08:	ef16 695e 	vmul.i16	q3, q3, q7
+    1a0c:	ef18 895e 	vmul.i16	q4, q4, q7
+    1a10:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    1a14:	ee1d 8e4a 	vmla.i16	q4, q6, sl
+    1a18:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    1a1c:	fe71 0f4d 	vpst
+    1a20:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    1a24:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1a28:	fe71 0f4d 	vpst
+    1a2c:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1a30:	fc81 3e81 	vst40.16	{q1, q2, q3, q4}, [r1]
+    1a34:	fc81 3ea1 	vst41.16	{q1, q2, q3, q4}, [r1]
+    1a38:	fc81 3ec1 	vst42.16	{q1, q2, q3, q4}, [r1]
+    1a3c:	fc81 3ee1 	vst43.16	{q1, q2, q3, q4}, [r1]
+    1a40:	f101 0140 	add.w	r1, r1, #64	@ 0x40
+    1a44:	3b08      	subs	r3, #8
+    1a46:	f47f af25 	bne.w	1894 <fndsa_mqpoly_ntt_to_int__L0_mve_stage3>
+    1a4a:	f8dd c040 	ldr.w	ip, [sp, #64]	@ 0x40
+    1a4e:	ee00 ca10 	vmov	s0, ip
+    1a52:	e173      	b.n	1d3c <fndsa_mqpoly_ntt_to_int__L0_done>
+
+00001a54 <fndsa_mqpoly_ntt_to_int__L0_mve>:
+    1a54:	fc91 3e81 	vld40.16	{q1, q2, q3, q4}, [r1]
+    1a58:	fc91 3ea1 	vld41.16	{q1, q2, q3, q4}, [r1]
+    1a5c:	fc91 3ec1 	vld42.16	{q1, q2, q3, q4}, [r1]
+    1a60:	fc91 3ee1 	vld43.16	{q1, q2, q3, q4}, [r1]
+    1a64:	fc97 be80 	vld20.16	{q5, q6}, [r7]
+    1a68:	fc97 bea0 	vld21.16	{q5, q6}, [r7]
+    1a6c:	f107 0720 	add.w	r7, r7, #32
+    1a70:	ef12 e844 	vadd.i16	q7, q1, q2
+    1a74:	ee1f ff4a 	vsub.i16	q7, q7, sl
+    1a78:	fe1f 1fcf 	vcmp.s16	lt, q7, zr
+    1a7c:	fe71 0f4d 	vpst
+    1a80:	ee1f ef4a 	vaddt.i16	q7, q7, sl
+    1a84:	ff12 4844 	vsub.i16	q2, q1, q2
+    1a88:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    1a8c:	fe71 0f4d 	vpst
+    1a90:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    1a94:	ef80 2851 	vmov.i16	q1, #1	@ 0x0001
+    1a98:	ef0e 2152 	vand	q1, q7, q1
+    1a9c:	fe13 0fcf 	vcmp.i16	ne, q1, zr
+    1aa0:	fe71 0f4d 	vpst
+    1aa4:	ee1f ef4a 	vaddt.i16	q7, q7, sl
+    1aa8:	ff9f 205e 	vshr.u16	q1, q7, #1
+    1aac:	ef80 e050 	vmov.i32	q7, #0	@ 0x00000000
+    1ab0:	fe15 0f0e 	vcmp.i16	eq, q2, q7
+    1ab4:	fe15 ee0b 	vmulh.u16	q7, q2, q5
+    1ab8:	ef14 495a 	vmul.i16	q2, q2, q5
+    1abc:	eeaa eb30 	vdup.16	q5, lr
+    1ac0:	fe15 ae0b 	vmulh.u16	q5, q2, q5
+    1ac4:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    1ac8:	ee15 5e6c 	vmul.i16	q2, q2, ip
+    1acc:	ee1f fe6e 	vmul.i16	q7, q7, lr
+    1ad0:	ef14 484e 	vadd.i16	q2, q2, q7
+    1ad4:	ef14 484a 	vadd.i16	q2, q2, q5
+    1ad8:	eeaa ab30 	vdup.16	q5, sl
+    1adc:	fe15 4e0b 	vmulh.u16	q2, q2, q5
+    1ae0:	f05f 0c01 	movs.w	ip, #1
+    1ae4:	ee15 4f4c 	vadd.i16	q2, q2, ip
+    1ae8:	fe71 0f4d 	vpst
+    1aec:	ee15 5f4c 	vsubt.i16	q2, q2, ip
+    1af0:	ef16 a848 	vadd.i16	q5, q3, q4
+    1af4:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1af8:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1afc:	fe71 0f4d 	vpst
+    1b00:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1b04:	ff16 8848 	vsub.i16	q4, q3, q4
+    1b08:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1b0c:	fe71 0f4d 	vpst
+    1b10:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1b14:	ef80 6851 	vmov.i16	q3, #1	@ 0x0001
+    1b18:	ef0a 6156 	vand	q3, q5, q3
+    1b1c:	fe17 0fcf 	vcmp.i16	ne, q3, zr
+    1b20:	fe71 0f4d 	vpst
+    1b24:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1b28:	ff9f 605a 	vshr.u16	q3, q5, #1
+    1b2c:	ef80 e050 	vmov.i32	q7, #0	@ 0x00000000
+    1b30:	fe19 0f0e 	vcmp.i16	eq, q4, q7
+    1b34:	fe19 ee0d 	vmulh.u16	q7, q4, q6
+    1b38:	ef18 895c 	vmul.i16	q4, q4, q6
+    1b3c:	eeac eb30 	vdup.16	q6, lr
+    1b40:	fe19 ce0d 	vmulh.u16	q6, q4, q6
+    1b44:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    1b48:	ee19 9e6c 	vmul.i16	q4, q4, ip
+    1b4c:	ee1f fe6e 	vmul.i16	q7, q7, lr
+    1b50:	ef18 884e 	vadd.i16	q4, q4, q7
+    1b54:	ef18 884c 	vadd.i16	q4, q4, q6
+    1b58:	eeac ab30 	vdup.16	q6, sl
+    1b5c:	fe19 8e0d 	vmulh.u16	q4, q4, q6
+    1b60:	f05f 0c01 	movs.w	ip, #1
+    1b64:	ee19 8f4c 	vadd.i16	q4, q4, ip
+    1b68:	fe71 0f4d 	vpst
+    1b6c:	ee19 9f4c 	vsubt.i16	q4, q4, ip
+    1b70:	ed98 fe80 	vldrh.u16	q7, [r8, #0]
+    1b74:	f108 0810 	add.w	r8, r8, #16
+    1b78:	ef12 a846 	vadd.i16	q5, q1, q3
+    1b7c:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1b80:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1b84:	fe71 0f4d 	vpst
+    1b88:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1b8c:	ff12 6846 	vsub.i16	q3, q1, q3
+    1b90:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    1b94:	fe71 0f4d 	vpst
+    1b98:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    1b9c:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    1ba0:	ef0a c15c 	vand	q6, q5, q6
+    1ba4:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    1ba8:	fe71 0f4d 	vpst
+    1bac:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1bb0:	ff9f 205a 	vshr.u16	q1, q5, #1
+    1bb4:	ef14 a848 	vadd.i16	q5, q2, q4
+    1bb8:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1bbc:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1bc0:	fe71 0f4d 	vpst
+    1bc4:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1bc8:	ff14 8848 	vsub.i16	q4, q2, q4
+    1bcc:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1bd0:	fe71 0f4d 	vpst
+    1bd4:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1bd8:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    1bdc:	ef0a c15c 	vand	q6, q5, q6
+    1be0:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    1be4:	fe71 0f4d 	vpst
+    1be8:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1bec:	ff9f 405a 	vshr.u16	q2, q5, #1
+    1bf0:	ef80 a050 	vmov.i32	q5, #0	@ 0x00000000
+    1bf4:	fe17 0f0a 	vcmp.i16	eq, q3, q5
+    1bf8:	fe17 ae0f 	vmulh.u16	q5, q3, q7
+    1bfc:	ef16 695e 	vmul.i16	q3, q3, q7
+    1c00:	eeac eb30 	vdup.16	q6, lr
+    1c04:	fe17 ce0d 	vmulh.u16	q6, q3, q6
+    1c08:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    1c0c:	ee17 7e6c 	vmul.i16	q3, q3, ip
+    1c10:	ee1b be6e 	vmul.i16	q5, q5, lr
+    1c14:	ef16 684a 	vadd.i16	q3, q3, q5
+    1c18:	ef16 684c 	vadd.i16	q3, q3, q6
+    1c1c:	eeac ab30 	vdup.16	q6, sl
+    1c20:	fe17 6e0d 	vmulh.u16	q3, q3, q6
+    1c24:	f05f 0c01 	movs.w	ip, #1
+    1c28:	ee17 6f4c 	vadd.i16	q3, q3, ip
+    1c2c:	fe71 0f4d 	vpst
+    1c30:	ee17 7f4c 	vsubt.i16	q3, q3, ip
+    1c34:	ef80 a050 	vmov.i32	q5, #0	@ 0x00000000
+    1c38:	fe19 0f0a 	vcmp.i16	eq, q4, q5
+    1c3c:	fe19 ae0f 	vmulh.u16	q5, q4, q7
+    1c40:	ef18 895e 	vmul.i16	q4, q4, q7
+    1c44:	eeac eb30 	vdup.16	q6, lr
+    1c48:	fe19 ce0d 	vmulh.u16	q6, q4, q6
+    1c4c:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    1c50:	ee19 9e6c 	vmul.i16	q4, q4, ip
+    1c54:	ee1b be6e 	vmul.i16	q5, q5, lr
+    1c58:	ef18 884a 	vadd.i16	q4, q4, q5
+    1c5c:	ef18 884c 	vadd.i16	q4, q4, q6
+    1c60:	eeac ab30 	vdup.16	q6, sl
+    1c64:	fe19 8e0d 	vmulh.u16	q4, q4, q6
+    1c68:	f05f 0c01 	movs.w	ip, #1
+    1c6c:	ee19 8f4c 	vadd.i16	q4, q4, ip
+    1c70:	fe71 0f4d 	vpst
+    1c74:	ee19 9f4c 	vsubt.i16	q4, q4, ip
+    1c78:	fc81 3e81 	vst40.16	{q1, q2, q3, q4}, [r1]
+    1c7c:	fc81 3ea1 	vst41.16	{q1, q2, q3, q4}, [r1]
+    1c80:	fc81 3ec1 	vst42.16	{q1, q2, q3, q4}, [r1]
+    1c84:	fc81 3ee1 	vst43.16	{q1, q2, q3, q4}, [r1]
+    1c88:	f101 0140 	add.w	r1, r1, #64	@ 0x40
+    1c8c:	3b08      	subs	r3, #8
+    1c8e:	f47f aee1 	bne.w	1a54 <fndsa_mqpoly_ntt_to_int__L0_mve>
+    1c92:	e053      	b.n	1d3c <fndsa_mqpoly_ntt_to_int__L0_done>
+
+00001c94 <fndsa_mqpoly_ntt_to_int__L0>:
+    1c94:	680a      	ldr	r2, [r1, #0]
+    1c96:	684d      	ldr	r5, [r1, #4]
+    1c98:	f857 6b04 	ldr.w	r6, [r7], #4
+    1c9c:	eac2 4405 	pkhbt	r4, r2, r5, lsl #16
+    1ca0:	eac5 4522 	pkhtb	r5, r5, r2, asr #16
+    1ca4:	fa94 f205 	sadd16	r2, r4, r5
+    1ca8:	fad2 fc0b 	ssub16	ip, r2, fp
+    1cac:	faac f282 	sel	r2, ip, r2
+    1cb0:	f002 1c01 	and.w	ip, r2, #65537	@ 0x10001
+    1cb4:	fbec 2c0a 	umlal	r2, ip, ip, sl
+    1cb8:	ea4f 0252 	mov.w	r2, r2, lsr #1
+    1cbc:	fad4 f505 	ssub16	r5, r4, r5
+    1cc0:	faa0 fc8b 	sel	ip, r0, fp
+    1cc4:	fa95 f50c 	sadd16	r5, r5, ip
+    1cc8:	fb15 f406 	smulbb	r4, r5, r6
+    1ccc:	fb04 fc0e 	mul.w	ip, r4, lr
+    1cd0:	fbec e46a 	umaal	lr, r4, ip, sl
+    1cd4:	fb15 f536 	smultt	r5, r5, r6
+    1cd8:	fb05 fc0e 	mul.w	ip, r5, lr
+    1cdc:	fbec e56a 	umaal	lr, r5, ip, sl
+    1ce0:	eac2 4404 	pkhbt	r4, r2, r4, lsl #16
+    1ce4:	ea4f 4505 	mov.w	r5, r5, lsl #16
+    1ce8:	ea45 4512 	orr.w	r5, r5, r2, lsr #16
+    1cec:	f838 6b02 	ldrh.w	r6, [r8], #2
+    1cf0:	fa94 f205 	sadd16	r2, r4, r5
+    1cf4:	fad2 fc0b 	ssub16	ip, r2, fp
+    1cf8:	faac f282 	sel	r2, ip, r2
+    1cfc:	f002 1c01 	and.w	ip, r2, #65537	@ 0x10001
+    1d00:	fbec 2c0a 	umlal	r2, ip, ip, sl
+    1d04:	ea4f 0252 	mov.w	r2, r2, lsr #1
+    1d08:	fad4 f505 	ssub16	r5, r4, r5
+    1d0c:	faa0 fc8b 	sel	ip, r0, fp
+    1d10:	fa95 f50c 	sadd16	r5, r5, ip
+    1d14:	fb15 f406 	smulbb	r4, r5, r6
+    1d18:	fb04 fc0e 	mul.w	ip, r4, lr
+    1d1c:	fbec e46a 	umaal	lr, r4, ip, sl
+    1d20:	fb15 f526 	smultb	r5, r5, r6
+    1d24:	fb05 fc0e 	mul.w	ip, r5, lr
+    1d28:	fbec e56a 	umaal	lr, r5, ip, sl
+    1d2c:	f841 2b04 	str.w	r2, [r1], #4
+    1d30:	eac4 4405 	pkhbt	r4, r4, r5, lsl #16
+    1d34:	f841 4b04 	str.w	r4, [r1], #4
+    1d38:	3b01      	subs	r3, #1
+    1d3a:	d1ab      	bne.n	1c94 <fndsa_mqpoly_ntt_to_int__L0>
+
+00001d3c <fndsa_mqpoly_ntt_to_int__L0_done>:
+    1d3c:	ee10 4a10 	vmov	r4, s0
+    1d40:	2c09      	cmp	r4, #9
+    1d42:	f000 838d 	beq.w	2460 <fndsa_mqpoly_ntt_to_int__L512_GS2_packed>
+    1d46:	2208      	movs	r2, #8
+    1d48:	4252      	negs	r2, r2
+    1d4a:	ee11 3a90 	vmov	r3, s3
+    1d4e:	2b01      	cmp	r3, #1
+    1d50:	f001 821a 	beq.w	3188 <fndsa_mqpoly_ntt_to_int__Lend>
+    1d54:	f5b3 7f80 	cmp.w	r3, #256	@ 0x100
+    1d58:	d000      	beq.n	1d5c <fndsa_mqpoly_ntt_to_int__I2_setup>
+    1d5a:	e2e0      	b.n	231e <fndsa_mqpoly_ntt_to_int__L1>
+
+00001d5c <fndsa_mqpoly_ntt_to_int__I2_setup>:
+    1d5c:	2204      	movs	r2, #4
+
+00001d5e <fndsa_mqpoly_ntt_to_int__I2_outer>:
+    1d5e:	ee11 1a10 	vmov	r1, s2
+    1d62:	ee11 3a90 	vmov	r3, s3
+    1d66:	f2af 5844 	subw	r8, pc, #1348	@ 0x544
+    1d6a:	f8d8 8000 	ldr.w	r8, [r8]
+    1d6e:	eb08 0703 	add.w	r7, r8, r3
+    1d72:	eb08 0853 	add.w	r8, r8, r3, lsr #1
+    1d76:	ea4f 0393 	mov.w	r3, r3, lsr #2
+    1d7a:	ea4f 0442 	mov.w	r4, r2, lsl #1
+
+00001d7e <fndsa_mqpoly_ntt_to_int__I2_middle>:
+    1d7e:	883d      	ldrh	r5, [r7, #0]
+    1d80:	eb07 0e09 	add.w	lr, r7, r9
+    1d84:	f8be e000 	ldrh.w	lr, [lr]
+    1d88:	ea45 450e 	orr.w	r5, r5, lr, lsl #16
+    1d8c:	f107 0702 	add.w	r7, r7, #2
+    1d90:	883e      	ldrh	r6, [r7, #0]
+    1d92:	eb07 0e09 	add.w	lr, r7, r9
+    1d96:	f8be e000 	ldrh.w	lr, [lr]
+    1d9a:	ea46 460e 	orr.w	r6, r6, lr, lsl #16
+    1d9e:	f107 0702 	add.w	r7, r7, #2
+    1da2:	f8b8 b000 	ldrh.w	fp, [r8]
+    1da6:	eb08 0e09 	add.w	lr, r8, r9
+    1daa:	f8be e000 	ldrh.w	lr, [lr]
+    1dae:	ea4b 4b0e 	orr.w	fp, fp, lr, lsl #16
+    1db2:	f108 0802 	add.w	r8, r8, #2
+    1db6:	2a04      	cmp	r2, #4
+    1db8:	f000 81c3 	beq.w	2142 <fndsa_mqpoly_ntt_to_int__I2_half>
+    1dbc:	ea4f 00d2 	mov.w	r0, r2, lsr #3
+    1dc0:	ed91 3e80 	vldrh.u16	q1, [r1, #0]
+    1dc4:	eb01 0c04 	add.w	ip, r1, r4
+    1dc8:	ed9c 5e80 	vldrh.u16	q2, [ip, #0]
+    1dcc:	eb0c 0c04 	add.w	ip, ip, r4
+    1dd0:	ed9c 7e80 	vldrh.u16	q3, [ip, #0]
+    1dd4:	eb0c 0c04 	add.w	ip, ip, r4
+    1dd8:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+    1ddc:	3801      	subs	r0, #1
+    1dde:	f000 80db 	beq.w	1f98 <fndsa_mqpoly_ntt_to_int__I2_vector_epilogue>
+
+00001de2 <fndsa_mqpoly_ntt_to_int__I2_vector_steady>:
+    1de2:	ef12 a844 	vadd.i16	q5, q1, q2
+    1de6:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1dea:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1dee:	fe71 0f4d 	vpst
+    1df2:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1df6:	ff12 4844 	vsub.i16	q2, q1, q2
+    1dfa:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    1dfe:	fe71 0f4d 	vpst
+    1e02:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    1e06:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    1e0a:	ef0a c15c 	vand	q6, q5, q6
+    1e0e:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    1e12:	fe71 0f4d 	vpst
+    1e16:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1e1a:	ff9f 205a 	vshr.u16	q1, q5, #1
+    1e1e:	eeae 5b30 	vdup.16	q7, r5
+    1e22:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    1e26:	eeac eb30 	vdup.16	q6, lr
+    1e2a:	ff14 ab4c 	vqrdmulh.s16	q5, q2, q6
+    1e2e:	ef14 495e 	vmul.i16	q2, q2, q7
+    1e32:	ee1b 4e4a 	vmla.i16	q2, q5, sl
+    1e36:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    1e3a:	fe71 0f4d 	vpst
+    1e3e:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    1e42:	ef16 a848 	vadd.i16	q5, q3, q4
+    1e46:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1e4a:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1e4e:	fe71 0f4d 	vpst
+    1e52:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1e56:	ff16 8848 	vsub.i16	q4, q3, q4
+    1e5a:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1e5e:	fe71 0f4d 	vpst
+    1e62:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1e66:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    1e6a:	ef0a c15c 	vand	q6, q5, q6
+    1e6e:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    1e72:	fe71 0f4d 	vpst
+    1e76:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1e7a:	ff9f 605a 	vshr.u16	q3, q5, #1
+    1e7e:	eeae 6b30 	vdup.16	q7, r6
+    1e82:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    1e86:	eeac eb30 	vdup.16	q6, lr
+    1e8a:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    1e8e:	ef18 895e 	vmul.i16	q4, q4, q7
+    1e92:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    1e96:	ef12 a846 	vadd.i16	q5, q1, q3
+    1e9a:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1e9e:	fe71 0f4d 	vpst
+    1ea2:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1ea6:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1eaa:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1eae:	fe71 0f4d 	vpst
+    1eb2:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1eb6:	ff12 6846 	vsub.i16	q3, q1, q3
+    1eba:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    1ebe:	fe71 0f4d 	vpst
+    1ec2:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    1ec6:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    1eca:	ef0a c15c 	vand	q6, q5, q6
+    1ece:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    1ed2:	fe71 0f4d 	vpst
+    1ed6:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1eda:	ff9f 205a 	vshr.u16	q1, q5, #1
+    1ede:	eeae bb30 	vdup.16	q7, fp
+    1ee2:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    1ee6:	eeac eb30 	vdup.16	q6, lr
+    1eea:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    1eee:	ef16 695e 	vmul.i16	q3, q3, q7
+    1ef2:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    1ef6:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    1efa:	fe71 0f4d 	vpst
+    1efe:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    1f02:	ef14 a848 	vadd.i16	q5, q2, q4
+    1f06:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1f0a:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1f0e:	fe71 0f4d 	vpst
+    1f12:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1f16:	ff14 8848 	vsub.i16	q4, q2, q4
+    1f1a:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1f1e:	fe71 0f4d 	vpst
+    1f22:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1f26:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    1f2a:	ef0a c15c 	vand	q6, q5, q6
+    1f2e:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    1f32:	fe71 0f4d 	vpst
+    1f36:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1f3a:	ff9f 405a 	vshr.u16	q2, q5, #1
+    1f3e:	eeae bb30 	vdup.16	q7, fp
+    1f42:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    1f46:	eeac eb30 	vdup.16	q6, lr
+    1f4a:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    1f4e:	ef18 895e 	vmul.i16	q4, q4, q7
+    1f52:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    1f56:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    1f5a:	fe71 0f4d 	vpst
+    1f5e:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    1f62:	ed81 3e80 	vstrh.16	q1, [r1, #0]
+    1f66:	ed91 3e88 	vldrh.u16	q1, [r1, #16]
+    1f6a:	eb01 0c04 	add.w	ip, r1, r4
+    1f6e:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+    1f72:	ed9c 5e88 	vldrh.u16	q2, [ip, #16]
+    1f76:	eb0c 0c04 	add.w	ip, ip, r4
+    1f7a:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+    1f7e:	ed9c 7e88 	vldrh.u16	q3, [ip, #16]
+    1f82:	eb0c 0c04 	add.w	ip, ip, r4
+    1f86:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+    1f8a:	ed9c 9e88 	vldrh.u16	q4, [ip, #16]
+    1f8e:	f101 0110 	add.w	r1, r1, #16
+    1f92:	3801      	subs	r0, #1
+    1f94:	f47f af25 	bne.w	1de2 <fndsa_mqpoly_ntt_to_int__I2_vector_steady>
+
+00001f98 <fndsa_mqpoly_ntt_to_int__I2_vector_epilogue>:
+    1f98:	ef12 a844 	vadd.i16	q5, q1, q2
+    1f9c:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    1fa0:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    1fa4:	fe71 0f4d 	vpst
+    1fa8:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1fac:	ff12 4844 	vsub.i16	q2, q1, q2
+    1fb0:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    1fb4:	fe71 0f4d 	vpst
+    1fb8:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    1fbc:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    1fc0:	ef0a c15c 	vand	q6, q5, q6
+    1fc4:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    1fc8:	fe71 0f4d 	vpst
+    1fcc:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    1fd0:	ff9f 205a 	vshr.u16	q1, q5, #1
+    1fd4:	eeae 5b30 	vdup.16	q7, r5
+    1fd8:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    1fdc:	eeac eb30 	vdup.16	q6, lr
+    1fe0:	ff14 ab4c 	vqrdmulh.s16	q5, q2, q6
+    1fe4:	ef14 495e 	vmul.i16	q2, q2, q7
+    1fe8:	ee1b 4e4a 	vmla.i16	q2, q5, sl
+    1fec:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    1ff0:	fe71 0f4d 	vpst
+    1ff4:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    1ff8:	ef16 a848 	vadd.i16	q5, q3, q4
+    1ffc:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    2000:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2004:	fe71 0f4d 	vpst
+    2008:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    200c:	ff16 8848 	vsub.i16	q4, q3, q4
+    2010:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2014:	fe71 0f4d 	vpst
+    2018:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    201c:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2020:	ef0a c15c 	vand	q6, q5, q6
+    2024:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2028:	fe71 0f4d 	vpst
+    202c:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    2030:	ff9f 605a 	vshr.u16	q3, q5, #1
+    2034:	eeae 6b30 	vdup.16	q7, r6
+    2038:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    203c:	eeac eb30 	vdup.16	q6, lr
+    2040:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    2044:	ef18 895e 	vmul.i16	q4, q4, q7
+    2048:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    204c:	ef12 a846 	vadd.i16	q5, q1, q3
+    2050:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2054:	fe71 0f4d 	vpst
+    2058:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    205c:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    2060:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2064:	fe71 0f4d 	vpst
+    2068:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    206c:	ff12 6846 	vsub.i16	q3, q1, q3
+    2070:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    2074:	fe71 0f4d 	vpst
+    2078:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    207c:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2080:	ef0a c15c 	vand	q6, q5, q6
+    2084:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2088:	fe71 0f4d 	vpst
+    208c:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    2090:	ff9f 205a 	vshr.u16	q1, q5, #1
+    2094:	eeae bb30 	vdup.16	q7, fp
+    2098:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    209c:	eeac eb30 	vdup.16	q6, lr
+    20a0:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    20a4:	ef16 695e 	vmul.i16	q3, q3, q7
+    20a8:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    20ac:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    20b0:	fe71 0f4d 	vpst
+    20b4:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    20b8:	ef14 a848 	vadd.i16	q5, q2, q4
+    20bc:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    20c0:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    20c4:	fe71 0f4d 	vpst
+    20c8:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    20cc:	ff14 8848 	vsub.i16	q4, q2, q4
+    20d0:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    20d4:	fe71 0f4d 	vpst
+    20d8:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    20dc:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    20e0:	ef0a c15c 	vand	q6, q5, q6
+    20e4:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    20e8:	fe71 0f4d 	vpst
+    20ec:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    20f0:	ff9f 405a 	vshr.u16	q2, q5, #1
+    20f4:	eeae bb30 	vdup.16	q7, fp
+    20f8:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    20fc:	eeac eb30 	vdup.16	q6, lr
+    2100:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    2104:	ef18 895e 	vmul.i16	q4, q4, q7
+    2108:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    210c:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2110:	fe71 0f4d 	vpst
+    2114:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    2118:	ed81 3e80 	vstrh.16	q1, [r1, #0]
+    211c:	eb01 0c04 	add.w	ip, r1, r4
+    2120:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+    2124:	eb0c 0c04 	add.w	ip, ip, r4
+    2128:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+    212c:	eb0c 0c04 	add.w	ip, ip, r4
+    2130:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+    2134:	f101 0110 	add.w	r1, r1, #16
+    2138:	eb01 0144 	add.w	r1, r1, r4, lsl #1
+    213c:	eb01 0104 	add.w	r1, r1, r4
+    2140:	e0dd      	b.n	22fe <fndsa_mqpoly_ntt_to_int__I2_middle_done>
+
+00002142 <fndsa_mqpoly_ntt_to_int__I2_half>:
+    2142:	ed91 2b00 	vldr	d2, [r1]
+    2146:	eb01 0c04 	add.w	ip, r1, r4
+    214a:	ed9c 4b00 	vldr	d4, [ip]
+    214e:	eb0c 0c04 	add.w	ip, ip, r4
+    2152:	ed9c 6b00 	vldr	d6, [ip]
+    2156:	eb0c 0c04 	add.w	ip, ip, r4
+    215a:	ed9c 8b00 	vldr	d8, [ip]
+    215e:	ef12 a844 	vadd.i16	q5, q1, q2
+    2162:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    2166:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    216a:	fe71 0f4d 	vpst
+    216e:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    2172:	ff12 4844 	vsub.i16	q2, q1, q2
+    2176:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    217a:	fe71 0f4d 	vpst
+    217e:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    2182:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2186:	ef0a c15c 	vand	q6, q5, q6
+    218a:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    218e:	fe71 0f4d 	vpst
+    2192:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    2196:	ff9f 205a 	vshr.u16	q1, q5, #1
+    219a:	eeae 5b30 	vdup.16	q7, r5
+    219e:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    21a2:	eeac eb30 	vdup.16	q6, lr
+    21a6:	ff14 ab4c 	vqrdmulh.s16	q5, q2, q6
+    21aa:	ef14 495e 	vmul.i16	q2, q2, q7
+    21ae:	ee1b 4e4a 	vmla.i16	q2, q5, sl
+    21b2:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    21b6:	fe71 0f4d 	vpst
+    21ba:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    21be:	ef16 a848 	vadd.i16	q5, q3, q4
+    21c2:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    21c6:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    21ca:	fe71 0f4d 	vpst
+    21ce:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    21d2:	ff16 8848 	vsub.i16	q4, q3, q4
+    21d6:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    21da:	fe71 0f4d 	vpst
+    21de:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    21e2:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    21e6:	ef0a c15c 	vand	q6, q5, q6
+    21ea:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    21ee:	fe71 0f4d 	vpst
+    21f2:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    21f6:	ff9f 605a 	vshr.u16	q3, q5, #1
+    21fa:	eeae 6b30 	vdup.16	q7, r6
+    21fe:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    2202:	eeac eb30 	vdup.16	q6, lr
+    2206:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    220a:	ef18 895e 	vmul.i16	q4, q4, q7
+    220e:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    2212:	ef12 a846 	vadd.i16	q5, q1, q3
+    2216:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    221a:	fe71 0f4d 	vpst
+    221e:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    2222:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    2226:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    222a:	fe71 0f4d 	vpst
+    222e:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    2232:	ff12 6846 	vsub.i16	q3, q1, q3
+    2236:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    223a:	fe71 0f4d 	vpst
+    223e:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    2242:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2246:	ef0a c15c 	vand	q6, q5, q6
+    224a:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    224e:	fe71 0f4d 	vpst
+    2252:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    2256:	ff9f 205a 	vshr.u16	q1, q5, #1
+    225a:	eeae bb30 	vdup.16	q7, fp
+    225e:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    2262:	eeac eb30 	vdup.16	q6, lr
+    2266:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    226a:	ef16 695e 	vmul.i16	q3, q3, q7
+    226e:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    2272:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    2276:	fe71 0f4d 	vpst
+    227a:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    227e:	ef14 a848 	vadd.i16	q5, q2, q4
+    2282:	ee1b bf4a 	vsub.i16	q5, q5, sl
+    2286:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    228a:	fe71 0f4d 	vpst
+    228e:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    2292:	ff14 8848 	vsub.i16	q4, q2, q4
+    2296:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    229a:	fe71 0f4d 	vpst
+    229e:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    22a2:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    22a6:	ef0a c15c 	vand	q6, q5, q6
+    22aa:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    22ae:	fe71 0f4d 	vpst
+    22b2:	ee1b af4a 	vaddt.i16	q5, q5, sl
+    22b6:	ff9f 405a 	vshr.u16	q2, q5, #1
+    22ba:	eeae bb30 	vdup.16	q7, fp
+    22be:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    22c2:	eeac eb30 	vdup.16	q6, lr
+    22c6:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    22ca:	ef18 895e 	vmul.i16	q4, q4, q7
+    22ce:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    22d2:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    22d6:	fe71 0f4d 	vpst
+    22da:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    22de:	ed81 2b00 	vstr	d2, [r1]
+    22e2:	eb01 0c04 	add.w	ip, r1, r4
+    22e6:	ed8c 4b00 	vstr	d4, [ip]
+    22ea:	eb0c 0c04 	add.w	ip, ip, r4
+    22ee:	ed8c 6b00 	vstr	d6, [ip]
+    22f2:	eb0c 0c04 	add.w	ip, ip, r4
+    22f6:	ed8c 8b00 	vstr	d8, [ip]
+    22fa:	eb01 0184 	add.w	r1, r1, r4, lsl #2
+
+000022fe <fndsa_mqpoly_ntt_to_int__I2_middle_done>:
+    22fe:	3b01      	subs	r3, #1
+    2300:	f47f ad3d 	bne.w	1d7e <fndsa_mqpoly_ntt_to_int__I2_middle>
+    2304:	ee11 3a90 	vmov	r3, s3
+    2308:	ea4f 0393 	mov.w	r3, r3, lsr #2
+    230c:	ee01 3a90 	vmov	s3, r3
+    2310:	ea4f 0282 	mov.w	r2, r2, lsl #2
+    2314:	2b01      	cmp	r3, #1
+    2316:	f47f ad22 	bne.w	1d5e <fndsa_mqpoly_ntt_to_int__I2_outer>
+    231a:	f000 bf35 	b.w	3188 <fndsa_mqpoly_ntt_to_int__Lend>
+
+0000231e <fndsa_mqpoly_ntt_to_int__L1>:
+    231e:	2b20      	cmp	r3, #32
+    2320:	d104      	bne.n	232c <fndsa_mqpoly_ntt_to_int__L1_regular>
+    2322:	ee10 4a10 	vmov	r4, s0
+    2326:	2c09      	cmp	r4, #9
+    2328:	f000 8205 	beq.w	2736 <fndsa_mqpoly_ntt_to_int__L3x512>
+
+0000232c <fndsa_mqpoly_ntt_to_int__L1_regular>:
+    232c:	ee11 1a10 	vmov	r1, s2
+    2330:	eba8 0843 	sub.w	r8, r8, r3, lsl #1
+    2334:	eba8 0803 	sub.w	r8, r8, r3
+
+00002338 <fndsa_mqpoly_ntt_to_int__L2>:
+    2338:	f838 6b02 	ldrh.w	r6, [r8], #2
+    233c:	1057      	asrs	r7, r2, #1
+    233e:	1a89      	subs	r1, r1, r2
+    2340:	f117 0f08 	cmn.w	r7, #8
+    2344:	dc54      	bgt.n	23f0 <fndsa_mqpoly_ntt_to_int__L3>
+
+00002346 <fndsa_mqpoly_ntt_to_int__L3_mve>:
+    2346:	eb01 0402 	add.w	r4, r1, r2
+    234a:	ed94 3e80 	vldrh.u16	q1, [r4, #0]
+    234e:	ed91 5e80 	vldrh.u16	q2, [r1, #0]
+    2352:	eea6 ab30 	vdup.16	q3, sl
+    2356:	ef12 8844 	vadd.i16	q4, q1, q2
+    235a:	ff18 8846 	vsub.i16	q4, q4, q3
+    235e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2362:	fe71 0f4d 	vpst
+    2366:	ef18 8846 	vaddt.i16	q4, q4, q3
+    236a:	ef80 6851 	vmov.i16	q3, #1	@ 0x0001
+    236e:	ef08 6156 	vand	q3, q4, q3
+    2372:	fe17 0fcf 	vcmp.i16	ne, q3, zr
+    2376:	eea6 ab30 	vdup.16	q3, sl
+    237a:	fe71 0f4d 	vpst
+    237e:	ef18 8846 	vaddt.i16	q4, q4, q3
+    2382:	ff9f 8058 	vshr.u16	q4, q4, #1
+    2386:	ed84 9e80 	vstrh.16	q4, [r4, #0]
+    238a:	ff12 8844 	vsub.i16	q4, q1, q2
+    238e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2392:	fe71 0f4d 	vpst
+    2396:	ef18 8846 	vaddt.i16	q4, q4, q3
+    239a:	ef80 2050 	vmov.i32	q1, #0	@ 0x00000000
+    239e:	fe19 0f02 	vcmp.i16	eq, q4, q1
+    23a2:	eea6 6b30 	vdup.16	q3, r6
+    23a6:	fe19 2e07 	vmulh.u16	q1, q4, q3
+    23aa:	ef18 8956 	vmul.i16	q4, q4, q3
+    23ae:	eea4 eb30 	vdup.16	q2, lr
+    23b2:	fe19 4e05 	vmulh.u16	q2, q4, q2
+    23b6:	f24f 7c00 	movw	ip, #63232	@ 0xf700
+    23ba:	ee19 9e6c 	vmul.i16	q4, q4, ip
+    23be:	ee13 3e6e 	vmul.i16	q1, q1, lr
+    23c2:	ef18 8842 	vadd.i16	q4, q4, q1
+    23c6:	ef18 8844 	vadd.i16	q4, q4, q2
+    23ca:	eea4 ab30 	vdup.16	q2, sl
+    23ce:	fe19 8e05 	vmulh.u16	q4, q4, q2
+    23d2:	f05f 0c01 	movs.w	ip, #1
+    23d6:	ee19 8f4c 	vadd.i16	q4, q4, ip
+    23da:	fe71 0f4d 	vpst
+    23de:	ee19 9f4c 	vsubt.i16	q4, q4, ip
+    23e2:	ed81 9e80 	vstrh.16	q4, [r1, #0]
+    23e6:	f101 0110 	add.w	r1, r1, #16
+    23ea:	3708      	adds	r7, #8
+    23ec:	d1ab      	bne.n	2346 <fndsa_mqpoly_ntt_to_int__L3_mve>
+    23ee:	e027      	b.n	2440 <fndsa_mqpoly_ntt_to_int__L3_done>
+
+000023f0 <fndsa_mqpoly_ntt_to_int__L3>:
+    23f0:	588c      	ldr	r4, [r1, r2]
+    23f2:	680d      	ldr	r5, [r1, #0]
+    23f4:	fa94 fc05 	sadd16	ip, r4, r5
+    23f8:	fad4 f505 	ssub16	r5, r4, r5
+    23fc:	faa0 f48b 	sel	r4, r0, fp
+    2400:	fa95 f504 	sadd16	r5, r5, r4
+    2404:	fadc f40b 	ssub16	r4, ip, fp
+    2408:	faa4 f48c 	sel	r4, r4, ip
+    240c:	f004 1c01 	and.w	ip, r4, #65537	@ 0x10001
+    2410:	fbec 4c0a 	umlal	r4, ip, ip, sl
+    2414:	ea4f 0454 	mov.w	r4, r4, lsr #1
+    2418:	f841 4002 	str.w	r4, [r1, r2]
+    241c:	fb15 f406 	smulbb	r4, r5, r6
+    2420:	fb04 fc0e 	mul.w	ip, r4, lr
+    2424:	fbec e46a 	umaal	lr, r4, ip, sl
+    2428:	fb15 f526 	smultb	r5, r5, r6
+    242c:	fb05 fc0e 	mul.w	ip, r5, lr
+    2430:	fbec e56a 	umaal	lr, r5, ip, sl
+    2434:	eac4 4505 	pkhbt	r5, r4, r5, lsl #16
+    2438:	f841 5b04 	str.w	r5, [r1], #4
+    243c:	3702      	adds	r7, #2
+    243e:	d1d7      	bne.n	23f0 <fndsa_mqpoly_ntt_to_int__L3>
+
+00002440 <fndsa_mqpoly_ntt_to_int__L3_done>:
+    2440:	3b02      	subs	r3, #2
+    2442:	f47f af79 	bne.w	2338 <fndsa_mqpoly_ntt_to_int__L2>
+    2446:	ea4f 0242 	mov.w	r2, r2, lsl #1
+    244a:	ee11 3a90 	vmov	r3, s3
+    244e:	ea4f 0353 	mov.w	r3, r3, lsr #1
+    2452:	ee01 3a90 	vmov	s3, r3
+    2456:	2b01      	cmp	r3, #1
+    2458:	f47f af61 	bne.w	231e <fndsa_mqpoly_ntt_to_int__L1>
+    245c:	f000 be94 	b.w	3188 <fndsa_mqpoly_ntt_to_int__Lend>
+
+00002460 <fndsa_mqpoly_ntt_to_int__L512_GS2_packed>:
+    2460:	f60f 582c 	addw	r8, pc, #3372	@ 0xd2c
+    2464:	f8d8 8000 	ldr.w	r8, [r8]
+    2468:	f108 0440 	add.w	r4, r8, #64	@ 0x40
+    246c:	f108 0080 	add.w	r0, r8, #128	@ 0x80
+    2470:	2210      	movs	r2, #16
+    2472:	ee11 1a10 	vmov	r1, s2
+
+00002476 <fndsa_mqpoly_ntt_to_int__L512_GS2_packed_loop>:
+    2476:	8825      	ldrh	r5, [r4, #0]
+    2478:	eb04 0e09 	add.w	lr, r4, r9
+    247c:	f8be e000 	ldrh.w	lr, [lr]
+    2480:	ea45 450e 	orr.w	r5, r5, lr, lsl #16
+    2484:	f104 0402 	add.w	r4, r4, #2
+    2488:	8826      	ldrh	r6, [r4, #0]
+    248a:	eb04 0e09 	add.w	lr, r4, r9
+    248e:	f8be e000 	ldrh.w	lr, [lr]
+    2492:	ea46 460e 	orr.w	r6, r6, lr, lsl #16
+    2496:	f104 0402 	add.w	r4, r4, #2
+    249a:	8807      	ldrh	r7, [r0, #0]
+    249c:	eb00 0e09 	add.w	lr, r0, r9
+    24a0:	f8be e000 	ldrh.w	lr, [lr]
+    24a4:	ea47 470e 	orr.w	r7, r7, lr, lsl #16
+    24a8:	f100 0002 	add.w	r0, r0, #2
+    24ac:	f8b0 8000 	ldrh.w	r8, [r0]
+    24b0:	eb00 0e09 	add.w	lr, r0, r9
+    24b4:	f8be e000 	ldrh.w	lr, [lr]
+    24b8:	ea48 480e 	orr.w	r8, r8, lr, lsl #16
+    24bc:	f100 0002 	add.w	r0, r0, #2
+    24c0:	f8b0 b000 	ldrh.w	fp, [r0]
+    24c4:	eb00 0e09 	add.w	lr, r0, r9
+    24c8:	f8be e000 	ldrh.w	lr, [lr]
+    24cc:	ea4b 4b0e 	orr.w	fp, fp, lr, lsl #16
+    24d0:	f100 0002 	add.w	r0, r0, #2
+    24d4:	8803      	ldrh	r3, [r0, #0]
+    24d6:	eb00 0e09 	add.w	lr, r0, r9
+    24da:	f8be e000 	ldrh.w	lr, [lr]
+    24de:	ea43 430e 	orr.w	r3, r3, lr, lsl #16
+    24e2:	f100 0002 	add.w	r0, r0, #2
+    24e6:	ed91 2b00 	vldr	d2, [r1]
+    24ea:	ed91 3b08 	vldr	d3, [r1, #32]
+    24ee:	ed91 4b02 	vldr	d4, [r1, #8]
+    24f2:	ed91 5b0a 	vldr	d5, [r1, #40]	@ 0x28
+    24f6:	ed91 6b04 	vldr	d6, [r1, #16]
+    24fa:	ed91 7b0c 	vldr	d7, [r1, #48]	@ 0x30
+    24fe:	ed91 8b06 	vldr	d8, [r1, #24]
+    2502:	ed91 9b0e 	vldr	d9, [r1, #56]	@ 0x38
+    2506:	eeae ab30 	vdup.16	q7, sl
+    250a:	ef12 a844 	vadd.i16	q5, q1, q2
+    250e:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2512:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2516:	fe71 0f4d 	vpst
+    251a:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    251e:	ff12 4844 	vsub.i16	q2, q1, q2
+    2522:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    2526:	fe71 0f4d 	vpst
+    252a:	ef14 484e 	vaddt.i16	q2, q2, q7
+    252e:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2532:	ef0a c15c 	vand	q6, q5, q6
+    2536:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    253a:	fe71 0f4d 	vpst
+    253e:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2542:	ff9f 205a 	vshr.u16	q1, q5, #1
+    2546:	eeae 7b30 	vdup.16	q7, r7
+    254a:	ea4f 4e27 	mov.w	lr, r7, asr #16
+    254e:	eeac eb30 	vdup.16	q6, lr
+    2552:	fa1f fc8b 	uxth.w	ip, fp
+    2556:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+    255a:	ec4c cb1f 	vmov	d15, ip, ip
+    255e:	ea4f 4c2b 	mov.w	ip, fp, asr #16
+    2562:	fa1f fc8c 	uxth.w	ip, ip
+    2566:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+    256a:	ec4c cb1d 	vmov	d13, ip, ip
+    256e:	ff14 ab4c 	vqrdmulh.s16	q5, q2, q6
+    2572:	ef14 495e 	vmul.i16	q2, q2, q7
+    2576:	ee1b 4e4a 	vmla.i16	q2, q5, sl
+    257a:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    257e:	fe71 0f4d 	vpst
+    2582:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    2586:	eeae ab30 	vdup.16	q7, sl
+    258a:	ef16 a848 	vadd.i16	q5, q3, q4
+    258e:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2592:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2596:	fe71 0f4d 	vpst
+    259a:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    259e:	ff16 8848 	vsub.i16	q4, q3, q4
+    25a2:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    25a6:	fe71 0f4d 	vpst
+    25aa:	ef18 884e 	vaddt.i16	q4, q4, q7
+    25ae:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    25b2:	ef0a c15c 	vand	q6, q5, q6
+    25b6:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    25ba:	fe71 0f4d 	vpst
+    25be:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    25c2:	ff9f 605a 	vshr.u16	q3, q5, #1
+    25c6:	eeae 8b30 	vdup.16	q7, r8
+    25ca:	ea4f 4e28 	mov.w	lr, r8, asr #16
+    25ce:	eeac eb30 	vdup.16	q6, lr
+    25d2:	fa1f fc83 	uxth.w	ip, r3
+    25d6:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+    25da:	ec4c cb1f 	vmov	d15, ip, ip
+    25de:	ea4f 4c23 	mov.w	ip, r3, asr #16
+    25e2:	fa1f fc8c 	uxth.w	ip, ip
+    25e6:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+    25ea:	ec4c cb1d 	vmov	d13, ip, ip
+    25ee:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    25f2:	ef18 895e 	vmul.i16	q4, q4, q7
+    25f6:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    25fa:	ef12 a846 	vadd.i16	q5, q1, q3
+    25fe:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2602:	fe71 0f4d 	vpst
+    2606:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    260a:	eeae ab30 	vdup.16	q7, sl
+    260e:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2612:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2616:	fe71 0f4d 	vpst
+    261a:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    261e:	ff12 6846 	vsub.i16	q3, q1, q3
+    2622:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    2626:	fe71 0f4d 	vpst
+    262a:	ef16 684e 	vaddt.i16	q3, q3, q7
+    262e:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2632:	ef0a c15c 	vand	q6, q5, q6
+    2636:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    263a:	fe71 0f4d 	vpst
+    263e:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2642:	ff9f 205a 	vshr.u16	q1, q5, #1
+    2646:	eeae 5b30 	vdup.16	q7, r5
+    264a:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    264e:	eeac eb30 	vdup.16	q6, lr
+    2652:	fa1f fc86 	uxth.w	ip, r6
+    2656:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+    265a:	ec4c cb1f 	vmov	d15, ip, ip
+    265e:	ea4f 4c26 	mov.w	ip, r6, asr #16
+    2662:	fa1f fc8c 	uxth.w	ip, ip
+    2666:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+    266a:	ec4c cb1d 	vmov	d13, ip, ip
+    266e:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    2672:	ef16 695e 	vmul.i16	q3, q3, q7
+    2676:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    267a:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    267e:	fe71 0f4d 	vpst
+    2682:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    2686:	eeae ab30 	vdup.16	q7, sl
+    268a:	ef14 a848 	vadd.i16	q5, q2, q4
+    268e:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2692:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2696:	fe71 0f4d 	vpst
+    269a:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    269e:	ff14 8848 	vsub.i16	q4, q2, q4
+    26a2:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    26a6:	fe71 0f4d 	vpst
+    26aa:	ef18 884e 	vaddt.i16	q4, q4, q7
+    26ae:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    26b2:	ef0a c15c 	vand	q6, q5, q6
+    26b6:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    26ba:	fe71 0f4d 	vpst
+    26be:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    26c2:	ff9f 405a 	vshr.u16	q2, q5, #1
+    26c6:	eeae 5b30 	vdup.16	q7, r5
+    26ca:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    26ce:	eeac eb30 	vdup.16	q6, lr
+    26d2:	fa1f fc86 	uxth.w	ip, r6
+    26d6:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+    26da:	ec4c cb1f 	vmov	d15, ip, ip
+    26de:	ea4f 4c26 	mov.w	ip, r6, asr #16
+    26e2:	fa1f fc8c 	uxth.w	ip, ip
+    26e6:	ea4c 4c0c 	orr.w	ip, ip, ip, lsl #16
+    26ea:	ec4c cb1d 	vmov	d13, ip, ip
+    26ee:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    26f2:	ef18 895e 	vmul.i16	q4, q4, q7
+    26f6:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    26fa:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    26fe:	fe71 0f4d 	vpst
+    2702:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    2706:	ed81 2b00 	vstr	d2, [r1]
+    270a:	ed81 3b08 	vstr	d3, [r1, #32]
+    270e:	ed81 4b02 	vstr	d4, [r1, #8]
+    2712:	ed81 5b0a 	vstr	d5, [r1, #40]	@ 0x28
+    2716:	ed81 6b04 	vstr	d6, [r1, #16]
+    271a:	ed81 7b0c 	vstr	d7, [r1, #48]	@ 0x30
+    271e:	ed81 8b06 	vstr	d8, [r1, #24]
+    2722:	ed81 9b0e 	vstr	d9, [r1, #56]	@ 0x38
+    2726:	f101 0140 	add.w	r1, r1, #64	@ 0x40
+    272a:	3a01      	subs	r2, #1
+    272c:	f47f aea3 	bne.w	2476 <fndsa_mqpoly_ntt_to_int__L512_GS2_packed_loop>
+    2730:	46a0      	mov	r8, r4
+    2732:	2320      	movs	r3, #32
+    2734:	e7ff      	b.n	2736 <fndsa_mqpoly_ntt_to_int__L3x512>
+
+00002736 <fndsa_mqpoly_ntt_to_int__L3x512>:
+    2736:	b084      	sub	sp, #16
+    2738:	ee11 ca10 	vmov	ip, s2
+    273c:	f1a8 0460 	sub.w	r4, r8, #96	@ 0x60
+    2740:	9402      	str	r4, [sp, #8]
+    2742:	f1a4 0510 	sub.w	r5, r4, #16
+    2746:	9501      	str	r5, [sp, #4]
+    2748:	f1a4 0518 	sub.w	r5, r4, #24
+    274c:	9500      	str	r5, [sp, #0]
+    274e:	f8cd c00c 	str.w	ip, [sp, #12]
+    2752:	4661      	mov	r1, ip
+    2754:	2304      	movs	r3, #4
+
+00002756 <fndsa_mqpoly_ntt_to_int__L3x512_block>:
+    2756:	f8dd c000 	ldr.w	ip, [sp]
+    275a:	f8bc 4000 	ldrh.w	r4, [ip]
+    275e:	eb0c 0e09 	add.w	lr, ip, r9
+    2762:	f8be e000 	ldrh.w	lr, [lr]
+    2766:	ea44 440e 	orr.w	r4, r4, lr, lsl #16
+    276a:	f10c 0c02 	add.w	ip, ip, #2
+    276e:	f8cd c000 	str.w	ip, [sp]
+    2772:	f8dd c004 	ldr.w	ip, [sp, #4]
+    2776:	f8bc 5000 	ldrh.w	r5, [ip]
+    277a:	eb0c 0e09 	add.w	lr, ip, r9
+    277e:	f8be e000 	ldrh.w	lr, [lr]
+    2782:	ea45 450e 	orr.w	r5, r5, lr, lsl #16
+    2786:	f10c 0c02 	add.w	ip, ip, #2
+    278a:	f8bc 6000 	ldrh.w	r6, [ip]
+    278e:	eb0c 0e09 	add.w	lr, ip, r9
+    2792:	f8be e000 	ldrh.w	lr, [lr]
+    2796:	ea46 460e 	orr.w	r6, r6, lr, lsl #16
+    279a:	f10c 0c02 	add.w	ip, ip, #2
+    279e:	f8cd c004 	str.w	ip, [sp, #4]
+    27a2:	f8dd c008 	ldr.w	ip, [sp, #8]
+    27a6:	f8bc 7000 	ldrh.w	r7, [ip]
+    27aa:	eb0c 0e09 	add.w	lr, ip, r9
+    27ae:	f8be e000 	ldrh.w	lr, [lr]
+    27b2:	ea47 470e 	orr.w	r7, r7, lr, lsl #16
+    27b6:	f10c 0c02 	add.w	ip, ip, #2
+    27ba:	f8bc 8000 	ldrh.w	r8, [ip]
+    27be:	eb0c 0e09 	add.w	lr, ip, r9
+    27c2:	f8be e000 	ldrh.w	lr, [lr]
+    27c6:	ea48 480e 	orr.w	r8, r8, lr, lsl #16
+    27ca:	f10c 0c02 	add.w	ip, ip, #2
+    27ce:	f8bc b000 	ldrh.w	fp, [ip]
+    27d2:	eb0c 0e09 	add.w	lr, ip, r9
+    27d6:	f8be e000 	ldrh.w	lr, [lr]
+    27da:	ea4b 4b0e 	orr.w	fp, fp, lr, lsl #16
+    27de:	f10c 0c02 	add.w	ip, ip, #2
+    27e2:	f8bc 0000 	ldrh.w	r0, [ip]
+    27e6:	eb0c 0e09 	add.w	lr, ip, r9
+    27ea:	f8be e000 	ldrh.w	lr, [lr]
+    27ee:	ea40 400e 	orr.w	r0, r0, lr, lsl #16
+    27f2:	f10c 0c02 	add.w	ip, ip, #2
+    27f6:	f8cd c008 	str.w	ip, [sp, #8]
+    27fa:	2202      	movs	r2, #2
+
+000027fc <fndsa_mqpoly_ntt_to_int__L3x512_lanes>:
+    27fc:	ed91 1e80 	vldrh.u16	q0, [r1, #0]
+    2800:	f101 0c20 	add.w	ip, r1, #32
+    2804:	ed9c 3e80 	vldrh.u16	q1, [ip, #0]
+    2808:	f101 0c40 	add.w	ip, r1, #64	@ 0x40
+    280c:	ed9c 5e80 	vldrh.u16	q2, [ip, #0]
+    2810:	f101 0c60 	add.w	ip, r1, #96	@ 0x60
+    2814:	ed9c 7e80 	vldrh.u16	q3, [ip, #0]
+    2818:	ff10 8842 	vsub.i16	q4, q0, q1
+    281c:	eeaa ab30 	vdup.16	q5, sl
+    2820:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2824:	fe71 0f4d 	vpst
+    2828:	ef18 884a 	vaddt.i16	q4, q4, q5
+    282c:	ef10 0842 	vadd.i16	q0, q0, q1
+    2830:	ff10 084a 	vsub.i16	q0, q0, q5
+    2834:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+    2838:	fe71 0f4d 	vpst
+    283c:	ef10 084a 	vaddt.i16	q0, q0, q5
+    2840:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2844:	ef00 c15c 	vand	q6, q0, q6
+    2848:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    284c:	fe71 0f4d 	vpst
+    2850:	ef10 084a 	vaddt.i16	q0, q0, q5
+    2854:	ff9f 0050 	vshr.u16	q0, q0, #1
+    2858:	ef28 2158 	vmov	q1, q4
+    285c:	eeac 7b30 	vdup.16	q6, r7
+    2860:	ea4f 4e27 	mov.w	lr, r7, asr #16
+    2864:	eeaa eb30 	vdup.16	q5, lr
+    2868:	ff12 ab4a 	vqrdmulh.s16	q5, q1, q5
+    286c:	ef12 295c 	vmul.i16	q1, q1, q6
+    2870:	ee1b 2e4a 	vmla.i16	q1, q5, sl
+    2874:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+    2878:	fe71 0f4d 	vpst
+    287c:	ee13 2f4a 	vaddt.i16	q1, q1, sl
+    2880:	ff14 8846 	vsub.i16	q4, q2, q3
+    2884:	eeaa ab30 	vdup.16	q5, sl
+    2888:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    288c:	fe71 0f4d 	vpst
+    2890:	ef18 884a 	vaddt.i16	q4, q4, q5
+    2894:	ef14 4846 	vadd.i16	q2, q2, q3
+    2898:	ff14 484a 	vsub.i16	q2, q2, q5
+    289c:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    28a0:	fe71 0f4d 	vpst
+    28a4:	ef14 484a 	vaddt.i16	q2, q2, q5
+    28a8:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    28ac:	ef04 c15c 	vand	q6, q2, q6
+    28b0:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    28b4:	fe71 0f4d 	vpst
+    28b8:	ef14 484a 	vaddt.i16	q2, q2, q5
+    28bc:	ff9f 4054 	vshr.u16	q2, q2, #1
+    28c0:	ef28 6158 	vmov	q3, q4
+    28c4:	eeac 8b30 	vdup.16	q6, r8
+    28c8:	ea4f 4e28 	mov.w	lr, r8, asr #16
+    28cc:	eeaa eb30 	vdup.16	q5, lr
+    28d0:	ff16 ab4a 	vqrdmulh.s16	q5, q3, q5
+    28d4:	ef16 695c 	vmul.i16	q3, q3, q6
+    28d8:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    28dc:	ff10 8844 	vsub.i16	q4, q0, q2
+    28e0:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    28e4:	fe71 0f4d 	vpst
+    28e8:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    28ec:	eeaa ab30 	vdup.16	q5, sl
+    28f0:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    28f4:	fe71 0f4d 	vpst
+    28f8:	ef18 884a 	vaddt.i16	q4, q4, q5
+    28fc:	ef10 0844 	vadd.i16	q0, q0, q2
+    2900:	ff10 084a 	vsub.i16	q0, q0, q5
+    2904:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+    2908:	fe71 0f4d 	vpst
+    290c:	ef10 084a 	vaddt.i16	q0, q0, q5
+    2910:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2914:	ef00 c15c 	vand	q6, q0, q6
+    2918:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    291c:	fe71 0f4d 	vpst
+    2920:	ef10 084a 	vaddt.i16	q0, q0, q5
+    2924:	ff9f 0050 	vshr.u16	q0, q0, #1
+    2928:	ef28 4158 	vmov	q2, q4
+    292c:	eeac 5b30 	vdup.16	q6, r5
+    2930:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    2934:	eeaa eb30 	vdup.16	q5, lr
+    2938:	ff14 ab4a 	vqrdmulh.s16	q5, q2, q5
+    293c:	ef14 495c 	vmul.i16	q2, q2, q6
+    2940:	ee1b 4e4a 	vmla.i16	q2, q5, sl
+    2944:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    2948:	fe71 0f4d 	vpst
+    294c:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    2950:	ff12 8846 	vsub.i16	q4, q1, q3
+    2954:	eeaa ab30 	vdup.16	q5, sl
+    2958:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    295c:	fe71 0f4d 	vpst
+    2960:	ef18 884a 	vaddt.i16	q4, q4, q5
+    2964:	ef12 2846 	vadd.i16	q1, q1, q3
+    2968:	ff12 284a 	vsub.i16	q1, q1, q5
+    296c:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+    2970:	fe71 0f4d 	vpst
+    2974:	ef12 284a 	vaddt.i16	q1, q1, q5
+    2978:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    297c:	ef02 c15c 	vand	q6, q1, q6
+    2980:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2984:	fe71 0f4d 	vpst
+    2988:	ef12 284a 	vaddt.i16	q1, q1, q5
+    298c:	ff9f 2052 	vshr.u16	q1, q1, #1
+    2990:	ef28 6158 	vmov	q3, q4
+    2994:	eeac 5b30 	vdup.16	q6, r5
+    2998:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    299c:	eeaa eb30 	vdup.16	q5, lr
+    29a0:	ff16 ab4a 	vqrdmulh.s16	q5, q3, q5
+    29a4:	ef16 695c 	vmul.i16	q3, q3, q6
+    29a8:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    29ac:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    29b0:	fe71 0f4d 	vpst
+    29b4:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    29b8:	ed81 1e80 	vstrh.16	q0, [r1, #0]
+    29bc:	f101 0c20 	add.w	ip, r1, #32
+    29c0:	ed8c 3e80 	vstrh.16	q1, [ip, #0]
+    29c4:	f101 0c40 	add.w	ip, r1, #64	@ 0x40
+    29c8:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+    29cc:	f101 0c60 	add.w	ip, r1, #96	@ 0x60
+    29d0:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+    29d4:	f101 0c80 	add.w	ip, r1, #128	@ 0x80
+    29d8:	ed9c 1e80 	vldrh.u16	q0, [ip, #0]
+    29dc:	f101 0ca0 	add.w	ip, r1, #160	@ 0xa0
+    29e0:	ed9c 3e80 	vldrh.u16	q1, [ip, #0]
+    29e4:	f101 0cc0 	add.w	ip, r1, #192	@ 0xc0
+    29e8:	ed9c 5e80 	vldrh.u16	q2, [ip, #0]
+    29ec:	f101 0ce0 	add.w	ip, r1, #224	@ 0xe0
+    29f0:	ed9c 7e80 	vldrh.u16	q3, [ip, #0]
+    29f4:	ff10 8842 	vsub.i16	q4, q0, q1
+    29f8:	eeaa ab30 	vdup.16	q5, sl
+    29fc:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2a00:	fe71 0f4d 	vpst
+    2a04:	ef18 884a 	vaddt.i16	q4, q4, q5
+    2a08:	ef10 0842 	vadd.i16	q0, q0, q1
+    2a0c:	ff10 084a 	vsub.i16	q0, q0, q5
+    2a10:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+    2a14:	fe71 0f4d 	vpst
+    2a18:	ef10 084a 	vaddt.i16	q0, q0, q5
+    2a1c:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2a20:	ef00 c15c 	vand	q6, q0, q6
+    2a24:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2a28:	fe71 0f4d 	vpst
+    2a2c:	ef10 084a 	vaddt.i16	q0, q0, q5
+    2a30:	ff9f 0050 	vshr.u16	q0, q0, #1
+    2a34:	ef28 2158 	vmov	q1, q4
+    2a38:	eeac bb30 	vdup.16	q6, fp
+    2a3c:	ea4f 4e2b 	mov.w	lr, fp, asr #16
+    2a40:	eeaa eb30 	vdup.16	q5, lr
+    2a44:	ff12 ab4a 	vqrdmulh.s16	q5, q1, q5
+    2a48:	ef12 295c 	vmul.i16	q1, q1, q6
+    2a4c:	ee1b 2e4a 	vmla.i16	q1, q5, sl
+    2a50:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+    2a54:	fe71 0f4d 	vpst
+    2a58:	ee13 2f4a 	vaddt.i16	q1, q1, sl
+    2a5c:	ff14 8846 	vsub.i16	q4, q2, q3
+    2a60:	eeaa ab30 	vdup.16	q5, sl
+    2a64:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2a68:	fe71 0f4d 	vpst
+    2a6c:	ef18 884a 	vaddt.i16	q4, q4, q5
+    2a70:	ef14 4846 	vadd.i16	q2, q2, q3
+    2a74:	ff14 484a 	vsub.i16	q2, q2, q5
+    2a78:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    2a7c:	fe71 0f4d 	vpst
+    2a80:	ef14 484a 	vaddt.i16	q2, q2, q5
+    2a84:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2a88:	ef04 c15c 	vand	q6, q2, q6
+    2a8c:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2a90:	fe71 0f4d 	vpst
+    2a94:	ef14 484a 	vaddt.i16	q2, q2, q5
+    2a98:	ff9f 4054 	vshr.u16	q2, q2, #1
+    2a9c:	ef28 6158 	vmov	q3, q4
+    2aa0:	eeac 0b30 	vdup.16	q6, r0
+    2aa4:	ea4f 4e20 	mov.w	lr, r0, asr #16
+    2aa8:	eeaa eb30 	vdup.16	q5, lr
+    2aac:	ff16 ab4a 	vqrdmulh.s16	q5, q3, q5
+    2ab0:	ef16 695c 	vmul.i16	q3, q3, q6
+    2ab4:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    2ab8:	ff10 8844 	vsub.i16	q4, q0, q2
+    2abc:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    2ac0:	fe71 0f4d 	vpst
+    2ac4:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    2ac8:	eeaa ab30 	vdup.16	q5, sl
+    2acc:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2ad0:	fe71 0f4d 	vpst
+    2ad4:	ef18 884a 	vaddt.i16	q4, q4, q5
+    2ad8:	ef10 0844 	vadd.i16	q0, q0, q2
+    2adc:	ff10 084a 	vsub.i16	q0, q0, q5
+    2ae0:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+    2ae4:	fe71 0f4d 	vpst
+    2ae8:	ef10 084a 	vaddt.i16	q0, q0, q5
+    2aec:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2af0:	ef00 c15c 	vand	q6, q0, q6
+    2af4:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2af8:	fe71 0f4d 	vpst
+    2afc:	ef10 084a 	vaddt.i16	q0, q0, q5
+    2b00:	ff9f 0050 	vshr.u16	q0, q0, #1
+    2b04:	ef28 4158 	vmov	q2, q4
+    2b08:	eeac 6b30 	vdup.16	q6, r6
+    2b0c:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    2b10:	eeaa eb30 	vdup.16	q5, lr
+    2b14:	ff14 ab4a 	vqrdmulh.s16	q5, q2, q5
+    2b18:	ef14 495c 	vmul.i16	q2, q2, q6
+    2b1c:	ee1b 4e4a 	vmla.i16	q2, q5, sl
+    2b20:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    2b24:	fe71 0f4d 	vpst
+    2b28:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    2b2c:	ff12 8846 	vsub.i16	q4, q1, q3
+    2b30:	eeaa ab30 	vdup.16	q5, sl
+    2b34:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2b38:	fe71 0f4d 	vpst
+    2b3c:	ef18 884a 	vaddt.i16	q4, q4, q5
+    2b40:	ef12 2846 	vadd.i16	q1, q1, q3
+    2b44:	ff12 284a 	vsub.i16	q1, q1, q5
+    2b48:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+    2b4c:	fe71 0f4d 	vpst
+    2b50:	ef12 284a 	vaddt.i16	q1, q1, q5
+    2b54:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2b58:	ef02 c15c 	vand	q6, q1, q6
+    2b5c:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2b60:	fe71 0f4d 	vpst
+    2b64:	ef12 284a 	vaddt.i16	q1, q1, q5
+    2b68:	ff9f 2052 	vshr.u16	q1, q1, #1
+    2b6c:	ef28 6158 	vmov	q3, q4
+    2b70:	eeac 6b30 	vdup.16	q6, r6
+    2b74:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    2b78:	eeaa eb30 	vdup.16	q5, lr
+    2b7c:	ff16 ab4a 	vqrdmulh.s16	q5, q3, q5
+    2b80:	ef16 695c 	vmul.i16	q3, q3, q6
+    2b84:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    2b88:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    2b8c:	fe71 0f4d 	vpst
+    2b90:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    2b94:	ed91 9e80 	vldrh.u16	q4, [r1, #0]
+    2b98:	ff18 a840 	vsub.i16	q5, q4, q0
+    2b9c:	eeac ab30 	vdup.16	q6, sl
+    2ba0:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2ba4:	fe71 0f4d 	vpst
+    2ba8:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    2bac:	ef18 8840 	vadd.i16	q4, q4, q0
+    2bb0:	ff18 884c 	vsub.i16	q4, q4, q6
+    2bb4:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2bb8:	fe71 0f4d 	vpst
+    2bbc:	ef18 884c 	vaddt.i16	q4, q4, q6
+    2bc0:	ef80 e851 	vmov.i16	q7, #1	@ 0x0001
+    2bc4:	ef08 e15e 	vand	q7, q4, q7
+    2bc8:	fe1f 0fcf 	vcmp.i16	ne, q7, zr
+    2bcc:	fe71 0f4d 	vpst
+    2bd0:	ef18 884c 	vaddt.i16	q4, q4, q6
+    2bd4:	ff9f 8058 	vshr.u16	q4, q4, #1
+    2bd8:	ef2a 015a 	vmov	q0, q5
+    2bdc:	eeae 4b30 	vdup.16	q7, r4
+    2be0:	ea4f 4e24 	mov.w	lr, r4, asr #16
+    2be4:	eeac eb30 	vdup.16	q6, lr
+    2be8:	ff10 cb4c 	vqrdmulh.s16	q6, q0, q6
+    2bec:	ef10 095e 	vmul.i16	q0, q0, q7
+    2bf0:	ee1d 0e4a 	vmla.i16	q0, q6, sl
+    2bf4:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+    2bf8:	fe71 0f4d 	vpst
+    2bfc:	ee11 0f4a 	vaddt.i16	q0, q0, sl
+    2c00:	ed81 9e80 	vstrh.16	q4, [r1, #0]
+    2c04:	f101 0c80 	add.w	ip, r1, #128	@ 0x80
+    2c08:	ed8c 1e80 	vstrh.16	q0, [ip, #0]
+    2c0c:	f101 0c20 	add.w	ip, r1, #32
+    2c10:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+    2c14:	ff18 a842 	vsub.i16	q5, q4, q1
+    2c18:	eeac ab30 	vdup.16	q6, sl
+    2c1c:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2c20:	fe71 0f4d 	vpst
+    2c24:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    2c28:	ef18 8842 	vadd.i16	q4, q4, q1
+    2c2c:	ff18 884c 	vsub.i16	q4, q4, q6
+    2c30:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2c34:	fe71 0f4d 	vpst
+    2c38:	ef18 884c 	vaddt.i16	q4, q4, q6
+    2c3c:	ef80 e851 	vmov.i16	q7, #1	@ 0x0001
+    2c40:	ef08 e15e 	vand	q7, q4, q7
+    2c44:	fe1f 0fcf 	vcmp.i16	ne, q7, zr
+    2c48:	fe71 0f4d 	vpst
+    2c4c:	ef18 884c 	vaddt.i16	q4, q4, q6
+    2c50:	ff9f 8058 	vshr.u16	q4, q4, #1
+    2c54:	ef2a 215a 	vmov	q1, q5
+    2c58:	eeae 4b30 	vdup.16	q7, r4
+    2c5c:	ea4f 4e24 	mov.w	lr, r4, asr #16
+    2c60:	eeac eb30 	vdup.16	q6, lr
+    2c64:	ff12 cb4c 	vqrdmulh.s16	q6, q1, q6
+    2c68:	ef12 295e 	vmul.i16	q1, q1, q7
+    2c6c:	ee1d 2e4a 	vmla.i16	q1, q6, sl
+    2c70:	fe13 1fcf 	vcmp.s16	lt, q1, zr
+    2c74:	fe71 0f4d 	vpst
+    2c78:	ee13 2f4a 	vaddt.i16	q1, q1, sl
+    2c7c:	f101 0c20 	add.w	ip, r1, #32
+    2c80:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+    2c84:	f101 0ca0 	add.w	ip, r1, #160	@ 0xa0
+    2c88:	ed8c 3e80 	vstrh.16	q1, [ip, #0]
+    2c8c:	f101 0c40 	add.w	ip, r1, #64	@ 0x40
+    2c90:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+    2c94:	ff18 a844 	vsub.i16	q5, q4, q2
+    2c98:	eeac ab30 	vdup.16	q6, sl
+    2c9c:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2ca0:	fe71 0f4d 	vpst
+    2ca4:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    2ca8:	ef18 8844 	vadd.i16	q4, q4, q2
+    2cac:	ff18 884c 	vsub.i16	q4, q4, q6
+    2cb0:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2cb4:	fe71 0f4d 	vpst
+    2cb8:	ef18 884c 	vaddt.i16	q4, q4, q6
+    2cbc:	ef80 e851 	vmov.i16	q7, #1	@ 0x0001
+    2cc0:	ef08 e15e 	vand	q7, q4, q7
+    2cc4:	fe1f 0fcf 	vcmp.i16	ne, q7, zr
+    2cc8:	fe71 0f4d 	vpst
+    2ccc:	ef18 884c 	vaddt.i16	q4, q4, q6
+    2cd0:	ff9f 8058 	vshr.u16	q4, q4, #1
+    2cd4:	ef2a 415a 	vmov	q2, q5
+    2cd8:	eeae 4b30 	vdup.16	q7, r4
+    2cdc:	ea4f 4e24 	mov.w	lr, r4, asr #16
+    2ce0:	eeac eb30 	vdup.16	q6, lr
+    2ce4:	ff14 cb4c 	vqrdmulh.s16	q6, q2, q6
+    2ce8:	ef14 495e 	vmul.i16	q2, q2, q7
+    2cec:	ee1d 4e4a 	vmla.i16	q2, q6, sl
+    2cf0:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    2cf4:	fe71 0f4d 	vpst
+    2cf8:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    2cfc:	f101 0c40 	add.w	ip, r1, #64	@ 0x40
+    2d00:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+    2d04:	f101 0cc0 	add.w	ip, r1, #192	@ 0xc0
+    2d08:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+    2d0c:	f101 0c60 	add.w	ip, r1, #96	@ 0x60
+    2d10:	ed9c 9e80 	vldrh.u16	q4, [ip, #0]
+    2d14:	ff18 a846 	vsub.i16	q5, q4, q3
+    2d18:	eeac ab30 	vdup.16	q6, sl
+    2d1c:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2d20:	fe71 0f4d 	vpst
+    2d24:	ef1a a84c 	vaddt.i16	q5, q5, q6
+    2d28:	ef18 8846 	vadd.i16	q4, q4, q3
+    2d2c:	ff18 884c 	vsub.i16	q4, q4, q6
+    2d30:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2d34:	fe71 0f4d 	vpst
+    2d38:	ef18 884c 	vaddt.i16	q4, q4, q6
+    2d3c:	ef80 e851 	vmov.i16	q7, #1	@ 0x0001
+    2d40:	ef08 e15e 	vand	q7, q4, q7
+    2d44:	fe1f 0fcf 	vcmp.i16	ne, q7, zr
+    2d48:	fe71 0f4d 	vpst
+    2d4c:	ef18 884c 	vaddt.i16	q4, q4, q6
+    2d50:	ff9f 8058 	vshr.u16	q4, q4, #1
+    2d54:	ef2a 615a 	vmov	q3, q5
+    2d58:	eeae 4b30 	vdup.16	q7, r4
+    2d5c:	ea4f 4e24 	mov.w	lr, r4, asr #16
+    2d60:	eeac eb30 	vdup.16	q6, lr
+    2d64:	ff16 cb4c 	vqrdmulh.s16	q6, q3, q6
+    2d68:	ef16 695e 	vmul.i16	q3, q3, q7
+    2d6c:	ee1d 6e4a 	vmla.i16	q3, q6, sl
+    2d70:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    2d74:	fe71 0f4d 	vpst
+    2d78:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    2d7c:	f101 0c60 	add.w	ip, r1, #96	@ 0x60
+    2d80:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+    2d84:	f101 0ce0 	add.w	ip, r1, #224	@ 0xe0
+    2d88:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+    2d8c:	f101 0110 	add.w	r1, r1, #16
+    2d90:	3a01      	subs	r2, #1
+    2d92:	f47f ad33 	bne.w	27fc <fndsa_mqpoly_ntt_to_int__L3x512_lanes>
+    2d96:	f101 01e0 	add.w	r1, r1, #224	@ 0xe0
+    2d9a:	3b01      	subs	r3, #1
+    2d9c:	f47f acdb 	bne.w	2756 <fndsa_mqpoly_ntt_to_int__L3x512_block>
+    2da0:	f8dd 8000 	ldr.w	r8, [sp]
+    2da4:	9903      	ldr	r1, [sp, #12]
+    2da6:	b004      	add	sp, #16
+    2da8:	ee01 1a10 	vmov	s2, r1
+    2dac:	f243 0a01 	movw	sl, #12289	@ 0x3001
+
+00002db0 <fndsa_mqpoly_ntt_to_int__L512_GS2_wide>:
+    2db0:	f20f 38dc 	addw	r8, pc, #988	@ 0x3dc
+    2db4:	f8d8 8000 	ldr.w	r8, [r8]
+    2db8:	f8b8 5002 	ldrh.w	r5, [r8, #2]
+    2dbc:	eb08 0e09 	add.w	lr, r8, r9
+    2dc0:	f8be e002 	ldrh.w	lr, [lr, #2]
+    2dc4:	ea45 450e 	orr.w	r5, r5, lr, lsl #16
+    2dc8:	f8b8 6004 	ldrh.w	r6, [r8, #4]
+    2dcc:	eb08 0e09 	add.w	lr, r8, r9
+    2dd0:	f8be e004 	ldrh.w	lr, [lr, #4]
+    2dd4:	ea46 460e 	orr.w	r6, r6, lr, lsl #16
+    2dd8:	f8b8 7006 	ldrh.w	r7, [r8, #6]
+    2ddc:	eb08 0e09 	add.w	lr, r8, r9
+    2de0:	f8be e006 	ldrh.w	lr, [lr, #6]
+    2de4:	ea47 470e 	orr.w	r7, r7, lr, lsl #16
+    2de8:	f240 1200 	movw	r2, #256	@ 0x100
+    2dec:	2310      	movs	r3, #16
+    2dee:	ee11 1a10 	vmov	r1, s2
+    2df2:	ed91 3e80 	vldrh.u16	q1, [r1, #0]
+    2df6:	eb01 0402 	add.w	r4, r1, r2
+    2dfa:	ed94 5e80 	vldrh.u16	q2, [r4, #0]
+    2dfe:	eb04 0402 	add.w	r4, r4, r2
+    2e02:	ed94 7e80 	vldrh.u16	q3, [r4, #0]
+    2e06:	eb04 0402 	add.w	r4, r4, r2
+    2e0a:	ed94 9e80 	vldrh.u16	q4, [r4, #0]
+    2e0e:	3b01      	subs	r3, #1
+    2e10:	f000 80e3 	beq.w	2fda <fndsa_mqpoly_ntt_to_int__L512_GS2_wide_epilogue>
+
+00002e14 <fndsa_mqpoly_ntt_to_int__L512_GS2_wide_steady>:
+    2e14:	eeae ab30 	vdup.16	q7, sl
+    2e18:	ef12 a844 	vadd.i16	q5, q1, q2
+    2e1c:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2e20:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2e24:	fe71 0f4d 	vpst
+    2e28:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2e2c:	ff12 4844 	vsub.i16	q2, q1, q2
+    2e30:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    2e34:	fe71 0f4d 	vpst
+    2e38:	ef14 484e 	vaddt.i16	q2, q2, q7
+    2e3c:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2e40:	ef0a c15c 	vand	q6, q5, q6
+    2e44:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2e48:	fe71 0f4d 	vpst
+    2e4c:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2e50:	ff9f 205a 	vshr.u16	q1, q5, #1
+    2e54:	eeae 6b30 	vdup.16	q7, r6
+    2e58:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    2e5c:	eeac eb30 	vdup.16	q6, lr
+    2e60:	ff14 ab4c 	vqrdmulh.s16	q5, q2, q6
+    2e64:	ef14 495e 	vmul.i16	q2, q2, q7
+    2e68:	ee1b 4e4a 	vmla.i16	q2, q5, sl
+    2e6c:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    2e70:	fe71 0f4d 	vpst
+    2e74:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    2e78:	eeae ab30 	vdup.16	q7, sl
+    2e7c:	ef16 a848 	vadd.i16	q5, q3, q4
+    2e80:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2e84:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2e88:	fe71 0f4d 	vpst
+    2e8c:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2e90:	ff16 8848 	vsub.i16	q4, q3, q4
+    2e94:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2e98:	fe71 0f4d 	vpst
+    2e9c:	ef18 884e 	vaddt.i16	q4, q4, q7
+    2ea0:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2ea4:	ef0a c15c 	vand	q6, q5, q6
+    2ea8:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2eac:	fe71 0f4d 	vpst
+    2eb0:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2eb4:	ff9f 605a 	vshr.u16	q3, q5, #1
+    2eb8:	eeae 7b30 	vdup.16	q7, r7
+    2ebc:	ea4f 4e27 	mov.w	lr, r7, asr #16
+    2ec0:	eeac eb30 	vdup.16	q6, lr
+    2ec4:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    2ec8:	ef18 895e 	vmul.i16	q4, q4, q7
+    2ecc:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    2ed0:	ef12 a846 	vadd.i16	q5, q1, q3
+    2ed4:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2ed8:	fe71 0f4d 	vpst
+    2edc:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    2ee0:	eeae ab30 	vdup.16	q7, sl
+    2ee4:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2ee8:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2eec:	fe71 0f4d 	vpst
+    2ef0:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2ef4:	ff12 6846 	vsub.i16	q3, q1, q3
+    2ef8:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    2efc:	fe71 0f4d 	vpst
+    2f00:	ef16 684e 	vaddt.i16	q3, q3, q7
+    2f04:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2f08:	ef0a c15c 	vand	q6, q5, q6
+    2f0c:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2f10:	fe71 0f4d 	vpst
+    2f14:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2f18:	ff9f 205a 	vshr.u16	q1, q5, #1
+    2f1c:	eeae 5b30 	vdup.16	q7, r5
+    2f20:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    2f24:	eeac eb30 	vdup.16	q6, lr
+    2f28:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    2f2c:	ef16 695e 	vmul.i16	q3, q3, q7
+    2f30:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    2f34:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    2f38:	fe71 0f4d 	vpst
+    2f3c:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    2f40:	eeae ab30 	vdup.16	q7, sl
+    2f44:	ef14 a848 	vadd.i16	q5, q2, q4
+    2f48:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2f4c:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2f50:	fe71 0f4d 	vpst
+    2f54:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2f58:	ff14 8848 	vsub.i16	q4, q2, q4
+    2f5c:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2f60:	fe71 0f4d 	vpst
+    2f64:	ef18 884e 	vaddt.i16	q4, q4, q7
+    2f68:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    2f6c:	ef0a c15c 	vand	q6, q5, q6
+    2f70:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    2f74:	fe71 0f4d 	vpst
+    2f78:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2f7c:	ff9f 405a 	vshr.u16	q2, q5, #1
+    2f80:	eeae 5b30 	vdup.16	q7, r5
+    2f84:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    2f88:	eeac eb30 	vdup.16	q6, lr
+    2f8c:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    2f90:	ef18 895e 	vmul.i16	q4, q4, q7
+    2f94:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    2f98:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    2f9c:	fe71 0f4d 	vpst
+    2fa0:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    2fa4:	ed81 3e80 	vstrh.16	q1, [r1, #0]
+    2fa8:	ed91 3e88 	vldrh.u16	q1, [r1, #16]
+    2fac:	eb01 0c02 	add.w	ip, r1, r2
+    2fb0:	ed8c 5e80 	vstrh.16	q2, [ip, #0]
+    2fb4:	ed9c 5e88 	vldrh.u16	q2, [ip, #16]
+    2fb8:	eb0c 0c02 	add.w	ip, ip, r2
+    2fbc:	ed8c 7e80 	vstrh.16	q3, [ip, #0]
+    2fc0:	ed9c 7e88 	vldrh.u16	q3, [ip, #16]
+    2fc4:	eb0c 0c02 	add.w	ip, ip, r2
+    2fc8:	ed8c 9e80 	vstrh.16	q4, [ip, #0]
+    2fcc:	ed9c 9e88 	vldrh.u16	q4, [ip, #16]
+    2fd0:	f101 0110 	add.w	r1, r1, #16
+    2fd4:	3b01      	subs	r3, #1
+    2fd6:	f47f af1d 	bne.w	2e14 <fndsa_mqpoly_ntt_to_int__L512_GS2_wide_steady>
+
+00002fda <fndsa_mqpoly_ntt_to_int__L512_GS2_wide_epilogue>:
+    2fda:	eeae ab30 	vdup.16	q7, sl
+    2fde:	ef12 a844 	vadd.i16	q5, q1, q2
+    2fe2:	ff1a a84e 	vsub.i16	q5, q5, q7
+    2fe6:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    2fea:	fe71 0f4d 	vpst
+    2fee:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    2ff2:	ff12 4844 	vsub.i16	q2, q1, q2
+    2ff6:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    2ffa:	fe71 0f4d 	vpst
+    2ffe:	ef14 484e 	vaddt.i16	q2, q2, q7
+    3002:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    3006:	ef0a c15c 	vand	q6, q5, q6
+    300a:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    300e:	fe71 0f4d 	vpst
+    3012:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    3016:	ff9f 205a 	vshr.u16	q1, q5, #1
+    301a:	eeae 6b30 	vdup.16	q7, r6
+    301e:	ea4f 4e26 	mov.w	lr, r6, asr #16
+    3022:	eeac eb30 	vdup.16	q6, lr
+    3026:	ff14 ab4c 	vqrdmulh.s16	q5, q2, q6
+    302a:	ef14 495e 	vmul.i16	q2, q2, q7
+    302e:	ee1b 4e4a 	vmla.i16	q2, q5, sl
+    3032:	fe15 1fcf 	vcmp.s16	lt, q2, zr
+    3036:	fe71 0f4d 	vpst
+    303a:	ee15 4f4a 	vaddt.i16	q2, q2, sl
+    303e:	eeae ab30 	vdup.16	q7, sl
+    3042:	ef16 a848 	vadd.i16	q5, q3, q4
+    3046:	ff1a a84e 	vsub.i16	q5, q5, q7
+    304a:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    304e:	fe71 0f4d 	vpst
+    3052:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    3056:	ff16 8848 	vsub.i16	q4, q3, q4
+    305a:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    305e:	fe71 0f4d 	vpst
+    3062:	ef18 884e 	vaddt.i16	q4, q4, q7
+    3066:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    306a:	ef0a c15c 	vand	q6, q5, q6
+    306e:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    3072:	fe71 0f4d 	vpst
+    3076:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    307a:	ff9f 605a 	vshr.u16	q3, q5, #1
+    307e:	eeae 7b30 	vdup.16	q7, r7
+    3082:	ea4f 4e27 	mov.w	lr, r7, asr #16
+    3086:	eeac eb30 	vdup.16	q6, lr
+    308a:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    308e:	ef18 895e 	vmul.i16	q4, q4, q7
+    3092:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    3096:	ef12 a846 	vadd.i16	q5, q1, q3
+    309a:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    309e:	fe71 0f4d 	vpst
+    30a2:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    30a6:	eeae ab30 	vdup.16	q7, sl
+    30aa:	ff1a a84e 	vsub.i16	q5, q5, q7
+    30ae:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    30b2:	fe71 0f4d 	vpst
+    30b6:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    30ba:	ff12 6846 	vsub.i16	q3, q1, q3
+    30be:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    30c2:	fe71 0f4d 	vpst
+    30c6:	ef16 684e 	vaddt.i16	q3, q3, q7
+    30ca:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    30ce:	ef0a c15c 	vand	q6, q5, q6
+    30d2:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    30d6:	fe71 0f4d 	vpst
+    30da:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    30de:	ff9f 205a 	vshr.u16	q1, q5, #1
+    30e2:	eeae 5b30 	vdup.16	q7, r5
+    30e6:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    30ea:	eeac eb30 	vdup.16	q6, lr
+    30ee:	ff16 ab4c 	vqrdmulh.s16	q5, q3, q6
+    30f2:	ef16 695e 	vmul.i16	q3, q3, q7
+    30f6:	ee1b 6e4a 	vmla.i16	q3, q5, sl
+    30fa:	fe17 1fcf 	vcmp.s16	lt, q3, zr
+    30fe:	fe71 0f4d 	vpst
+    3102:	ee17 6f4a 	vaddt.i16	q3, q3, sl
+    3106:	eeae ab30 	vdup.16	q7, sl
+    310a:	ef14 a848 	vadd.i16	q5, q2, q4
+    310e:	ff1a a84e 	vsub.i16	q5, q5, q7
+    3112:	fe1b 1fcf 	vcmp.s16	lt, q5, zr
+    3116:	fe71 0f4d 	vpst
+    311a:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    311e:	ff14 8848 	vsub.i16	q4, q2, q4
+    3122:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    3126:	fe71 0f4d 	vpst
+    312a:	ef18 884e 	vaddt.i16	q4, q4, q7
+    312e:	ef80 c851 	vmov.i16	q6, #1	@ 0x0001
+    3132:	ef0a c15c 	vand	q6, q5, q6
+    3136:	fe1d 0fcf 	vcmp.i16	ne, q6, zr
+    313a:	fe71 0f4d 	vpst
+    313e:	ef1a a84e 	vaddt.i16	q5, q5, q7
+    3142:	ff9f 405a 	vshr.u16	q2, q5, #1
+    3146:	eeae 5b30 	vdup.16	q7, r5
+    314a:	ea4f 4e25 	mov.w	lr, r5, asr #16
+    314e:	eeac eb30 	vdup.16	q6, lr
+    3152:	ff18 ab4c 	vqrdmulh.s16	q5, q4, q6
+    3156:	ef18 895e 	vmul.i16	q4, q4, q7
+    315a:	ee1b 8e4a 	vmla.i16	q4, q5, sl
+    315e:	fe19 1fcf 	vcmp.s16	lt, q4, zr
+    3162:	fe71 0f4d 	vpst
+    3166:	ee19 8f4a 	vaddt.i16	q4, q4, sl
+    316a:	ed81 3e80 	vstrh.16	q1, [r1, #0]
+    316e:	eb01 0402 	add.w	r4, r1, r2
+    3172:	ed84 5e80 	vstrh.16	q2, [r4, #0]
+    3176:	eb04 0402 	add.w	r4, r4, r2
+    317a:	ed84 7e80 	vstrh.16	q3, [r4, #0]
+    317e:	eb04 0402 	add.w	r4, r4, r2
+    3182:	ed84 9e80 	vstrh.16	q4, [r4, #0]
+    3186:	e7ff      	b.n	3188 <fndsa_mqpoly_ntt_to_int__Lend>
+
+00003188 <fndsa_mqpoly_ntt_to_int__Lend>:
+    3188:	ecbd 8b10 	vpop	{d8-d15}
+    318c:	e8bd 8ff1 	ldmia.w	sp!, {r0, r4, r5, r6, r7, r8, r9, sl, fp, pc}
+
+00003190 <fndsa_mqpoly_ntt_to_int__igmaddr>:
+    3190:	00000000 	.word	0x00000000
+
+00003194 <fndsa_stage3_mul_probe>:
+    3194:	e92d 4400 	stmdb	sp!, {sl, lr}
+    3198:	f243 0a01 	movw	sl, #12289	@ 0x3001
+    319c:	eea0 0b30 	vdup.16	q0, r0
+    31a0:	b289      	uxth	r1, r1
+    31a2:	ea41 4102 	orr.w	r1, r1, r2, lsl #16
+    31a6:	eea2 1b30 	vdup.16	q1, r1
+    31aa:	ea4f 4e21 	mov.w	lr, r1, asr #16
+    31ae:	eea6 eb30 	vdup.16	q3, lr
+    31b2:	ff10 4b46 	vqrdmulh.s16	q2, q0, q3
+    31b6:	ef10 0952 	vmul.i16	q0, q0, q1
+    31ba:	ee15 0e4a 	vmla.i16	q0, q2, sl
+    31be:	fe11 1fcf 	vcmp.s16	lt, q0, zr
+    31c2:	fe71 0f4d 	vpst
+    31c6:	ee11 0f4a 	vaddt.i16	q0, q0, sl
+    31ca:	ee10 0a10 	vmov	r0, s0
+    31ce:	b280      	uxth	r0, r0
+    31d0:	e8bd 8400 	ldmia.w	sp!, {sl, pc}

@@ -1,0 +1,52 @@
+DOCUMENT: m55_slothy.pdf PAGE: 17/46
+
+Abdulrahman, Becker, Kannwischer, Klein 17
+size of the issue queues. We therefore expect that code which is scheduled in consideration
+of execution units and latencies, is less likely to hit the limits of the reordering capabilities,
+and should thus perform better. Concretely, for example, instructions scheduled in
+consideration of the latencies of their source instructions will have a shorter wait in the
+issue queue and are therefore less likely to lead to overflows in the latter.
+Second, the out-of-order microarchitectures considered here have in-order frontend
+which takes care of, among other things, register renaming and instruction dispatch to
+issue queues. If the width of this frontend (for the instruction classes under consideration)
+is close to the width of the execution backend (for the same class), a constantly high
+throughput of the former is required for high utilization of the latter — we will look at
+specific examples later. Moreover, the frontend being in-order, its throughput maximization
+becomes a scheduling sensitive problem that we can attempt to model in SLOTHY.
+4.11 Input and output registers
+As mentioned in Section 3.1, we model inputs and outputs as special nodes in the com-
+putational flow graph, with input nodes not having any inputs, and output nodes not
+having any outputs. Input nodes are added automatically during CFG construction: If an
+instruction takes an input argument which has not been written to so far, a new input node
+is created and a dependency added between that input node and the current instruction.
+Output nodes, in turn, are created on behalf of the user: SLOTHY cannot know which
+registers written to by the current program excerpt are actually relevant for the remainder
+of the program, and which ones are merely temporaries — it’s for the user to say. For every
+output register, we then create an output node dependent on the last instruction that
+wrote the register. A noteworthy special case is when a register declared as an ’output’ is
+never written to: In this case, a pair of depending input and output nodes is created for
+that register, thereby preventing other instructions from using the register.
+During the construction of the constraint model, input and output nodes are largely
+treated like ordinary instruction nodes: They have a program order position, input and
+output dependencies, and contribute to the tracking of register lifetimes and usage. They
+are only special in that they have their position fixed to the beginning/end of the program,
+and do not enter microarchitectural constraints. This uniformity simplifies the model
+significantly — an earlier version of SLOTHY did not use input and output nodes, and
+was considerably more complex and error-prone.
+4.12 Memory, stack and flags
+SLOTHY does not have an in-built notion of memory. In our Armv8.1-M+Helium and
+AArch64+Neon models discussed below, store instructions are modelled as having no
+output, while load instructions are modelled as having no input except for the address
+register. This approach is sound if there are no data dependencies through memory
+within the range of a single SLOTHY optimization, which is the case for the common
+load-operate-store style loop not relying on the stack as temporary storage.
+Where use of the stack is required, the following simple trick can be used: Stack
+locations can be modelled as “registers” of a separate register type, which are written
+to and read from via virtual instructions that have the same properties as loads/stores
+(e.g. in terms of latencies and functional units used). With this approach, which fits into
+the existing framework of SLOTHY, data dependencies can be tracked across stack spills
+without having to model linear memory. This approach works more generally for any static
+use of memory. We use it to model the stack in some of the NTT examples as well as the
+X25519 example discussed in Section 8.4.
+A similar trick applies to modelling arithmetic flags: Each such flag can be modelled
+as a “register” of a dedicated register type, and instructions are marked as depending on

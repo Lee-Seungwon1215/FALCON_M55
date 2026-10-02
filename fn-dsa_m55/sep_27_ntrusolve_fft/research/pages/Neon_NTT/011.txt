@@ -1,0 +1,66 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 11/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 11
+3.1.2 Barrett multiplication
+The relation between Barrett reduction and Montgomery reduction exhibited in the
+previous section raises the question of whether there is a natural extension to Montgomery
+multiplication, and what the analog on the Barrett side is. The answer turns out to be a
+variant of Barrett reduction for multiplication with known constants, which we describe in
+this section. While very natural in retrospect, the definitions and results are novel to the
+best of our knowledge.4
+Recall (Section 2.4.1) the idea of Barrett reduction: To reduce z∈Z, we approximate
+z mod±N= z−N·
+z
+N= z−N·
+zR
+N
+R
+≈z−N·
+z R
+N
+R ,
+replacing zR
+N by the precomputed z R
+N . If z= ab for a,b∈Z and b a known constant,
+we can improve the quality of the approximation by pulling b into the approximation,
+approximating abR
+N ≈a bR
+N , where bR
+N can be precomputed. We call this the “Barrett
+multiplication” of a,b and denote it bar N (a,b), or bar±
+N(a,b) if = ⌊⌉. As before, the
+choice of Ris implicit in the notation and to be understood from the context. We describe
+Barrett multiplication in Algorithm 6.
+Algorithm 6 Barrett multiplication, abstract view
+Require: N modulus, R= 2n >N
+Require: b∈Z,
+bR
+N ∈Z precomputed integer approximation of bR
+N.
+Require: a∈Z representative mod N with |a|<R, to be reduced
+Ensure: bar N (a,b) representative of ab with |bar N (a,b)|<N.
+1: z←ab
+2: t←
+a bR
+N
+R
+3: c←Nt
+4: bar N (a,b) ←z−c
+We now obtain the desired analog of Proposition 1 for Barrett multiplication:
+Proposition 2. Let N be odd, R= 2n >N and a,b∈Z. Then Barrett multiplication
+and negative Montgomery multiplication satisfy the following relation:
+bar±
+N(a,b) = mont−
+N(a,bR mod±N).
+More generally, for an arbitrary approximation , we have
+bar N (a,b) = mont−
+N(a,bR mod N).
+Proof. Replace R mod N by bR mod N in the proof of Proposition 1.
+Corollary 2. In the context of Proposition 2,
+|bar N (a,b)|≤a(bR mod N)
+R +
+2
+In particular, for |a|<N and N < R
+2 we have |bar N (a,b)|<N.
+4See Addendum: Related work for a post-publication correction with respect to prior art.
+N

@@ -1,0 +1,61 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 15/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 15
+our knowledge, the approach is novel, and rests on the shift-with-carry instruction VSHLC
+illustrated in Figure 3.
+Outline We outline the algorithm for k= 16. We can write
+a= (a0 + a8X8)X0 + (a1 + a9X8)X1 +...+ (a7 + a15X8)X7
+=
+i(ai + a8+iX8)Xi
+,
+hence ab= i (ai + a8+iX8)b Xi
+. We will now separately discuss the following:
+• How to eﬃciently compute one subproduct (ai + a8+iX8)b in the sum. We will
+express this as an 8-fold batch multiplication over Z216 [X]/(X2 + 1).
+• How to shift + accumulate in the sum. We will express this as an iteration of addition
+and negacyclic rotation, similar to a linear feedback shift register.
+Subproduct computation We write b= i(bi+ b8+iX8)Xi as before, and hence obtain
+(ai + a8+iX8)b= j(ai + a8+iX8)(bj + b8+jX8)Xj
+. Now, note that Z216 [X8]/(X16 + 1)
+is a subring of Z216 [X]/(X16 + 1) isomorphic to the “complex numbers” Z216 [Y]/(Y2 + 1)
+– we therefore have to compute a batch multiplication in Z216 [Y]/(Y2 + 1) of the fixed
+ai + a8+iY with the varying bj + b8+jY, j = 0,1,...,7.
+This batch multiplication is easy to vectorize: If ai and a8+i are in GPRs a0, a1, and
+b0,...,b7 and b8,...,b15 are in vectors b0 and b1, we only have to calculate a scalar-vector
+2×2 schoolbook multiplication (a0 +a1Y)(b0 +b1Y) = (a0b0−a1b1)+Y(a0b1 +a1b0).This
+uses 2 GPRs for the a, 2 vector registers for the b, and 2 vector registers for the output.
+Multiplication is done via VMUL.u16 / VMLA.u16. Since there is no multiply-subtract
+variant of VMLA.u16, the computation of−a1b1 requires flipping the sign of a1 or b1.
+Accumulation We need to compute the sum ab= i (ai + a8+iX8)b Xi
+.and discussed
+how to compute an individual product (ai+ a8+iX8)b. We now consider how to sum them.
+Since·X is a negacyclic shift (z0,...,zk−1) →(−zk−1,z0,...,zk−2), computing [(ai +
+a8+iX8)b]Xi from (ai + a8+iX8)b means a negacyclic shift of i positions. This does not
+map well to MVE because the maximum shift amount of VSHLC is 32 bits, hence two 16-bit
+coeﬃcients. Instead, setting ai := ai + a8+iX8, we can rewrite the sum as follows:
+ab=
+i[aib] Xi
+= a0b+ (a1b+ (...+ (a6b+ (a7b+ 0)X)···X)X)
+Here, we only shift by X, corresponding to a VSHLC Qd,Ra,#16. Moreover, we can handle
+the sum through multiply-accumulates in the schoolbook subroutine computing aib+ _.
+Implementation considerations We describe how to map the above algorithm to the
+Helium instruction set and the microarchitecture of the Cortex-M55 processor.
+First, consider a rotation (b0,...,b15) →(−b15,b0,...,b14), where b is stored in vector
+registers b0 = (b0,...,b7) and b1 = (b8,...,b15): To begin, two chained invocations
+of VSHLC with carry GPR c yield b0
+′ = (cold,b0,...,b6) and b1
+′ = (b7,...,b14), with
+cnew
+= b15 (in-carry and out-carry in VSHLC use the same GPR). After that,−cnew
+=−b15
+has to be fed back into b0
+′. We implement this lazily by buﬀering cnew in a vector
+C = (0,...,0,c) and deferring correcting b0
+′. If C is initially 0, we can simultaneously
+store c in C and clear it via VSHLC. We only need to correct b0
+′once after the full loop.
+A standalone implementation of the anticyclic shift would not perform well on a
+dual-beat system like the Cortex-M55 processor, because consecutive invocations of VSHLC
+would stall. We will revisit this after studying the nature of each subproduct computation.
+Each subproduct involves the following: Firstly, loading of a-input in two GPRs, ideally
+using LDRD to load a pair of GPRs at once. Secondly, 4×multiply via VMUL.u16 or

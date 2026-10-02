@@ -1,0 +1,15 @@
+{
+  "elf": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/zephyr.elf",
+  "elf_sha256": "44e351780ce356112a9d53d577a5a5b5c2831de1b43d4cec39b0b267763aabdb",
+  "command": [
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python",
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/diagnose_startup.py",
+    "--worker",
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/zephyr.elf"
+  ],
+  "probe": "003C00223335510735383531",
+  "diagnostic_memcpy_in_axisram": true,
+  "startup_reached_get_bootargs": false,
+  "wrapper_returncode": 1,
+  "note": "Startup-only diagnostic; main and benchmark not executed. Wrapper may reject the intentionally absent done marker."
+}

@@ -1,0 +1,70 @@
+{
+  "candidate": "s3c",
+  "baseline": "ntt_opt",
+  "source_scope": {
+    "changed_files": ["mq_cm55.s"],
+    "software_pipelined_loops": 4,
+    "structure": "prologue-steady-state-epilogue",
+    "out_of_bounds_successor_loads": 0,
+    "new_secret_dependent_branches": 0,
+    "runtime_memory_accesses_per_logical_iteration_equal": true,
+    "stack_spills_added": 0
+  },
+  "mq_object": {
+    "baseline_text_bytes": 10500,
+    "candidate_text_bytes": 12756,
+    "text_growth_bytes": 2256,
+    "baseline_static_instruction_count": 2725,
+    "candidate_static_instruction_count": 3287,
+    "baseline_static_memory_instructions": 377,
+    "candidate_static_memory_instructions": 409,
+    "baseline_static_control_instructions": 86,
+    "candidate_static_control_instructions": 86,
+    "static_growth_reason": "The arithmetic and stores are duplicated in epilogue bodies; each logical iteration executes only one copy."
+  },
+  "performance": {
+    "paired_batches_per_degree_operation": 10,
+    "candidate_faster_samples": 20,
+    "equal_samples": 0,
+    "candidate_slower_samples": 40,
+    "upper_median_cycles": {
+      "512_keygen": 51723584,
+      "512_sign": 17158420,
+      "512_verify": 323990,
+      "1024_keygen": 260385717,
+      "1024_sign": 36758816,
+      "1024_verify": 626084
+    },
+    "baseline_minus_candidate_cycles": {
+      "512_keygen": -889,
+      "512_sign": -7490,
+      "512_verify": -252,
+      "1024_keygen": 6028,
+      "1024_sign": -10150,
+      "1024_verify": 462
+    }
+  },
+  "hashes": {
+    "baseline_mq_cm55_sha256": "b4f5834ac4cb72c6d51f62bf4c9746b58350e668ebcb193bf1e51272ae9fbbc3",
+    "candidate_mq_cm55_sha256": "8da35c7dcec4776ef760f020ff369231e8bb4f7fd505bd380327babbdb402b68",
+    "candidate_source_tree_sha256": "496775160f4764f483aaec4393480d51eddc8d3e1f67df53461531cd9247658a",
+    "candidate_elf_sha256": "f76218498b8f75f885bf7e76493b9b79e0daa06fdf7c2929032f1d724353b128",
+    "candidate_raw_log_sha256": "0d8e56c270412af7abcd94fe5c3cd16b584426fdbdd7c7fb297d6752296b20e5"
+  },
+  "validation": {
+    "barrett_pair_mismatches": 0,
+    "forward_ntt_mismatches": 0,
+    "inverse_roundtrip_mismatches": 0,
+    "oracle_roundtrip_mismatches": 0,
+    "max_modular_error": 0,
+    "host_kat_digests_match": true,
+    "sign_verify": "PASS",
+    "tamper_rejection": "PASS",
+    "fault_registers_zero": true,
+    "tcm_ecc_start": "0x1300a",
+    "tcm_ecc_end": "0x1300a",
+    "stack_used_upper_bound_bytes": 9624
+  },
+  "verdict": "Mixed result with 2256-byte code growth: faster only for 1024 keygen and verify, but slower for all 512 APIs and both sign APIs; do not select as the general S3 candidate.",
+  "limitations": "Static constant-time structure audit only; power/EM TVLA was not performed."
+}

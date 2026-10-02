@@ -1,0 +1,241 @@
+{
+  "candidate": "detailed",
+  "started_utc": "2026-09-14T04:49:45.806953+00:00",
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_slothy/measurement/exec_board.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/detailed/zephyr/zephyr.elf"
+  ],
+  "source_tree_sha256": "4cca9f390516f2136d240447b4a257f799c6f0e72a4a915902a8aa76fd9a9aee",
+  "elf_sha256": "e25a39b210edb3d162d57b4bd04f6d01c22ba7d088c1e64834a523c45accecc0",
+  "mq_assembly": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_slothy/mq_cm55.s",
+  "probe": "003C00223335510735383531",
+  "ended_utc": "2026-09-14T04:49:52.961599+00:00",
+  "returncode": 0,
+  "valid": true,
+  "validation_errors": [],
+  "totals": {
+    "512": {
+      "calls": 11,
+      "total": 494573349,
+      "minimum": 18332079,
+      "maximum": 47624127
+    },
+    "1024": {
+      "calls": 17,
+      "total": 2098589049,
+      "minimum": 64430655,
+      "maximum": 159168121
+    }
+  },
+  "phases": {
+    "512_orchestration": {
+      "cycles": 147708,
+      "entries": 0
+    },
+    "512_deepest": {
+      "cycles": 121677204,
+      "entries": 11
+    },
+    "512_intermediate_d1": {
+      "cycles": 55291520,
+      "entries": 10
+    },
+    "512_intermediate_d2": {
+      "cycles": 41088430,
+      "entries": 10
+    },
+    "512_intermediate_d3": {
+      "cycles": 32280970,
+      "entries": 10
+    },
+    "512_intermediate_d4": {
+      "cycles": 32498980,
+      "entries": 10
+    },
+    "512_intermediate_d5": {
+      "cycles": 54956130,
+      "entries": 10
+    },
+    "512_intermediate_d6": {
+      "cycles": 25081330,
+      "entries": 10
+    },
+    "512_intermediate_d7": {
+      "cycles": 36104146,
+      "entries": 11
+    },
+    "512_intermediate_d8": {
+      "cycles": 58156791,
+      "entries": 11
+    },
+    "512_intermediate_d9": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_depth0": {
+      "cycles": 37290140,
+      "entries": 10
+    },
+    "1024_orchestration": {
+      "cycles": 284501,
+      "entries": 0
+    },
+    "1024_deepest": {
+      "cycles": 680863311,
+      "entries": 17
+    },
+    "1024_intermediate_d1": {
+      "cycles": 131314800,
+      "entries": 10
+    },
+    "1024_intermediate_d2": {
+      "cycles": 91140440,
+      "entries": 10
+    },
+    "1024_intermediate_d3": {
+      "cycles": 90924430,
+      "entries": 10
+    },
+    "1024_intermediate_d4": {
+      "cycles": 72669700,
+      "entries": 10
+    },
+    "1024_intermediate_d5": {
+      "cycles": 116948900,
+      "entries": 10
+    },
+    "1024_intermediate_d6": {
+      "cycles": 216117888,
+      "entries": 11
+    },
+    "1024_intermediate_d7": {
+      "cycles": 104019359,
+      "entries": 14
+    },
+    "1024_intermediate_d8": {
+      "cycles": 191026478,
+      "entries": 17
+    },
+    "1024_intermediate_d9": {
+      "cycles": 326846182,
+      "entries": 17
+    },
+    "1024_depth0": {
+      "cycles": 76433060,
+      "entries": 10
+    }
+  },
+  "kernels": {
+    "512_other": {
+      "cycles": 63722847,
+      "entries": 0
+    },
+    "512_mp_ntt": {
+      "cycles": 43859959,
+      "entries": 16654
+    },
+    "512_mp_intt": {
+      "cycles": 40001344,
+      "entries": 16449
+    },
+    "512_twiddle": {
+      "cycles": 15275761,
+      "entries": 14240
+    },
+    "512_crt": {
+      "cycles": 98461766,
+      "entries": 1504
+    },
+    "512_bezout": {
+      "cycles": 87034431,
+      "entries": 11
+    },
+    "512_fft": {
+      "cycles": 17689347,
+      "entries": 8434
+    },
+    "512_ifft": {
+      "cycles": 17372728,
+      "entries": 8342
+    },
+    "512_fxp_spectral": {
+      "cycles": 22548365,
+      "entries": 8424
+    },
+    "512_fixed_convert": {
+      "cycles": 14499854,
+      "entries": 8414
+    },
+    "512_sub_ntt": {
+      "cycles": 17420620,
+      "entries": 1200
+    },
+    "512_sub_depth1": {
+      "cycles": 6844100,
+      "entries": 80
+    },
+    "512_sub_plain": {
+      "cycles": 49842227,
+      "entries": 7052
+    },
+    "1024_other": {
+      "cycles": 231746788,
+      "entries": 0
+    },
+    "1024_mp_ntt": {
+      "cycles": 133740008,
+      "entries": 50943
+    },
+    "1024_mp_intt": {
+      "cycles": 128067127,
+      "entries": 50788
+    },
+    "1024_twiddle": {
+      "cycles": 48117908,
+      "entries": 44311
+    },
+    "1024_crt": {
+      "cycles": 489926764,
+      "entries": 2974
+    },
+    "1024_bezout": {
+      "cycles": 517773930,
+      "entries": 17
+    },
+    "1024_fft": {
+      "cycles": 46973501,
+      "entries": 25025
+    },
+    "1024_ifft": {
+      "cycles": 47018920,
+      "entries": 24906
+    },
+    "1024_fxp_spectral": {
+      "cycles": 48514775,
+      "entries": 25015
+    },
+    "1024_fixed_convert": {
+      "cycles": 47811443,
+      "entries": 25005
+    },
+    "1024_sub_ntt": {
+      "cycles": 57730677,
+      "entries": 2509
+    },
+    "1024_sub_depth1": {
+      "cycles": 15305690,
+      "entries": 90
+    },
+    "1024_sub_plain": {
+      "cycles": 285861518,
+      "entries": 22297
+    }
+  },
+  "fingerprints": {
+    "512": "b69b316a",
+    "1024": "bf1ee4eb"
+  },
+  "raw_log_sha256": "c5155665716b2b9c26f03e26466e939e0616b96d6997641a48d5acf7da5a54f3"
+}

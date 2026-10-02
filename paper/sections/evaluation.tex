@@ -1,0 +1,16 @@
+\section{Evaluation}
+\label{sec:eval}
+
+% Planned: every experiment follows purpose/assumption -> result -> interpretation.
+%   E1 setup: STM32N657, 800 MHz, ITCM/DTCM, caches off, GCC 15.2.1,
+%      -ffp-contract=off, batch methodology, output hashing
+%   E2 profile (assumption: signing is FP-bound, key generation integer-bound,
+%      verification NTT- and hash-bound)
+%   E3 per-kernel candidate comparison (assumption: no single arithmetic is
+%      best for every kernel)
+%   E4 cumulative contribution of each technique (NTT stages, FFT, signing, SHAKE)
+%   E5 full-API results vs. the reference port; literature (M4, M7) in cycles and us
+%   E6 memory: code size, stack, tables
+%   E7 exactness (KATs, random inputs) and constant time (FP64 instruction
+%      latencies incl. subnormals, fixed-vs-random timing tests)
+\TODO{Write evaluation.}

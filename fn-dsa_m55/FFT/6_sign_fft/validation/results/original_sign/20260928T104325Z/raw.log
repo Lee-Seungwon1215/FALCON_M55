@@ -1,0 +1,489 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 61144
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :61144 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+compare-sections
+tbreak *0x1000dd14
+hbreak *0x10010fa4
+set $early_fault_bp = $bpnum
+jump *0x10010fb9
+if $pc != 0x1000dd14
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmphayj80x8/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x1000dcc4
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10010fa4
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+if *(unsigned int*)0xe000ed28 != 0
+echo [[EXTENDED-FAULT-DIAGNOSTIC]]\n
+echo VTOR_FPCCR_FPCAR:\n
+x/wx 0xe000ed08
+x/3wx 0xe000ef34
+echo VECTOR_WORDS:\n
+x/16wx 0x10000000
+echo MEMSYSCTL:\n
+x/24wx 0xe001e000
+echo PSP_EXTENDED:\n
+x/96wx $psp
+echo MSP_EXTENDED:\n
+x/48wx $msp
+end
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 61144
+Info : Listening on port 61144 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/61144
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+SIGN_HW cpu=800000000 fpscr=00040000 ccr=00000611 tcm=00000099 calls=100 warmups=3
+SIGN_SAMPLE degree=512 index=0 cycles=17311931
+SIGN_SAMPLE degree=512 index=1 cycles=17388055
+SIGN_SAMPLE degree=512 index=2 cycles=17432047
+SIGN_SAMPLE degree=512 index=3 cycles=17470418
+SIGN_SAMPLE degree=512 index=4 cycles=17370582
+SIGN_SAMPLE degree=512 index=5 cycles=17410682
+SIGN_SAMPLE degree=512 index=6 cycles=17441157
+SIGN_SAMPLE degree=512 index=7 cycles=17367810
+SIGN_SAMPLE degree=512 index=8 cycles=17576295
+SIGN_SAMPLE degree=512 index=9 cycles=17408272
+SIGN_SAMPLE degree=512 index=10 cycles=17337168
+SIGN_SAMPLE degree=512 index=11 cycles=17330050
+SIGN_SAMPLE degree=512 index=12 cycles=17471350
+SIGN_SAMPLE degree=512 index=13 cycles=17515709
+SIGN_SAMPLE degree=512 index=14 cycles=17456928
+SIGN_SAMPLE degree=512 index=15 cycles=17462390
+SIGN_SAMPLE degree=512 index=16 cycles=17368626
+SIGN_SAMPLE degree=512 index=17 cycles=17515781
+SIGN_SAMPLE degree=512 index=18 cycles=17416728
+SIGN_SAMPLE degree=512 index=19 cycles=17404311
+SIGN_SAMPLE degree=512 index=20 cycles=17485312
+SIGN_SAMPLE degree=512 index=21 cycles=17462471
+SIGN_SAMPLE degree=512 index=22 cycles=17427594
+SIGN_SAMPLE degree=512 index=23 cycles=17361219
+SIGN_SAMPLE degree=512 index=24 cycles=17549841
+SIGN_SAMPLE degree=512 index=25 cycles=17392477
+SIGN_SAMPLE degree=512 index=26 cycles=17261119
+SIGN_SAMPLE degree=512 index=27 cycles=17391683
+SIGN_SAMPLE degree=512 index=28 cycles=17408099
+SIGN_SAMPLE degree=512 index=29 cycles=17329153
+SIGN_SAMPLE degree=512 index=30 cycles=17354174
+SIGN_SAMPLE degree=512 index=31 cycles=17351886
+SIGN_SAMPLE degree=512 index=32 cycles=17363965
+SIGN_SAMPLE degree=512 index=33 cycles=17379670
+SIGN_SAMPLE degree=512 index=34 cycles=17386066
+SIGN_SAMPLE degree=512 index=35 cycles=17485156
+SIGN_SAMPLE degree=512 index=36 cycles=17401571
+SIGN_SAMPLE degree=512 index=37 cycles=17526830
+SIGN_SAMPLE degree=512 index=38 cycles=17534143
+SIGN_SAMPLE degree=512 index=39 cycles=17521173
+SIGN_SAMPLE degree=512 index=40 cycles=17500794
+SIGN_SAMPLE degree=512 index=41 cycles=17387030
+SIGN_SAMPLE degree=512 index=42 cycles=17289608
+SIGN_SAMPLE degree=512 index=43 cycles=17479116
+SIGN_SAMPLE degree=512 index=44 cycles=17551519
+SIGN_SAMPLE degree=512 index=45 cycles=17351832
+SIGN_SAMPLE degree=512 index=46 cycles=17412027
+SIGN_SAMPLE degree=512 index=47 cycles=17382372
+SIGN_SAMPLE degree=512 index=48 cycles=17464359
+SIGN_SAMPLE degree=512 index=49 cycles=17412012
+SIGN_SAMPLE degree=512 index=50 cycles=17457102
+SIGN_SAMPLE degree=512 index=51 cycles=17279585
+SIGN_SAMPLE degree=512 index=52 cycles=17481585
+SIGN_SAMPLE degree=512 index=53 cycles=17512939
+SIGN_SAMPLE degree=512 index=54 cycles=17540833
+SIGN_SAMPLE degree=512 index=55 cycles=17458766
+SIGN_SAMPLE degree=512 index=56 cycles=17532305
+SIGN_SAMPLE degree=512 index=57 cycles=17339024
+SIGN_SAMPLE degree=512 index=58 cycles=17439574
+SIGN_SAMPLE degree=512 index=59 cycles=17463199
+SIGN_SAMPLE degree=512 index=60 cycles=17305552
+SIGN_SAMPLE degree=512 index=61 cycles=17565494
+SIGN_SAMPLE degree=512 index=62 cycles=17391428
+SIGN_SAMPLE degree=512 index=63 cycles=17414679
+SIGN_SAMPLE degree=512 index=64 cycles=17500796
+SIGN_SAMPLE degree=512 index=65 cycles=17405388
+SIGN_SAMPLE degree=512 index=66 cycles=17350325
+SIGN_SAMPLE degree=512 index=67 cycles=17484277
+SIGN_SAMPLE degree=512 index=68 cycles=17489053
+SIGN_SAMPLE degree=512 index=69 cycles=17352011
+SIGN_SAMPLE degree=512 index=70 cycles=17356918
+SIGN_SAMPLE degree=512 index=71 cycles=17378002
+SIGN_SAMPLE degree=512 index=72 cycles=17401621
+SIGN_SAMPLE degree=512 index=73 cycles=17497336
+SIGN_SAMPLE degree=512 index=74 cycles=17532000
+SIGN_SAMPLE degree=512 index=75 cycles=17496433
+SIGN_SAMPLE degree=512 index=76 cycles=17432025
+SIGN_SAMPLE degree=512 index=77 cycles=17480916
+SIGN_SAMPLE degree=512 index=78 cycles=17407199
+SIGN_SAMPLE degree=512 index=79 cycles=17412076
+SIGN_SAMPLE degree=512 index=80 cycles=17455831
+SIGN_SAMPLE degree=512 index=81 cycles=17534294
+SIGN_SAMPLE degree=512 index=82 cycles=17488743
+SIGN_SAMPLE degree=512 index=83 cycles=17370363
+SIGN_SAMPLE degree=512 index=84 cycles=17437235
+SIGN_SAMPLE degree=512 index=85 cycles=17355873
+SIGN_SAMPLE degree=512 index=86 cycles=17335687
+SIGN_SAMPLE degree=512 index=87 cycles=17455786
+SIGN_SAMPLE degree=512 index=88 cycles=17330102
+SIGN_SAMPLE degree=512 index=89 cycles=17427401
+SIGN_SAMPLE degree=512 index=90 cycles=17342831
+SIGN_SAMPLE degree=512 index=91 cycles=17412583
+SIGN_SAMPLE degree=512 index=92 cycles=17291929
+SIGN_SAMPLE degree=512 index=93 cycles=17481960
+SIGN_SAMPLE degree=512 index=94 cycles=17325041
+SIGN_SAMPLE degree=512 index=95 cycles=17407335
+SIGN_SAMPLE degree=512 index=96 cycles=17442451
+SIGN_SAMPLE degree=512 index=97 cycles=17374680
+SIGN_SAMPLE degree=512 index=98 cycles=17430057
+SIGN_SAMPLE degree=512 index=99 cycles=17350273
+SIGN_SUMMARY degree=512 calls=100 total=1742269457 median_lo=17412076 median_hi=17412583 min=17261119 max=17576295 fingerprint=9895079d
+SIGN_SAMPLE degree=1024 index=0 cycles=37446522
+SIGN_SAMPLE degree=1024 index=1 cycles=37532388
+SIGN_SAMPLE degree=1024 index=2 cycles=37296706
+SIGN_SAMPLE degree=1024 index=3 cycles=37361140
+SIGN_SAMPLE degree=1024 index=4 cycles=37310507
+SIGN_SAMPLE degree=1024 index=5 cycles=37367982
+SIGN_SAMPLE degree=1024 index=6 cycles=36987414
+SIGN_SAMPLE degree=1024 index=7 cycles=37269492
+SIGN_SAMPLE degree=1024 index=8 cycles=37369860
+SIGN_SAMPLE degree=1024 index=9 cycles=37250689
+SIGN_SAMPLE degree=1024 index=10 cycles=37247609
+SIGN_SAMPLE degree=1024 index=11 cycles=37297843
+SIGN_SAMPLE degree=1024 index=12 cycles=37360512
+SIGN_SAMPLE degree=1024 index=13 cycles=37219828
+SIGN_SAMPLE degree=1024 index=14 cycles=37509084
+SIGN_SAMPLE degree=1024 index=15 cycles=37406047
+SIGN_SAMPLE degree=1024 index=16 cycles=37369556
+SIGN_SAMPLE degree=1024 index=17 cycles=37273109
+SIGN_SAMPLE degree=1024 index=18 cycles=37511657
+SIGN_SAMPLE degree=1024 index=19 cycles=37220839
+SIGN_SAMPLE degree=1024 index=20 cycles=37645255
+SIGN_SAMPLE degree=1024 index=21 cycles=37346947
+SIGN_SAMPLE degree=1024 index=22 cycles=37294122
+SIGN_SAMPLE degree=1024 index=23 cycles=37472352
+SIGN_SAMPLE degree=1024 index=24 cycles=37363000
+SIGN_SAMPLE degree=1024 index=25 cycles=37304324
+SIGN_SAMPLE degree=1024 index=26 cycles=37362852
+SIGN_SAMPLE degree=1024 index=27 cycles=37392122
+SIGN_SAMPLE degree=1024 index=28 cycles=37378055
+SIGN_SAMPLE degree=1024 index=29 cycles=37349496
+SIGN_SAMPLE degree=1024 index=30 cycles=37374343
+SIGN_SAMPLE degree=1024 index=31 cycles=37373379
+SIGN_SAMPLE degree=1024 index=32 cycles=37349191
+SIGN_SAMPLE degree=1024 index=33 cycles=37266764
+SIGN_SAMPLE degree=1024 index=34 cycles=37360799
+SIGN_SAMPLE degree=1024 index=35 cycles=37457459
+SIGN_SAMPLE degree=1024 index=36 cycles=37321948
+SIGN_SAMPLE degree=1024 index=37 cycles=37147987
+SIGN_SAMPLE degree=1024 index=38 cycles=37195679
+SIGN_SAMPLE degree=1024 index=39 cycles=37214101
+SIGN_SAMPLE degree=1024 index=40 cycles=37388508
+SIGN_SAMPLE degree=1024 index=41 cycles=37378046
+SIGN_SAMPLE degree=1024 index=42 cycles=37427645
+SIGN_SAMPLE degree=1024 index=43 cycles=37452479
+SIGN_SAMPLE degree=1024 index=44 cycles=37330160
+SIGN_SAMPLE degree=1024 index=45 cycles=37295808
+SIGN_SAMPLE degree=1024 index=46 cycles=37142912
+SIGN_SAMPLE degree=1024 index=47 cycles=37582701
+SIGN_SAMPLE degree=1024 index=48 cycles=37325035
+SIGN_SAMPLE degree=1024 index=49 cycles=37302529
+SIGN_SAMPLE degree=1024 index=50 cycles=37307449
+SIGN_SAMPLE degree=1024 index=51 cycles=37361424
+SIGN_SAMPLE degree=1024 index=52 cycles=37384924
+SIGN_SAMPLE degree=1024 index=53 cycles=37284882
+SIGN_SAMPLE degree=1024 index=54 cycles=37325500
+SIGN_SAMPLE degree=1024 index=55 cycles=37328228
+SIGN_SAMPLE degree=1024 index=56 cycles=37404341
+SIGN_SAMPLE degree=1024 index=57 cycles=37401506
+SIGN_SAMPLE degree=1024 index=58 cycles=37423612
+SIGN_SAMPLE degree=1024 index=59 cycles=37294648
+SIGN_SAMPLE degree=1024 index=60 cycles=37316553
+SIGN_SAMPLE degree=1024 index=61 cycles=37314846
+SIGN_SAMPLE degree=1024 index=62 cycles=37223421
+SIGN_SAMPLE degree=1024 index=63 cycles=37271571
+SIGN_SAMPLE degree=1024 index=64 cycles=37321069
+SIGN_SAMPLE degree=1024 index=65 cycles=37255981
+SIGN_SAMPLE degree=1024 index=66 cycles=37371296
+SIGN_SAMPLE degree=1024 index=67 cycles=37224432
+SIGN_SAMPLE degree=1024 index=68 cycles=37362743
+SIGN_SAMPLE degree=1024 index=69 cycles=37568790
+SIGN_SAMPLE degree=1024 index=70 cycles=37462690
+SIGN_SAMPLE degree=1024 index=71 cycles=37359343
+SIGN_SAMPLE degree=1024 index=72 cycles=37308307
+SIGN_SAMPLE degree=1024 index=73 cycles=37297176
+SIGN_SAMPLE degree=1024 index=74 cycles=37321683
+SIGN_SAMPLE degree=1024 index=75 cycles=37403319
+SIGN_SAMPLE degree=1024 index=76 cycles=37403228
+SIGN_SAMPLE degree=1024 index=77 cycles=37343395
+SIGN_SAMPLE degree=1024 index=78 cycles=37281638
+SIGN_SAMPLE degree=1024 index=79 cycles=37165426
+SIGN_SAMPLE degree=1024 index=80 cycles=37378878
+SIGN_SAMPLE degree=1024 index=81 cycles=37405304
+SIGN_SAMPLE degree=1024 index=82 cycles=37362842
+SIGN_SAMPLE degree=1024 index=83 cycles=37061516
+SIGN_SAMPLE degree=1024 index=84 cycles=37383295
+SIGN_SAMPLE degree=1024 index=85 cycles=37267099
+SIGN_SAMPLE degree=1024 index=86 cycles=37295463
+SIGN_SAMPLE degree=1024 index=87 cycles=37449258
+SIGN_SAMPLE degree=1024 index=88 cycles=37448066
+SIGN_SAMPLE degree=1024 index=89 cycles=37483297
+SIGN_SAMPLE degree=1024 index=90 cycles=37402630
+SIGN_SAMPLE degree=1024 index=91 cycles=37499251
+SIGN_SAMPLE degree=1024 index=92 cycles=37228447
+SIGN_SAMPLE degree=1024 index=93 cycles=37298332
+SIGN_SAMPLE degree=1024 index=94 cycles=37349816
+SIGN_SAMPLE degree=1024 index=95 cycles=37307967
+SIGN_SAMPLE degree=1024 index=96 cycles=37400125
+SIGN_SAMPLE degree=1024 index=97 cycles=37158962
+SIGN_SAMPLE degree=1024 index=98 cycles=37534976
+SIGN_SAMPLE degree=1024 index=99 cycles=37577046
+SIGN_SUMMARY degree=1024 calls=100 total=3734590773 median_lo=37349496 median_hi=37349816 min=36987414 max=37645255 fingerprint=a020dd02
+SIGN_DONE verify=PASS tamper=PASS fingerprints=PASS
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x15ab8 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xc1bc lma 0x30000980
+Loading section datas, size 0x4c lma 0x3000cb40
+Loading section device_states, size 0x2c lma 0x3000cb8c
+Loading section k_mutex_area, size 0x14 lma 0x3000cbb8
+Loading section .last_section, size 0x4 lma 0x3000cbcc
+Start address 0x10010fb8, load size 141736
+Transfer rate: 547 KB/sec, 5905 bytes/write.
+Section rom_start, range 0x10000000 -- 0x1000032c: matched.
+Section text, range 0x10000330 -- 0x10015de8: matched.
+Section .ARM.exidx, range 0x30000000 -- 0x30000008: matched.
+Section initlevel, range 0x30000008 -- 0x300000d0: matched.
+Section device_area, range 0x300000d0 -- 0x30000338: matched.
+Section sw_isr_table, range 0x30000338 -- 0x30000910: matched.
+Section gpio_driver_api_area, range 0x30000910 -- 0x30000934: matched.
+Section reset_driver_api_area, range 0x30000934 -- 0x30000944: matched.
+Section clock_control_driver_api_area, range 0x30000944 -- 0x30000960: matched.
+Section otp_driver_api_area, range 0x30000960 -- 0x30000964: matched.
+Section uart_driver_api_area, range 0x30000964 -- 0x30000978: matched.
+Section rodata, range 0x30000980 -- 0x3000cb3c: matched.
+Section datas, range 0x3000cb40 -- 0x3000cb8c: matched.
+Section device_states, range 0x3000cb8c -- 0x3000cbb8: matched.
+Section k_mutex_area, range 0x3000cbb8 -- 0x3000cbcc: matched.
+Section .last_section, range 0x3000cbcc -- 0x3000cbd0: matched.
+Temporary breakpoint 1 at 0x1000dd14: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10010fa4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmphayj80x8/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x1000dcc4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10010fa4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984632            9979442
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30023af8          805452536
+r8             0x300000d0          805306576
+r9             0x30033c38          805518392
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30033be8          0x30033be8 <z_main_stack+65456>
+lr             0x1000dd0b          268492043
+pc             0x1000dcc4          0x1000dcc4 <nucleo_test_breakpoint>
+xpsr           0x90c0000           151781376
+fpscr          0x40000             262144
+msp            0x30023af8          0x30023af8 <z_idle_stacks>
+psp            0x30033be8          0x30033be8 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30023af8          0x30023af8 <z_idle_stacks>
+psp_s          0x30033be8          0x30033be8 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x300232f8          0x300232f8 <z_interrupt_stacks>
+psplim_s       0x30023c38          0x30023c38 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x30033be8 <z_main_stack+65456>:	0x00000000	0x1000dd27	0x00000000	0x100146ab
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30023af8
+PSP=0x30033be8
+LR=0x1000dd0b
+PC=0x1000dcc4
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30023af8 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30023b08 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

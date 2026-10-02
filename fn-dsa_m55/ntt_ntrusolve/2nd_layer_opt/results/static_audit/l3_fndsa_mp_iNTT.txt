@@ -1,0 +1,561 @@
+
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build-ntru-stage2-l3/zephyr/zephyr.elf:     file format elf32-littlearm
+
+
+Disassembly of section rom_start:
+
+Disassembly of section text:
+
+10000a64 <fndsa_mp_iNTT>:
+10000a64:	2804      	cmp	r0, #4
+10000a66:	f0c8 8687 	bcc.w	10009778 <fndsa_mp_iNTT_c>
+10000a6a:	e92d 5ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, ip, lr}
+10000a6e:	ed2d 8b10 	vpush	{d8-d15}
+10000a72:	b084      	sub	sp, #16
+10000a74:	9000      	str	r0, [sp, #0]
+10000a76:	9c1e      	ldr	r4, [sp, #120]	@ 0x78
+10000a78:	f240 0c22 	movw	ip, #34	@ 0x22
+10000a7c:	2804      	cmp	r0, #4
+10000a7e:	d015      	beq.n	10000aac <fndsa_mp_iNTT+0x48>
+10000a80:	f240 0c32 	movw	ip, #50	@ 0x32
+10000a84:	2805      	cmp	r0, #5
+10000a86:	d011      	beq.n	10000aac <fndsa_mp_iNTT+0x48>
+10000a88:	f240 2c22 	movw	ip, #546	@ 0x222
+10000a8c:	2806      	cmp	r0, #6
+10000a8e:	d00d      	beq.n	10000aac <fndsa_mp_iNTT+0x48>
+10000a90:	f240 2c32 	movw	ip, #562	@ 0x232
+10000a94:	2807      	cmp	r0, #7
+10000a96:	d009      	beq.n	10000aac <fndsa_mp_iNTT+0x48>
+10000a98:	f240 3c32 	movw	ip, #818	@ 0x332
+10000a9c:	2808      	cmp	r0, #8
+10000a9e:	d005      	beq.n	10000aac <fndsa_mp_iNTT+0x48>
+10000aa0:	f242 2c32 	movw	ip, #8754	@ 0x2232
+10000aa4:	2809      	cmp	r0, #9
+10000aa6:	d001      	beq.n	10000aac <fndsa_mp_iNTT+0x48>
+10000aa8:	f242 3c32 	movw	ip, #9010	@ 0x2332
+10000aac:	ea4f 1c1c 	mov.w	ip, ip, lsr #4
+10000ab0:	f8cd c008 	str.w	ip, [sp, #8]
+10000ab4:	f103 0501 	add.w	r5, r3, #1
+10000ab8:	ea4f 0555 	mov.w	r5, r5, lsr #1
+10000abc:	3802      	subs	r0, #2
+10000abe:	2701      	movs	r7, #1
+10000ac0:	fa07 f700 	lsl.w	r7, r7, r0
+10000ac4:	eb02 0887 	add.w	r8, r2, r7, lsl #2
+10000ac8:	eb02 09c7 	add.w	r9, r2, r7, lsl #3
+10000acc:	468a      	mov	sl, r1
+10000ace:	463e      	mov	r6, r7
+10000ad0:	fc9a 1f01 	vld40.32	{q0, q1, q2, q3}, [sl]
+10000ad4:	fc9a 1f21 	vld41.32	{q0, q1, q2, q3}, [sl]
+10000ad8:	fc9a 1f41 	vld42.32	{q0, q1, q2, q3}, [sl]
+10000adc:	fc9a 1f61 	vld43.32	{q0, q1, q2, q3}, [sl]
+10000ae0:	f20f 70bc 	addw	r0, pc, #1980	@ 0x7bc
+10000ae4:	ed90 ff00 	vldrw.u32	q7, [r0, #0]
+10000ae8:	fc99 8f4e 	vldrw.u32	q4, [r9, q7]
+10000aec:	ee29 be64 	vmul.i32	q5, q4, r4
+10000af0:	ff20 e842 	vsub.i32	q7, q0, q1
+10000af4:	ef20 0842 	vadd.i32	q0, q0, q1
+10000af8:	ee21 1f43 	vsub.i32	q0, q0, r3
+10000afc:	fe61 1fcf 	vpt.s32	lt, q0, zr
+10000b00:	ee21 0f43 	vaddt.i32	q0, q0, r3
+10000b04:	ef20 2150 	vmov	q1, q0
+10000b08:	efbf 2552 	vshl.i32	q1, q1, #31
+10000b0c:	ffa1 2052 	vshr.u32	q1, q1, #31
+10000b10:	ffbf 0050 	vshr.u32	q0, q0, #1
+10000b14:	ee23 0e45 	vmla.i32	q0, q1, r5
+10000b18:	ef2e c95a 	vmul.i32	q6, q7, q5
+10000b1c:	ff2e eb48 	vqrdmulh.s32	q7, q7, q4
+10000b20:	fe2d ce63 	vqrdmulh.s32	q6, q6, r3
+10000b24:	ef2e e04c 	vhadd.s32	q7, q7, q6
+10000b28:	fe6f 1fcf 	vpt.s32	lt, q7, zr
+10000b2c:	ee2f ef43 	vaddt.i32	q7, q7, r3
+10000b30:	ef2e 215e 	vmov	q1, q7
+10000b34:	f20f 7068 	addw	r0, pc, #1896	@ 0x768
+10000b38:	ed90 ff00 	vldrw.u32	q7, [r0, #0]
+10000b3c:	f109 0b04 	add.w	fp, r9, #4
+10000b40:	fc9b 8f4e 	vldrw.u32	q4, [fp, q7]
+10000b44:	ee29 be64 	vmul.i32	q5, q4, r4
+10000b48:	ff24 e846 	vsub.i32	q7, q2, q3
+10000b4c:	ef24 4846 	vadd.i32	q2, q2, q3
+10000b50:	ee25 5f43 	vsub.i32	q2, q2, r3
+10000b54:	fe65 1fcf 	vpt.s32	lt, q2, zr
+10000b58:	ee25 4f43 	vaddt.i32	q2, q2, r3
+10000b5c:	ef24 6154 	vmov	q3, q2
+10000b60:	efbf 6556 	vshl.i32	q3, q3, #31
+10000b64:	ffa1 6056 	vshr.u32	q3, q3, #31
+10000b68:	ffbf 4054 	vshr.u32	q2, q2, #1
+10000b6c:	ee27 4e45 	vmla.i32	q2, q3, r5
+10000b70:	ef2e c95a 	vmul.i32	q6, q7, q5
+10000b74:	ff2e eb48 	vqrdmulh.s32	q7, q7, q4
+10000b78:	fe2d ce63 	vqrdmulh.s32	q6, q6, r3
+10000b7c:	ef2e e04c 	vhadd.s32	q7, q7, q6
+10000b80:	fe6f 1fcf 	vpt.s32	lt, q7, zr
+10000b84:	ee2f ef43 	vaddt.i32	q7, q7, r3
+10000b88:	ef2e 615e 	vmov	q3, q7
+10000b8c:	ecb8 9f04 	vldrw.u32	q4, [r8], #16
+10000b90:	ee29 be64 	vmul.i32	q5, q4, r4
+10000b94:	ff20 e844 	vsub.i32	q7, q0, q2
+10000b98:	ef20 0844 	vadd.i32	q0, q0, q2
+10000b9c:	ee21 1f43 	vsub.i32	q0, q0, r3
+10000ba0:	fe61 1fcf 	vpt.s32	lt, q0, zr
+10000ba4:	ee21 0f43 	vaddt.i32	q0, q0, r3
+10000ba8:	ef20 4150 	vmov	q2, q0
+10000bac:	efbf 4554 	vshl.i32	q2, q2, #31
+10000bb0:	ffa1 4054 	vshr.u32	q2, q2, #31
+10000bb4:	ffbf 0050 	vshr.u32	q0, q0, #1
+10000bb8:	ee25 0e45 	vmla.i32	q0, q2, r5
+10000bbc:	ef2e c95a 	vmul.i32	q6, q7, q5
+10000bc0:	ff2e eb48 	vqrdmulh.s32	q7, q7, q4
+10000bc4:	fe2d ce63 	vqrdmulh.s32	q6, q6, r3
+10000bc8:	ef2e e04c 	vhadd.s32	q7, q7, q6
+10000bcc:	fe6f 1fcf 	vpt.s32	lt, q7, zr
+10000bd0:	ee2f ef43 	vaddt.i32	q7, q7, r3
+10000bd4:	ef2e 415e 	vmov	q2, q7
+10000bd8:	ff22 e846 	vsub.i32	q7, q1, q3
+10000bdc:	ef22 2846 	vadd.i32	q1, q1, q3
+10000be0:	ee23 3f43 	vsub.i32	q1, q1, r3
+10000be4:	fe63 1fcf 	vpt.s32	lt, q1, zr
+10000be8:	ee23 2f43 	vaddt.i32	q1, q1, r3
+10000bec:	ef22 6152 	vmov	q3, q1
+10000bf0:	efbf 6556 	vshl.i32	q3, q3, #31
+10000bf4:	ffa1 6056 	vshr.u32	q3, q3, #31
+10000bf8:	ffbf 2052 	vshr.u32	q1, q1, #1
+10000bfc:	ee27 2e45 	vmla.i32	q1, q3, r5
+10000c00:	ef2e c95a 	vmul.i32	q6, q7, q5
+10000c04:	ff2e eb48 	vqrdmulh.s32	q7, q7, q4
+10000c08:	fe2d ce63 	vqrdmulh.s32	q6, q6, r3
+10000c0c:	ef2e e04c 	vhadd.s32	q7, q7, q6
+10000c10:	fe6f 1fcf 	vpt.s32	lt, q7, zr
+10000c14:	ee2f ef43 	vaddt.i32	q7, q7, r3
+10000c18:	ef2e 615e 	vmov	q3, q7
+10000c1c:	f109 0920 	add.w	r9, r9, #32
+10000c20:	fc8a 1f01 	vst40.32	{q0, q1, q2, q3}, [sl]
+10000c24:	fc8a 1f21 	vst41.32	{q0, q1, q2, q3}, [sl]
+10000c28:	fc8a 1f41 	vst42.32	{q0, q1, q2, q3}, [sl]
+10000c2c:	fc8a 1f61 	vst43.32	{q0, q1, q2, q3}, [sl]
+10000c30:	f10a 0a40 	add.w	sl, sl, #64	@ 0x40
+10000c34:	3e04      	subs	r6, #4
+10000c36:	f47f af4b 	bne.w	10000ad0 <fndsa_mp_iNTT+0x6c>
+10000c3a:	2610      	movs	r6, #16
+10000c3c:	2002      	movs	r0, #2
+10000c3e:	9001      	str	r0, [sp, #4]
+10000c40:	9801      	ldr	r0, [sp, #4]
+10000c42:	9f00      	ldr	r7, [sp, #0]
+10000c44:	42b8      	cmp	r0, r7
+10000c46:	f280 831f 	bge.w	10001288 <fndsa_mp_iNTT+0x824>
+10000c4a:	f8dd c008 	ldr.w	ip, [sp, #8]
+10000c4e:	f00c 080f 	and.w	r8, ip, #15
+10000c52:	ea4f 1c1c 	mov.w	ip, ip, lsr #4
+10000c56:	f8cd c008 	str.w	ip, [sp, #8]
+10000c5a:	f1b8 0f03 	cmp.w	r8, #3
+10000c5e:	f000 80cf 	beq.w	10000e00 <fndsa_mp_iNTT+0x39c>
+10000c62:	3f02      	subs	r7, #2
+10000c64:	1a3f      	subs	r7, r7, r0
+10000c66:	f05f 0801 	movs.w	r8, #1
+10000c6a:	fa08 f707 	lsl.w	r7, r8, r7
+10000c6e:	eb02 0887 	add.w	r8, r2, r7, lsl #2
+10000c72:	4689      	mov	r9, r1
+10000c74:	eb09 0a06 	add.w	sl, r9, r6
+10000c78:	46d6      	mov	lr, sl
+10000c7a:	eb0a 0b06 	add.w	fp, sl, r6
+10000c7e:	eb0b 0c06 	add.w	ip, fp, r6
+10000c82:	ed99 1f00 	vldrw.u32	q0, [r9, #0]
+10000c86:	ed9a 3f00 	vldrw.u32	q1, [sl, #0]
+10000c8a:	ed9b 5f00 	vldrw.u32	q2, [fp, #0]
+10000c8e:	ed9c 7f00 	vldrw.u32	q3, [ip, #0]
+10000c92:	eb08 0008 	add.w	r0, r8, r8
+10000c96:	eba0 0002 	sub.w	r0, r0, r2
+10000c9a:	6800      	ldr	r0, [r0, #0]
+10000c9c:	eea8 0b10 	vdup.32	q4, r0
+10000ca0:	ee29 be64 	vmul.i32	q5, q4, r4
+10000ca4:	ff20 e842 	vsub.i32	q7, q0, q1
+10000ca8:	ef20 0842 	vadd.i32	q0, q0, q1
+10000cac:	ee21 1f43 	vsub.i32	q0, q0, r3
+10000cb0:	fe61 1fcf 	vpt.s32	lt, q0, zr
+10000cb4:	ee21 0f43 	vaddt.i32	q0, q0, r3
+10000cb8:	ef20 2150 	vmov	q1, q0
+10000cbc:	efbf 2552 	vshl.i32	q1, q1, #31
+10000cc0:	ffa1 2052 	vshr.u32	q1, q1, #31
+10000cc4:	ffbf 0050 	vshr.u32	q0, q0, #1
+10000cc8:	ee23 0e45 	vmla.i32	q0, q1, r5
+10000ccc:	ef2e c95a 	vmul.i32	q6, q7, q5
+10000cd0:	ff2e eb48 	vqrdmulh.s32	q7, q7, q4
+10000cd4:	fe2d ce63 	vqrdmulh.s32	q6, q6, r3
+10000cd8:	ef2e e04c 	vhadd.s32	q7, q7, q6
+10000cdc:	fe6f 1fcf 	vpt.s32	lt, q7, zr
+10000ce0:	ee2f ef43 	vaddt.i32	q7, q7, r3
+10000ce4:	ef2e 215e 	vmov	q1, q7
+10000ce8:	eb08 0008 	add.w	r0, r8, r8
+10000cec:	eba0 0002 	sub.w	r0, r0, r2
+10000cf0:	6840      	ldr	r0, [r0, #4]
+10000cf2:	eea8 0b10 	vdup.32	q4, r0
+10000cf6:	ee29 be64 	vmul.i32	q5, q4, r4
+10000cfa:	ff24 e846 	vsub.i32	q7, q2, q3
+10000cfe:	ef24 4846 	vadd.i32	q2, q2, q3
+10000d02:	ee25 5f43 	vsub.i32	q2, q2, r3
+10000d06:	fe65 1fcf 	vpt.s32	lt, q2, zr
+10000d0a:	ee25 4f43 	vaddt.i32	q2, q2, r3
+10000d0e:	ef24 6154 	vmov	q3, q2
+10000d12:	efbf 6556 	vshl.i32	q3, q3, #31
+10000d16:	ffa1 6056 	vshr.u32	q3, q3, #31
+10000d1a:	ffbf 4054 	vshr.u32	q2, q2, #1
+10000d1e:	ee27 4e45 	vmla.i32	q2, q3, r5
+10000d22:	ef2e c95a 	vmul.i32	q6, q7, q5
+10000d26:	ff2e eb48 	vqrdmulh.s32	q7, q7, q4
+10000d2a:	fe2d ce63 	vqrdmulh.s32	q6, q6, r3
+10000d2e:	ef2e e04c 	vhadd.s32	q7, q7, q6
+10000d32:	fe6f 1fcf 	vpt.s32	lt, q7, zr
+10000d36:	ee2f ef43 	vaddt.i32	q7, q7, r3
+10000d3a:	ef2e 615e 	vmov	q3, q7
+10000d3e:	f8d8 0000 	ldr.w	r0, [r8]
+10000d42:	eea8 0b10 	vdup.32	q4, r0
+10000d46:	ee29 be64 	vmul.i32	q5, q4, r4
+10000d4a:	ff20 e844 	vsub.i32	q7, q0, q2
+10000d4e:	ef20 0844 	vadd.i32	q0, q0, q2
+10000d52:	ee21 1f43 	vsub.i32	q0, q0, r3
+10000d56:	fe61 1fcf 	vpt.s32	lt, q0, zr
+10000d5a:	ee21 0f43 	vaddt.i32	q0, q0, r3
+10000d5e:	ef20 4150 	vmov	q2, q0
+10000d62:	efbf 4554 	vshl.i32	q2, q2, #31
+10000d66:	ffa1 4054 	vshr.u32	q2, q2, #31
+10000d6a:	ffbf 0050 	vshr.u32	q0, q0, #1
+10000d6e:	ee25 0e45 	vmla.i32	q0, q2, r5
+10000d72:	ef2e c95a 	vmul.i32	q6, q7, q5
+10000d76:	ff2e eb48 	vqrdmulh.s32	q7, q7, q4
+10000d7a:	fe2d ce63 	vqrdmulh.s32	q6, q6, r3
+10000d7e:	ef2e e04c 	vhadd.s32	q7, q7, q6
+10000d82:	fe6f 1fcf 	vpt.s32	lt, q7, zr
+10000d86:	ee2f ef43 	vaddt.i32	q7, q7, r3
+10000d8a:	ef2e 415e 	vmov	q2, q7
+10000d8e:	ff22 e846 	vsub.i32	q7, q1, q3
+10000d92:	ef22 2846 	vadd.i32	q1, q1, q3
+10000d96:	ee23 3f43 	vsub.i32	q1, q1, r3
+10000d9a:	fe63 1fcf 	vpt.s32	lt, q1, zr
+10000d9e:	ee23 2f43 	vaddt.i32	q1, q1, r3
+10000da2:	ef22 6152 	vmov	q3, q1
+10000da6:	efbf 6556 	vshl.i32	q3, q3, #31
+10000daa:	ffa1 6056 	vshr.u32	q3, q3, #31
+10000dae:	ffbf 2052 	vshr.u32	q1, q1, #1
+10000db2:	ee27 2e45 	vmla.i32	q1, q3, r5
+10000db6:	ef2e c95a 	vmul.i32	q6, q7, q5
+10000dba:	ff2e eb48 	vqrdmulh.s32	q7, q7, q4
+10000dbe:	fe2d ce63 	vqrdmulh.s32	q6, q6, r3
+10000dc2:	ef2e e04c 	vhadd.s32	q7, q7, q6
+10000dc6:	fe6f 1fcf 	vpt.s32	lt, q7, zr
+10000dca:	ee2f ef43 	vaddt.i32	q7, q7, r3
+10000dce:	ef2e 615e 	vmov	q3, q7
+10000dd2:	eca9 1f04 	vstrw.32	q0, [r9], #16
+10000dd6:	ecaa 3f04 	vstrw.32	q1, [sl], #16
+10000dda:	ecab 5f04 	vstrw.32	q2, [fp], #16
+10000dde:	ecac 7f04 	vstrw.32	q3, [ip], #16
+10000de2:	45f1      	cmp	r9, lr
+10000de4:	f47f af4d 	bne.w	10000c82 <fndsa_mp_iNTT+0x21e>
+10000de8:	f108 0804 	add.w	r8, r8, #4
+10000dec:	46e1      	mov	r9, ip
+10000dee:	3f01      	subs	r7, #1
+10000df0:	f47f af40 	bne.w	10000c74 <fndsa_mp_iNTT+0x210>
+10000df4:	ea4f 0686 	mov.w	r6, r6, lsl #2
+10000df8:	9801      	ldr	r0, [sp, #4]
+10000dfa:	3002      	adds	r0, #2
+10000dfc:	9001      	str	r0, [sp, #4]
+10000dfe:	e71f      	b.n	10000c40 <fndsa_mp_iNTT+0x1dc>
+10000e00:	46b4      	mov	ip, r6
+10000e02:	463e      	mov	r6, r7
+10000e04:	eba6 0600 	sub.w	r6, r6, r0
+10000e08:	f1a6 0603 	sub.w	r6, r6, #3
+10000e0c:	f05f 0801 	movs.w	r8, #1
+10000e10:	fa08 f806 	lsl.w	r8, r8, r6
+10000e14:	46c3      	mov	fp, r8
+10000e16:	4667      	mov	r7, ip
+10000e18:	4689      	mov	r9, r1
+10000e1a:	eb09 0e07 	add.w	lr, r9, r7
+10000e1e:	46cc      	mov	ip, r9
+10000e20:	ed9c 1f00 	vldrw.u32	q0, [ip, #0]
+10000e24:	eb09 0c07 	add.w	ip, r9, r7
+10000e28:	ed9c 3f00 	vldrw.u32	q1, [ip, #0]
+10000e2c:	eb09 0c47 	add.w	ip, r9, r7, lsl #1
+10000e30:	ed9c 5f00 	vldrw.u32	q2, [ip, #0]
+10000e34:	eb09 0c47 	add.w	ip, r9, r7, lsl #1
+10000e38:	44bc      	add	ip, r7
+10000e3a:	ed9c 7f00 	vldrw.u32	q3, [ip, #0]
+10000e3e:	eb02 1c0b 	add.w	ip, r2, fp, lsl #4
+10000e42:	f8dc 0000 	ldr.w	r0, [ip]
+10000e46:	fb00 f604 	mul.w	r6, r0, r4
+10000e4a:	ff20 c842 	vsub.i32	q6, q0, q1
+10000e4e:	ef20 0842 	vadd.i32	q0, q0, q1
+10000e52:	ee21 1f43 	vsub.i32	q0, q0, r3
+10000e56:	fe61 1fcf 	vpt.s32	lt, q0, zr
+10000e5a:	ee21 0f43 	vaddt.i32	q0, q0, r3
+10000e5e:	ef20 2150 	vmov	q1, q0
+10000e62:	efbf 2552 	vshl.i32	q1, q1, #31
+10000e66:	ffa1 2052 	vshr.u32	q1, q1, #31
+10000e6a:	ffbf 0050 	vshr.u32	q0, q0, #1
+10000e6e:	ee23 0e45 	vmla.i32	q0, q1, r5
+10000e72:	ee2d fe66 	vmul.i32	q7, q6, r6
+10000e76:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+10000e7a:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+10000e7e:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10000e82:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+10000e86:	ee2d cf43 	vaddt.i32	q6, q6, r3
+10000e8a:	ef2c 215c 	vmov	q1, q6
+10000e8e:	eb02 1c0b 	add.w	ip, r2, fp, lsl #4
+10000e92:	f8dc 0004 	ldr.w	r0, [ip, #4]
+10000e96:	fb00 f604 	mul.w	r6, r0, r4
+10000e9a:	ff24 c846 	vsub.i32	q6, q2, q3
+10000e9e:	ef24 4846 	vadd.i32	q2, q2, q3
+10000ea2:	ee25 5f43 	vsub.i32	q2, q2, r3
+10000ea6:	fe65 1fcf 	vpt.s32	lt, q2, zr
+10000eaa:	ee25 4f43 	vaddt.i32	q2, q2, r3
+10000eae:	ef24 6154 	vmov	q3, q2
+10000eb2:	efbf 6556 	vshl.i32	q3, q3, #31
+10000eb6:	ffa1 6056 	vshr.u32	q3, q3, #31
+10000eba:	ffbf 4054 	vshr.u32	q2, q2, #1
+10000ebe:	ee27 4e45 	vmla.i32	q2, q3, r5
+10000ec2:	ee2d fe66 	vmul.i32	q7, q6, r6
+10000ec6:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+10000eca:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+10000ece:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10000ed2:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+10000ed6:	ee2d cf43 	vaddt.i32	q6, q6, r3
+10000eda:	ef2c 615c 	vmov	q3, q6
+10000ede:	eb02 0ccb 	add.w	ip, r2, fp, lsl #3
+10000ee2:	f8dc 0000 	ldr.w	r0, [ip]
+10000ee6:	fb00 f604 	mul.w	r6, r0, r4
+10000eea:	ff20 c844 	vsub.i32	q6, q0, q2
+10000eee:	ef20 0844 	vadd.i32	q0, q0, q2
+10000ef2:	ee21 1f43 	vsub.i32	q0, q0, r3
+10000ef6:	fe61 1fcf 	vpt.s32	lt, q0, zr
+10000efa:	ee21 0f43 	vaddt.i32	q0, q0, r3
+10000efe:	ef20 4150 	vmov	q2, q0
+10000f02:	efbf 4554 	vshl.i32	q2, q2, #31
+10000f06:	ffa1 4054 	vshr.u32	q2, q2, #31
+10000f0a:	ffbf 0050 	vshr.u32	q0, q0, #1
+10000f0e:	ee25 0e45 	vmla.i32	q0, q2, r5
+10000f12:	ee2d fe66 	vmul.i32	q7, q6, r6
+10000f16:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+10000f1a:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+10000f1e:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10000f22:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+10000f26:	ee2d cf43 	vaddt.i32	q6, q6, r3
+10000f2a:	ef2c 415c 	vmov	q2, q6
+10000f2e:	ff22 c846 	vsub.i32	q6, q1, q3
+10000f32:	ef22 2846 	vadd.i32	q1, q1, q3
+10000f36:	ee23 3f43 	vsub.i32	q1, q1, r3
+10000f3a:	fe63 1fcf 	vpt.s32	lt, q1, zr
+10000f3e:	ee23 2f43 	vaddt.i32	q1, q1, r3
+10000f42:	ef22 6152 	vmov	q3, q1
+10000f46:	efbf 6556 	vshl.i32	q3, q3, #31
+10000f4a:	ffa1 6056 	vshr.u32	q3, q3, #31
+10000f4e:	ffbf 2052 	vshr.u32	q1, q1, #1
+10000f52:	ee27 2e45 	vmla.i32	q1, q3, r5
+10000f56:	ee2d fe66 	vmul.i32	q7, q6, r6
+10000f5a:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+10000f5e:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+10000f62:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10000f66:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+10000f6a:	ee2d cf43 	vaddt.i32	q6, q6, r3
+10000f6e:	ef2c 615c 	vmov	q3, q6
+10000f72:	eb09 0c47 	add.w	ip, r9, r7, lsl #1
+10000f76:	ed8c 5f00 	vstrw.32	q2, [ip, #0]
+10000f7a:	eb09 0c47 	add.w	ip, r9, r7, lsl #1
+10000f7e:	44bc      	add	ip, r7
+10000f80:	ed8c 7f00 	vstrw.32	q3, [ip, #0]
+10000f84:	eb09 0c87 	add.w	ip, r9, r7, lsl #2
+10000f88:	ed9c 5f00 	vldrw.u32	q2, [ip, #0]
+10000f8c:	eb09 0c87 	add.w	ip, r9, r7, lsl #2
+10000f90:	44bc      	add	ip, r7
+10000f92:	ed9c 7f00 	vldrw.u32	q3, [ip, #0]
+10000f96:	eb09 0c87 	add.w	ip, r9, r7, lsl #2
+10000f9a:	eb0c 0c47 	add.w	ip, ip, r7, lsl #1
+10000f9e:	ed9c 9f00 	vldrw.u32	q4, [ip, #0]
+10000fa2:	eb09 0cc7 	add.w	ip, r9, r7, lsl #3
+10000fa6:	ebac 0c07 	sub.w	ip, ip, r7
+10000faa:	ed9c bf00 	vldrw.u32	q5, [ip, #0]
+10000fae:	eb02 1c0b 	add.w	ip, r2, fp, lsl #4
+10000fb2:	f8dc 0008 	ldr.w	r0, [ip, #8]
+10000fb6:	fb00 f604 	mul.w	r6, r0, r4
+10000fba:	ff24 c846 	vsub.i32	q6, q2, q3
+10000fbe:	ef24 4846 	vadd.i32	q2, q2, q3
+10000fc2:	ee25 5f43 	vsub.i32	q2, q2, r3
+10000fc6:	fe65 1fcf 	vpt.s32	lt, q2, zr
+10000fca:	ee25 4f43 	vaddt.i32	q2, q2, r3
+10000fce:	ef24 6154 	vmov	q3, q2
+10000fd2:	efbf 6556 	vshl.i32	q3, q3, #31
+10000fd6:	ffa1 6056 	vshr.u32	q3, q3, #31
+10000fda:	ffbf 4054 	vshr.u32	q2, q2, #1
+10000fde:	ee27 4e45 	vmla.i32	q2, q3, r5
+10000fe2:	ee2d fe66 	vmul.i32	q7, q6, r6
+10000fe6:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+10000fea:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+10000fee:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10000ff2:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+10000ff6:	ee2d cf43 	vaddt.i32	q6, q6, r3
+10000ffa:	ef2c 615c 	vmov	q3, q6
+10000ffe:	eb02 1c0b 	add.w	ip, r2, fp, lsl #4
+10001002:	f8dc 000c 	ldr.w	r0, [ip, #12]
+10001006:	fb00 f604 	mul.w	r6, r0, r4
+1000100a:	ff28 c84a 	vsub.i32	q6, q4, q5
+1000100e:	ef28 884a 	vadd.i32	q4, q4, q5
+10001012:	ee29 9f43 	vsub.i32	q4, q4, r3
+10001016:	fe69 1fcf 	vpt.s32	lt, q4, zr
+1000101a:	ee29 8f43 	vaddt.i32	q4, q4, r3
+1000101e:	ef28 a158 	vmov	q5, q4
+10001022:	efbf a55a 	vshl.i32	q5, q5, #31
+10001026:	ffa1 a05a 	vshr.u32	q5, q5, #31
+1000102a:	ffbf 8058 	vshr.u32	q4, q4, #1
+1000102e:	ee2b 8e45 	vmla.i32	q4, q5, r5
+10001032:	ee2d fe66 	vmul.i32	q7, q6, r6
+10001036:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+1000103a:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+1000103e:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10001042:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+10001046:	ee2d cf43 	vaddt.i32	q6, q6, r3
+1000104a:	ef2c a15c 	vmov	q5, q6
+1000104e:	eb02 0ccb 	add.w	ip, r2, fp, lsl #3
+10001052:	f8dc 0004 	ldr.w	r0, [ip, #4]
+10001056:	fb00 f604 	mul.w	r6, r0, r4
+1000105a:	ff24 c848 	vsub.i32	q6, q2, q4
+1000105e:	ef24 4848 	vadd.i32	q2, q2, q4
+10001062:	ee25 5f43 	vsub.i32	q2, q2, r3
+10001066:	fe65 1fcf 	vpt.s32	lt, q2, zr
+1000106a:	ee25 4f43 	vaddt.i32	q2, q2, r3
+1000106e:	ef24 8154 	vmov	q4, q2
+10001072:	efbf 8558 	vshl.i32	q4, q4, #31
+10001076:	ffa1 8058 	vshr.u32	q4, q4, #31
+1000107a:	ffbf 4054 	vshr.u32	q2, q2, #1
+1000107e:	ee29 4e45 	vmla.i32	q2, q4, r5
+10001082:	ee2d fe66 	vmul.i32	q7, q6, r6
+10001086:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+1000108a:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+1000108e:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10001092:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+10001096:	ee2d cf43 	vaddt.i32	q6, q6, r3
+1000109a:	ef2c 815c 	vmov	q4, q6
+1000109e:	ff26 c84a 	vsub.i32	q6, q3, q5
+100010a2:	ef26 684a 	vadd.i32	q3, q3, q5
+100010a6:	ee27 7f43 	vsub.i32	q3, q3, r3
+100010aa:	fe67 1fcf 	vpt.s32	lt, q3, zr
+100010ae:	ee27 6f43 	vaddt.i32	q3, q3, r3
+100010b2:	ef26 a156 	vmov	q5, q3
+100010b6:	efbf a55a 	vshl.i32	q5, q5, #31
+100010ba:	ffa1 a05a 	vshr.u32	q5, q5, #31
+100010be:	ffbf 6056 	vshr.u32	q3, q3, #1
+100010c2:	ee2b 6e45 	vmla.i32	q3, q5, r5
+100010c6:	ee2d fe66 	vmul.i32	q7, q6, r6
+100010ca:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+100010ce:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+100010d2:	ef2c c04e 	vhadd.s32	q6, q6, q7
+100010d6:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+100010da:	ee2d cf43 	vaddt.i32	q6, q6, r3
+100010de:	ef2c a15c 	vmov	q5, q6
+100010e2:	eb02 0c8b 	add.w	ip, r2, fp, lsl #2
+100010e6:	f8dc 0000 	ldr.w	r0, [ip]
+100010ea:	fb00 f604 	mul.w	r6, r0, r4
+100010ee:	ff20 c844 	vsub.i32	q6, q0, q2
+100010f2:	ef20 0844 	vadd.i32	q0, q0, q2
+100010f6:	ee21 1f43 	vsub.i32	q0, q0, r3
+100010fa:	fe61 1fcf 	vpt.s32	lt, q0, zr
+100010fe:	ee21 0f43 	vaddt.i32	q0, q0, r3
+10001102:	ef20 4150 	vmov	q2, q0
+10001106:	efbf 4554 	vshl.i32	q2, q2, #31
+1000110a:	ffa1 4054 	vshr.u32	q2, q2, #31
+1000110e:	ffbf 0050 	vshr.u32	q0, q0, #1
+10001112:	ee25 0e45 	vmla.i32	q0, q2, r5
+10001116:	ee2d fe66 	vmul.i32	q7, q6, r6
+1000111a:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+1000111e:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+10001122:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10001126:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+1000112a:	ee2d cf43 	vaddt.i32	q6, q6, r3
+1000112e:	ef2c 415c 	vmov	q2, q6
+10001132:	46cc      	mov	ip, r9
+10001134:	ed8c 1f00 	vstrw.32	q0, [ip, #0]
+10001138:	eb09 0c87 	add.w	ip, r9, r7, lsl #2
+1000113c:	ed8c 5f00 	vstrw.32	q2, [ip, #0]
+10001140:	ff22 c846 	vsub.i32	q6, q1, q3
+10001144:	ef22 2846 	vadd.i32	q1, q1, q3
+10001148:	ee23 3f43 	vsub.i32	q1, q1, r3
+1000114c:	fe63 1fcf 	vpt.s32	lt, q1, zr
+10001150:	ee23 2f43 	vaddt.i32	q1, q1, r3
+10001154:	ef22 6152 	vmov	q3, q1
+10001158:	efbf 6556 	vshl.i32	q3, q3, #31
+1000115c:	ffa1 6056 	vshr.u32	q3, q3, #31
+10001160:	ffbf 2052 	vshr.u32	q1, q1, #1
+10001164:	ee27 2e45 	vmla.i32	q1, q3, r5
+10001168:	ee2d fe66 	vmul.i32	q7, q6, r6
+1000116c:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+10001170:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+10001174:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10001178:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+1000117c:	ee2d cf43 	vaddt.i32	q6, q6, r3
+10001180:	ef2c 615c 	vmov	q3, q6
+10001184:	eb09 0c07 	add.w	ip, r9, r7
+10001188:	ed8c 3f00 	vstrw.32	q1, [ip, #0]
+1000118c:	eb09 0c87 	add.w	ip, r9, r7, lsl #2
+10001190:	44bc      	add	ip, r7
+10001192:	ed8c 7f00 	vstrw.32	q3, [ip, #0]
+10001196:	eb09 0c47 	add.w	ip, r9, r7, lsl #1
+1000119a:	ed9c 1f00 	vldrw.u32	q0, [ip, #0]
+1000119e:	eb09 0c47 	add.w	ip, r9, r7, lsl #1
+100011a2:	44bc      	add	ip, r7
+100011a4:	ed9c 3f00 	vldrw.u32	q1, [ip, #0]
+100011a8:	ff20 c848 	vsub.i32	q6, q0, q4
+100011ac:	ef20 0848 	vadd.i32	q0, q0, q4
+100011b0:	ee21 1f43 	vsub.i32	q0, q0, r3
+100011b4:	fe61 1fcf 	vpt.s32	lt, q0, zr
+100011b8:	ee21 0f43 	vaddt.i32	q0, q0, r3
+100011bc:	ef20 8150 	vmov	q4, q0
+100011c0:	efbf 8558 	vshl.i32	q4, q4, #31
+100011c4:	ffa1 8058 	vshr.u32	q4, q4, #31
+100011c8:	ffbf 0050 	vshr.u32	q0, q0, #1
+100011cc:	ee29 0e45 	vmla.i32	q0, q4, r5
+100011d0:	ee2d fe66 	vmul.i32	q7, q6, r6
+100011d4:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+100011d8:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+100011dc:	ef2c c04e 	vhadd.s32	q6, q6, q7
+100011e0:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+100011e4:	ee2d cf43 	vaddt.i32	q6, q6, r3
+100011e8:	ef2c 815c 	vmov	q4, q6
+100011ec:	eb09 0c47 	add.w	ip, r9, r7, lsl #1
+100011f0:	ed8c 1f00 	vstrw.32	q0, [ip, #0]
+100011f4:	eb09 0c87 	add.w	ip, r9, r7, lsl #2
+100011f8:	eb0c 0c47 	add.w	ip, ip, r7, lsl #1
+100011fc:	ed8c 9f00 	vstrw.32	q4, [ip, #0]
+10001200:	ff22 c84a 	vsub.i32	q6, q1, q5
+10001204:	ef22 284a 	vadd.i32	q1, q1, q5
+10001208:	ee23 3f43 	vsub.i32	q1, q1, r3
+1000120c:	fe63 1fcf 	vpt.s32	lt, q1, zr
+10001210:	ee23 2f43 	vaddt.i32	q1, q1, r3
+10001214:	ef22 a152 	vmov	q5, q1
+10001218:	efbf a55a 	vshl.i32	q5, q5, #31
+1000121c:	ffa1 a05a 	vshr.u32	q5, q5, #31
+10001220:	ffbf 2052 	vshr.u32	q1, q1, #1
+10001224:	ee2b 2e45 	vmla.i32	q1, q5, r5
+10001228:	ee2d fe66 	vmul.i32	q7, q6, r6
+1000122c:	fe2d ce60 	vqrdmulh.s32	q6, q6, r0
+10001230:	fe2f ee63 	vqrdmulh.s32	q7, q7, r3
+10001234:	ef2c c04e 	vhadd.s32	q6, q6, q7
+10001238:	fe6d 1fcf 	vpt.s32	lt, q6, zr
+1000123c:	ee2d cf43 	vaddt.i32	q6, q6, r3
+10001240:	ef2c a15c 	vmov	q5, q6
+10001244:	eb09 0c47 	add.w	ip, r9, r7, lsl #1
+10001248:	44bc      	add	ip, r7
+1000124a:	ed8c 3f00 	vstrw.32	q1, [ip, #0]
+1000124e:	eb09 0cc7 	add.w	ip, r9, r7, lsl #3
+10001252:	ebac 0c07 	sub.w	ip, ip, r7
+10001256:	ed8c bf00 	vstrw.32	q5, [ip, #0]
+1000125a:	f109 0910 	add.w	r9, r9, #16
+1000125e:	45f1      	cmp	r9, lr
+10001260:	f47f addd 	bne.w	10000e1e <fndsa_mp_iNTT+0x3ba>
+10001264:	eb09 09c7 	add.w	r9, r9, r7, lsl #3
+10001268:	eba9 0907 	sub.w	r9, r9, r7
+1000126c:	f10b 0b01 	add.w	fp, fp, #1
+10001270:	f1b8 0801 	subs.w	r8, r8, #1
+10001274:	f47f add1 	bne.w	10000e1a <fndsa_mp_iNTT+0x3b6>
+10001278:	ea4f 06c7 	mov.w	r6, r7, lsl #3
+1000127c:	9801      	ldr	r0, [sp, #4]
+1000127e:	f100 0003 	add.w	r0, r0, #3
+10001282:	9001      	str	r0, [sp, #4]
+10001284:	f7ff bcdc 	b.w	10000c40 <fndsa_mp_iNTT+0x1dc>
+10001288:	b004      	add	sp, #16
+1000128a:	ecbd 8b10 	vpop	{d8-d15}
+1000128e:	e8bd 9ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, ip, pc}

@@ -1,0 +1,65 @@
+DOCUMENT: falcon_m4.pdf PAGE: 8/18
+
+64-Kbyte
+CCM data RAM
+ARM
+Cortex-M4
+GP
+DMA1
+GP
+DMA2
+MAC
+Ethernet
+USB OTG
+HS
+I-bus
+D-bus
+S-bus
+DMA_P1
+DMA_MEM1
+DMA_MEM2
+DMA_P2
+ETHERNET_M
+USB_HS_M
+ICODE
+DCODE
+ACCEL
+Flash
+memory
+SRAM1
+112 Kbyte
+SRAM2
+16 Kbyte
+AHB1
+peripherals
+AHB2
+peripherals
+FSMC
+Static MemCtl
+APB1
+APB2
+Bus matrix-S
+Fig. 3: Interconnection matrix in the STM32F407VGT6 microcontroller.
+Arbitration is needed because each connected element (e.g. an SRAM block) cannot per-
+form two accesses simultaneously, and thus there can be accesses occuring at the same time
+(e.g. from the CPU and from a peripheral performing DMA) that compete for the same re-
+source; in such a case, one of the accesses must be stalled for a cycle. The exact method by
+which competing accesses are detected, and which access gets stalled in that case, is not fully
+documented. Many similar interconnection matrices detect potentially overlapping accesses
+by matching a subset of the address bits (which is more efficient than checking all bits, and
+heuristically sufficient on average). This implies that I/O activity, potentially triggered by an
+adversary at precisely chosen times, may imply DMA activity which may or may not com-
+pete with RAM and Flash accesses from the code, thus revealing, through timing differences,
+parts of the addresses involved in the memory accesses from the CPU. It is not clear how fea-
+sible such an attack is on the STM32F407VGT6 microcontroller, but it is plausible enough
+that a variant of such an attack may apply to some similar microcontrollers and SoCs. This is
+enough to warrant our stance of making no memory access at a secret address whatsoever.
+Figure 3 also shows an element called “ACCEL” which is really a pair of caches, which
+are used to optimize read accesses from the Flash memory (the two separate caches are for
+instructions and data, respectively). In our benchmarks, we disable these caches, since they
+are not needed at the relatively low clock frequency of 24 MHz. These caches are however
+quite useful at higher clock rates; the board can be clocked at up to 168 MHz, and out-of-
+cache read accesses incur large penalties (5 cycles extra latency) at these rates. Of course, active
+caches imply the possibility of cache attacks, further highlighting the temerity of using look-
+up tables with secret addresses.
+8

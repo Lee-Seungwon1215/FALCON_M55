@@ -1,0 +1,77 @@
+DOCUMENT: m55_slothy.pdf PAGE: 35/46
+
+Abdulrahman, Becker, Kannwischer, Klein 35
+Type Cycles IPC Code size R F
+[AHKS22]1 Cortex-M4
+Handwritten ASM 8093 — 1.5 KB + ?4
+32-bit Dilithium NTT
+[BBMK+21]3 Our work
+2+2+2+2 layers
+Our work
+3+3+2 layers
+Cortex-M55
+Scripted ASM 20172 0.97 7.8 KB- ✕
+Clean 3642 0.54 0.6 KB
++ ✓
+slothyM55 2073 0.96 1.1 KB
+Clean 3602 0.55 1.0 KB
++ ✓
+slothyM55 2037 0.96 1.1 KB
++ ✓
+Cortex-M85
+[BBMK+21]3 Scripted ASM 1980 0.97 7.8 KB- ✕
+Our work
+2+2+2+2 layers
+Clean 3544 0.57 0.6 KB
+slothyM85 2018 0.99 1.1 KB
+Our work
+3+3+2 layers
+Clean 3350 0.59 1.0 KB
+slothyM85 1997 0.98 1.1 KB
++ ✓
+[AHKS22]1 [HZZ+22]1 Cortex-M4
+Handwritten ASM 5992 — 2.2 KB + ?4
+Handwritten ASM 4474 — 1.7 KB + ?4
+16-bit Kyber NTT
+Our work
+1+2+2+2 layers
+Our work
+2+3+2 layers
+Cortex-M55
+Clean 1699 0.54 0.5 KB
+slothyM55 1012 0.91 0.9 KB
+Clean 1619 0.55 0.7 KB
+slothyM55 942 0.94 1.0 KB
++ ✓
++ ✓
+Our work
+1+2+2+2 layers
+Our work
+2+3+2 layers
+Cortex-M85
+Clean 1626 0.58 0.5 KB
+slothyM85 947 0.97 0.9 KB
+Clean 1511 0.58 0.7 KB
+slothyM85 910 0.96 1.0 KB
++ ✓
++ ✓
+1 Result stored in canonical ordering. 2 Measurement by ourselves. 3 Optimized
+for Cortex-M55.
+4 Optimizing for the Cortex-M7 CPU would likely require changes to accommodate
+dual-issuing capabilities. Suitability for other CPUs (e.g. Cortex-M23, Cortex-M33,
+Cortex-35P) unstudied.
+Table 3: Comparison of Kyber and Dilithium NTTs for the M-profile of the Arm
+architecture. R=Readable (see Table 2 for a legend), F=Flexible µarch.
+Triple merged layers. We find that on the Cortex-M85 CPU, the triple merged layers
+admit a stall-free scheduling even without software pipelining, while on the Cortex-M55
+CPU, only ST-LD-hazards remain. This leads to compact code, and the lost cycles are
+compensated for by loads and stores saved by merging three layers.
+8.2.4 Results
+Table 3 compares our optimized code to prior art. For the Dilithium NTT, we compare
+our 3 + 3 + 2-layer and 2 + 2 + 2 + 2-layer implementations to the 32-bit NTT from
+[BBMK+21] and to the Cortex-M4 implementation from [AHKS22]. For the Kyber NTT,
+we compare our 1 + 2 + 2 + 2-layer and 2 + 3 + 2-layer implementations to the Cortex-M4
+implementations from [AHKS22, HZZ+22]; there is no prior implementation in Helium.
+Note that the implementations from [AHKS22, HZZ+22] store the results in canonical
+form, compared to [BBMK+21] and this work, which use the non-canonical order.
+Our Dilithium NTTs match (within 1%) the performance from [BBMK+21] while

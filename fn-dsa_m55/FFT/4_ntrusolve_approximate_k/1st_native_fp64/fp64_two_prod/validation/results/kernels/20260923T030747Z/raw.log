@@ -1,0 +1,1601 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 61453
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :61453 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10006c30
+hbreak *0x10009e9c
+set $early_fault_bp = $bpnum
+jump *0x10009eb1
+if $pc != 0x10006c30
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpgdjzevu6/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10006be0
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10009e9c
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 61453
+Info : Listening on port 61453 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/61453
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+KERNEL_BEGIN cpu=800000000 fpscr=00040000 repeats=100
+BOARD_DIFF random_pairs=1000000 edge_pairs=36864 checksum=c665dcb55f68554d result=0
+KERNEL case=0 logn=1 fixed_prepare=358100 c_prepare=469300 asm_prepare=382800 fixed_reduce=17100 c_reduce=545200 asm_reduce=426900 bitexact=PASS
+KERNEL case=1 logn=1 fixed_prepare=358100 c_prepare=469300 asm_prepare=382800 fixed_reduce=17100 c_reduce=545200 asm_reduce=426900 bitexact=PASS
+KERNEL case=2 logn=2 fixed_prepare=736200 c_prepare=1522300 asm_prepare=1232900 fixed_reduce=72500 c_reduce=2377000 asm_reduce=1923400 bitexact=PASS
+KERNEL case=3 logn=2 fixed_prepare=736200 c_prepare=1522300 asm_prepare=1232900 fixed_reduce=72500 c_reduce=2377000 asm_reduce=1923400 bitexact=PASS
+KERNEL case=4 logn=3 fixed_prepare=1500800 c_prepare=4184400 asm_prepare=3359600 fixed_reduce=197300 c_reduce=7246401 asm_reduce=5856500 bitexact=PASS
+KERNEL case=5 logn=3 fixed_prepare=1500800 c_prepare=4184400 asm_prepare=3359600 fixed_reduce=197300 c_reduce=7246400 asm_reduce=5856500 bitexact=PASS
+KERNEL case=6 logn=4 fixed_prepare=3052100 c_prepare=10628400 asm_prepare=8473300 fixed_reduce=492300 c_reduce=19431400 asm_reduce=15658600 bitexact=PASS
+KERNEL case=7 logn=4 fixed_prepare=3052100 c_prepare=10628400 asm_prepare=8473300 fixed_reduce=492300 c_reduce=19431401 asm_reduce=15658600 bitexact=PASS
+KERNEL case=8 logn=5 fixed_prepare=6202100 c_prepare=25759200 asm_prepare=20424200 fixed_reduce=1179400 c_reduce=48699601 asm_reduce=39139900 bitexact=PASS
+KERNEL case=9 logn=5 fixed_prepare=6202100 c_prepare=25759200 asm_prepare=20424200 fixed_reduce=1179400 c_reduce=48699600 asm_reduce=39139900 bitexact=PASS
+KERNEL case=10 logn=6 fixed_prepare=12600100 c_prepare=60509600 asm_prepare=47775900 fixed_reduce=2754100 c_reduce=117038203 asm_reduce=93862000 bitexact=PASS
+KERNEL case=11 logn=6 fixed_prepare=12600100 c_prepare=60509600 asm_prepare=47775900 fixed_reduce=2754100 c_reduce=117038202 asm_reduce=93862000 bitexact=PASS
+KERNEL case=12 logn=7 fixed_prepare=25595300 c_prepare=138991200 asm_prepare=109382000 fixed_reduce=6310800 c_reduce=273325602 asm_reduce=218830500 bitexact=PASS
+KERNEL case=13 logn=7 fixed_prepare=25595300 c_prepare=138991200 asm_prepare=109382000 fixed_reduce=6310800 c_reduce=273325604 asm_reduce=218830500 bitexact=PASS
+KERNEL case=14 logn=8 fixed_prepare=51987300 c_prepare=313919200 asm_prepare=246420100 fixed_reduce=14245100 c_reduce=625126606 asm_reduce=499825600 bitexact=PASS
+KERNEL case=15 logn=8 fixed_prepare=51987300 c_prepare=313919200 asm_prepare=246420100 fixed_reduce=14245100 c_reduce=625126608 asm_reduce=499825600 bitexact=PASS
+KERNEL case=16 logn=9 fixed_prepare=105577700 c_prepare=699708000 asm_prepare=548580100 fixed_reduce=31761800 c_reduce=1407186817 asm_reduce=1123997300 bitexact=PASS
+KERNEL case=17 logn=9 fixed_prepare=105577700 c_prepare=699708000 asm_prepare=548580100 fixed_reduce=31761800 c_reduce=1407186819 asm_reduce=1123997300 bitexact=PASS
+KERNEL case=18 logn=2 fixed_prepare=736200 c_prepare=1522300 asm_prepare=1232900 fixed_reduce=72500 c_reduce=2377000 asm_reduce=1923400 bitexact=PASS
+CT_OP op=0 case=0 repeats=256 min=264196 max=264197
+CT_OP op=0 case=1 repeats=256 min=264196 max=264196
+CT_OP op=0 case=2 repeats=256 min=264196 max=264196
+CT_OP op=0 case=3 repeats=256 min=264196 max=264196
+CT_OP op=0 case=4 repeats=256 min=264196 max=264196
+CT_OP op=0 case=5 repeats=256 min=264196 max=264196
+CT_OP op=0 case=6 repeats=256 min=264196 max=264196
+CT_OP op=0 case=7 repeats=256 min=264196 max=264196
+CT_OP op=0 case=8 repeats=256 min=264196 max=264196
+CT_OP op=0 case=9 repeats=256 min=264196 max=264196
+CT_OP op=0 case=10 repeats=256 min=264196 max=264196
+CT_OP op=0 case=11 repeats=256 min=264196 max=264196
+CT_OP op=0 case=12 repeats=256 min=264196 max=264196
+CT_OP op=0 case=13 repeats=256 min=264196 max=264197
+CT_OP op=0 case=14 repeats=256 min=264196 max=264196
+CT_OP op=0 case=15 repeats=256 min=264196 max=264196
+CT_OP op=0 case=16 repeats=256 min=264196 max=264196
+CT_OP op=0 case=17 repeats=256 min=264196 max=264196
+CT_OP op=0 case=18 repeats=256 min=264196 max=264196
+CT_OP op=0 case=19 repeats=256 min=264196 max=264196
+CT_OP op=1 case=0 repeats=256 min=53252 max=53252
+CT_OP op=1 case=1 repeats=256 min=53252 max=53252
+CT_OP op=1 case=2 repeats=256 min=53252 max=53252
+CT_OP op=1 case=3 repeats=256 min=53252 max=53252
+CT_OP op=1 case=4 repeats=256 min=53252 max=53252
+CT_OP op=1 case=5 repeats=256 min=53252 max=53252
+CT_OP op=1 case=6 repeats=256 min=53252 max=53252
+CT_OP op=1 case=7 repeats=256 min=53252 max=53252
+CT_OP op=1 case=8 repeats=256 min=53252 max=53252
+CT_OP op=1 case=9 repeats=256 min=53252 max=53252
+CT_OP op=1 case=10 repeats=256 min=53252 max=53252
+CT_OP op=1 case=11 repeats=256 min=53252 max=53252
+CT_OP op=1 case=12 repeats=256 min=53252 max=53252
+CT_OP op=1 case=13 repeats=256 min=53252 max=53252
+CT_OP op=1 case=14 repeats=256 min=53252 max=53252
+CT_OP op=1 case=15 repeats=256 min=53252 max=53252
+CT_OP op=1 case=16 repeats=256 min=53252 max=53252
+CT_OP op=1 case=17 repeats=256 min=53252 max=53252
+CT_OP op=1 case=18 repeats=256 min=53252 max=53252
+CT_OP op=1 case=19 repeats=256 min=53252 max=53252
+CT_OP op=2 case=0 repeats=256 min=82692 max=82692
+CT_OP op=2 case=1 repeats=256 min=82692 max=82692
+CT_OP op=2 case=2 repeats=256 min=82692 max=82692
+CT_OP op=2 case=3 repeats=256 min=82692 max=82693
+CT_OP op=2 case=4 repeats=256 min=82692 max=82692
+CT_OP op=2 case=5 repeats=256 min=82692 max=82692
+CT_OP op=2 case=6 repeats=256 min=82692 max=82692
+CT_OP op=2 case=7 repeats=256 min=82692 max=82692
+CT_OP op=2 case=8 repeats=256 min=82692 max=82692
+CT_OP op=2 case=9 repeats=256 min=82692 max=82692
+CT_OP op=2 case=10 repeats=256 min=82692 max=82692
+CT_OP op=2 case=11 repeats=256 min=82692 max=82692
+CT_OP op=2 case=12 repeats=256 min=82692 max=82692
+CT_OP op=2 case=13 repeats=256 min=82692 max=82692
+CT_OP op=2 case=14 repeats=256 min=82692 max=82692
+CT_OP op=2 case=15 repeats=256 min=82692 max=82692
+CT_OP op=2 case=16 repeats=256 min=82692 max=82692
+CT_OP op=2 case=17 repeats=256 min=82692 max=82692
+CT_OP op=2 case=18 repeats=256 min=82692 max=82692
+CT_OP op=2 case=19 repeats=256 min=82692 max=82692
+CT_OP op=3 case=0 repeats=256 min=162820 max=162820
+CT_OP op=3 case=1 repeats=256 min=162820 max=162820
+CT_OP op=3 case=2 repeats=256 min=162820 max=162820
+CT_OP op=3 case=3 repeats=256 min=162820 max=162820
+CT_OP op=3 case=4 repeats=256 min=162820 max=162820
+CT_OP op=3 case=5 repeats=256 min=162820 max=162820
+CT_OP op=3 case=6 repeats=256 min=162820 max=162820
+CT_OP op=3 case=7 repeats=256 min=162820 max=162820
+CT_OP op=3 case=8 repeats=256 min=162820 max=162820
+CT_OP op=3 case=9 repeats=256 min=162820 max=162820
+CT_OP op=3 case=10 repeats=256 min=162820 max=162821
+CT_OP op=3 case=11 repeats=256 min=162820 max=162820
+CT_OP op=3 case=12 repeats=256 min=162820 max=162820
+CT_OP op=3 case=13 repeats=256 min=162820 max=162820
+CT_OP op=3 case=14 repeats=256 min=162820 max=162820
+CT_OP op=3 case=15 repeats=256 min=162820 max=162820
+CT_OP op=3 case=16 repeats=256 min=162820 max=162820
+CT_OP op=3 case=17 repeats=256 min=162820 max=162820
+CT_OP op=3 case=18 repeats=256 min=162820 max=162820
+CT_OP op=3 case=19 repeats=256 min=162820 max=162820
+MUL backend=0 case=0 repeats=256 min=6404 max=6404
+MUL backend=1 case=0 repeats=256 min=353540 max=353540
+MUL backend=2 case=0 repeats=256 min=255748 max=255748
+MUL backend=1 case=1 repeats=256 min=353540 max=353540
+MUL backend=2 case=1 repeats=256 min=255748 max=255748
+MUL backend=0 case=1 repeats=256 min=6404 max=6404
+MUL backend=2 case=2 repeats=256 min=255748 max=255748
+MUL backend=0 case=2 repeats=256 min=6404 max=6404
+MUL backend=1 case=2 repeats=256 min=353540 max=353541
+MUL backend=0 case=3 repeats=256 min=6404 max=6404
+MUL backend=1 case=3 repeats=256 min=353540 max=353540
+MUL backend=2 case=3 repeats=256 min=255748 max=255748
+MUL backend=1 case=4 repeats=256 min=353540 max=353540
+MUL backend=2 case=4 repeats=256 min=255748 max=255748
+MUL backend=0 case=4 repeats=256 min=6404 max=6404
+MUL backend=2 case=5 repeats=256 min=255748 max=255748
+MUL backend=0 case=5 repeats=256 min=6404 max=6404
+MUL backend=1 case=5 repeats=256 min=353540 max=353540
+MUL backend=0 case=6 repeats=256 min=6404 max=6404
+MUL backend=1 case=6 repeats=256 min=353540 max=353540
+MUL backend=2 case=6 repeats=256 min=255748 max=255748
+MUL backend=1 case=7 repeats=256 min=353540 max=353540
+MUL backend=2 case=7 repeats=256 min=255748 max=255748
+MUL backend=0 case=7 repeats=256 min=6404 max=6404
+MUL backend=2 case=8 repeats=256 min=255748 max=255749
+MUL backend=0 case=8 repeats=256 min=6404 max=6404
+MUL backend=1 case=8 repeats=256 min=353540 max=353540
+MUL backend=0 case=9 repeats=256 min=6404 max=6404
+MUL backend=1 case=9 repeats=256 min=353540 max=353540
+MUL backend=2 case=9 repeats=256 min=255748 max=255748
+MUL backend=1 case=10 repeats=256 min=353540 max=353540
+MUL backend=2 case=10 repeats=256 min=255748 max=255748
+MUL backend=0 case=10 repeats=256 min=6404 max=6404
+MUL backend=2 case=11 repeats=256 min=255748 max=255748
+MUL backend=0 case=11 repeats=256 min=6404 max=6404
+MUL backend=1 case=11 repeats=256 min=353540 max=353540
+MUL backend=0 case=12 repeats=256 min=6404 max=6404
+MUL backend=1 case=12 repeats=256 min=353540 max=353540
+MUL backend=2 case=12 repeats=256 min=255748 max=255748
+MUL backend=1 case=13 repeats=256 min=353540 max=353540
+MUL backend=2 case=13 repeats=256 min=255748 max=255749
+MUL backend=0 case=13 repeats=256 min=6404 max=6404
+MUL backend=2 case=14 repeats=256 min=255748 max=255748
+MUL backend=0 case=14 repeats=256 min=6404 max=6404
+MUL backend=1 case=14 repeats=256 min=353540 max=353540
+MUL backend=0 case=15 repeats=256 min=6404 max=6404
+MUL backend=1 case=15 repeats=256 min=353540 max=353540
+MUL backend=2 case=15 repeats=256 min=255748 max=255748
+MUL backend=1 case=16 repeats=256 min=353540 max=353540
+MUL backend=2 case=16 repeats=256 min=255748 max=255748
+MUL backend=0 case=16 repeats=256 min=6404 max=6404
+MUL backend=2 case=17 repeats=256 min=255748 max=255748
+MUL backend=0 case=17 repeats=256 min=6404 max=6404
+MUL backend=1 case=17 repeats=256 min=353540 max=353540
+MUL backend=0 case=18 repeats=256 min=6404 max=6404
+MUL backend=1 case=18 repeats=256 min=353540 max=353540
+MUL backend=2 case=18 repeats=256 min=255748 max=255749
+MUL backend=1 case=19 repeats=256 min=353540 max=353540
+MUL backend=2 case=19 repeats=256 min=255748 max=255748
+MUL backend=0 case=19 repeats=256 min=6404 max=6404
+CT_FFT backend=0 logn=1 inverse=0 case=0 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=0 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=0 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=0 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=0 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=0 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=1 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=1 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=1 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=1 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=1 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=1 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=2 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=2 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=2 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=2 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=2 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=2 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=3 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=3 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=3 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=3 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=3 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=3 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=4 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=4 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=4 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=4 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=4 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=4 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=5 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=5 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=5 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=5 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=5 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=5 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=6 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=6 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=6 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=6 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=6 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=6 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=7 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=7 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=7 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=7 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=7 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=7 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=8 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=8 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=8 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=8 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=8 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=8 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=9 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=9 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=9 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=9 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=9 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=9 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=10 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=10 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=10 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=10 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=10 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=10 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=11 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=11 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=11 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=11 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=11 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=11 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=12 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=12 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=12 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=12 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=12 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=12 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=13 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=13 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=13 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=13 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=13 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=13 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=14 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=14 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=14 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=14 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=14 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=14 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=15 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=15 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=15 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=15 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=15 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=15 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=16 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=16 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=16 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=16 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=16 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=16 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=17 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=17 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=17 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=17 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=17 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=17 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=18 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=18 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=18 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=18 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=18 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=18 min=16 max=16
+CT_FFT backend=0 logn=1 inverse=0 case=19 min=12 max=12
+CT_FFT backend=1 logn=1 inverse=0 case=19 min=21 max=21
+CT_FFT backend=2 logn=1 inverse=0 case=19 min=18 max=18
+CT_FFT backend=0 logn=1 inverse=1 case=19 min=34 max=34
+CT_FFT backend=1 logn=1 inverse=1 case=19 min=70 max=70
+CT_FFT backend=2 logn=1 inverse=1 case=19 min=16 max=16
+CT_FFT backend=0 logn=2 inverse=0 case=0 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=0 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=0 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=0 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=0 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=0 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=1 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=1 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=1 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=1 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=1 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=1 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=2 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=2 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=2 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=2 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=2 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=2 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=3 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=3 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=3 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=3 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=3 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=3 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=4 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=4 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=4 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=4 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=4 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=4 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=5 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=5 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=5 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=5 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=5 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=5 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=6 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=6 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=6 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=6 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=6 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=6 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=7 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=7 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=7 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=7 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=7 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=7 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=8 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=8 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=8 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=8 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=8 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=8 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=9 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=9 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=9 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=9 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=9 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=9 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=10 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=10 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=10 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=10 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=10 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=10 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=11 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=11 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=11 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=11 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=11 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=11 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=12 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=12 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=12 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=12 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=12 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=12 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=13 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=13 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=13 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=13 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=13 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=13 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=14 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=14 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=14 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=14 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=14 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=14 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=15 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=15 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=15 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=15 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=15 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=15 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=16 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=16 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=16 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=16 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=16 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=16 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=17 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=17 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=17 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=17 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=17 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=17 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=18 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=18 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=18 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=18 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=18 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=18 min=6006 max=6006
+CT_FFT backend=0 logn=2 inverse=0 case=19 min=233 max=233
+CT_FFT backend=1 logn=2 inverse=0 case=19 min=5925 max=5925
+CT_FFT backend=2 logn=2 inverse=0 case=19 min=4778 max=4778
+CT_FFT backend=0 logn=2 inverse=1 case=19 min=265 max=265
+CT_FFT backend=1 logn=2 inverse=1 case=19 min=7138 max=7138
+CT_FFT backend=2 logn=2 inverse=1 case=19 min=6006 max=6006
+CT_FFT backend=0 logn=3 inverse=0 case=0 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=0 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=0 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=0 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=0 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=0 min=23213 max=23214
+CT_FFT backend=0 logn=3 inverse=0 case=1 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=1 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=1 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=1 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=1 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=1 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=2 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=2 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=2 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=2 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=2 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=2 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=3 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=3 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=3 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=3 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=3 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=3 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=4 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=4 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=4 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=4 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=4 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=4 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=5 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=5 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=5 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=5 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=5 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=5 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=6 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=6 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=6 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=6 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=6 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=6 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=7 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=7 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=7 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=7 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=7 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=7 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=8 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=8 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=8 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=8 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=8 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=8 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=9 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=9 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=9 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=9 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=9 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=9 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=10 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=10 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=10 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=10 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=10 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=10 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=11 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=11 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=11 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=11 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=11 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=11 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=12 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=12 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=12 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=12 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=12 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=12 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=13 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=13 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=13 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=13 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=13 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=13 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=14 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=14 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=14 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=14 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=14 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=14 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=15 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=15 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=15 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=15 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=15 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=15 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=16 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=16 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=16 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=16 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=16 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=16 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=17 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=17 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=17 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=17 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=17 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=17 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=18 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=18 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=18 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=18 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=18 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=18 min=23213 max=23213
+CT_FFT backend=0 logn=3 inverse=0 case=19 min=720 max=720
+CT_FFT backend=1 logn=3 inverse=0 case=19 min=23178 max=23178
+CT_FFT backend=2 logn=3 inverse=0 case=19 min=18474 max=18474
+CT_FFT backend=0 logn=3 inverse=1 case=19 min=825 max=825
+CT_FFT backend=1 logn=3 inverse=1 case=19 min=27891 max=27891
+CT_FFT backend=2 logn=3 inverse=1 case=19 min=23213 max=23213
+CT_FFT backend=0 logn=4 inverse=0 case=0 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=0 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=0 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=0 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=0 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=0 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=1 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=1 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=1 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=1 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=1 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=1 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=2 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=2 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=2 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=2 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=2 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=2 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=3 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=3 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=3 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=3 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=3 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=3 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=4 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=4 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=4 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=4 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=4 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=4 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=5 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=5 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=5 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=5 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=5 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=5 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=6 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=6 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=6 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=6 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=6 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=6 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=7 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=7 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=7 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=7 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=7 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=7 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=8 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=8 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=8 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=8 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=8 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=8 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=9 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=9 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=9 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=9 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=9 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=9 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=10 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=10 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=10 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=10 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=10 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=10 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=11 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=11 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=11 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=11 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=11 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=11 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=12 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=12 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=12 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=12 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=12 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=12 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=13 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=13 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=13 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=13 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=13 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=13 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=14 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=14 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=14 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=14 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=14 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=14 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=15 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=15 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=15 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=15 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=15 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=15 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=16 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=16 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=16 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=16 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=16 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=16 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=17 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=17 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=17 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=17 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=17 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=17 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=18 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=18 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=18 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=18 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=18 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=18 min=68360 max=68360
+CT_FFT backend=0 logn=4 inverse=0 case=19 min=1903 max=1903
+CT_FFT backend=1 logn=4 inverse=0 case=19 min=68861 max=68861
+CT_FFT backend=2 logn=4 inverse=0 case=19 min=54492 max=54492
+CT_FFT backend=0 logn=4 inverse=1 case=19 min=2190 max=2190
+CT_FFT backend=1 logn=4 inverse=1 case=19 min=82686 max=82686
+CT_FFT backend=2 logn=4 inverse=1 case=19 min=68360 max=68360
+CT_FFT backend=0 logn=5 inverse=0 case=0 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=0 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=0 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=0 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=0 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=0 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=1 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=1 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=1 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=1 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=1 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=1 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=2 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=2 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=2 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=2 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=2 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=2 min=180147 max=180148
+CT_FFT backend=0 logn=5 inverse=0 case=3 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=3 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=3 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=3 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=3 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=3 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=4 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=4 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=4 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=4 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=4 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=4 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=5 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=5 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=5 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=5 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=5 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=5 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=6 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=6 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=6 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=6 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=6 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=6 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=7 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=7 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=7 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=7 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=7 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=7 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=8 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=8 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=8 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=8 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=8 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=8 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=9 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=9 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=9 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=9 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=9 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=9 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=10 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=10 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=10 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=10 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=10 min=218881 max=218882
+CT_FFT backend=2 logn=5 inverse=1 case=10 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=11 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=11 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=11 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=11 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=11 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=11 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=12 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=12 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=12 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=12 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=12 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=12 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=13 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=13 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=13 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=13 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=13 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=13 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=14 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=14 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=14 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=14 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=14 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=14 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=15 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=15 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=15 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=15 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=15 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=15 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=16 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=16 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=16 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=16 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=16 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=16 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=17 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=17 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=17 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=17 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=17 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=17 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=18 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=18 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=18 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=18 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=18 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=18 min=180147 max=180147
+CT_FFT backend=0 logn=5 inverse=0 case=19 min=4720 max=4720
+CT_FFT backend=1 logn=5 inverse=0 case=19 min=182612 max=182612
+CT_FFT backend=2 logn=5 inverse=0 case=19 min=143806 max=143806
+CT_FFT backend=0 logn=5 inverse=1 case=19 min=5440 max=5440
+CT_FFT backend=1 logn=5 inverse=1 case=19 min=218881 max=218881
+CT_FFT backend=2 logn=5 inverse=1 case=19 min=180147 max=180147
+CT_FFT backend=0 logn=6 inverse=0 case=0 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=0 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=0 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=0 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=0 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=0 min=446734 max=446735
+CT_FFT backend=0 logn=6 inverse=0 case=1 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=1 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=1 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=1 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=1 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=1 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=2 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=2 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=2 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=2 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=2 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=2 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=3 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=3 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=3 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=3 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=3 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=3 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=4 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=4 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=4 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=4 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=4 min=544508 max=544509
+CT_FFT backend=2 logn=6 inverse=1 case=4 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=5 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=5 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=5 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=5 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=5 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=5 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=6 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=6 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=6 min=357016 max=357017
+CT_FFT backend=0 logn=6 inverse=1 case=6 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=6 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=6 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=7 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=7 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=7 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=7 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=7 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=7 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=8 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=8 min=454915 max=454916
+CT_FFT backend=2 logn=6 inverse=0 case=8 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=8 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=8 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=8 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=9 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=9 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=9 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=9 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=9 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=9 min=446734 max=446735
+CT_FFT backend=0 logn=6 inverse=0 case=10 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=10 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=10 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=10 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=10 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=10 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=11 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=11 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=11 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=11 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=11 min=544508 max=544509
+CT_FFT backend=2 logn=6 inverse=1 case=11 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=12 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=12 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=12 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=12 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=12 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=12 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=13 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=13 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=13 min=357016 max=357017
+CT_FFT backend=0 logn=6 inverse=1 case=13 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=13 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=13 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=14 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=14 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=14 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=14 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=14 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=14 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=15 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=15 min=454915 max=454916
+CT_FFT backend=2 logn=6 inverse=0 case=15 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=15 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=15 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=15 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=16 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=16 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=16 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=16 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=16 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=16 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=17 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=17 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=17 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=17 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=17 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=17 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=18 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=18 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=18 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=18 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=18 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=18 min=446734 max=446734
+CT_FFT backend=0 logn=6 inverse=0 case=19 min=11289 max=11289
+CT_FFT backend=1 logn=6 inverse=0 case=19 min=454915 max=454915
+CT_FFT backend=2 logn=6 inverse=0 case=19 min=357016 max=357016
+CT_FFT backend=0 logn=6 inverse=1 case=19 min=13010 max=13010
+CT_FFT backend=1 logn=6 inverse=1 case=19 min=544508 max=544508
+CT_FFT backend=2 logn=6 inverse=1 case=19 min=446734 max=446734
+CT_FFT backend=0 logn=7 inverse=0 case=0 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=0 min=1089154 max=1089155
+CT_FFT backend=2 logn=7 inverse=0 case=0 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=0 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=0 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=0 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=1 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=1 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=1 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=1 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=1 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=1 min=1065961 max=1065962
+CT_FFT backend=0 logn=7 inverse=0 case=2 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=2 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=2 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=2 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=2 min=1302263 max=1302264
+CT_FFT backend=2 logn=7 inverse=1 case=2 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=3 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=3 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=3 min=852626 max=852627
+CT_FFT backend=0 logn=7 inverse=1 case=3 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=3 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=3 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=4 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=4 min=1089154 max=1089155
+CT_FFT backend=2 logn=7 inverse=0 case=4 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=4 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=4 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=4 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=5 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=5 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=5 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=5 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=5 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=5 min=1065961 max=1065962
+CT_FFT backend=0 logn=7 inverse=0 case=6 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=6 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=6 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=6 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=6 min=1302263 max=1302264
+CT_FFT backend=2 logn=7 inverse=1 case=6 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=7 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=7 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=7 min=852626 max=852627
+CT_FFT backend=0 logn=7 inverse=1 case=7 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=7 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=7 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=8 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=8 min=1089154 max=1089155
+CT_FFT backend=2 logn=7 inverse=0 case=8 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=8 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=8 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=8 min=1065961 max=1065962
+CT_FFT backend=0 logn=7 inverse=0 case=9 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=9 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=9 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=9 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=9 min=1302263 max=1302264
+CT_FFT backend=2 logn=7 inverse=1 case=9 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=10 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=10 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=10 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=10 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=10 min=1302263 max=1302264
+CT_FFT backend=2 logn=7 inverse=1 case=10 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=11 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=11 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=11 min=852626 max=852627
+CT_FFT backend=0 logn=7 inverse=1 case=11 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=11 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=11 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=12 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=12 min=1089154 max=1089155
+CT_FFT backend=2 logn=7 inverse=0 case=12 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=12 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=12 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=12 min=1065961 max=1065962
+CT_FFT backend=0 logn=7 inverse=0 case=13 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=13 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=13 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=13 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=13 min=1302263 max=1302264
+CT_FFT backend=2 logn=7 inverse=1 case=13 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=14 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=14 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=14 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=14 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=14 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=14 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=15 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=15 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=15 min=852626 max=852627
+CT_FFT backend=0 logn=7 inverse=1 case=15 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=15 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=15 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=16 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=16 min=1089154 max=1089155
+CT_FFT backend=2 logn=7 inverse=0 case=16 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=16 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=16 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=16 min=1065961 max=1065962
+CT_FFT backend=0 logn=7 inverse=0 case=17 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=17 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=17 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=17 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=17 min=1302263 max=1302264
+CT_FFT backend=2 logn=7 inverse=1 case=17 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=18 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=18 min=1089154 max=1089154
+CT_FFT backend=2 logn=7 inverse=0 case=18 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=18 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=18 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=18 min=1065961 max=1065961
+CT_FFT backend=0 logn=7 inverse=0 case=19 min=26330 max=26330
+CT_FFT backend=1 logn=7 inverse=0 case=19 min=1089154 max=1089155
+CT_FFT backend=2 logn=7 inverse=0 case=19 min=852626 max=852626
+CT_FFT backend=0 logn=7 inverse=1 case=19 min=30320 max=30320
+CT_FFT backend=1 logn=7 inverse=1 case=19 min=1302263 max=1302263
+CT_FFT backend=2 logn=7 inverse=1 case=19 min=1065961 max=1065961
+CT_FFT backend=0 logn=8 inverse=0 case=0 min=60251 max=60252
+CT_FFT backend=1 logn=8 inverse=0 case=0 min=2536929 max=2536929
+CT_FFT backend=2 logn=8 inverse=0 case=0 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=0 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=0 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=0 min=2476548 max=2476548
+CT_FFT backend=0 logn=8 inverse=0 case=1 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=1 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=1 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=1 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=1 min=3030802 max=3030802
+CT_FFT backend=2 logn=8 inverse=1 case=1 min=2476548 max=2476548
+CT_FFT backend=0 logn=8 inverse=0 case=2 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=2 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=2 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=2 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=2 min=3030802 max=3030802
+CT_FFT backend=2 logn=8 inverse=1 case=2 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=3 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=3 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=3 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=3 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=3 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=3 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=4 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=4 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=4 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=4 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=4 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=4 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=5 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=5 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=5 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=5 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=5 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=5 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=6 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=6 min=2536929 max=2536929
+CT_FFT backend=2 logn=8 inverse=0 case=6 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=6 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=6 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=6 min=2476548 max=2476548
+CT_FFT backend=0 logn=8 inverse=0 case=7 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=7 min=2536929 max=2536929
+CT_FFT backend=2 logn=8 inverse=0 case=7 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=7 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=7 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=7 min=2476548 max=2476548
+CT_FFT backend=0 logn=8 inverse=0 case=8 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=8 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=8 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=8 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=8 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=8 min=2476548 max=2476548
+CT_FFT backend=0 logn=8 inverse=0 case=9 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=9 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=9 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=9 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=9 min=3030802 max=3030802
+CT_FFT backend=2 logn=8 inverse=1 case=9 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=10 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=10 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=10 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=10 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=10 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=10 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=11 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=11 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=11 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=11 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=11 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=11 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=12 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=12 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=12 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=12 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=12 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=12 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=13 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=13 min=2536929 max=2536929
+CT_FFT backend=2 logn=8 inverse=0 case=13 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=13 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=13 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=13 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=14 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=14 min=2536929 max=2536929
+CT_FFT backend=2 logn=8 inverse=0 case=14 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=14 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=14 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=14 min=2476548 max=2476548
+CT_FFT backend=0 logn=8 inverse=0 case=15 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=15 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=15 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=15 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=15 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=15 min=2476548 max=2476548
+CT_FFT backend=0 logn=8 inverse=0 case=16 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=16 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=16 min=1982252 max=1982253
+CT_FFT backend=0 logn=8 inverse=1 case=16 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=16 min=3030802 max=3030802
+CT_FFT backend=2 logn=8 inverse=1 case=16 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=17 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=17 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=17 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=17 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=17 min=3030802 max=3030802
+CT_FFT backend=2 logn=8 inverse=1 case=17 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=18 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=18 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=18 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=18 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=18 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=18 min=2476548 max=2476549
+CT_FFT backend=0 logn=8 inverse=0 case=19 min=60251 max=60251
+CT_FFT backend=1 logn=8 inverse=0 case=19 min=2536929 max=2536930
+CT_FFT backend=2 logn=8 inverse=0 case=19 min=1982252 max=1982252
+CT_FFT backend=0 logn=8 inverse=1 case=19 min=69310 max=69310
+CT_FFT backend=1 logn=8 inverse=1 case=19 min=3030802 max=3030803
+CT_FFT backend=2 logn=8 inverse=1 case=19 min=2476548 max=2476549
+CT_FFT backend=0 logn=9 inverse=0 case=0 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=0 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=0 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=0 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=0 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=0 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=1 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=1 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=1 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=1 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=1 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=1 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=2 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=2 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=2 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=2 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=2 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=2 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=3 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=3 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=3 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=3 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=3 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=3 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=4 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=4 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=4 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=4 min=156060 max=156061
+CT_FFT backend=1 logn=9 inverse=1 case=4 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=4 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=5 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=5 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=5 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=5 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=5 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=5 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=6 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=6 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=6 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=6 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=6 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=6 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=7 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=7 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=7 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=7 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=7 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=7 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=8 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=8 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=8 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=8 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=8 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=8 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=9 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=9 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=9 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=9 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=9 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=9 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=10 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=10 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=10 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=10 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=10 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=10 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=11 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=11 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=11 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=11 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=11 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=11 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=12 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=12 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=12 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=12 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=12 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=12 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=13 min=135804 max=135805
+CT_FFT backend=1 logn=9 inverse=0 case=13 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=13 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=13 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=13 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=13 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=14 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=14 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=14 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=14 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=14 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=14 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=15 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=15 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=15 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=15 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=15 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=15 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=16 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=16 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=16 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=16 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=16 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=16 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=17 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=17 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=17 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=17 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=17 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=17 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=18 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=18 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=18 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=18 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=18 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=18 min=5642015 max=5642016
+CT_FFT backend=0 logn=9 inverse=0 case=19 min=135804 max=135804
+CT_FFT backend=1 logn=9 inverse=0 case=19 min=5791104 max=5791105
+CT_FFT backend=2 logn=9 inverse=0 case=19 min=4518342 max=4518343
+CT_FFT backend=0 logn=9 inverse=1 case=19 min=156060 max=156060
+CT_FFT backend=1 logn=9 inverse=1 case=19 min=6913965 max=6913966
+CT_FFT backend=2 logn=9 inverse=1 case=19 min=5642015 max=5642016
+CT_FFT backend=0 logn=10 inverse=0 case=0 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=0 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=0 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=0 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=0 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=0 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=1 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=1 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=1 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=1 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=1 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=1 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=2 min=302365 max=302366
+CT_FFT backend=1 logn=10 inverse=0 case=2 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=2 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=2 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=2 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=2 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=3 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=3 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=3 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=3 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=3 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=3 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=4 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=4 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=4 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=4 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=4 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=4 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=5 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=5 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=5 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=5 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=5 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=5 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=6 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=6 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=6 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=6 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=6 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=6 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=7 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=7 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=7 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=7 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=7 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=7 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=8 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=8 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=8 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=8 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=8 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=8 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=9 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=9 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=9 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=9 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=9 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=9 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=10 min=302365 max=302366
+CT_FFT backend=1 logn=10 inverse=0 case=10 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=10 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=10 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=10 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=10 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=11 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=11 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=11 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=11 min=347130 max=347131
+CT_FFT backend=1 logn=10 inverse=1 case=11 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=11 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=12 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=12 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=12 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=12 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=12 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=12 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=13 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=13 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=13 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=13 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=13 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=13 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=14 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=14 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=14 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=14 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=14 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=14 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=15 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=15 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=15 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=15 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=15 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=15 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=16 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=16 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=16 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=16 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=16 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=16 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=17 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=17 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=17 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=17 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=17 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=17 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=18 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=18 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=18 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=18 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=18 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=18 min=12661562 max=12661563
+CT_FFT backend=0 logn=10 inverse=0 case=19 min=302365 max=302365
+CT_FFT backend=1 logn=10 inverse=0 case=19 min=13016735 max=13016736
+CT_FFT backend=2 logn=10 inverse=0 case=19 min=10144224 max=10144225
+CT_FFT backend=0 logn=10 inverse=1 case=19 min=347130 max=347130
+CT_FFT backend=1 logn=10 inverse=1 case=19 min=15532488 max=15532489
+CT_FFT backend=2 logn=10 inverse=1 case=19 min=12661562 max=12661563
+FFT_DIFF coefficient_positions=81840 backends=3 result=0
+KERNEL_DONE result=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xe9b0 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x10eac lma 0x30000980
+Loading section datas, size 0x54 lma 0x30011840
+Loading section device_states, size 0x2c lma 0x30011894
+Loading section k_mutex_area, size 0x14 lma 0x300118c0
+Loading section .last_section, size 0x4 lma 0x300118d4
+Start address 0x10009eb0, load size 132504
+Transfer rate: 541 KB/sec, 5761 bytes/write.
+Temporary breakpoint 1 at 0x10006c30: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10009e9c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpgdjzevu6/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10006be0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10009e9c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984636            9979446
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x3002acf8          805481720
+r8             0x300000d0          805306576
+r9             0x3003ae38          805547576
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3003ade8          0x3003ade8 <z_main_stack+65456>
+lr             0x10006c27          268463143
+pc             0x10006be0          0x10006be0 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x60040010          1610874896
+msp            0x3002acf8          0x3002acf8 <z_idle_stacks>
+psp            0x3003ade8          0x3003ade8 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x3002acf8          0x3002acf8 <z_idle_stacks>
+psp_s          0x3003ade8          0x3003ade8 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x3002a4f8          0x3002a4f8 <z_interrupt_stacks>
+psplim_s       0x3002ae38          0x3002ae38 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x3003ade8 <z_main_stack+65456>:	0x00000000	0x10006c43	0x00000000	0x1000d5a3
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0xf30379ad
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x3002acf8
+PSP=0x3003ade8
+LR=0x10006c27
+PC=0x10006be0
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3003ade8 <z_main_stack+65456>:	0x00000000	0x10006c43	0x00000000	0x1000d5a3
+0x3003adf8 <z_main_stack+65472>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0xf30379ad
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

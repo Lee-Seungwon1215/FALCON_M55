@@ -1,0 +1,50 @@
+DOCUMENT: m55_slothy.pdf PAGE: 21/46
+
+Abdulrahman, Becker, Kannwischer, Klein 21
+Moreover, models can be developed “lazily”, focusing on the instructions required for
+specific workload(s) first, and gradually expanding the models over time.
+6.2 Armv8.1-M+Helium
+For an introduction to Armv8.1-M+Helium, we refer back to Section 3.2.2.
+Cortex-M55. The Cortex-M55 SWOG [Armk] provides detailed microarchitectural in-
+formation that can be converted into a SLOTHY model. The most important points are
+the following: First, Cortex-M55 is a dual-beat implementation of Helium, that is, every
+Helium instruction runs for two cycles. In terms of the SLOTHY, this means that the
+throughput of Helium instructions is modelled as 1 /2. Second, there are separate Helium
+execution pipelines for (a) load/store, (b) integer, and (c) floating point / integer multi-
+plication instructions, which are modelled as separate “execution units” in the SLOTHY
+model. Third, the SWOG details the latencies of Helium instructions, which are reflected
+in our SLOTHY model, including some latency exceptions because of forwarding paths.
+Finally, we constrain the SLOTHY model for Cortex-M55 to forbid patterns of the
+form VSTx; ?; VLDx, as those patterns do sometimes, depending on address alignment,
+lead to memory bank conflicts, and thus pipeline stalls. Below, this phenomenon will
+be referred to as a ST-LD-hazard (the interested reader should consult the SWOG for
+detailed load/store-pipeline information explaining this).
+Cortex-M85. We also experiment with a SLOTHY model for the Cortex-M85 CPU.
+We focus on the microarchitectural aspects related to Helium only: Cortex-M85 brings
+significant scalar improvements compared to Cortex-M55 because of larger dual-issuing
+capabilities, but we leave their modelling and use for future work.
+In terms of Helium, the Cortex-M85 microarchitecture is overall similar to Cortex-
+M55, with a few noteworthy differences: First, similar to Cortex-M55, there are separate
+pipelines for integer and floating-point addition/logical instructions, and for integer and
+floating-point multiply instructions. Second, loads and stores can overlap (so that e.g.
+VLDRx; VSTRx; VLDRx; ... can run stall-free), and only some specific sequences
+such as {ARITH}; VLDx; VSTx; VLDx can lead to stalls — overall, scheduling of loads
+and stores is more flexible. Third, the Cortex-M85 microarchitecture is designed to
+be implementable at higher clock-rates than Cortex-M55, which increases some (cycle)
+latencies compared to Cortex-M55: For example, de-interleaving loads VLD2x and floating-
+point MACs have a latency of 4 cycles on Cortex-M85. This reinforces the importance of
+good instruction scheduling, and also explains that, as we will see later (e.g. Section 7.3),
+the best implementations for Cortex-M55 and for Cortex-M85 may be different.
+6.3 AArch64+Neon
+Cortex-A55. We derived the SLOTHY model for Cortex-A55 from experimentation, the
+Cortex-A55 SWOG [Armi], and useful observations from [Len19]. Our goal was not to
+define a fully precise reflection of the Cortex-A55 microarchitecture, but to focus on —
+and model in sufficient detail — the aspects most relevant for our target workloads.
+The Cortex-A55 is a superscalar CPU which can dual-issue many pairs of instruc-
+tions including scalar and 64/128-bit Neon instructions, as well as pairs of 64-bit Neon
+instructions. Notable exceptions are most pairs of 128-bit Neon instructions, and pairs of
+multiply-accumulate scalar instructions. We express those characteristics in SLOTHY as
+follows: First, we add two execution units for 64-bit vector operations, but mark 128-bit
+vector instructions as occupying both. Second, we model two scalar execution units and
+mark one as capable of multiple-accumulate instructions; this is a deviation from the
+SWOG showing 3 scalar pipelines, but our model is sufficient for our purposes. Third, we

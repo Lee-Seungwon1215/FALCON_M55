@@ -1,0 +1,44 @@
+2026-09-09T02:03:19.375957+00:00 OpenOCD: halt
+2026-09-09T02:03:20.364953+00:00 OpenOCD: dump_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/logs/flash_before.bin} 0x08000000 0x200000
+2026-09-09T02:03:52.852521+00:00 dumped 2097152 bytes in 32.486416s (63.042 KiB/s)
+2026-09-09T02:03:52.856772+00:00 OpenOCD: reset halt
+2026-09-09T02:03:53.038935+00:00 OpenOCD: load_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/build/firmware.bin} 0x20000400 bin
+2026-09-09T02:03:56.115280+00:00 103340 bytes written at address 0x20000400
+downloaded 103340 bytes in 3.075043s (32.818 KiB/s)
+2026-09-09T02:03:56.115941+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/build/firmware.bin} 0x20000400 bin
+2026-09-09T02:03:59.162066+00:00 verified 103340 bytes in 3.044997s (33.142 KiB/s)
+2026-09-09T02:03:59.164680+00:00 OpenOCD: write_memory 0x40021060 32 {0x00000001}
+2026-09-09T02:03:59.167868+00:00 OpenOCD: write_memory 0x40010000 32 {0x00000003}
+2026-09-09T02:03:59.169565+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/build/firmware.bin} 0x00000400 bin
+2026-09-09T02:04:02.277566+00:00 verified 103340 bytes in 3.107021s (32.481 KiB/s)
+2026-09-09T02:04:02.278477+00:00 OpenOCD: reg sp 0x200a0000
+2026-09-09T02:04:02.279281+00:00 sp (/32): 0x200a0000
+2026-09-09T02:04:02.279637+00:00 OpenOCD: reg msp 0x200a0000
+2026-09-09T02:04:02.280179+00:00 msp (/32): 0x200a0000
+2026-09-09T02:04:02.280483+00:00 OpenOCD: reg psp 0x200a0000
+2026-09-09T02:04:02.281038+00:00 psp (/32): 0x200a0000
+2026-09-09T02:04:02.281448+00:00 OpenOCD: reg xpsr 0x01000000
+2026-09-09T02:04:02.282031+00:00 xpsr (/32): 0x01000000
+2026-09-09T02:04:02.282369+00:00 OpenOCD: reg primask 0x00000000
+2026-09-09T02:04:02.282903+00:00 primask (/1): 0x00
+2026-09-09T02:04:02.283499+00:00 OpenOCD: reg basepri 0x00000000
+2026-09-09T02:04:02.284279+00:00 basepri (/8): 0x00
+2026-09-09T02:04:02.284735+00:00 OpenOCD: reg faultmask 0x00000000
+2026-09-09T02:04:02.285498+00:00 faultmask (/1): 0x00
+2026-09-09T02:04:02.285944+00:00 OpenOCD: reg control 0x00000000
+2026-09-09T02:04:02.286551+00:00 control (/3): 0x00
+2026-09-09T02:04:02.286847+00:00 OpenOCD: resume 0x0000d0a4
+2026-09-09T02:04:25.520729+00:00 READY: both warmups, output SHAKE256 digests, tampered-signature rejection, clocks and cache settings passed.
+2026-09-09T02:04:25.521628+00:00 clock probe: {"elapsed_seconds": 3.0113091874999967, "observed_cycles": 72283081, "inferred_hz": 24003872.236052174, "read_time_uncertainty_seconds": 0.0018195625000032578}
+2026-09-09T02:04:25.861366+00:00 OpenOCD: write_memory 0x20030088 32 {0x474f3130}
+2026-09-09T02:04:25.873298+00:00 counts=[[0, 0, 0], [0, 0, 0]] degree=512 index=0 op=0 state=0x52554e21
+2026-09-09T02:05:25.897122+00:00 counts=[[19, 19, 19], [0, 0, 0]] degree=512 index=19 op=0 state=0x52554e21
+2026-09-09T02:06:25.916537+00:00 counts=[[35, 35, 35], [0, 0, 0]] degree=512 index=35 op=0 state=0x52554e21
+2026-09-09T02:07:25.943489+00:00 counts=[[54, 54, 54], [0, 0, 0]] degree=512 index=54 op=0 state=0x52554e21
+2026-09-09T02:08:25.961800+00:00 counts=[[72, 72, 72], [0, 0, 0]] degree=512 index=72 op=0 state=0x52554e21
+2026-09-09T02:09:07.551315+00:00 OpenOCD: halt
+2026-09-09T02:09:07.629008+00:00 OpenOCD: dump_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_controlled/logs/pilot_mailbox.bin} 0x20030000 2768
+2026-09-09T02:09:07.702469+00:00 dumped 2768 bytes in 0.072971s (37.044 KiB/s)
+2026-09-09T02:09:13.111427+00:00 OpenOCD: halt
+2026-09-09T02:09:13.112801+00:00 OpenOCD: shutdown
+2026-09-09T02:09:13.113046+00:00 cleanup: ValueError('not enough values to unpack (expected 2, got 1)')

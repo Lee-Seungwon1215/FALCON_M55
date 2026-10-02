@@ -1,0 +1,368 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 54324
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :54324 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10001d20
+hbreak *0x10004fb0
+set $early_fault_bp = $bpnum
+jump *0x10004fc5
+if $pc != 0x10001d20
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpywfz9u4l/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10001cd0
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10004fb0
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 54324
+Info : Listening on port 54324 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/54324
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+PAIR_INPUT_CT class=0 scale=0 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=0 scale=0 kind=1 calls=128 len=32 min=158484 max=158485
+PAIR_INPUT_CT class=0 scale=0 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=1 scale=1 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=1 scale=1 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=1 scale=1 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=2 scale=2 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=2 scale=2 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=2 scale=2 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=3 scale=3 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=3 scale=3 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=3 scale=3 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=4 scale=4 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=4 scale=4 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=4 scale=4 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=5 scale=5 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=5 scale=5 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=5 scale=5 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=6 scale=6 kind=0 calls=128 len=32 min=359826 max=359827
+PAIR_INPUT_CT class=6 scale=6 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=6 scale=6 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=7 scale=7 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=7 scale=7 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=7 scale=7 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=8 scale=8 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=8 scale=8 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=8 scale=8 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=9 scale=9 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=9 scale=9 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=9 scale=9 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=10 scale=10 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=10 scale=10 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=10 scale=10 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=11 scale=11 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=11 scale=11 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=11 scale=11 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=12 scale=12 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=12 scale=12 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=12 scale=12 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=13 scale=13 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=13 scale=13 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=13 scale=13 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=14 scale=14 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=14 scale=14 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=14 scale=14 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=15 scale=15 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=15 scale=15 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=15 scale=15 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=16 scale=31 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=16 scale=31 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=16 scale=31 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=17 scale=62 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=17 scale=62 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=17 scale=62 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=18 scale=93 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=18 scale=93 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=18 scale=93 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=19 scale=124 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=19 scale=124 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=19 scale=124 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=20 scale=155 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=20 scale=155 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=20 scale=155 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=21 scale=186 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=21 scale=186 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=21 scale=186 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=22 scale=217 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=22 scale=217 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=22 scale=217 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=23 scale=248 kind=0 calls=128 len=32 min=359826 max=359827
+PAIR_INPUT_CT class=23 scale=248 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=23 scale=248 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=24 scale=279 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=24 scale=279 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=24 scale=279 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=25 scale=310 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=25 scale=310 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=25 scale=310 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=26 scale=341 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=26 scale=341 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=26 scale=341 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=27 scale=372 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=27 scale=372 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=27 scale=372 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=28 scale=403 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=28 scale=403 kind=1 calls=128 len=32 min=158484 max=158485
+PAIR_INPUT_CT class=28 scale=403 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=29 scale=434 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=29 scale=434 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=29 scale=434 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=30 scale=465 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=30 scale=465 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=30 scale=465 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_CT class=31 scale=63487 kind=0 calls=128 len=32 min=359826 max=359826
+PAIR_INPUT_CT class=31 scale=63487 kind=1 calls=128 len=32 min=158484 max=158484
+PAIR_INPUT_CT class=31 scale=63487 kind=2 calls=128 len=32 min=51345 max=51345
+PAIR_INPUT_TIMING len=1 kind=0 calls=32 total=10336 min=323 max=323
+PAIR_INPUT_TIMING len=1 kind=1 calls=32 total=7520 min=235 max=235
+PAIR_INPUT_TIMING len=1 kind=2 calls=32 total=7136 min=223 max=223
+PAIR_INPUT_TIMING len=2 kind=0 calls=32 total=11680 min=365 max=365
+PAIR_INPUT_TIMING len=2 kind=1 calls=32 total=8576 min=268 max=268
+PAIR_INPUT_TIMING len=2 kind=2 calls=32 total=7136 min=223 max=223
+PAIR_INPUT_TIMING len=3 kind=0 calls=32 total=13024 min=407 max=407
+PAIR_INPUT_TIMING len=3 kind=1 calls=32 total=9632 min=301 max=301
+PAIR_INPUT_TIMING len=3 kind=2 calls=32 total=7424 min=232 max=232
+PAIR_INPUT_TIMING len=4 kind=0 calls=32 total=14368 min=449 max=449
+PAIR_INPUT_TIMING len=4 kind=1 calls=32 total=10688 min=334 max=334
+PAIR_INPUT_TIMING len=4 kind=2 calls=32 total=7552 min=236 max=236
+PAIR_INPUT_TIMING len=8 kind=0 calls=32 total=32928 min=1029 max=1029
+PAIR_INPUT_TIMING len=8 kind=1 calls=32 total=14912 min=466 max=466
+PAIR_INPUT_TIMING len=8 kind=2 calls=32 total=8384 min=262 max=262
+PAIR_INPUT_TIMING len=16 kind=0 calls=32 total=52128 min=1629 max=1629
+PAIR_INPUT_TIMING len=16 kind=1 calls=32 total=23360 min=730 max=730
+PAIR_INPUT_TIMING len=16 kind=2 calls=32 total=10048 min=314 max=314
+PAIR_INPUT_TIMING len=32 kind=0 calls=32 total=90528 min=2829 max=2829
+PAIR_INPUT_TIMING len=32 kind=1 calls=32 total=40256 min=1258 max=1258
+PAIR_INPUT_TIMING len=32 kind=2 calls=32 total=13376 min=418 max=418
+PAIR_INPUT_TIMING len=64 kind=0 calls=32 total=167328 min=5229 max=5229
+PAIR_INPUT_TIMING len=64 kind=1 calls=32 total=74048 min=2314 max=2314
+PAIR_INPUT_TIMING len=64 kind=2 calls=32 total=20032 min=626 max=626
+PAIR_INPUT_TIMING len=128 kind=0 calls=32 total=320928 min=10029 max=10029
+PAIR_INPUT_TIMING len=128 kind=1 calls=32 total=141632 min=4426 max=4426
+PAIR_INPUT_TIMING len=128 kind=2 calls=32 total=33344 min=1042 max=1042
+PAIR_INPUT_TIMING len=512 kind=0 calls=32 total=1242528 min=38829 max=38829
+PAIR_INPUT_TIMING len=512 kind=1 calls=32 total=547137 min=17098 max=17099
+PAIR_INPUT_TIMING len=512 kind=2 calls=32 total=113216 min=3538 max=3538
+PAIR_INPUT_TIMING len=2047 kind=0 calls=32 total=4923680 min=153865 max=153865
+PAIR_INPUT_TIMING len=2047 kind=1 calls=32 total=2168096 min=67753 max=67753
+PAIR_INPUT_TIMING len=2047 kind=2 calls=32 total=432576 min=13518 max=13518
+PAIR_INPUT_DONE cases=68608 failures=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x9b08 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xb8c lma 0x30000978
+Loading section datas, size 0x54 lma 0x30001520
+Loading section device_states, size 0x2c lma 0x30001574
+Loading section k_mutex_area, size 0x14 lma 0x300015a0
+Loading section .last_section, size 0x4 lma 0x300015b4
+Start address 0x10004fc4, load size 46032
+Transfer rate: 535 KB/sec, 2557 bytes/write.
+Temporary breakpoint 1 at 0x10001d20: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10004fb0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpywfz9u4l/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10001cd0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10004fb0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984631            9979441
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30010288          805372552
+r8             0x300000d0          805306576
+r9             0x300203c8          805438408
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30020378          0x30020378 <z_main_stack+65456>
+lr             0x10001d17          268442903
+pc             0x10001cd0          0x10001cd0 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x40000             262144
+msp            0x30010288          0x30010288 <z_idle_stacks>
+psp            0x30020378          0x30020378 <z_main_stack+65456>
+vpr            0xff00              [ P0=65280 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30010288          0x30010288 <z_idle_stacks>
+psp_s          0x30020378          0x30020378 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x3000fa88          0x3000fa88 <z_interrupt_stacks>
+psplim_s       0x300103c8          0x300103c8 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xff00              -256
+0x30020378 <z_main_stack+65456>:	0x00000000	0x10001d33	0x00000000	0x100086fb
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30010288
+PSP=0x30020378
+LR=0x10001d17
+PC=0x10001cd0
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30020378 <z_main_stack+65456>:	0x00000000	0x10001d33	0x00000000	0x100086fb
+0x30020388 <z_main_stack+65472>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

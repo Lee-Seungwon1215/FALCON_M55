@@ -1,0 +1,567 @@
+{
+  "candidate": "after",
+  "started_utc": "2026-09-14T02:50:35.162325+00:00",
+  "command": [
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_slothy/measurement/exec_board.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_profile_compare/build/after/zephyr/zephyr.elf"
+  ],
+  "source_tree_sha256": "4cca9f390516f2136d240447b4a257f799c6f0e72a4a915902a8aa76fd9a9aee",
+  "elf_sha256": "d53dee870c9b007cd2c26ef17e9441c64a66cf040c57506c73ec96d39656c132",
+  "mq_assembly": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_slothy/mq_cm55.s",
+  "probe": "003C00223335510735383531",
+  "ended_utc": "2026-09-14T02:50:50.432452+00:00",
+  "returncode": 0,
+  "valid": true,
+  "validation_errors": [],
+  "totals": {
+    "512_keygen": {
+      "calls": 10,
+      "total": 589784624,
+      "minimum": 49678198,
+      "maximum": 76107411
+    },
+    "512_sign": {
+      "calls": 100,
+      "total": 1848426310,
+      "minimum": 18281131,
+      "maximum": 18682479
+    },
+    "512_verify": {
+      "calls": 100,
+      "total": 32937200,
+      "minimum": 329372,
+      "maximum": 329372
+    },
+    "1024_keygen": {
+      "calls": 10,
+      "total": 2841466900,
+      "minimum": 181031649,
+      "maximum": 460521286
+    },
+    "1024_sign": {
+      "calls": 100,
+      "total": 3940169924,
+      "minimum": 38946250,
+      "maximum": 39784436
+    },
+    "1024_verify": {
+      "calls": 100,
+      "total": 63418100,
+      "minimum": 634181,
+      "maximum": 634181
+    }
+  },
+  "categories": {
+    "512_keygen_other": {
+      "cycles": 2459,
+      "entries": 0
+    },
+    "512_keygen_shake": {
+      "cycles": 28334437,
+      "entries": 1937
+    },
+    "512_keygen_codec": {
+      "cycles": 186770,
+      "entries": 40
+    },
+    "512_keygen_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_fft_fixed": {
+      "cycles": 64665377,
+      "entries": 16996
+    },
+    "512_keygen_fft_fpr": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_ntt_q": {
+      "cycles": 1410214,
+      "entries": 146
+    },
+    "512_keygen_ntt_modp": {
+      "cycles": 98753026,
+      "entries": 47343
+    },
+    "512_keygen_keygen_other": {
+      "cycles": 1996810,
+      "entries": 10
+    },
+    "512_keygen_key_preparation": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_ntru_other": {
+      "cycles": 251990371,
+      "entries": 11
+    },
+    "512_keygen_crt": {
+      "cycles": 98449855,
+      "entries": 1504
+    },
+    "512_keygen_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sampler_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_gaussian_fg": {
+      "cycles": 15545510,
+      "entries": 247
+    },
+    "512_keygen_gaussian0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_norm": {
+      "cycles": 28449795,
+      "entries": 55
+    },
+    "512_keygen_sign_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_verify_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_other": {
+      "cycles": 47000,
+      "entries": 0
+    },
+    "512_sign_shake": {
+      "cycles": 237614818,
+      "entries": 16246
+    },
+    "512_sign_codec": {
+      "cycles": 10626353,
+      "entries": 800
+    },
+    "512_sign_hash_to_point": {
+      "cycles": 1809255,
+      "entries": 100
+    },
+    "512_sign_message_hash": {
+      "cycles": 126000,
+      "entries": 100
+    },
+    "512_sign_fft_fixed": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_fft_fpr": {
+      "cycles": 426707005,
+      "entries": 700
+    },
+    "512_sign_ntt_q": {
+      "cycles": 12308700,
+      "entries": 1200
+    },
+    "512_sign_ntt_modp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_keygen_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_key_preparation": {
+      "cycles": 4846599,
+      "entries": 100
+    },
+    "512_sign_ntru_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_ldl_ffsampling": {
+      "cycles": 759573000,
+      "entries": 25600
+    },
+    "512_sign_sampler_other": {
+      "cycles": 156832474,
+      "entries": 102400
+    },
+    "512_sign_gaussian_fg": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_gaussian0": {
+      "cycles": 48962101,
+      "entries": 178044
+    },
+    "512_sign_berexp": {
+      "cycles": 102921010,
+      "entries": 178044
+    },
+    "512_sign_norm": {
+      "cycles": 510800,
+      "entries": 300
+    },
+    "512_sign_sign_other": {
+      "cycles": 85541195,
+      "entries": 100
+    },
+    "512_sign_verify_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_other": {
+      "cycles": 22500,
+      "entries": 0
+    },
+    "512_verify_shake": {
+      "cycles": 24869401,
+      "entries": 1700
+    },
+    "512_verify_codec": {
+      "cycles": 1825000,
+      "entries": 200
+    },
+    "512_verify_hash_to_point": {
+      "cycles": 1830500,
+      "entries": 100
+    },
+    "512_verify_message_hash": {
+      "cycles": 503599,
+      "entries": 200
+    },
+    "512_verify_fft_fixed": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_fft_fpr": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_ntt_q": {
+      "cycles": 2171100,
+      "entries": 200
+    },
+    "512_verify_ntt_modp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_keygen_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_key_preparation": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_ntru_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sampler_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_gaussian_fg": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_gaussian0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_norm": {
+      "cycles": 406700,
+      "entries": 300
+    },
+    "512_verify_sign_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_verify_other": {
+      "cycles": 1308400,
+      "entries": 100
+    },
+    "1024_keygen_other": {
+      "cycles": 2570,
+      "entries": 0
+    },
+    "1024_keygen_shake": {
+      "cycles": 195488593,
+      "entries": 13364
+    },
+    "1024_keygen_codec": {
+      "cycles": 361810,
+      "entries": 40
+    },
+    "1024_keygen_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_fft_fixed": {
+      "cycles": 344849433,
+      "entries": 50767
+    },
+    "1024_keygen_fft_fpr": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_ntt_q": {
+      "cycles": 11913595,
+      "entries": 482
+    },
+    "1024_keygen_ntt_modp": {
+      "cycles": 308742198,
+      "entries": 146042
+    },
+    "1024_keygen_keygen_other": {
+      "cycles": 12209057,
+      "entries": 10
+    },
+    "1024_keygen_key_preparation": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_ntru_other": {
+      "cycles": 1168908137,
+      "entries": 17
+    },
+    "1024_keygen_crt": {
+      "cycles": 489904285,
+      "entries": 2974
+    },
+    "1024_keygen_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sampler_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_gaussian_fg": {
+      "cycles": 93060436,
+      "entries": 877
+    },
+    "1024_keygen_gaussian0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_norm": {
+      "cycles": 216026786,
+      "entries": 209
+    },
+    "1024_keygen_sign_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_verify_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_other": {
+      "cycles": 48600,
+      "entries": 0
+    },
+    "1024_sign_shake": {
+      "cycles": 458950518,
+      "entries": 31378
+    },
+    "1024_sign_codec": {
+      "cycles": 19893221,
+      "entries": 800
+    },
+    "1024_sign_hash_to_point": {
+      "cycles": 3523560,
+      "entries": 100
+    },
+    "1024_sign_message_hash": {
+      "cycles": 126000,
+      "entries": 100
+    },
+    "1024_sign_fft_fixed": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_fft_fpr": {
+      "cycles": 957475900,
+      "entries": 700
+    },
+    "1024_sign_ntt_q": {
+      "cycles": 31066800,
+      "entries": 1200
+    },
+    "1024_sign_ntt_modp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_keygen_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_key_preparation": {
+      "cycles": 9290600,
+      "entries": 100
+    },
+    "1024_sign_ntru_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_ldl_ffsampling": {
+      "cycles": 1679560200,
+      "entries": 51200
+    },
+    "1024_sign_sampler_other": {
+      "cycles": 309917253,
+      "entries": 204800
+    },
+    "1024_sign_gaussian_fg": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_gaussian0": {
+      "cycles": 96326176,
+      "entries": 350277
+    },
+    "1024_sign_berexp": {
+      "cycles": 202499096,
+      "entries": 350277
+    },
+    "1024_sign_norm": {
+      "cycles": 971600,
+      "entries": 300
+    },
+    "1024_sign_sign_other": {
+      "cycles": 170520400,
+      "entries": 100
+    },
+    "1024_sign_verify_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_other": {
+      "cycles": 23500,
+      "entries": 0
+    },
+    "1024_verify_shake": {
+      "cycles": 46813001,
+      "entries": 3200
+    },
+    "1024_verify_codec": {
+      "cycles": 3606800,
+      "entries": 200
+    },
+    "1024_verify_hash_to_point": {
+      "cycles": 3528499,
+      "entries": 100
+    },
+    "1024_verify_message_hash": {
+      "cycles": 821400,
+      "entries": 200
+    },
+    "1024_verify_fft_fixed": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_fft_fpr": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_ntt_q": {
+      "cycles": 5412200,
+      "entries": 200
+    },
+    "1024_verify_ntt_modp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_keygen_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_key_preparation": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_ntru_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sampler_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_gaussian_fg": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_gaussian0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_norm": {
+      "cycles": 765100,
+      "entries": 300
+    },
+    "1024_verify_sign_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_verify_other": {
+      "cycles": 2447600,
+      "entries": 100
+    }
+  },
+  "fingerprints": {
+    "512": "9895079d",
+    "1024": "a020dd02"
+  },
+  "raw_log_sha256": "b113f13b8033688b38c81a932c70f38e17a311c66e2004882514cf29f173db55"
+}

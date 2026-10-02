@@ -1,0 +1,412 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3349...
+[exec_wrapper] SWO redirect port 53182
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3349 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :53182 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3349
+load
+tbreak *0x10013d9c
+hbreak *0x10017008
+set $early_fault_bp = $bpnum
+jump *0x1001701d
+if $pc != 0x10013d9c
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpbqxcpk3d/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10013d4c
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10017008
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3349
+Info : Listening on port 3349 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 53182
+Info : Listening on port 53182 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/53182
+Info : accepting 'gdb' connection on tcp/3349
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3349" instead of "target remote :3349"
+FNDSA_BEGIN mode=pilot batches=1 warmups=1 iterations=1
+BUILD gcc=15.2.1 20251203 asm_m4=1 m55_compat=1 mve_feature=3
+CONFIG cycle_hz=800000000 stack=65536 fpu=1 cache_management=0 icache=1 dcache=1
+CORE cpuid=411fd221 ccr=00000611 vtor=10000000 cpacr=00500000 primask=0 basepri=0 control=14
+TCM itcmcr=00000049 dtcmcr=00000049 mpu=00000005
+ADDR code=100105f5 sk=30021a40 pk=30021320 sig=30020e20 tmp=30012200 sp=30038db8
+CLOCK SystemCoreClock=800000000 CFGR1=33330000 CFGR2=01100000 HSECFGR=00000840
+CLOCK IC1=00020000 IC2=00050000 IC6=20010000 IC11=00020000
+CLOCK PLL1_1=20309600 PLL1_2=00000000 PLL1_3=49000005
+CLOCK_DECODE cpu=800000000 sysclk=400000000 hclk=200000000 pclk1=200000000 pclk2=200000000 pclk4=200000000 pclk5=200000000
+TIMER selfcheck_100ms_zephyr=80000255 dwt=80000661 error=406
+STACK start=30029340 size=65536 watermarked_end=30037e30
+NTT_MUL_TABLE kind=barrett3 pairs=2048 mismatches=0 first=0 actual=0 expected=0
+NTT_EXACT degree=512 forward_mismatches=0 roundtrip_mismatches=0 oracle_roundtrip_mismatches=0 max_mod_error=0 first_forward=4294967295 actual=0 expected=0 first_roundtrip=4294967295 first_oracle=4294967295
+NTT_MUL_TABLE kind=barrett3 pairs=2048 mismatches=0 first=0 actual=0 expected=0
+NTT_EXACT degree=1024 forward_mismatches=0 roundtrip_mismatches=0 oracle_roundtrip_mismatches=0 max_mod_error=0 first_forward=4294967295 actual=0 expected=0 first_roundtrip=4294967295 first_oracle=4294967295
+MP31_ROUNDING cases=18923520 mismatches=0 range_errors=0 first_prime=4294967295 first_root=0
+MP31_EXACT primes=308 logn=4..10 transforms=2156 forward_mismatches=0 inverse_mismatches=0 roundtrip_mismatches=0 max_mod_error=0 first_prime=4294967295 first_logn=0 first_index=0
+MP31_CYCLES logn=4 direction=forward batch=0 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=1 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=2 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=3 calls=100 total=83976 per_call=839 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=4 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=5 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=6 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=7 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=8 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=forward batch=9 calls=100 total=82886 per_call=828 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=0 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=1 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=2 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=3 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=4 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=5 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=6 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=7 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=8 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=4 direction=inverse batch=9 calls=100 total=90878 per_call=908 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=0 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=1 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=2 calls=100 total=147175 per_call=1471 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=3 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=4 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=5 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=6 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=7 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=8 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=forward batch=9 calls=100 total=146086 per_call=1460 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=0 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=1 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=2 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=3 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=4 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=5 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=6 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=7 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=8 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=5 direction=inverse batch=9 calls=100 total=165078 per_call=1650 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=0 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=1 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=2 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=3 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=4 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=5 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=6 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=7 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=8 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=forward batch=9 calls=100 total=313686 per_call=3136 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=0 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=1 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=2 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=3 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=4 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=5 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=6 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=7 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=8 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=6 direction=inverse batch=9 calls=100 total=360578 per_call=3605 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=0 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=1 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=2 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=3 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=4 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=5 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=6 calls=100 total=646376 per_call=6463 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=7 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=8 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=forward batch=9 calls=100 total=645286 per_call=6452 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=0 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=1 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=2 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=3 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=4 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=5 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=6 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=7 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=8 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=7 direction=inverse batch=9 calls=100 total=751378 per_call=7513 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=0 calls=100 total=1498376 per_call=14983 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=1 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=2 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=3 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=4 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=5 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=6 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=7 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=8 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=forward batch=9 calls=100 total=1497286 per_call=14972 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=0 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=1 calls=100 total=1747969 per_call=17479 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=2 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=3 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=4 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=5 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=6 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=7 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=8 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=8 direction=inverse batch=9 calls=100 total=1746878 per_call=17468 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=0 calls=100 total=3169977 per_call=31699 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=1 calls=100 total=3168886 per_call=31688 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=2 calls=100 total=3168886 per_call=31688 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=3 calls=100 total=3168886 per_call=31688 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=4 calls=100 total=3169977 per_call=31699 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=5 calls=100 total=3168886 per_call=31688 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=6 calls=100 total=3168886 per_call=31688 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=7 calls=100 total=3169977 per_call=31699 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=8 calls=100 total=3168886 per_call=31688 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=forward batch=9 calls=100 total=3168886 per_call=31688 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=0 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=1 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=2 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=3 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=4 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=5 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=6 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=7 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=8 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=9 direction=inverse batch=9 calls=100 total=3718478 per_call=37184 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=0 calls=100 total=7291286 per_call=72912 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=1 calls=100 total=7292377 per_call=72923 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=2 calls=100 total=7291286 per_call=72912 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=3 calls=100 total=7292378 per_call=72923 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=4 calls=100 total=7291286 per_call=72912 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=5 calls=100 total=7292376 per_call=72923 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=6 calls=100 total=7291286 per_call=72912 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=7 calls=100 total=7292377 per_call=72923 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=8 calls=100 total=7291286 per_call=72912 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=forward batch=9 calls=100 total=7292377 per_call=72923 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=0 calls=100 total=8543869 per_call=85438 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=1 calls=100 total=8542778 per_call=85427 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=2 calls=100 total=8543870 per_call=85438 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=3 calls=100 total=8542778 per_call=85427 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=4 calls=100 total=8542778 per_call=85427 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=5 calls=100 total=8543868 per_call=85438 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=6 calls=100 total=8542778 per_call=85427 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=7 calls=100 total=8543869 per_call=85438 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=8 calls=100 total=8543869 per_call=85438 twiddle_prepare=included
+MP31_CYCLES logn=10 direction=inverse batch=9 calls=100 total=8542778 per_call=85427 twiddle_prepare=included
+PHASE degree=512 batch=0 op=0
+BATCH degree=512 batch=0 op=0 total=48993994 per_call=48993994
+PHASE degree=512 batch=0 op=1
+BATCH degree=512 batch=0 op=1 total=17013078 per_call=17013078
+PHASE degree=512 batch=0 op=2
+BATCH degree=512 batch=0 op=2 total=324556 per_call=324556
+DIGEST degree=512 batch=0 shake256=9fd7c627fa100863e8f684339f3eb3835fc55a24066f4dd34aea05d555d8eadd
+AUDIT degree=512 shake256=9fd7c627fa100863e8f684339f3eb3835fc55a24066f4dd34aea05d555d8eadd
+SUMMARY degree=512 op=0 upper_median=48993994 p1=48993994 p10=48993994 p20=48993994 p30=48993994 p40=48993994 p50=48993994 p60=48993994 p70=48993994 p80=48993994 p90=48993994 p99=48993994
+SUMMARY degree=512 op=1 upper_median=17013078 p1=17013078 p10=17013078 p20=17013078 p30=17013078 p40=17013078 p50=17013078 p60=17013078 p70=17013078 p80=17013078 p90=17013078 p99=17013078
+SUMMARY degree=512 op=2 upper_median=324556 p1=324556 p10=324556 p20=324556 p30=324556 p40=324556 p50=324556 p60=324556 p70=324556 p80=324556 p90=324556 p99=324556
+PHASE degree=1024 batch=0 op=0
+BATCH degree=1024 batch=0 op=0 total=359556597 per_call=359556597
+PHASE degree=1024 batch=0 op=1
+BATCH degree=1024 batch=0 op=1 total=36932854 per_call=36932854
+PHASE degree=1024 batch=0 op=2
+BATCH degree=1024 batch=0 op=2 total=613057 per_call=613057
+DIGEST degree=1024 batch=0 shake256=c543754d19ef263221b2316acac8ad5c34502886750fdd5bfffd4f5487c018bb
+AUDIT degree=1024 shake256=c543754d19ef263221b2316acac8ad5c34502886750fdd5bfffd4f5487c018bb
+SUMMARY degree=1024 op=0 upper_median=359556597 p1=359556597 p10=359556597 p20=359556597 p30=359556597 p40=359556597 p50=359556597 p60=359556597 p70=359556597 p80=359556597 p90=359556597 p99=359556597
+SUMMARY degree=1024 op=1 upper_median=36932854 p1=36932854 p10=36932854 p20=36932854 p30=36932854 p40=36932854 p50=36932854 p60=36932854 p70=36932854 p80=36932854 p90=36932854 p99=36932854
+SUMMARY degree=1024 op=2 upper_median=613057 p1=613057 p10=613057 p20=613057 p30=613057 p40=613057 p50=613057 p60=613057 p70=613057 p80=613057 p90=613057 p99=613057
+STACK untouched_prefix=55704 used_upper_bound=9832
+FNDSA_DONE correctness=PASS tamper_rejection=PASS
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1bde0 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xe7d4 lma 0x30000980
+Loading section datas, size 0x4c lma 0x3000f160
+Loading section device_states, size 0x2c lma 0x3000f1ac
+Loading section k_mutex_area, size 0x14 lma 0x3000f1d8
+Loading section .last_section, size 0x4 lma 0x3000f1ec
+Start address 0x1001701c, load size 176872
+Transfer rate: 536 KB/sec, 6802 bytes/write.
+Temporary breakpoint 1 at 0x10013d9c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10017008: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpbqxcpk3d/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10013d4c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10017008: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x985e4d            9985613
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30029200          805474816
+r8             0x300000d0          805306576
+r9             0x30039340          805540672
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x300392f0          0x300392f0 <z_main_stack+65456>
+lr             0x10013d93          268516755
+pc             0x10013d4c          0x10013d4c <nucleo_test_breakpoint>
+xpsr           0x9060000           151388160
+fpscr          0x40000             262144
+msp            0x30029200          0x30029200 <z_idle_stacks>
+psp            0x300392f0          0x300392f0 <z_main_stack+65456>
+vpr            0xf                 [ P0=15 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30029200          0x30029200 <z_idle_stacks>
+psp_s          0x300392f0          0x300392f0 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30028a00          0x30028a00 <z_interrupt_stacks>
+psplim_s       0x30029340          0x30029340 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xf                 15
+0x300392f0 <z_main_stack+65456>:	0x00000000	0x10013daf	0x00000000	0x1001a9d3
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0xf30379ad
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30029200
+PSP=0x300392f0
+LR=0x10013d93
+PC=0x10013d4c
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30029200 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30029210 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0xf30379ad
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

@@ -1,0 +1,49 @@
+DOCUMENT: m55_slothy.pdf PAGE: 4/46
+
+4 Fast and Clean: Auditable high-performance assembly via constraint solving
+We believe that doing so, under consideration of the numerous implementation techniques
+available, would make for an attractive piece of follow-up research. See also Section 6.4.
+Second, the soundness & trust story for SLOTHY should be further elaborated: We
+argue in Section 5.2 that neither SLOTHY nor slothy need to be trusted to verify
+the optimizations they yield, and outline and partially implement a verification strategy.
+However, developing that strategy into a full automated verification of the results of
+SLOTHY wouldrequirefurtherresearch. Webelievethatthetoolingdevelopedin[BGL+20]
+may be adaptable for this purpose.
+Third, the integration of SLOTHY with other compilation and/or superoptimization
+tooling could be considered: For example, the LLVM infrastructure includes mechanisms
+to parse code into computational flow graphs and to encode microarchitectural details —
+one could aim to share those with slothy. Going one step further, SLOTHY could be
+made an optional optimization pass (enabled, for example, through a suitable #pragma)
+during a compiler’s code-generation phase, after instruction selection.
+Structure. In Section 3, we discuss various preliminaries on (micro)architecture, compila-
+tion and combinatorial optimization. In Section 4, which is the heart of this paper, we
+describe our approach SLOTHY to the simultaneous optimization of register allocation, in-
+struction scheduling and software pipelining via constraint solving. In Section 6, we discuss
+our instantiations of SLOTHY for Cortex-M55, Cortex-M85 (both Armv8.1-M+Helium)
+and Cortex-A55 and Cortex-A72 (both AArch64+Neon). Section 7 discusses our CP-SAT-
+based implementation of SLOTHY in Python, and illustrates in a toy example how we see
+it being used as a development tool. Finally, in Sections 8.1, 8.2, 8.3 and 8.4, we work
+through the examples of the Fast Fourier Transform, Number Theoretic Transform and
+X25519. We conclude with Section 9 containing some reflections and outlook.
+Software. SLOTHY and its instantiations for the aforementioned microarchitectures are
+available under MIT license on https://github.com/slothy-optimizer/slothy.
+2 Related work
+The term superoptimization was introduced in [Mas87] as finding “the shortest program
+that computes the same function as the source program by doing an exhaustive search
+over all possible programs”. Here, we use it more liberally for any approach to software
+optimization that applies a form of deep program search to find programs that improve
+upon the results of traditional compilation techniques in terms of size and/or performance.
+Synthesizing vs. fixed-instruction superoptimization. Following [Emb15, Section 11],
+one can broadly distinguish two separate kinds of superoptimizers: First, synthesizing
+superoptimizers (“DAG superoptimizer” in [Emb15]): Those search for optimal (e.g. short)
+sequences of assembly expressing a given, typically loop-free, piece of functionality. Second,
+fixed-instruction superoptimizers (“lowering superoptimizer” in [Emb15]): Those take the
+choice of instructions as a given and search for an optimal scheduling, register allocation
+and potentially software pipelining strategy.
+Synthesizing superoptimization is a long-standing and active field of research [JNR02,
+SCC+17, SSA13, SSA14, SSCA13, BDK+16]. Most recently, [KEG+23] describes the
+architecture and implementation for a superoptimizer synthesizing formally verified high-
+performance cryptographic code for x86-64 from high-level specifications, and [MMZ+23]
+applies reinforcement learning to synthesize a novel high-performance sorting kernel. Fixed-
+instruction superoptimization, in turn, has seen a flurry of research primarily in the
+1990’s [GN92, WGB94, Alt95, GAG96, Sto96, GW96, AGG98, KL99, KW98, NG07], but

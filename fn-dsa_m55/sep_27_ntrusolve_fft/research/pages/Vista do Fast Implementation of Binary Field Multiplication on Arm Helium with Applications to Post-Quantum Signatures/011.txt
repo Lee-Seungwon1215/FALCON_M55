@@ -1,0 +1,72 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 11/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Table 1. Key and signature sizes (B) for AlMer, FAEST, and FAEST-EM.
+Security Level 1 (128-bit) Security Level 3 (192-bit) Seurity Level 5 (256-bit)
+Variant
+pk sk
+sig |pk sk
+sig |pk sk
+sig
+AIMer-f
+2 48
+AIMer-s
+2 43
+4,80 48 72
+13,056 | 64 96
+9,120 |64 96
+25.020
+FAEST-f
+32 32
+5,924| 40 48
+4,948|48 4
+FAEST-s
+32 32
+1,506 40 48
+1,260 48 4
+20,548
+FAEST-EM-f 32 32
+5,060 | 48 48
+12,380 | 64 64
+FAEST-EM-s 32 32
+3,906 48 48
+9,340| 64 64
+23,986
+6. Results
+Our AlMer and FAEST implementations are based on Cortex-M4 optimized implementa-
+tions by [Kwon et al. 2025] and by [Aranha et al. 2025], distributed via the pqm4 bench-
+marking framework [Kannwischer et al. 2019] and the pqm4-faest repository, respec-
+tively. Both originally target the Cortex-M4. The adaptation for the Cortex-M85 required
+two main changes: realigning the data structures to 16-byte boundaries to meet the align-
+ment requirements of the MVE load and store instructions, and converting all intermediate
+buffers from dynamically allocated arrays to statically allocated arrays. The latter was nec-
+essary because the Renesas EK-RA8M1 platform requires data to reside in known memory
+regions for cache-coherent access; dynamic allocation via malloc places buffers in regions
+that may fall outside the fast SRAM window, introducing unpredictable latency penalties
+during field arithmetic. Aside from these changes, no modifications to the algorithmic
+structure of either scheme were necessary.
+Regarding FAEST, the reference implementation for 32-bit targets version 1 of the
+scheme. To obtain results for version 2, we applied the updated parameter sets and domain
+separation constants from the v2 [Baum et al. 2025] specification directly to the adapted
+source code. No new code was written for this purpose: the transition was based exclusively
+on the existing 32-bit base algorithm and the reference implementation, combining them to
+produce the v2 results. The underlying proof system and field arithmetic structure remain
+unchanged between versions.
+Cycle counts were collected on the Renesas EK-RA8M1 board at its maximum
+frequency of 480 MHz. The device features 1 MB of internal SRAM, divided into 64 KB
+ITCM, 64 KB DTCM, and 896 KB main SRAM. To reduce instruction fetch latency, the
+field multiplication and squaring routines, as well as other performance-critical functions,
+were placed in the Instruction Tightly Coupled Memory (ITCM) via linker directives,
+while the remaining code executes from internal flash. The execution stack is allocated in
+main SRAM with data caching enabled. Two compiler chains were evaluated: arm-none-
+eabi-gcc 13.3.1 and Clang/LLVM 19.1.5, both targeting arm-none-eabi with optimization
+level -O3. Measurements at -02 produced nearly identical cycle counts and are therefore
+omitted. This behavior is expected because the proposed field arithmetic routines contain
+no secret-dependent branches or memory accesses, leaving the compiler with no data-
+dependent control flow to alter regardless of the optimization level. Disassembly of the
+128-bit multiplication and reduction kernels compiled at -02 and -03 produced identical
+generated code in both cases, confirming that the branch-free structure, and therefore the
+constant-time property, is preserved independently of the optimization level. Benchmarks
+11

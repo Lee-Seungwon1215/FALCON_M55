@@ -1,0 +1,42 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 6/18
+
+6 Hwang
+and Technology as one of the to-be-standardized algorithms for post-quantum
+cryptography.
+Programmers write Jasmin programs with similar control of the computa-
+tional flow as in assembly, and compile the programs into assembly programs
+with the certified compiler jasminc. For verification purpose, we extract the
+Jasmin programs to EasyCrypt according to the Jasmin model in EasyCrypt,
+and verify the desired properties with EasyCrypt. Compared to CryptoLine,
+verification in EasyCrypt requires much more effort by explicitly applying var-
+ious lemmas instead of simply imposing properties in a declarative fashion in
+CryptoLine, but one can argue more properties in Easycrypt, for example, the
+indifferentiability of SHA3 from random oracle as shown in [Alm+19].
+3 Incorrect Zeroization
+3.1 The Problem of Floating-Point Multiplication
+We point out an incorrect zeroization in the emulated floating-point multiplica-
+tions in Falcon. We illustrate the issue in the C reference implementation, and
+our finding also applies to the Armv7-M assembly optimized implementation.
+We briefly review the C reference implementation of the emulated floating-
+point multiplication in the submission package of Falcon as follows:
+1. The inputs are two 64-bit integers with each representing a double-precision
+floating-point number.
+2. Extract the mantissas and add them with 252 as if the floating-point inputs
+are non-zero.
+3. Compute the product of mantissas with radix-25 arithmetic.
+4. Normalize the product to a 55-bit value.
+5. Compute the exponent field as the sum of input exponent fields with a
+corrective subtraction.
+6. Compute the sign field as the exclusive-or of the input sign fields.
+7. Zeroize the product if any of the input exponent fields is zero.
+8. Zeroize the product if the resulting exponent is too small.
+9. Zeroize the exponent field if the product is zero.
+10. Assemble the sign field, exponent field, and the upper 53 bits of the 55-bit
+product.
+11. Increment the resulting floating-point as an unsigned 64-bit integer if the
+55-bit product should be rounded.
+The issue is that the zeroization due to the smallness of the exponent field should
+be the last operation since the increment from rounding may results in an expo-
+nentfieldthatisslightlyabovethezeroizationthreshold.WerefertoAlgorithm4
+for a more detailed illustration where the line in red(blue) corresponds to the
+line in red(blue) of the above.

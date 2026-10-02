@@ -1,0 +1,44 @@
+DOCUMENT: TWfalcon.pdf PAGE: 19/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 19
+z5
+z4
+z3
+z2
+z1
+z0
+Figure 6: Sorting network of size six, optimal for the Merge algorithm.
+We achieve conditional execution in constant-time by evaluating both branches and
+selecting the correct result using bitmasks. A mask of all 1s or all 0s is computed from the
+condition, and results are combined with bitwise operations. This avoids data-dependent
+branching.
+For floating-point values, constant-time checks are obtained by reinterpreting them as
+integers. Since zero has the same bit pattern in both domains, masking logic can be applied
+after a reinterpretation of the floating-point value as an integer. This allows operations
+such as “x̸= 0” to be performed without branching.
+The Merge step requires special care, since its naive implementation relies on multiple
+conditional checks. Instead of replacing each comparison with masking logic, a sorting
+network is used. Sorting networks apply a fixed sequence of comparisons and swaps
+independent of the input, making them inherently constant-time [Bat68]. For the case of
+merging two sorted triples, a brute-force search identified an optimal network with six
+comparators shown in Figure 6.
+Eachcomparatorrequiresaconstant-timeswap. SincetheCortex-M4lacksaconditional
+swap instruction, we design a masking-based swap: absolute values are compared using
+integer arithmetic, producing a mask from the sign of their difference. The swap is then
+carried out with XOR operations masked by this bit string. This ensures the correct
+ordering while avoiding data-dependent control flow. On the Cortex-M4, this can be
+implemented efficiently with as few as seven instructions, or further optimized using the
+DSP SEL instruction.
+5 Results
+This section presents performance results, measured in CPU cycles, for Falcon implemented
+using integer-emulated double-precision floating-point arithmetic from [Por25a] and Falcon
+implemented with TW. Additionally, we also provide the resulting error values of the
+Gaussian sampler when TW is used, and investigate any security implications of our
+approach.
+5.1 Performance
+All benchmarks are conducted on a Nucleo-L4R5ZI board, which also serves as the default
+benchmarking platform for the PQM4 library [STM, KPR+]. This board features a Cortex-
+M4F processor, where the ’F’ denotes the inclusion of a 32-bit FPU. The Cortex-M4 is
+based on the ARMv7-M architecture [Arm14], and its technical specifications are detailed in
+the corresponding reference manual [Arm10]. Like in the integer-emulated implementation,

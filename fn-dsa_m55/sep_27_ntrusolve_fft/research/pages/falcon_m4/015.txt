@@ -1,0 +1,47 @@
+DOCUMENT: falcon_m4.pdf PAGE: 15/18
+
+2.5 Signature Verification
+As seen on figure 1, the majority of the cost of signature verification is spent on hashing.
+SHAKE256 is used, which internally calls the Keccak-f function for every 136 bytes absorbed
+or produced. In the Falcon signature verification, the incoming message and nonce are used
+as a seed to produce a pseudorandom sequence of 16-bit values, from which are produced n
+values in [0, q−1]with q= 12289, and n being the degree. Rejection sampling is used to
+ensure uniform selection; this implies that the amount of data extracted from SHAKE may
+vary. On average, 8.59 invocations of Keccak-f are needed for Falcon-512, and 16.66 for
+Falcon-1024; the BUFF variant (which was the one used for the statistics of figure 1) also
+implies hashing the public key, adding 7 and 14 Keccak-f invocations for Falcon-512 and
+Falcon-1024, respectively.
+Our Keccak-f implementation uses the classic method of splitting each 64-bit state word
+into odd-indexed and even-indexed bits, as two 32-bit words; this allows reducing 64-bit
+word rotations into 32-bit word rotations (and occasional register exchanges), most of which
+amenable to “free” execution thanks to the ability of ARMv7 Boolean bitwise opcodes to ap-
+ply a shift or rotation to one of the operands. We favoured code compacity and thus refrained
+from unrolling several successive rounds; this makes our code about 15% slower but more
+compact than the classic XKCP implementation[16]. We also chose to apply the bit splitting
+and merging operations right before (splitting) and after (merging) running Keccak-f, so that
+the state structure can also serve as a convenient buffer for the produced data, avoiding the
+need to perform the bit interleaving for each access.
+We also reimplemented in assembly most other operations. The NTT is used twice in
+each verification, and the inverse NTT is used once. Like the Keccak-f implementation, our
+NTT and inverse NTT are not unrolled, so they execute in 27087 and 29672 cycles, respec-
+tively (at n = 512). These figures are certainly not as low as those reported in [3] (15974 and
+17047 cycles, respectively), but our code is very compact (the two routines have a footprint of
+324 and 372 bytes, respectively, and both support all degrees for implementing all variants of
+Falcon, including the standard degrees 512 and 1024, but also the “toy” variants 4 to 256).
+For operations modulo q, the C implementation uses an internal representation such that
+an integer modulo q is normalized into the [1, q]range (i.e. zero is represented by q, not by
+0). This allows the use of Montgomery reduction, i.e. modular division by 232 modulo q, of
+a 32-bit value x without “large” multiplications:
+/* Given 0 < x < 2^32 + 2^16 - (2^16 - 1)*q, return x/2^32 mod q
+in the [1,q] range. */
+static inline uint32_t
+mq_mred(uint32_t x)
+{
+x *= Q1I;
+x = (x >> 16) * Q;
+return (x >> 16) + 1;
+}
+This process was already described in [14] (section 2.4) and is particularly adapted to the
+ARM Cortex-M0+ CPU (a reduced, ARMv6 CPU) as well as large x86 CPUs with AVX2
+support (which can perform 16 multiplications of 16-bit values in parallel). On the M4, how-
+15

@@ -1,0 +1,51 @@
+DOCUMENT: TWfalcon.pdf PAGE: 3/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 3
+scheme, we develop multiple new triple-word arithmetic operations that were not
+covered in [FMP19].
+• We show that the security proof gap pointed out in [PFH+22] is in fact larger than
+implied. The security proof bounds the floating-point error of the Gaussian sampler
+at 2−46. Based on experimental data, it was claimed that the double-precision
+standard achieves a floating-point error bound for the Gaussian sampler of 2−40
+,
+i.e., 6 bits less than required for the security proof. We show that this error bound
+is actually 2−37, i.e., 9 bits less than required by the proof. Although this has not
+been utilized in a practical attack, this deviation from a Gaussian distribution gives
+concern for future exploitation, as in theory, with the current security proof, fewer
+than 264 signature queries are allowed, contrary to the NIST PQC requirements.
+• We offer a constant-time implementation of Falcon using triple-word arithmetic. This
+implementation contains both security levels and is created for the Cortex-M4.
+• We analyze the practical rounding errors leading to the security proof gap in current
+implementations of Falcon in comparison to our new implementation. We show that
+ours gives sufficient security guarantees, while the existing does not.
+• We show that the performance impact of our implementation compared to the heavily
+optimized integer-emulated implementation by [Por25a] is on average less than 85%
+for both Falcon parameter sets, while having error values that are much better than
+required by the proof. The integer-emulated FP arithmetic uses a 64-bit integer to
+emulate the 64-bit floating-point standard (double-precision).
+Outline. The remainder of this paper is structured as follows. Section 2 gives an overview
+of the Falcon scheme, floating-point arithmetic and the core algorithms of triple-word
+arithmetic. In Section 3 the security proof for the Gaussian sampler in Falcon is analyzed,
+precision tests are recreated, and its resulting implications are discussed. Section 4 presents
+how to use triple-word arithmetic in Falcon. We show how the core algorithms can be
+applied, introduce new algorithms, and adapt all TW algorithms to be constant-time for
+additional security. In Section 5 we analyze the implementation. We show its improved
+error values compared to double-precision and integer emulated Falcon, as well as evaluate
+the performance impact of using TW arithmetic in Falcon. Finally, Section 6 concludes the
+paper. We summarize our results and discuss its security implications, as well as theorize
+how integer emulation could be adapted to achieve higher precision.
+2 Background
+In this section, we first introduce the Falcon digital signature scheme. Then we discuss
+the necessary theory on floating-point numbers and Triple-Word Floating-Point (TW)
+arithmetic.
+2.1 Falcon
+The signature scheme Falcon [PFH+22] (to be standardized as FN-DSA) is a lattice-based
+hash-and-sign scheme, based on the GPV framework which is proven secure under the
+quantum oracle model [GPV08, BDF+11].
+In short, the GPV framework uses a public matrix A ∈Zn×m
+q defining a q-ary lattice
+Λq, and a secret trapdoor basis B ∈Zm×m
+q for the orthogonal lattice Λ⊥
+q (⊥meaning
+orthogonal), with B ×AT ≡0 (mod q).

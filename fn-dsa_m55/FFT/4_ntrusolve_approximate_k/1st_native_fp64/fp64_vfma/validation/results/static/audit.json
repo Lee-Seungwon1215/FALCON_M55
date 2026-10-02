@@ -1,0 +1,6120 @@
+[
+  {
+    "label": "kernels",
+    "elf_sha256": "c2286ddaa76432bcd252233c379540a190d62d7114fb7503aec8968914c59db9",
+    "functions": [
+      {
+        "name": "fp64e_cmul",
+        "address": "10000368",
+        "instructions": 383,
+        "IT": [],
+        "branches": [],
+        "calls": [],
+        "explicit_FMA": 12,
+        "FP64": 287,
+        "memory_instructions": [
+          [
+            "vstr",
+            "d3, [sp, #8]"
+          ],
+          [
+            "vstr",
+            "d11, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vstr",
+            "d9, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #1008]\t@ 100007b8 <fp64e_cmul+0x450>"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #1012]\t@ 100007c0 <fp64e_cmul+0x458>"
+          ],
+          [
+            "vstr",
+            "d12, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #984]\t@ 100007c8 <fp64e_cmul+0x460>"
+          ],
+          [
+            "vstr",
+            "d8, [sp]"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d13, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #968]\t@ 100007d0 <fp64e_cmul+0x468>"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #928]\t@ 100007c0 <fp64e_cmul+0x458>"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vstr",
+            "d9, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d9, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vstr",
+            "d8, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d5, [pc, #860]\t@ 100007d8 <fp64e_cmul+0x470>"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vldr",
+            "d2, [sp]"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #840]\t@ 10000800 <fp64e_cmul+0x498>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #784]\t@ 100007e0 <fp64e_cmul+0x478>"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d10, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d6, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #708]\t@ 10000800 <fp64e_cmul+0x498>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #608]\t@ 100007b8 <fp64e_cmul+0x450>"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d10, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #484]\t@ 100007b8 <fp64e_cmul+0x450>"
+          ],
+          [
+            "vldr",
+            "d6, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d13, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #452]\t@ 100007c0 <fp64e_cmul+0x458>"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #432]\t@ 100007d0 <fp64e_cmul+0x468>"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #452]\t@ 10000800 <fp64e_cmul+0x498>"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d6, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #268]\t@ 100007e8 <fp64e_cmul+0x480>"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vldr",
+            "d4, [pc, #136]\t@ 100007c0 <fp64e_cmul+0x458>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #152]\t@ 10000800 <fp64e_cmul+0x498>"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #84]\t@ 100007d0 <fp64e_cmul+0x468>"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #100]\t@ 100007f0 <fp64e_cmul+0x488>"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d9, [sp]"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #-28]\t@ 10000800 <fp64e_cmul+0x498>"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vldr",
+            "d10, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #-108]\t@ 10000808 <fp64e_cmul+0x4a0>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #-128]\t@ 100007f8 <fp64e_cmul+0x490>"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #-168]\t@ 10000800 <fp64e_cmul+0x498>"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #-216]\t@ 10000808 <fp64e_cmul+0x4a0>"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vldr",
+            "d13, [sp, #32]"
+          ]
+        ]
+      },
+      {
+        "name": "fp64e_cmul_prepared",
+        "address": "100009a8",
+        "instructions": 314,
+        "IT": [],
+        "branches": [],
+        "calls": [],
+        "explicit_FMA": 12,
+        "FP64": 231,
+        "memory_instructions": [
+          [
+            "vldr",
+            "d7, [pc, #1016]\t@ 10000dc8 <fp64e_cmul_prepared+0x420>"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #1008]\t@ 10000dd0 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #992]\t@ 10000dd8 <fp64e_cmul_prepared+0x430>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #960]\t@ 10000de0 <fp64e_cmul_prepared+0x438>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d5, [pc, #944]\t@ 10000de8 <fp64e_cmul_prepared+0x440>"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #904]\t@ 10000df0 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #896]\t@ 10000df8 <fp64e_cmul_prepared+0x450>"
+          ],
+          [
+            "vstr",
+            "d12, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d10, [sp]"
+          ],
+          [
+            "vldr",
+            "d4, [r0, #16]"
+          ],
+          [
+            "vldr",
+            "d10, [r0]"
+          ],
+          [
+            "vstr",
+            "d11, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d12, [r0, #8]"
+          ],
+          [
+            "vstr",
+            "d11, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d10, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [r0, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d13, [r0, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d11, [sp]"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #628]\t@ 10000dd0 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #624]\t@ 10000df0 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d9, [r0, #96]\t@ 0x60"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d8, [sp, #8]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d13, [r0, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d8, [r0, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #356]\t@ 10000dd0 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #348]\t@ 10000df0 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vstr",
+            "d9, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #312]\t@ 10000e00 <fp64e_cmul_prepared+0x458>"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #216]\t@ 10000dd0 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #200]\t@ 10000df0 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #208]\t@ 10000e08 <fp64e_cmul_prepared+0x460>"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #24]"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #32]"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d12, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #104]\t@ 0x68"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d0, [r0, #112]\t@ 0x70"
+          ],
+          [
+            "vldr",
+            "d11, [sp]"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_iFFT_fp64_exact.constprop.0",
+        "address": "10000ec8",
+        "instructions": 352,
+        "IT": [],
+        "branches": [
+          [
+            "beq.w",
+            "1000142e <fndsa_vect_iFFT_fp64_exact.constprop.0+0x566>"
+          ],
+          [
+            "bcs.w",
+            "1000140e <fndsa_vect_iFFT_fp64_exact.constprop.0+0x546>"
+          ],
+          [
+            "bne.w",
+            "10001128 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x260>"
+          ],
+          [
+            "bne.w",
+            "10000f34 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x6c>"
+          ],
+          [
+            "bne.w",
+            "10000efa <fndsa_vect_iFFT_fp64_exact.constprop.0+0x32>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100009a8 <fp64e_cmul_prepared>"
+          ]
+        ],
+        "explicit_FMA": 0,
+        "FP64": 196,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #508]\t@ 100010d8 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x210>"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #512]\t@ 100010e0 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x218>"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #516]\t@ 100010e8 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x220>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #520]\t@ 100010f0 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x228>"
+          ],
+          [
+            "str",
+            "r3, [sp, #20]"
+          ],
+          [
+            "str",
+            "r5, [sp, #28]"
+          ],
+          [
+            "str",
+            "r3, [sp, #8]"
+          ],
+          [
+            "ldr",
+            "r3, [pc, #528]\t@ (10001120 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x258>)"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #28]"
+          ],
+          [
+            "ldr",
+            "r0, [pc, #508]\t@ (10001124 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x25c>)"
+          ],
+          [
+            "str",
+            "r3, [sp, #16]"
+          ],
+          [
+            "str",
+            "r1, [sp, #24]"
+          ],
+          [
+            "str",
+            "r2, [sp, #12]"
+          ],
+          [
+            "vldr",
+            "s15, [r6, #8]"
+          ],
+          [
+            "ldr",
+            "r3, [r6, #4]"
+          ],
+          [
+            "vldr",
+            "s15, [r6, #12]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vldr",
+            "s13, [r6]"
+          ],
+          [
+            "vldr",
+            "s9, [r6, #4]"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #376]\t@ 100010f8 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x230>"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #380]\t@ 10001100 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x238>"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #348]\t@ 10001108 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x240>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #348]\t@ 10001110 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x248>"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #336]\t@ 10001118 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x250>"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #220]\t@ 10001118 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x250>"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #176]\t@ 0xb0"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #12]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "ldr",
+            "r3, [pc, #100]\t@ (10001124 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x25c>)"
+          ],
+          [
+            "str",
+            "r6, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #16]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #20]"
+          ],
+          [
+            "vldr",
+            "d3, [r1, #8]"
+          ],
+          [
+            "vldr",
+            "d6, [fp, #8]"
+          ],
+          [
+            "vldr",
+            "d5, [r4, #8]"
+          ],
+          [
+            "vldr",
+            "d2, [r5, #8]"
+          ],
+          [
+            "vldr",
+            "d4, [r1]"
+          ],
+          [
+            "vldr",
+            "d9, [fp]"
+          ],
+          [
+            "vldr",
+            "d7, [r5]"
+          ],
+          [
+            "vldr",
+            "d10, [r4]"
+          ],
+          [
+            "vldr",
+            "d5, [r5]"
+          ],
+          [
+            "vstr",
+            "d5, [r1]"
+          ],
+          [
+            "vstr",
+            "d8, [r1, #8]"
+          ],
+          [
+            "vstr",
+            "d5, [r5]"
+          ],
+          [
+            "vstr",
+            "d10, [r5, #8]"
+          ],
+          [
+            "vstr",
+            "d0, [fp]"
+          ],
+          [
+            "vstr",
+            "d1, [fp, #8]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d2, [r4]"
+          ],
+          [
+            "vstr",
+            "d3, [r4, #8]"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "ldr",
+            "r6, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #8]"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #24]"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_FFT_fp64_exact.constprop.0",
+        "address": "10001430",
+        "instructions": 221,
+        "IT": [],
+        "branches": [
+          [
+            "bls.w",
+            "1000174e <fndsa_vect_FFT_fp64_exact.constprop.0+0x31e>"
+          ],
+          [
+            "bcs.w",
+            "10001726 <fndsa_vect_FFT_fp64_exact.constprop.0+0x2f6>"
+          ],
+          [
+            "bne.w",
+            "100015f2 <fndsa_vect_FFT_fp64_exact.constprop.0+0x1c2>"
+          ],
+          [
+            "bne.w",
+            "1000149c <fndsa_vect_FFT_fp64_exact.constprop.0+0x6c>"
+          ],
+          [
+            "bne.w",
+            "10001466 <fndsa_vect_FFT_fp64_exact.constprop.0+0x36>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100009a8 <fp64e_cmul_prepared>"
+          ]
+        ],
+        "explicit_FMA": 0,
+        "FP64": 100,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #772]\t@ 10001750 <fndsa_vect_FFT_fp64_exact.constprop.0+0x320>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #776]\t@ 10001758 <fndsa_vect_FFT_fp64_exact.constprop.0+0x328>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #780]\t@ 10001760 <fndsa_vect_FFT_fp64_exact.constprop.0+0x330>"
+          ],
+          [
+            "str",
+            "r3, [sp, #8]"
+          ],
+          [
+            "str",
+            "r6, [sp, #16]"
+          ],
+          [
+            "str",
+            "r0, [sp, #20]"
+          ],
+          [
+            "str",
+            "r4, [sp, #12]"
+          ],
+          [
+            "ldr",
+            "r2, [pc, #772]\t@ (10001788 <fndsa_vect_FFT_fp64_exact.constprop.0+0x358>)"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #16]"
+          ],
+          [
+            "str",
+            "r2, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r2, [pc, #760]\t@ (1000178c <fndsa_vect_FFT_fp64_exact.constprop.0+0x35c>)"
+          ],
+          [
+            "str",
+            "r3, [sp, #0]"
+          ],
+          [
+            "vldr",
+            "s15, [fp]"
+          ],
+          [
+            "vldr",
+            "s15, [fp, #8]"
+          ],
+          [
+            "vldr",
+            "s15, [fp, #4]"
+          ],
+          [
+            "vldr",
+            "s15, [fp, #12]"
+          ],
+          [
+            "ldr.w",
+            "r3, [fp, #4]"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #664]\t@ 10001768 <fndsa_vect_FFT_fp64_exact.constprop.0+0x338>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #652]\t@ 10001770 <fndsa_vect_FFT_fp64_exact.constprop.0+0x340>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #624]\t@ 10001778 <fndsa_vect_FFT_fp64_exact.constprop.0+0x348>"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #612]\t@ 10001780 <fndsa_vect_FFT_fp64_exact.constprop.0+0x350>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "vstr",
+            "d8, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "ldr",
+            "r3, [pc, #420]\t@ (10001788 <fndsa_vect_FFT_fp64_exact.constprop.0+0x358>)"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [r8]"
+          ],
+          [
+            "vldr",
+            "d1, [r8, #8]"
+          ],
+          [
+            "vldr",
+            "d2, [sl]"
+          ],
+          [
+            "vldr",
+            "d3, [sl, #8]"
+          ],
+          [
+            "vldr",
+            "d9, [r6, #8]"
+          ],
+          [
+            "vldr",
+            "d10, [r1, #8]"
+          ],
+          [
+            "vldr",
+            "d8, [r6]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d11, [r1]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d9, [r6, #8]"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d8, [r6, #-16]"
+          ],
+          [
+            "vstr",
+            "d1, [r1, #-16]"
+          ],
+          [
+            "vstr",
+            "d9, [r1, #-8]"
+          ],
+          [
+            "vstr",
+            "d3, [r8, #-16]"
+          ],
+          [
+            "vstr",
+            "d7, [r8, #-8]"
+          ],
+          [
+            "vstr",
+            "d5, [sl, #-16]"
+          ],
+          [
+            "vstr",
+            "d6, [sl, #-8]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #0]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #12]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #20]"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fxr_div_fp64_exact",
+        "address": "10001790",
+        "instructions": 294,
+        "IT": [],
+        "branches": [],
+        "calls": [],
+        "explicit_FMA": 0,
+        "FP64": 15,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "str",
+            "r2, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "str",
+            "r2, [sp, #76]\t@ 0x4c"
+          ],
+          [
+            "str",
+            "r3, [sp, #44]\t@ 0x2c"
+          ],
+          [
+            "str",
+            "r5, [sp, #92]\t@ 0x5c"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #92]\t@ 0x5c"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #824]\t@ 10001b20 <fxr_div_fp64_exact+0x390>"
+          ],
+          [
+            "str",
+            "r5, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "str",
+            "r6, [sp, #68]\t@ 0x44"
+          ],
+          [
+            "str",
+            "r7, [sp, #36]\t@ 0x24"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #748]\t@ 10001b28 <fxr_div_fp64_exact+0x398>"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp]"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp, #16]"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #8]"
+          ],
+          [
+            "ldr.w",
+            "lr, [pc, #720]\t@ 10001b38 <fxr_div_fp64_exact+0x3a8>"
+          ],
+          [
+            "ldr",
+            "r0, [pc, #704]\t@ (10001b30 <fxr_div_fp64_exact+0x3a0>)"
+          ],
+          [
+            "str",
+            "r1, [sp, #60]\t@ 0x3c"
+          ],
+          [
+            "ldr",
+            "r1, [pc, #704]\t@ (10001b34 <fxr_div_fp64_exact+0x3a4>)"
+          ],
+          [
+            "str",
+            "r7, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "ldrd",
+            "r9, r7, [sp, #8]"
+          ],
+          [
+            "str",
+            "r2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "str",
+            "r3, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "strd",
+            "r4, r5, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "ldrd",
+            "r2, r3, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "str",
+            "r2, [sp, #0]"
+          ],
+          [
+            "str",
+            "r4, [sp, #4]"
+          ],
+          [
+            "vldr",
+            "d7, [sp]"
+          ],
+          [
+            "strd",
+            "r4, r5, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "strd",
+            "r2, r3, [sp, #8]"
+          ],
+          [
+            "str",
+            "r4, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "s15, [sp]"
+          ],
+          [
+            "str",
+            "r4, [sp, #116]\t@ 0x74"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #116]\t@ 0x74"
+          ],
+          [
+            "ldr",
+            "r1, [pc, #496]\t@ (10001b34 <fxr_div_fp64_exact+0x3a4>)"
+          ],
+          [
+            "str",
+            "r2, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "str",
+            "r2, [sp, #124]\t@ 0x7c"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #124]\t@ 0x7c"
+          ],
+          [
+            "vstr",
+            "d7, [sp]"
+          ],
+          [
+            "ldrd",
+            "r5, r2, [sp]"
+          ],
+          [
+            "str",
+            "r1, [sp, #84]\t@ 0x54"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #84]\t@ 0x54"
+          ],
+          [
+            "str",
+            "r1, [sp, #16]"
+          ],
+          [
+            "str",
+            "r1, [sp, #20]"
+          ],
+          [
+            "ldrd",
+            "r0, r1, [sp, #16]"
+          ],
+          [
+            "strd",
+            "r0, r1, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "ldrd",
+            "r0, r1, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "str",
+            "r6, [sp, #24]"
+          ],
+          [
+            "str",
+            "r2, [sp, #28]"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #24]"
+          ],
+          [
+            "str",
+            "r0, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "str",
+            "r1, [sp, #100]\t@ 0x64"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #100]\t@ 0x64"
+          ],
+          [
+            "str",
+            "r3, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "str",
+            "r3, [sp, #108]\t@ 0x6c"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #108]\t@ 0x6c"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #60]\t@ 0x3c"
+          ],
+          [
+            "ldrd",
+            "sl, fp, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "str",
+            "r3, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "str",
+            "r1, [sp, #8]"
+          ],
+          [
+            "str",
+            "r1, [sp, #12]"
+          ],
+          [
+            "ldr",
+            "r7, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "ldr",
+            "r6, [sp, #68]\t@ 0x44"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #76]\t@ 0x4c"
+          ],
+          [
+            "ldrd",
+            "r8, r9, [sp, #8]"
+          ],
+          [
+            "strd",
+            "r8, r9, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldrd",
+            "r6, r7, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #44]\t@ 0x2c"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_fp64e_mul",
+        "address": "10001d18",
+        "instructions": 99,
+        "IT": [],
+        "branches": [],
+        "calls": [],
+        "explicit_FMA": 4,
+        "FP64": 73,
+        "memory_instructions": [
+          [
+            "vstr",
+            "d7, [sp]"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #332]\t@ 10001e98 <fndsa_fp64e_mul+0x180>"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #336]\t@ 10001ea0 <fndsa_fp64e_mul+0x188>"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #312]\t@ 10001ea8 <fndsa_fp64e_mul+0x190>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #288]\t@ 10001eb0 <fndsa_fp64e_mul+0x198>"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #280]\t@ 10001eb8 <fndsa_fp64e_mul+0x1a0>"
+          ],
+          [
+            "vldr",
+            "d5, [pc, #192]\t@ 10001ec0 <fndsa_fp64e_mul+0x1a8>"
+          ],
+          [
+            "vldr",
+            "d5, [pc, #116]\t@ 10001e98 <fndsa_fp64e_mul+0x180>"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #108]\t@ 10001ec8 <fndsa_fp64e_mul+0x1b0>"
+          ],
+          [
+            "vldr",
+            "d7, [sp]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #92]\t@ 10001ed0 <fndsa_fp64e_mul+0x1b8>"
+          ],
+          [
+            "vldr",
+            "d7, [pc, #84]\t@ 10001ed8 <fndsa_fp64e_mul+0x1c0>"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "label": "kat",
+    "elf_sha256": "0d3cd2901363cd66ffc078cb63c43a6d146fb4907db11cdf3f27145ffc421cd5",
+    "functions": [
+      {
+        "name": "fp64e_cmul_prepared",
+        "address": "10004c30",
+        "instructions": 314,
+        "IT": [],
+        "branches": [],
+        "calls": [],
+        "explicit_FMA": 12,
+        "FP64": 231,
+        "memory_instructions": [
+          [
+            "vldr",
+            "d7, [pc, #1016]\t@ 10005050 <fp64e_cmul_prepared+0x420>"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #1008]\t@ 10005058 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #992]\t@ 10005060 <fp64e_cmul_prepared+0x430>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #960]\t@ 10005068 <fp64e_cmul_prepared+0x438>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d5, [pc, #944]\t@ 10005070 <fp64e_cmul_prepared+0x440>"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #904]\t@ 10005078 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #896]\t@ 10005080 <fp64e_cmul_prepared+0x450>"
+          ],
+          [
+            "vstr",
+            "d12, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d10, [sp]"
+          ],
+          [
+            "vldr",
+            "d4, [r0, #16]"
+          ],
+          [
+            "vldr",
+            "d10, [r0]"
+          ],
+          [
+            "vstr",
+            "d11, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d12, [r0, #8]"
+          ],
+          [
+            "vstr",
+            "d11, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d10, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [r0, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d13, [r0, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d11, [sp]"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #628]\t@ 10005058 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #624]\t@ 10005078 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d9, [r0, #96]\t@ 0x60"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d8, [sp, #8]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d13, [r0, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d8, [r0, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #356]\t@ 10005058 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #348]\t@ 10005078 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vstr",
+            "d9, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #312]\t@ 10005088 <fp64e_cmul_prepared+0x458>"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #216]\t@ 10005058 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #200]\t@ 10005078 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #208]\t@ 10005090 <fp64e_cmul_prepared+0x460>"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #24]"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #32]"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d12, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #104]\t@ 0x68"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d0, [r0, #112]\t@ 0x70"
+          ],
+          [
+            "vldr",
+            "d11, [sp]"
+          ]
+        ]
+      },
+      {
+        "name": "fxr_div_fp64_exact",
+        "address": "10005150",
+        "instructions": 294,
+        "IT": [],
+        "branches": [],
+        "calls": [],
+        "explicit_FMA": 0,
+        "FP64": 15,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "str",
+            "r2, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "str",
+            "r2, [sp, #76]\t@ 0x4c"
+          ],
+          [
+            "str",
+            "r3, [sp, #44]\t@ 0x2c"
+          ],
+          [
+            "str",
+            "r5, [sp, #92]\t@ 0x5c"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #92]\t@ 0x5c"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #824]\t@ 100054e0 <fxr_div_fp64_exact+0x390>"
+          ],
+          [
+            "str",
+            "r5, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "str",
+            "r6, [sp, #68]\t@ 0x44"
+          ],
+          [
+            "str",
+            "r7, [sp, #36]\t@ 0x24"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #748]\t@ 100054e8 <fxr_div_fp64_exact+0x398>"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp]"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp, #16]"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #8]"
+          ],
+          [
+            "ldr.w",
+            "lr, [pc, #720]\t@ 100054f8 <fxr_div_fp64_exact+0x3a8>"
+          ],
+          [
+            "ldr",
+            "r0, [pc, #704]\t@ (100054f0 <fxr_div_fp64_exact+0x3a0>)"
+          ],
+          [
+            "str",
+            "r1, [sp, #60]\t@ 0x3c"
+          ],
+          [
+            "ldr",
+            "r1, [pc, #704]\t@ (100054f4 <fxr_div_fp64_exact+0x3a4>)"
+          ],
+          [
+            "str",
+            "r7, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "ldrd",
+            "r9, r7, [sp, #8]"
+          ],
+          [
+            "str",
+            "r2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "str",
+            "r3, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "strd",
+            "r4, r5, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "ldrd",
+            "r2, r3, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "str",
+            "r2, [sp, #0]"
+          ],
+          [
+            "str",
+            "r4, [sp, #4]"
+          ],
+          [
+            "vldr",
+            "d7, [sp]"
+          ],
+          [
+            "strd",
+            "r4, r5, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "strd",
+            "r2, r3, [sp, #8]"
+          ],
+          [
+            "str",
+            "r4, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "s15, [sp]"
+          ],
+          [
+            "str",
+            "r4, [sp, #116]\t@ 0x74"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #116]\t@ 0x74"
+          ],
+          [
+            "ldr",
+            "r1, [pc, #496]\t@ (100054f4 <fxr_div_fp64_exact+0x3a4>)"
+          ],
+          [
+            "str",
+            "r2, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "str",
+            "r2, [sp, #124]\t@ 0x7c"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #124]\t@ 0x7c"
+          ],
+          [
+            "vstr",
+            "d7, [sp]"
+          ],
+          [
+            "ldrd",
+            "r5, r2, [sp]"
+          ],
+          [
+            "str",
+            "r1, [sp, #84]\t@ 0x54"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #84]\t@ 0x54"
+          ],
+          [
+            "str",
+            "r1, [sp, #16]"
+          ],
+          [
+            "str",
+            "r1, [sp, #20]"
+          ],
+          [
+            "ldrd",
+            "r0, r1, [sp, #16]"
+          ],
+          [
+            "strd",
+            "r0, r1, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "ldrd",
+            "r0, r1, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "str",
+            "r6, [sp, #24]"
+          ],
+          [
+            "str",
+            "r2, [sp, #28]"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #24]"
+          ],
+          [
+            "str",
+            "r0, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "str",
+            "r1, [sp, #100]\t@ 0x64"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #100]\t@ 0x64"
+          ],
+          [
+            "str",
+            "r3, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "str",
+            "r3, [sp, #108]\t@ 0x6c"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #108]\t@ 0x6c"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #60]\t@ 0x3c"
+          ],
+          [
+            "ldrd",
+            "sl, fp, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "str",
+            "r3, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "str",
+            "r1, [sp, #8]"
+          ],
+          [
+            "str",
+            "r1, [sp, #12]"
+          ],
+          [
+            "ldr",
+            "r7, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "ldr",
+            "r6, [sp, #68]\t@ 0x44"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #76]\t@ 0x4c"
+          ],
+          [
+            "ldrd",
+            "r8, r9, [sp, #8]"
+          ],
+          [
+            "strd",
+            "r8, r9, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldrd",
+            "r6, r7, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #44]\t@ 0x2c"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "address": "10005500",
+        "instructions": 259,
+        "IT": [],
+        "branches": [
+          [
+            "bne.w",
+            "1000553c <fndsa_vect_inv_mul2e_fft_fp64_exact+0x3c>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10005150 <fxr_div_fp64_exact>"
+          ],
+          [
+            "bl",
+            "10005150 <fxr_div_fp64_exact>"
+          ]
+        ],
+        "explicit_FMA": 8,
+        "FP64": 176,
+        "memory_instructions": [
+          [
+            "vldr",
+            "d9, [pc, #972]\t@ 100058e8 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x3e8>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #976]\t@ 100058f0 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x3f0>"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #980]\t@ 100058f8 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x3f8>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #984]\t@ 10005900 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x400>"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #988]\t@ 10005908 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x408>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [r5]"
+          ],
+          [
+            "vldr",
+            "d15, [r4, #8]"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #968]\t@ 10005910 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x410>"
+          ],
+          [
+            "vldr",
+            "d3, [r4]"
+          ],
+          [
+            "vldr",
+            "d7, [r5, #8]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #856]\t@ 10005918 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x418>"
+          ],
+          [
+            "vldr",
+            "d2, [sp, #8]"
+          ],
+          [
+            "vstr",
+            "d10, [sp]"
+          ],
+          [
+            "vldr",
+            "d5, [sp]"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #732]\t@ 10005910 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x410>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d4, [pc, #692]\t@ 10005920 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x420>"
+          ],
+          [
+            "vstr",
+            "d10, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d2, [sp]"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #632]\t@ 10005918 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x418>"
+          ],
+          [
+            "vstr",
+            "d10, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d10, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d4, [pc, #476]\t@ 10005910 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x410>"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #436]\t@ 10005918 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x418>"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #436]\t@ 10005928 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x428>"
+          ],
+          [
+            "vldr",
+            "d6, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "s15, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "s15, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #8]"
+          ],
+          [
+            "vstr",
+            "d4, [r5, #8]"
+          ],
+          [
+            "vstr",
+            "d6, [r5]"
+          ],
+          [
+            "vldr",
+            "d4, [sp]"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #24]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d6, [r4, #-8]"
+          ],
+          [
+            "vstr",
+            "d7, [r4, #-16]"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_FFT_fp64_exact",
+        "address": "10005930",
+        "instructions": 223,
+        "IT": [],
+        "branches": [
+          [
+            "bls.w",
+            "10005c44 <fndsa_vect_FFT_fp64_exact+0x314>"
+          ],
+          [
+            "bcs.w",
+            "10005c14 <fndsa_vect_FFT_fp64_exact+0x2e4>"
+          ],
+          [
+            "bne.w",
+            "10005ae2 <fndsa_vect_FFT_fp64_exact+0x1b2>"
+          ],
+          [
+            "bne.w",
+            "10005992 <fndsa_vect_FFT_fp64_exact+0x62>"
+          ],
+          [
+            "bne.w",
+            "1000595e <fndsa_vect_FFT_fp64_exact+0x2e>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10004c30 <fp64e_cmul_prepared>"
+          ]
+        ],
+        "explicit_FMA": 0,
+        "FP64": 100,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #768]\t@ 10005c48 <fndsa_vect_FFT_fp64_exact+0x318>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #772]\t@ 10005c50 <fndsa_vect_FFT_fp64_exact+0x320>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #776]\t@ 10005c58 <fndsa_vect_FFT_fp64_exact+0x328>"
+          ],
+          [
+            "str",
+            "r0, [sp, #20]"
+          ],
+          [
+            "ldr",
+            "r6, [pc, #792]\t@ (10005c80 <fndsa_vect_FFT_fp64_exact+0x350>)"
+          ],
+          [
+            "str",
+            "r0, [sp, #4]"
+          ],
+          [
+            "str",
+            "r7, [sp, #16]"
+          ],
+          [
+            "strd",
+            "r5, r4, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "s15, [r0]"
+          ],
+          [
+            "vldr",
+            "s15, [r0, #8]"
+          ],
+          [
+            "vldr",
+            "s15, [r0, #4]"
+          ],
+          [
+            "vldr",
+            "s15, [r0, #12]"
+          ],
+          [
+            "ldr",
+            "r3, [r0, #4]"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #668]\t@ 10005c60 <fndsa_vect_FFT_fp64_exact+0x330>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #656]\t@ 10005c68 <fndsa_vect_FFT_fp64_exact+0x338>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #628]\t@ 10005c70 <fndsa_vect_FFT_fp64_exact+0x340>"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #616]\t@ 10005c78 <fndsa_vect_FFT_fp64_exact+0x348>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #4]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "vstr",
+            "d8, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "str",
+            "r0, [sp, #0]"
+          ],
+          [
+            "vldr",
+            "d0, [r1]"
+          ],
+          [
+            "vldr",
+            "d1, [r1, #8]"
+          ],
+          [
+            "vldr",
+            "d2, [r6]"
+          ],
+          [
+            "vldr",
+            "d3, [r6, #8]"
+          ],
+          [
+            "vldr",
+            "d9, [r4, #8]"
+          ],
+          [
+            "vldr",
+            "d10, [r5, #8]"
+          ],
+          [
+            "vldr",
+            "d8, [r4]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d11, [r5]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d9, [r4, #8]"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d8, [r4, #-16]"
+          ],
+          [
+            "vstr",
+            "d1, [r5, #-16]"
+          ],
+          [
+            "vstr",
+            "d9, [r5, #-8]"
+          ],
+          [
+            "vstr",
+            "d3, [r1, #-16]"
+          ],
+          [
+            "vstr",
+            "d7, [r1, #-8]"
+          ],
+          [
+            "vstr",
+            "d5, [r6, #-16]"
+          ],
+          [
+            "vstr",
+            "d6, [r6, #-8]"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #0]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #8]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #12]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #20]"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r7, [sp, #16]"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_iFFT_fp64_exact",
+        "address": "10005c88",
+        "instructions": 348,
+        "IT": [],
+        "branches": [
+          [
+            "beq.w",
+            "100061e2 <fndsa_vect_iFFT_fp64_exact+0x55a>"
+          ],
+          [
+            "bcs.w",
+            "100061be <fndsa_vect_iFFT_fp64_exact+0x536>"
+          ],
+          [
+            "bne.w",
+            "10005ed4 <fndsa_vect_iFFT_fp64_exact+0x24c>"
+          ],
+          [
+            "bne.w",
+            "10005cee <fndsa_vect_iFFT_fp64_exact+0x66>"
+          ],
+          [
+            "bne.w",
+            "10005cb4 <fndsa_vect_iFFT_fp64_exact+0x2c>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10004c30 <fp64e_cmul_prepared>"
+          ]
+        ],
+        "explicit_FMA": 0,
+        "FP64": 196,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #484]\t@ 10005e88 <fndsa_vect_iFFT_fp64_exact+0x200>"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #488]\t@ 10005e90 <fndsa_vect_iFFT_fp64_exact+0x208>"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #492]\t@ 10005e98 <fndsa_vect_iFFT_fp64_exact+0x210>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #496]\t@ 10005ea0 <fndsa_vect_iFFT_fp64_exact+0x218>"
+          ],
+          [
+            "ldr",
+            "r1, [pc, #528]\t@ (10005ed0 <fndsa_vect_iFFT_fp64_exact+0x248>)"
+          ],
+          [
+            "strd",
+            "r0, r4, [sp, #12]"
+          ],
+          [
+            "strd",
+            "lr, r3, [sp, #4]"
+          ],
+          [
+            "str",
+            "r5, [sp, #20]"
+          ],
+          [
+            "vldr",
+            "s15, [sl, #8]"
+          ],
+          [
+            "ldr.w",
+            "r3, [sl, #4]"
+          ],
+          [
+            "vldr",
+            "s15, [sl, #12]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "s13, [sl]"
+          ],
+          [
+            "vldr",
+            "s9, [sl, #4]"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #364]\t@ 10005ea8 <fndsa_vect_iFFT_fp64_exact+0x220>"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #368]\t@ 10005eb0 <fndsa_vect_iFFT_fp64_exact+0x228>"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #336]\t@ 10005eb8 <fndsa_vect_iFFT_fp64_exact+0x230>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #336]\t@ 10005ec0 <fndsa_vect_iFFT_fp64_exact+0x238>"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #324]\t@ 10005ec8 <fndsa_vect_iFFT_fp64_exact+0x240>"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #208]\t@ 10005ec8 <fndsa_vect_iFFT_fp64_exact+0x240>"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #12]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "str",
+            "r0, [sp, #0]"
+          ],
+          [
+            "vldr",
+            "d3, [r1, #8]"
+          ],
+          [
+            "vldr",
+            "d6, [r6, #8]"
+          ],
+          [
+            "vldr",
+            "d5, [r5, #8]"
+          ],
+          [
+            "vldr",
+            "d2, [r4, #8]"
+          ],
+          [
+            "vldr",
+            "d4, [r1]"
+          ],
+          [
+            "vldr",
+            "d9, [r6]"
+          ],
+          [
+            "vldr",
+            "d7, [r4]"
+          ],
+          [
+            "vldr",
+            "d10, [r5]"
+          ],
+          [
+            "vldr",
+            "d5, [r4]"
+          ],
+          [
+            "vstr",
+            "d5, [r1]"
+          ],
+          [
+            "vstr",
+            "d8, [r1, #8]"
+          ],
+          [
+            "vstr",
+            "d5, [r4]"
+          ],
+          [
+            "vstr",
+            "d10, [r4, #8]"
+          ],
+          [
+            "vstr",
+            "d0, [r6]"
+          ],
+          [
+            "vstr",
+            "d1, [r6, #8]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d2, [r5]"
+          ],
+          [
+            "vstr",
+            "d3, [r5, #8]"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #0]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #8]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #16]"
+          ],
+          [
+            "ldr.w",
+            "lr, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #20]"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_mul_fft_fp64_exact",
+        "address": "100061f0",
+        "instructions": 440,
+        "IT": [],
+        "branches": [
+          [
+            "bne.w",
+            "10006240 <fndsa_vect_mul_fft_fp64_exact+0x50>"
+          ]
+        ],
+        "calls": [],
+        "explicit_FMA": 12,
+        "FP64": 284,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "strd",
+            "sl, fp, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #992]\t@ 10006600 <fndsa_vect_mul_fft_fp64_exact+0x410>"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #996]\t@ 10006608 <fndsa_vect_mul_fft_fp64_exact+0x418>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #1000]\t@ 10006610 <fndsa_vect_mul_fft_fp64_exact+0x420>"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #1004]\t@ 10006618 <fndsa_vect_mul_fft_fp64_exact+0x428>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #1004]\t@ 10006620 <fndsa_vect_mul_fft_fp64_exact+0x430>"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #124]\t@ 0x7c"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "ldmia.w",
+            "r5, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r9, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia.w",
+            "r4, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r8, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia.w",
+            "ip, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "ip, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia.w",
+            "r6, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r6, {r0, r1, r2, r3}"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "vldr",
+            "d14, [sp, #176]\t@ 0xb0"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #192]\t@ 0xc0"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #208]\t@ 0xd0"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vstr",
+            "d15, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #776]\t@ 10006630 <fndsa_vect_mul_fft_fp64_exact+0x440>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d8, [sp]"
+          ],
+          [
+            "vstr",
+            "d15, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #676]\t@ 10006638 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "vstr",
+            "d14, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #500]\t@ 10006638 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vstr",
+            "d14, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vstr",
+            "s13, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "s15, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d2, [sp]"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #312]\t@ 10006630 <fndsa_vect_mul_fft_fp64_exact+0x440>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #280]\t@ 10006638 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vstr",
+            "d14, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d14, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d6, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #60]\t@ 10006628 <fndsa_vect_mul_fft_fp64_exact+0x438>"
+          ],
+          [
+            "vstr",
+            "d12, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #-112]\t@ 10006628 <fndsa_vect_mul_fft_fp64_exact+0x438>"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d7, [pc, #-164]\t@ 10006630 <fndsa_vect_mul_fft_fp64_exact+0x440>"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #-196]\t@ 10006638 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #-200]\t@ 10006640 <fndsa_vect_mul_fft_fp64_exact+0x450>"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #-256]\t@ 10006638 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "vldr",
+            "d12, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d7, [pc, #-364]\t@ 10006630 <fndsa_vect_mul_fft_fp64_exact+0x440>"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #-392]\t@ 10006638 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d7, [pc, #-400]\t@ 10006640 <fndsa_vect_mul_fft_fp64_exact+0x450>"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d3, [sp]"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "ldmia",
+            "r3, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r5, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia",
+            "r3, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r4, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_poly_big_to_fp64_exact",
+        "address": "100068e8",
+        "instructions": 344,
+        "IT": [],
+        "branches": [
+          [
+            "beq.w",
+            "10006de2 <fndsa_poly_big_to_fp64_exact+0x4fa>"
+          ],
+          [
+            "bls.w",
+            "10006dd6 <fndsa_poly_big_to_fp64_exact+0x4ee>"
+          ],
+          [
+            "beq.w",
+            "10006d50 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.w",
+            "10006d50 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10006d50 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10006d50 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10006d50 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bne.w",
+            "100069aa <fndsa_poly_big_to_fp64_exact+0xc2>"
+          ]
+        ],
+        "calls": [],
+        "explicit_FMA": 0,
+        "FP64": 2,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #328]\t@ 0x148"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #600]\t@ 10006b78 <fndsa_poly_big_to_fp64_exact+0x290>"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #604]\t@ 10006b80 <fndsa_poly_big_to_fp64_exact+0x298>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #608]\t@ 10006b88 <fndsa_poly_big_to_fp64_exact+0x2a0>"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #612]\t@ 10006b90 <fndsa_poly_big_to_fp64_exact+0x2a8>"
+          ],
+          [
+            "vldr",
+            "d4, [pc, #616]\t@ 10006b98 <fndsa_poly_big_to_fp64_exact+0x2b0>"
+          ],
+          [
+            "vldr",
+            "d5, [pc, #620]\t@ 10006ba0 <fndsa_poly_big_to_fp64_exact+0x2b8>"
+          ],
+          [
+            "vstrw.32",
+            "q0, [sp, #80]"
+          ],
+          [
+            "vstrw.32",
+            "q1, [sp, #96]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #112]"
+          ],
+          [
+            "str",
+            "r5, [sp, #132]\t@ 0x84"
+          ],
+          [
+            "str",
+            "r5, [sp, #140]\t@ 0x8c"
+          ],
+          [
+            "str",
+            "r0, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "str",
+            "r0, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "str",
+            "r4, [sp, #164]\t@ 0xa4"
+          ],
+          [
+            "str",
+            "r4, [sp, #156]\t@ 0x9c"
+          ],
+          [
+            "str",
+            "r0, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "str",
+            "r4, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "str",
+            "r6, [sp, #148]\t@ 0x94"
+          ],
+          [
+            "str",
+            "r5, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "str",
+            "r4, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "str",
+            "r0, [sp, #172]\t@ 0xac"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #132]\t@ 0x84"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #496]\t@ 10006ba8 <fndsa_poly_big_to_fp64_exact+0x2c0>"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #500]\t@ 10006bb0 <fndsa_poly_big_to_fp64_exact+0x2c8>"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #32]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #16]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #0]"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #484]\t@ 10006bb8 <fndsa_poly_big_to_fp64_exact+0x2d0>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #488]\t@ 10006bc0 <fndsa_poly_big_to_fp64_exact+0x2d8>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #492]\t@ 10006bc8 <fndsa_poly_big_to_fp64_exact+0x2e0>"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #496]\t@ 10006bd0 <fndsa_poly_big_to_fp64_exact+0x2e8>"
+          ],
+          [
+            "vstrw.32",
+            "q4, [sp, #48]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #112]"
+          ],
+          [
+            "vldrw.u32",
+            "q0, [sp, #96]"
+          ],
+          [
+            "vldrw.u32",
+            "q0, [sp, #80]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #64]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #48]"
+          ],
+          [
+            "ldr.w",
+            "r6, [r2, r6, lsl #2]"
+          ],
+          [
+            "str",
+            "r6, [sp, #208]\t@ 0xd0"
+          ],
+          [
+            "ldr.w",
+            "r5, [r2, r5, lsl #2]"
+          ],
+          [
+            "str",
+            "r5, [sp, #212]\t@ 0xd4"
+          ],
+          [
+            "ldr.w",
+            "r4, [r2, r4, lsl #2]"
+          ],
+          [
+            "str",
+            "r4, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "ldr.w",
+            "r0, [r2, r0, lsl #2]"
+          ],
+          [
+            "str",
+            "r0, [sp, #220]\t@ 0xdc"
+          ],
+          [
+            "ldr.w",
+            "r6, [r2, r6, lsl #2]"
+          ],
+          [
+            "str",
+            "r6, [sp, #192]\t@ 0xc0"
+          ],
+          [
+            "ldr.w",
+            "r5, [r2, r5, lsl #2]"
+          ],
+          [
+            "str",
+            "r5, [sp, #196]\t@ 0xc4"
+          ],
+          [
+            "ldr.w",
+            "r4, [r2, r4, lsl #2]"
+          ],
+          [
+            "str",
+            "r4, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "ldr.w",
+            "r0, [r2, r0, lsl #2]"
+          ],
+          [
+            "str",
+            "r0, [sp, #204]\t@ 0xcc"
+          ],
+          [
+            "vldrw.u32",
+            "q1, [sp, #208]"
+          ],
+          [
+            "vldrw.u32",
+            "q2, [sp, #0]"
+          ],
+          [
+            "ldr.w",
+            "r6, [r2, r6, lsl #2]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #48]"
+          ],
+          [
+            "str",
+            "r6, [sp, #176]\t@ 0xb0"
+          ],
+          [
+            "ldr.w",
+            "r5, [r2, r5, lsl #2]"
+          ],
+          [
+            "str",
+            "r5, [sp, #180]\t@ 0xb4"
+          ],
+          [
+            "ldr.w",
+            "r4, [r2, r4, lsl #2]"
+          ],
+          [
+            "str",
+            "r4, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "ldr.w",
+            "r0, [r2, r0, lsl #2]"
+          ],
+          [
+            "str",
+            "r0, [sp, #188]\t@ 0xbc"
+          ],
+          [
+            "vstrw.32",
+            "q2, [sp, #0]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #64]"
+          ],
+          [
+            "vldrw.u32",
+            "q2, [sp, #192]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #16]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #16]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #176]"
+          ],
+          [
+            "vldrw.u32",
+            "q2, [sp, #32]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #32]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #0]"
+          ],
+          [
+            "vldrw.u32",
+            "q2, [sp, #16]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #32]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #172]\t@ 0xac"
+          ],
+          [
+            "ldr.w",
+            "sl, [r2, lr, lsl #2]"
+          ],
+          [
+            "ldr.w",
+            "fp, [r2, sl, lsl #2]"
+          ],
+          [
+            "ldr.w",
+            "fp, [r2, sl, lsl #2]"
+          ],
+          [
+            "ldr.w",
+            "fp, [r2, sl, lsl #2]"
+          ],
+          [
+            "ldr.w",
+            "sl, [r2, lr, lsl #2]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldr.w",
+            "ip, [r4, #4]!"
+          ],
+          [
+            "str",
+            "r4, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #140]\t@ 0x8c"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #156]\t@ 0x9c"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #148]\t@ 0x94"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #164]\t@ 0xa4"
+          ],
+          [
+            "vstr",
+            "d6, [r1, #-16]"
+          ],
+          [
+            "vstr",
+            "d7, [r1, #-8]"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "label": "asm-perf",
+    "elf_sha256": "ce71de67338e6196ae8aad2a44247ba8f1cab39d1aa0dc43d986ec93131dbf3f",
+    "functions": [
+      {
+        "name": "fp64e_cmul_prepared",
+        "address": "10006120",
+        "instructions": 314,
+        "IT": [],
+        "branches": [],
+        "calls": [],
+        "explicit_FMA": 12,
+        "FP64": 231,
+        "memory_instructions": [
+          [
+            "vldr",
+            "d7, [pc, #1016]\t@ 10006540 <fp64e_cmul_prepared+0x420>"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #1008]\t@ 10006548 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #992]\t@ 10006550 <fp64e_cmul_prepared+0x430>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #960]\t@ 10006558 <fp64e_cmul_prepared+0x438>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d5, [pc, #944]\t@ 10006560 <fp64e_cmul_prepared+0x440>"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #904]\t@ 10006568 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #896]\t@ 10006570 <fp64e_cmul_prepared+0x450>"
+          ],
+          [
+            "vstr",
+            "d12, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d10, [sp]"
+          ],
+          [
+            "vldr",
+            "d4, [r0, #16]"
+          ],
+          [
+            "vldr",
+            "d10, [r0]"
+          ],
+          [
+            "vstr",
+            "d11, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d12, [r0, #8]"
+          ],
+          [
+            "vstr",
+            "d11, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d10, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [r0, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d13, [r0, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d11, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d11, [sp]"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #628]\t@ 10006548 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #624]\t@ 10006568 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d9, [r0, #96]\t@ 0x60"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d8, [sp, #8]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d13, [r0, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d8, [r0, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #356]\t@ 10006548 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #348]\t@ 10006568 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vstr",
+            "d9, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #312]\t@ 10006578 <fp64e_cmul_prepared+0x458>"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #216]\t@ 10006548 <fp64e_cmul_prepared+0x428>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #200]\t@ 10006568 <fp64e_cmul_prepared+0x448>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #208]\t@ 10006580 <fp64e_cmul_prepared+0x460>"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #24]"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #32]"
+          ],
+          [
+            "vldr",
+            "d9, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d12, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d2, [r0, #104]\t@ 0x68"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d0, [r0, #112]\t@ 0x70"
+          ],
+          [
+            "vldr",
+            "d11, [sp]"
+          ]
+        ]
+      },
+      {
+        "name": "fxr_div_fp64_exact",
+        "address": "10006640",
+        "instructions": 294,
+        "IT": [],
+        "branches": [],
+        "calls": [],
+        "explicit_FMA": 0,
+        "FP64": 15,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "str",
+            "r2, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "str",
+            "r2, [sp, #76]\t@ 0x4c"
+          ],
+          [
+            "str",
+            "r3, [sp, #44]\t@ 0x2c"
+          ],
+          [
+            "str",
+            "r5, [sp, #92]\t@ 0x5c"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #92]\t@ 0x5c"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #824]\t@ 100069d0 <fxr_div_fp64_exact+0x390>"
+          ],
+          [
+            "str",
+            "r5, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "str",
+            "r6, [sp, #68]\t@ 0x44"
+          ],
+          [
+            "str",
+            "r7, [sp, #36]\t@ 0x24"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #748]\t@ 100069d8 <fxr_div_fp64_exact+0x398>"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp]"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp, #16]"
+          ],
+          [
+            "strd",
+            "r6, r7, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #8]"
+          ],
+          [
+            "ldr.w",
+            "lr, [pc, #720]\t@ 100069e8 <fxr_div_fp64_exact+0x3a8>"
+          ],
+          [
+            "ldr",
+            "r0, [pc, #704]\t@ (100069e0 <fxr_div_fp64_exact+0x3a0>)"
+          ],
+          [
+            "str",
+            "r1, [sp, #60]\t@ 0x3c"
+          ],
+          [
+            "ldr",
+            "r1, [pc, #704]\t@ (100069e4 <fxr_div_fp64_exact+0x3a4>)"
+          ],
+          [
+            "str",
+            "r7, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "ldrd",
+            "r9, r7, [sp, #8]"
+          ],
+          [
+            "str",
+            "r2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "str",
+            "r3, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "strd",
+            "r4, r5, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "ldrd",
+            "r2, r3, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "str",
+            "r2, [sp, #0]"
+          ],
+          [
+            "str",
+            "r4, [sp, #4]"
+          ],
+          [
+            "vldr",
+            "d7, [sp]"
+          ],
+          [
+            "strd",
+            "r4, r5, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "strd",
+            "r2, r3, [sp, #8]"
+          ],
+          [
+            "str",
+            "r4, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "s15, [sp]"
+          ],
+          [
+            "str",
+            "r4, [sp, #116]\t@ 0x74"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #116]\t@ 0x74"
+          ],
+          [
+            "ldr",
+            "r1, [pc, #496]\t@ (100069e4 <fxr_div_fp64_exact+0x3a4>)"
+          ],
+          [
+            "str",
+            "r2, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "str",
+            "r2, [sp, #124]\t@ 0x7c"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #124]\t@ 0x7c"
+          ],
+          [
+            "vstr",
+            "d7, [sp]"
+          ],
+          [
+            "ldrd",
+            "r5, r2, [sp]"
+          ],
+          [
+            "str",
+            "r1, [sp, #84]\t@ 0x54"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #84]\t@ 0x54"
+          ],
+          [
+            "str",
+            "r1, [sp, #16]"
+          ],
+          [
+            "str",
+            "r1, [sp, #20]"
+          ],
+          [
+            "ldrd",
+            "r0, r1, [sp, #16]"
+          ],
+          [
+            "strd",
+            "r0, r1, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "ldrd",
+            "r0, r1, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "str",
+            "r6, [sp, #24]"
+          ],
+          [
+            "str",
+            "r2, [sp, #28]"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #24]"
+          ],
+          [
+            "str",
+            "r0, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "str",
+            "r1, [sp, #100]\t@ 0x64"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #100]\t@ 0x64"
+          ],
+          [
+            "str",
+            "r3, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "ldr",
+            "r1, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "str",
+            "r3, [sp, #108]\t@ 0x6c"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #108]\t@ 0x6c"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #60]\t@ 0x3c"
+          ],
+          [
+            "ldrd",
+            "sl, fp, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "str",
+            "r3, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "str",
+            "r1, [sp, #8]"
+          ],
+          [
+            "str",
+            "r1, [sp, #12]"
+          ],
+          [
+            "ldr",
+            "r7, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "ldr",
+            "r6, [sp, #68]\t@ 0x44"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #76]\t@ 0x4c"
+          ],
+          [
+            "ldrd",
+            "r8, r9, [sp, #8]"
+          ],
+          [
+            "strd",
+            "r8, r9, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldrd",
+            "r6, r7, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #44]\t@ 0x2c"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "address": "100069f0",
+        "instructions": 259,
+        "IT": [],
+        "branches": [
+          [
+            "bne.w",
+            "10006a2c <fndsa_vect_inv_mul2e_fft_fp64_exact+0x3c>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10006640 <fxr_div_fp64_exact>"
+          ],
+          [
+            "bl",
+            "10006640 <fxr_div_fp64_exact>"
+          ]
+        ],
+        "explicit_FMA": 8,
+        "FP64": 176,
+        "memory_instructions": [
+          [
+            "vldr",
+            "d9, [pc, #972]\t@ 10006dd8 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x3e8>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #976]\t@ 10006de0 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x3f0>"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #980]\t@ 10006de8 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x3f8>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #984]\t@ 10006df0 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x400>"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #988]\t@ 10006df8 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x408>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d0, [r5]"
+          ],
+          [
+            "vldr",
+            "d15, [r4, #8]"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #968]\t@ 10006e00 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x410>"
+          ],
+          [
+            "vldr",
+            "d3, [r4]"
+          ],
+          [
+            "vldr",
+            "d7, [r5, #8]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #856]\t@ 10006e08 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x418>"
+          ],
+          [
+            "vldr",
+            "d2, [sp, #8]"
+          ],
+          [
+            "vstr",
+            "d10, [sp]"
+          ],
+          [
+            "vldr",
+            "d5, [sp]"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #732]\t@ 10006e00 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x410>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d4, [pc, #692]\t@ 10006e10 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x420>"
+          ],
+          [
+            "vstr",
+            "d10, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d2, [sp]"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #632]\t@ 10006e08 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x418>"
+          ],
+          [
+            "vstr",
+            "d10, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d10, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d4, [pc, #476]\t@ 10006e00 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x410>"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #436]\t@ 10006e08 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x418>"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #436]\t@ 10006e18 <fndsa_vect_inv_mul2e_fft_fp64_exact+0x428>"
+          ],
+          [
+            "vldr",
+            "d6, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d0, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "s15, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "s15, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #8]"
+          ],
+          [
+            "vstr",
+            "d4, [r5, #8]"
+          ],
+          [
+            "vstr",
+            "d6, [r5]"
+          ],
+          [
+            "vldr",
+            "d4, [sp]"
+          ],
+          [
+            "ldr",
+            "r2, [sp, #24]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #16]"
+          ],
+          [
+            "vstr",
+            "d6, [r4, #-8]"
+          ],
+          [
+            "vstr",
+            "d7, [r4, #-16]"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_FFT_fp64_exact",
+        "address": "10006e20",
+        "instructions": 223,
+        "IT": [],
+        "branches": [
+          [
+            "bls.w",
+            "10007134 <fndsa_vect_FFT_fp64_exact+0x314>"
+          ],
+          [
+            "bcs.w",
+            "10007104 <fndsa_vect_FFT_fp64_exact+0x2e4>"
+          ],
+          [
+            "bne.w",
+            "10006fd2 <fndsa_vect_FFT_fp64_exact+0x1b2>"
+          ],
+          [
+            "bne.w",
+            "10006e82 <fndsa_vect_FFT_fp64_exact+0x62>"
+          ],
+          [
+            "bne.w",
+            "10006e4e <fndsa_vect_FFT_fp64_exact+0x2e>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10006120 <fp64e_cmul_prepared>"
+          ]
+        ],
+        "explicit_FMA": 0,
+        "FP64": 100,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #768]\t@ 10007138 <fndsa_vect_FFT_fp64_exact+0x318>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #772]\t@ 10007140 <fndsa_vect_FFT_fp64_exact+0x320>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #776]\t@ 10007148 <fndsa_vect_FFT_fp64_exact+0x328>"
+          ],
+          [
+            "str",
+            "r0, [sp, #20]"
+          ],
+          [
+            "ldr",
+            "r6, [pc, #792]\t@ (10007170 <fndsa_vect_FFT_fp64_exact+0x350>)"
+          ],
+          [
+            "str",
+            "r0, [sp, #4]"
+          ],
+          [
+            "str",
+            "r7, [sp, #16]"
+          ],
+          [
+            "strd",
+            "r5, r4, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "s15, [r0]"
+          ],
+          [
+            "vldr",
+            "s15, [r0, #8]"
+          ],
+          [
+            "vldr",
+            "s15, [r0, #4]"
+          ],
+          [
+            "vldr",
+            "s15, [r0, #12]"
+          ],
+          [
+            "ldr",
+            "r3, [r0, #4]"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #668]\t@ 10007150 <fndsa_vect_FFT_fp64_exact+0x330>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #656]\t@ 10007158 <fndsa_vect_FFT_fp64_exact+0x338>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #628]\t@ 10007160 <fndsa_vect_FFT_fp64_exact+0x340>"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #616]\t@ 10007168 <fndsa_vect_FFT_fp64_exact+0x348>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #4]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "vstr",
+            "d8, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "str",
+            "r0, [sp, #0]"
+          ],
+          [
+            "vldr",
+            "d0, [r1]"
+          ],
+          [
+            "vldr",
+            "d1, [r1, #8]"
+          ],
+          [
+            "vldr",
+            "d2, [r6]"
+          ],
+          [
+            "vldr",
+            "d3, [r6, #8]"
+          ],
+          [
+            "vldr",
+            "d9, [r4, #8]"
+          ],
+          [
+            "vldr",
+            "d10, [r5, #8]"
+          ],
+          [
+            "vldr",
+            "d8, [r4]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d11, [r5]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d9, [r4, #8]"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d8, [r4, #-16]"
+          ],
+          [
+            "vstr",
+            "d1, [r5, #-16]"
+          ],
+          [
+            "vstr",
+            "d9, [r5, #-8]"
+          ],
+          [
+            "vstr",
+            "d3, [r1, #-16]"
+          ],
+          [
+            "vstr",
+            "d7, [r1, #-8]"
+          ],
+          [
+            "vstr",
+            "d5, [r6, #-16]"
+          ],
+          [
+            "vstr",
+            "d6, [r6, #-8]"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #0]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #8]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #12]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #20]"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r7, [sp, #16]"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_iFFT_fp64_exact",
+        "address": "10007178",
+        "instructions": 348,
+        "IT": [],
+        "branches": [
+          [
+            "beq.w",
+            "100076d2 <fndsa_vect_iFFT_fp64_exact+0x55a>"
+          ],
+          [
+            "bcs.w",
+            "100076ae <fndsa_vect_iFFT_fp64_exact+0x536>"
+          ],
+          [
+            "bne.w",
+            "100073c4 <fndsa_vect_iFFT_fp64_exact+0x24c>"
+          ],
+          [
+            "bne.w",
+            "100071de <fndsa_vect_iFFT_fp64_exact+0x66>"
+          ],
+          [
+            "bne.w",
+            "100071a4 <fndsa_vect_iFFT_fp64_exact+0x2c>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10006120 <fp64e_cmul_prepared>"
+          ]
+        ],
+        "explicit_FMA": 0,
+        "FP64": 196,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #484]\t@ 10007378 <fndsa_vect_iFFT_fp64_exact+0x200>"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #488]\t@ 10007380 <fndsa_vect_iFFT_fp64_exact+0x208>"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #492]\t@ 10007388 <fndsa_vect_iFFT_fp64_exact+0x210>"
+          ],
+          [
+            "vldr",
+            "d14, [pc, #496]\t@ 10007390 <fndsa_vect_iFFT_fp64_exact+0x218>"
+          ],
+          [
+            "ldr",
+            "r1, [pc, #528]\t@ (100073c0 <fndsa_vect_iFFT_fp64_exact+0x248>)"
+          ],
+          [
+            "strd",
+            "r0, r4, [sp, #12]"
+          ],
+          [
+            "strd",
+            "lr, r3, [sp, #4]"
+          ],
+          [
+            "str",
+            "r5, [sp, #20]"
+          ],
+          [
+            "vldr",
+            "s15, [sl, #8]"
+          ],
+          [
+            "ldr.w",
+            "r3, [sl, #4]"
+          ],
+          [
+            "vldr",
+            "s15, [sl, #12]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "s13, [sl]"
+          ],
+          [
+            "vldr",
+            "s9, [sl, #4]"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #364]\t@ 10007398 <fndsa_vect_iFFT_fp64_exact+0x220>"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #368]\t@ 100073a0 <fndsa_vect_iFFT_fp64_exact+0x228>"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #336]\t@ 100073a8 <fndsa_vect_iFFT_fp64_exact+0x230>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #336]\t@ 100073b0 <fndsa_vect_iFFT_fp64_exact+0x238>"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #324]\t@ 100073b8 <fndsa_vect_iFFT_fp64_exact+0x240>"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #208]\t@ 100073b8 <fndsa_vect_iFFT_fp64_exact+0x240>"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #12]"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "str",
+            "r0, [sp, #0]"
+          ],
+          [
+            "vldr",
+            "d3, [r1, #8]"
+          ],
+          [
+            "vldr",
+            "d6, [r6, #8]"
+          ],
+          [
+            "vldr",
+            "d5, [r5, #8]"
+          ],
+          [
+            "vldr",
+            "d2, [r4, #8]"
+          ],
+          [
+            "vldr",
+            "d4, [r1]"
+          ],
+          [
+            "vldr",
+            "d9, [r6]"
+          ],
+          [
+            "vldr",
+            "d7, [r4]"
+          ],
+          [
+            "vldr",
+            "d10, [r5]"
+          ],
+          [
+            "vldr",
+            "d5, [r4]"
+          ],
+          [
+            "vstr",
+            "d5, [r1]"
+          ],
+          [
+            "vstr",
+            "d8, [r1, #8]"
+          ],
+          [
+            "vstr",
+            "d5, [r4]"
+          ],
+          [
+            "vstr",
+            "d10, [r4, #8]"
+          ],
+          [
+            "vstr",
+            "d0, [r6]"
+          ],
+          [
+            "vstr",
+            "d1, [r6, #8]"
+          ],
+          [
+            "vstr",
+            "d0, [sp, #24]"
+          ],
+          [
+            "vstr",
+            "d2, [r5]"
+          ],
+          [
+            "vstr",
+            "d3, [r5, #8]"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #32]"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #0]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #8]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #16]"
+          ],
+          [
+            "ldr.w",
+            "lr, [sp, #4]"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #20]"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_vect_mul_fft_fp64_exact",
+        "address": "100076e0",
+        "instructions": 440,
+        "IT": [],
+        "branches": [
+          [
+            "bne.w",
+            "10007730 <fndsa_vect_mul_fft_fp64_exact+0x50>"
+          ]
+        ],
+        "calls": [],
+        "explicit_FMA": 12,
+        "FP64": 284,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "strd",
+            "sl, fp, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #992]\t@ 10007af0 <fndsa_vect_mul_fft_fp64_exact+0x410>"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #996]\t@ 10007af8 <fndsa_vect_mul_fft_fp64_exact+0x418>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #1000]\t@ 10007b00 <fndsa_vect_mul_fft_fp64_exact+0x420>"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #1004]\t@ 10007b08 <fndsa_vect_mul_fft_fp64_exact+0x428>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #1004]\t@ 10007b10 <fndsa_vect_mul_fft_fp64_exact+0x430>"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #124]\t@ 0x7c"
+          ],
+          [
+            "ldr",
+            "r3, [sp, #120]\t@ 0x78"
+          ],
+          [
+            "ldmia.w",
+            "r5, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r9, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia.w",
+            "r4, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r8, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia.w",
+            "ip, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "ip, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia.w",
+            "r6, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r6, {r0, r1, r2, r3}"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "vldr",
+            "d14, [sp, #176]\t@ 0xb0"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #192]\t@ 0xc0"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #208]\t@ 0xd0"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "vstr",
+            "d2, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vstr",
+            "d15, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #776]\t@ 10007b20 <fndsa_vect_mul_fft_fp64_exact+0x440>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vstr",
+            "d8, [sp]"
+          ],
+          [
+            "vstr",
+            "d15, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #676]\t@ 10007b28 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vstr",
+            "d5, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "vstr",
+            "d14, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #500]\t@ 10007b28 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vstr",
+            "d14, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vstr",
+            "s13, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "s15, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d2, [sp]"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #312]\t@ 10007b20 <fndsa_vect_mul_fft_fp64_exact+0x440>"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d1, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #280]\t@ 10007b28 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vstr",
+            "d14, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d14, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d3, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #48]\t@ 0x30"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d6, [sp, #24]"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #32]"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #60]\t@ 10007b18 <fndsa_vect_mul_fft_fp64_exact+0x438>"
+          ],
+          [
+            "vstr",
+            "d12, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #56]\t@ 0x38"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #80]\t@ 0x50"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #-112]\t@ 10007b18 <fndsa_vect_mul_fft_fp64_exact+0x438>"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d7, [pc, #-164]\t@ 10007b20 <fndsa_vect_mul_fft_fp64_exact+0x440>"
+          ],
+          [
+            "vldr",
+            "d15, [pc, #-196]\t@ 10007b28 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vldr",
+            "d6, [pc, #-200]\t@ 10007b30 <fndsa_vect_mul_fft_fp64_exact+0x450>"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #64]\t@ 0x40"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "vldr",
+            "d5, [sp, #72]\t@ 0x48"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #-256]\t@ 10007b28 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #96]\t@ 0x60"
+          ],
+          [
+            "vldr",
+            "d1, [sp, #104]\t@ 0x68"
+          ],
+          [
+            "vldr",
+            "d8, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "vldr",
+            "d12, [sp, #40]\t@ 0x28"
+          ],
+          [
+            "vldr",
+            "d7, [pc, #-364]\t@ 10007b20 <fndsa_vect_mul_fft_fp64_exact+0x440>"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #-392]\t@ 10007b28 <fndsa_vect_mul_fft_fp64_exact+0x448>"
+          ],
+          [
+            "vldr",
+            "d15, [sp, #16]"
+          ],
+          [
+            "vldr",
+            "d7, [pc, #-400]\t@ 10007b30 <fndsa_vect_mul_fft_fp64_exact+0x450>"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #88]\t@ 0x58"
+          ],
+          [
+            "vldr",
+            "d4, [sp, #8]"
+          ],
+          [
+            "vldr",
+            "d3, [sp]"
+          ],
+          [
+            "vldr",
+            "d7, [sp, #112]\t@ 0x70"
+          ],
+          [
+            "vstr",
+            "d3, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "vstr",
+            "d4, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "vstr",
+            "d6, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "vstr",
+            "d7, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "ldmia",
+            "r3, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r5, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia",
+            "r3, {r0, r1, r2, r3}"
+          ],
+          [
+            "stmia.w",
+            "r4, {r0, r1, r2, r3}"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ]
+        ]
+      },
+      {
+        "name": "fndsa_poly_big_to_fp64_exact",
+        "address": "10007dd8",
+        "instructions": 344,
+        "IT": [],
+        "branches": [
+          [
+            "beq.w",
+            "100082d2 <fndsa_poly_big_to_fp64_exact+0x4fa>"
+          ],
+          [
+            "bls.w",
+            "100082c6 <fndsa_poly_big_to_fp64_exact+0x4ee>"
+          ],
+          [
+            "beq.w",
+            "10008240 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.w",
+            "10008240 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10008240 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10008240 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10008240 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bne.w",
+            "10007e9a <fndsa_poly_big_to_fp64_exact+0xc2>"
+          ]
+        ],
+        "calls": [],
+        "explicit_FMA": 0,
+        "FP64": 2,
+        "memory_instructions": [
+          [
+            "stmdb",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ],
+          [
+            "ldr",
+            "r5, [sp, #328]\t@ 0x148"
+          ],
+          [
+            "vldr",
+            "d0, [pc, #600]\t@ 10008068 <fndsa_poly_big_to_fp64_exact+0x290>"
+          ],
+          [
+            "vldr",
+            "d1, [pc, #604]\t@ 10008070 <fndsa_poly_big_to_fp64_exact+0x298>"
+          ],
+          [
+            "vldr",
+            "d2, [pc, #608]\t@ 10008078 <fndsa_poly_big_to_fp64_exact+0x2a0>"
+          ],
+          [
+            "vldr",
+            "d3, [pc, #612]\t@ 10008080 <fndsa_poly_big_to_fp64_exact+0x2a8>"
+          ],
+          [
+            "vldr",
+            "d4, [pc, #616]\t@ 10008088 <fndsa_poly_big_to_fp64_exact+0x2b0>"
+          ],
+          [
+            "vldr",
+            "d5, [pc, #620]\t@ 10008090 <fndsa_poly_big_to_fp64_exact+0x2b8>"
+          ],
+          [
+            "vstrw.32",
+            "q0, [sp, #80]"
+          ],
+          [
+            "vstrw.32",
+            "q1, [sp, #96]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #112]"
+          ],
+          [
+            "str",
+            "r5, [sp, #132]\t@ 0x84"
+          ],
+          [
+            "str",
+            "r5, [sp, #140]\t@ 0x8c"
+          ],
+          [
+            "str",
+            "r0, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "str",
+            "r0, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "str",
+            "r4, [sp, #164]\t@ 0xa4"
+          ],
+          [
+            "str",
+            "r4, [sp, #156]\t@ 0x9c"
+          ],
+          [
+            "str",
+            "r0, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "str",
+            "r4, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "str",
+            "r6, [sp, #148]\t@ 0x94"
+          ],
+          [
+            "str",
+            "r5, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "str",
+            "r4, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "str",
+            "r0, [sp, #172]\t@ 0xac"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #132]\t@ 0x84"
+          ],
+          [
+            "vldr",
+            "d8, [pc, #496]\t@ 10008098 <fndsa_poly_big_to_fp64_exact+0x2c0>"
+          ],
+          [
+            "vldr",
+            "d9, [pc, #500]\t@ 100080a0 <fndsa_poly_big_to_fp64_exact+0x2c8>"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #168]\t@ 0xa8"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #32]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #16]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #0]"
+          ],
+          [
+            "vldr",
+            "d12, [pc, #484]\t@ 100080a8 <fndsa_poly_big_to_fp64_exact+0x2d0>"
+          ],
+          [
+            "vldr",
+            "d13, [pc, #488]\t@ 100080b0 <fndsa_poly_big_to_fp64_exact+0x2d8>"
+          ],
+          [
+            "vldr",
+            "d10, [pc, #492]\t@ 100080b8 <fndsa_poly_big_to_fp64_exact+0x2e0>"
+          ],
+          [
+            "vldr",
+            "d11, [pc, #496]\t@ 100080c0 <fndsa_poly_big_to_fp64_exact+0x2e8>"
+          ],
+          [
+            "vstrw.32",
+            "q4, [sp, #48]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #112]"
+          ],
+          [
+            "vldrw.u32",
+            "q0, [sp, #96]"
+          ],
+          [
+            "vldrw.u32",
+            "q0, [sp, #80]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #64]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #48]"
+          ],
+          [
+            "ldr.w",
+            "r6, [r2, r6, lsl #2]"
+          ],
+          [
+            "str",
+            "r6, [sp, #208]\t@ 0xd0"
+          ],
+          [
+            "ldr.w",
+            "r5, [r2, r5, lsl #2]"
+          ],
+          [
+            "str",
+            "r5, [sp, #212]\t@ 0xd4"
+          ],
+          [
+            "ldr.w",
+            "r4, [r2, r4, lsl #2]"
+          ],
+          [
+            "str",
+            "r4, [sp, #216]\t@ 0xd8"
+          ],
+          [
+            "ldr.w",
+            "r0, [r2, r0, lsl #2]"
+          ],
+          [
+            "str",
+            "r0, [sp, #220]\t@ 0xdc"
+          ],
+          [
+            "ldr.w",
+            "r6, [r2, r6, lsl #2]"
+          ],
+          [
+            "str",
+            "r6, [sp, #192]\t@ 0xc0"
+          ],
+          [
+            "ldr.w",
+            "r5, [r2, r5, lsl #2]"
+          ],
+          [
+            "str",
+            "r5, [sp, #196]\t@ 0xc4"
+          ],
+          [
+            "ldr.w",
+            "r4, [r2, r4, lsl #2]"
+          ],
+          [
+            "str",
+            "r4, [sp, #200]\t@ 0xc8"
+          ],
+          [
+            "ldr.w",
+            "r0, [r2, r0, lsl #2]"
+          ],
+          [
+            "str",
+            "r0, [sp, #204]\t@ 0xcc"
+          ],
+          [
+            "vldrw.u32",
+            "q1, [sp, #208]"
+          ],
+          [
+            "vldrw.u32",
+            "q2, [sp, #0]"
+          ],
+          [
+            "ldr.w",
+            "r6, [r2, r6, lsl #2]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #48]"
+          ],
+          [
+            "str",
+            "r6, [sp, #176]\t@ 0xb0"
+          ],
+          [
+            "ldr.w",
+            "r5, [r2, r5, lsl #2]"
+          ],
+          [
+            "str",
+            "r5, [sp, #180]\t@ 0xb4"
+          ],
+          [
+            "ldr.w",
+            "r4, [r2, r4, lsl #2]"
+          ],
+          [
+            "str",
+            "r4, [sp, #184]\t@ 0xb8"
+          ],
+          [
+            "ldr.w",
+            "r0, [r2, r0, lsl #2]"
+          ],
+          [
+            "str",
+            "r0, [sp, #188]\t@ 0xbc"
+          ],
+          [
+            "vstrw.32",
+            "q2, [sp, #0]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #64]"
+          ],
+          [
+            "vldrw.u32",
+            "q2, [sp, #192]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #16]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #16]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #176]"
+          ],
+          [
+            "vldrw.u32",
+            "q2, [sp, #32]"
+          ],
+          [
+            "vstrw.32",
+            "q3, [sp, #32]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #0]"
+          ],
+          [
+            "vldrw.u32",
+            "q2, [sp, #16]"
+          ],
+          [
+            "vldrw.u32",
+            "q3, [sp, #32]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #172]\t@ 0xac"
+          ],
+          [
+            "ldr.w",
+            "sl, [r2, lr, lsl #2]"
+          ],
+          [
+            "ldr.w",
+            "fp, [r2, sl, lsl #2]"
+          ],
+          [
+            "ldr.w",
+            "fp, [r2, sl, lsl #2]"
+          ],
+          [
+            "ldr.w",
+            "fp, [r2, sl, lsl #2]"
+          ],
+          [
+            "ldr.w",
+            "sl, [r2, lr, lsl #2]"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldr.w",
+            "ip, [r4, #4]!"
+          ],
+          [
+            "str",
+            "r4, [sp, #128]\t@ 0x80"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #144]\t@ 0x90"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #160]\t@ 0xa0"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #140]\t@ 0x8c"
+          ],
+          [
+            "ldr",
+            "r4, [sp, #136]\t@ 0x88"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #152]\t@ 0x98"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #156]\t@ 0x9c"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #148]\t@ 0x94"
+          ],
+          [
+            "ldr",
+            "r0, [sp, #164]\t@ 0xa4"
+          ],
+          [
+            "vstr",
+            "d6, [r1, #-16]"
+          ],
+          [
+            "vstr",
+            "d7, [r1, #-8]"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}"
+          ],
+          [
+            "ldmia.w",
+            "sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}"
+          ]
+        ]
+      }
+    ]
+  }
+]

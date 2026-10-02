@@ -1,0 +1,47 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 4/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Given two registers A and B, VMULLB takes the even-indexed elements and computes
+their pairwise polynomial products, while VMULLT operates on the odd-indexed elements,
+both producing widened results: for .P8, eight 8-bit inputs yield eight 16-bit products per
+register, and for .P16, four 16-bit inputs yield four 32-bit products. Together, VMULLB
+and VMULLT cover all lanes of a 128-bit register in two instructions, computing the
+complete set of carry-less products across the full register width. Figure 1 illustrates
+VMULLB.P16 and VMULLT.P16.
+16x8\a7[a6
+VMULLB(A, B)
+16x8|0746
+16x8 (5-] bo
+] b| bs
+24b7 565
+VMULLT(A, B)
+Figure 1. Operation between polynomial multiplication instructions
+4. Specialized multiplication
+This section describes the proposed algorithms for carry-less polynomial multiplication and
+squaring in GF(2'28), GF(2192), and GF(2256), designed to exploit the Helium instruction.
+4.1. 128-bit direct multiplication
+Let a, b E GF(2128). Write a as a(x) = [izo aixlói and b(x) = E}
+each ai, b; is a 16-bit word representing a polynomial of degree ‹ 16 over GF (2). The
+carry-less product expands as a(z) • b(x) = Ek-o (Eits=k aib;) zlok, This process is
+shown in Algorithm 1.
+Splitting even and odd lanes. The eight coefficients of a and b naturally partition
+into two groups of four, determined by the parity of their indices. For a fixed bi, define
+p:)=ao22 a9)=:(a11azx3+05x81 tag2.9
+Here, pi gathers the contributions of the even coefficients ao, a2, 04, a6 multiplied by bi,
+while qi gathers the odd coefficients a1, a3, aš, ar. The complete product of a by a single
+а2)Di =рі(2) +Д(2)x/6ї
+(1)
+Re-indexing the full product. By summing Equation (1) over all i and expanding, the
+complete product can be written as a sum of the alternating p and q terms. By collecting
+the terms in each power x16k
+, it is observed that position k receives contributions from both
+the product of the even range pk, which was multiplied in the shift xl6k, and the product of
+the odd range qk-1, which was multiplied in the shift 216(k-1), and from this fact carries an
+extra factor of xl6 from the odd indices. From this, the expression can be assembled as
+follows:
+0(00 bx) =Х0 (×) •
+(Рі (х)Ф9-1(х))х1ві Дqт(х)х128.
+(2)
+4

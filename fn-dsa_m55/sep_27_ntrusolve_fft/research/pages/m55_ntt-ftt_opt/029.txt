@@ -1,0 +1,47 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 29/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 29
+Alg. 16: Saber.KEM.KeyGen
+Alg. 18: Saber.KEM.Decaps
+input : Security level l
+output : pk= (seedA,b),sk= (z,pkh,pk,s)
+1 ((seedA,b),s) = Saber.PKE.KeyGen)(l);
+2 pk= (seedA,b);
+3 pkh= F(pk);
+4 z= U({0,1}256);
+5 return pk= (seedA,b),sk= (z,pkh,pk,s);
+Alg. 17: Saber.KEM.Encaps
+input : sk= (z,pkh,pk,s), ct= c
+output : shared secret= K
+′
+1 m
+= Saber.PKE.Dec(s,c);
+ˆ
+2 ((
+K′),r
+′) = G(pkh,m′);
+′
+3 c
+= Saber.PKE.Enc(pk,m
+′
+,r
+′);
+4 if c== c
+′then
+ˆ
+5 return K= H(
+K′
+,c) ;
+6 else
+7 return K= H(z,c) ;
+input : pk= (seedA,b)
+output : shared secret:= K
+1 m= U({0,1}256);
+ˆ
+2 ((
+K),r) = G(F(pk),m);
+3 c= Saber.PKE.Enc(pk,m,r);
+ˆ
+4 K= H(
+K,c);
+5 return ct= c,secret= K;

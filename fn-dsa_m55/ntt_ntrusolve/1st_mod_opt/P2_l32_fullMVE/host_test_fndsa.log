@@ -1,0 +1,20 @@
+Host commands: make clean; make -j4; ./test_fndsa
+Host compiler: Apple clang, portable C path, -O2
+Exit status: 0
+
+Test SHAKE256: ... done.
+Test SHA-3: [224] PASS [256] PASS [384] PASS [512] PASS
+Test codec (mod q): PASS
+Test codec (compressed): PASS
+Test modulo q: PASS
+Test floating-point polynomials: PASS
+Test sampler: PASS
+Test keygen (self): PASS
+Test keygen (ref): PASS
+Test verify: PASS
+Test self: degree 2..10 PASS
+Test KAT: degree 2..10 PASS
+
+For P2 candidates this host build exercises the portable C path. The actual
+handwritten MVE assembly path is exercised by the linked NUCLEO audit and
+performance ELF recorded in result.md.

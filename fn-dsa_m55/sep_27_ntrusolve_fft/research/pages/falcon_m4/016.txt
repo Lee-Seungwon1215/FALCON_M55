@@ -1,0 +1,46 @@
+DOCUMENT: falcon_m4.pdf PAGE: 16/18
+
+ever, we have very efficient large multiplications (32 ×32 →64), which we leverage by first
+relaxing are representation and accepting the whole [0, q]range (i.e. zero has two possible
+representations). If registers r10 and r14 contain q and−1/q mod 232, respectively, then the
+following two-cycle sequence computes the Montgomery reduction of the value contained
+in register r0:
+@ Montgomery reduction of r0.
+@ Input:
+@ r0 value x to reduce
+@ r10 q = 12289
+@ r14 -1/q mod 2^32 = 4143984639
+@ Output:
+@ r0 x/2^32 mod q, in the [0,q] range
+@ r10 and r14 are unmodified. r12 is modified (scratch).
+mul r12, r0, r14
+umaal r14, r0, r12, r10
+This process works for the whole 32-bit range. Since q < 215, we can consider values in [0, q]
+to be signed (but non-negative) and perform multiplications using the DSP opcodes such
+as smulbb, which allows us reading values from RAM by pairs without needing to separate
+them. Moreover, additions and subtractions modulo q can be performed in three-cycle se-
+quences on two values in parallel; e.g. if r0 contains values x0 (low half) and x1 (high half),
+and r1 similarly contains y0 and y1, then the modular additions x0 +y0 and x1 +y1 (with
+reduction back into [0, q]) can be done in three cycles in total:
+@ Parallel addition modulo q = 12289.
+@ Input:
+@ r0 values x0 (low) and x1 (high), both in [0,q]
+@ r1 values y0 (low) and y1 (high), both in [0,q]
+@ r11 q + (q << 16) = 805384193
+@ Output:
+@ r0 values x0+y0 and x1+y1, in [0,q]
+@ r1 and r11 and unmodified. r12 is modified (scratch).
+sadd16 r12, r0, r1 @ r12 <- x0+y0 : x1+y1
+ssub16 r0, r12, r11 @ r0 <- x0+y0-q : x1+y1-q
+sel r0, r0, r12 @ select non-negative values
+Similarly, x0−y0 and x1−y1 are also computed in three cycles:
+@ Parallel subtraction modulo q = 12289.
+@ Input:
+@ r0 values x0 (low) and x1 (high), both in [0,q]
+@ r1 values y0 (low) and y1 (high), both in [0,q]
+@ r10 constant 0
+@ r11 q + (q << 16) = 805384193
+@ Output:
+@ r0 values x0-y0 and x1-y1, in [0,q]
+@ r1, r10 and r11 and unmodified. r12 is modified (scratch).
+16

@@ -1,0 +1,152 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 13/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Table 2. Cycle counts for field arithmetic on the Cortex-M85 (-03).
+Modular Reduction (This Work)
+Field Squaring (w/o reduction, This Work)
+Operation
+GCC Clang
+Operation
+GCC Clang
+Reduction (128) (Alg. 12)
+11
+9
+1282 (Alg. 8)
+10
+12
+Reduction (192) (Alg. 13)
+34
+1922 (Alg. 9)
+14
+Reduction (256) (Alg. 14)
+36
+15
+27
+2562 (Alg. 10)
+24
+25
+Field Multiplication
+Field Squaring & Multiplication (with reduction)
+(w/o reduction, This Work)
+GF(2128) GF(2192) GF(2250)
+Operation
+GCC Clang
+Implementation
+GCC Clang GCC Clang GCC Clang
+128 x 128 direct (Alg. 2)
+4x Mult 32 x 32 (Alg. 3)
+2x Mult 64 x 64 (Alg. 5)
+128 x 128 ierarchieal (Alg. 6)
+40
+40
+Squaring
+108
+Ahier k lon el al: 20251
+7553
+156 135
+192 x 192 direct
+348
+192 x 192 hierarchical
+374
+259
+Multiplication
+This Work - direc
+256 x 256 dicerchical
+This Work - hierarchica
+110
+123
+77 371
+219 475
+228
+98
+410
+298
+636
+349
+832
+1573 2970
+832 1690 1593 2950
+2130
+2041
+signing and verification reach speedups of up to 1.35x and 1.34x, respectively. For the
+short variant, speedups range from 1.14x to 1.35x. The gains are most pronounced for the
+256-bit security level, where field multiplications over GF(2256) represent a larger fraction
+of the total execution time, and the advantage of Helium instructions is most evident.
+Table 3. AlMer performance on Cortex-M85 (-03, cycles/10°).
+Var. Op.
+=
+Keygen
+F
+Sign
+Verify
+Sign
+Verify
+128
+0.341
+18.821
+17.762
+185.761
+148.071
+Reference
+This work
+192
+256
+128
+192
+256
+128
+0.817
+2.004
+0.257
+0.652
+1.665
+1.33x
+49.095
+104.234
+15.904
+40.465
+45.919
+77.164
+1.18x
+97.979
+14.900
+38.382
+73.099
+1.19x
+483.815 900.029 163.009
+415.268
+694.007
+1.14x
+388.831
+773.040
+124.971
+314.591
+573.884
+1.18x
+Speedup
+192
+256
+1.25x
+1.20x
+1.21x
+1.35x
+1.20x
+1.34x
+1.17x
+1.30x
+1.24x
+1.35x
+FAEST. The results for FAEST are shown in Table 4. For standard FAEST, speedups
+range from 1.10x to 1.23x for the fast variant and from 1.01x to 1.05x for the short
+variant. The gains are more modest than those observed for AlMer because AIM2 is built
+directly over GF(2ł), while FAEST uses AES (which operates in GF(28)) as its one-way
+function and only relies on GF(2') arithmetic in the surrounding zero-knowledge proof.
+For FAEST-EM, which reduces the number of AES evaluations and therefore increases
+the relative contribution of field arithmetic to the total cost, the gains are more significant,
+reaching 1.30x for 256-bit level signatures in the fast variant. FAEST key generation data
+was omitted, as the specific GF (2°) finite field used for signature generation was not the
+focus of this optimization work.
+Finally, Clang consistently produces better code than GCC for Helium-specific
+13

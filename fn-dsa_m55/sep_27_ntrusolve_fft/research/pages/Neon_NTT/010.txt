@@ -1,0 +1,73 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 10/38
+
+10 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Proposition 1. Let N be odd, R = 2n > N and z ∈Z. Then Barrett reduction and
+negative Montgomery reduction satisfy the following relation:
+bar±
+N(z) = mont−
+N(z(R mod±N)). (1)
+More generally, for an arbitrary approximation , we have
+bar N (z) = mont−
+N(z(R mod N))
+Remark 2. Since mont−
+N(x) computes a representative of x·R−1 in ZN, the factor
+R mod± N in (1) does not come as a surprise. It also explains why bar±
+N(z) and
+mont−
+N(zR mod± N) can only diﬀer by a multiple of N. The value in Proposition 1
+is in working with explicit representatives.
+Remark 3. It follows from Fact 3 that Proposition 1 also holds for mont+
+N(z) except for
+the case z·R mod±N= 2n−1, in which case bar±
+N(z) = mont+
+N(z(R mod±N))−N.
+Lemma 1. In the context of Proposition 1,
+R
+N =−R mod N·N−1 in ZR, hence
+R
+N mod±R=−(R mod N)·(N−1 mod±R) mod±R. (2)
+Lemma 1. We have N R
+N = R−R mod N in Z. Passing to ZR and multiplying by
+N−1 proves the claim. Equation 2 follows by applying _ mod±R: ZR →Z.
+Proposition 1. The proof is mostly careful unraveling of definitions.
+bar N (z) def
+= z−N·
+z R
+N
+R
+def
+z R
+N−(z R
+N ) mod±R
+= z−N
+R
+zN R
+Lemma 1
+= z−
+N−N−z(R mod N)(N−1 mod±R) mod±R
+R
+Note that the right hand side of this expression already matches the correction term
+occurring in mont−
+R(z(R mod N)). Next, we replace R
+N =
+R−(R mod N)
+N and obtain
+zNR−(R mod N)
+N−N−z(R mod N)(N−1 mod±R) mod±R
+...
+= z−
+R
+z(R mod N) + N−z(R mod N)(N−1 mod±R) mod±R
+R
+N
+=
+= mont−
+N(z(R mod N)).
+Corollary 1. In the context of Proposition 1,
+|bar N (z)|≤|z|·|R mod N|
+R +
+2
+In particular, if |z|<N, and N < R
+2 , then |bar N (z)|<N.
+Proof. The first part follows from Proposition 1 and the bound for Montgomery reduction.
+For the second, recall |_ mod N|≤N.

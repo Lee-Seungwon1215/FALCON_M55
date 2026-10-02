@@ -1,0 +1,70 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 11/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+FIGURE 2. Proposed memory optimization path of FFT/NTT for 512/1024 security level.
+performed, only two memory accesses occur for the polyno-
+mial when operating the actual two layers. In the case of the
+standard implementation, when operating two layers, three
+memory accesses for polynomial occur, so the reduction in
+memory access by one may seem small, but in the case of
+Falcon, it is a polynomial of order 512, and a total of three
+(Inv)FFT/(Inv)NTT operation is required for FTT/NTT-based
+multiplication. Therefore, the actual decreasing clock cycles
+cannot be neglected. In addition, since the merging technique
+is used twice( Merging#1/Merging#2), memory access
+to two layers is omitted from the entire FFT/NTT transform.
+The second is the register-holding technique. The above
+technique is performed in the lower layer of FFT/NTT, and
+when implementing the divide and conquer algorithm, the
+memory access caused by interference with the nearest coef-
+ficient is offset by maintaining the coefficients in the vector
+register. Applying this, no memory access occurs, unlike the
+standard implementation. Similar to merging, but different
+in that register-holding is a row-wise fashion implementa-
+tion and has a different number of affected layers. In the
+lower layer of FFT/NTT, the coefficients to be calculated are
+attached to each other; therefore, only two memory access
+costs are incurred.
+Since FFT/NTT implementations are essentially a divide
+and conquer of polynomials, we need to access all coeffi-
+cients along with the order of each polynomial. Generally,
+the polynomial approach is done in a row-wise fashion.
+However, in order to minimize the memory access cost,
+it should be approached in a column-wise fashion. In our
+analysis, the most efficient number of layers for merging
+was two. Since this is not related to the order of polynomi-
+als, the number of combined layers is maintained even at
+the 1024 security level. From a merged depth perspective,
+we present Merging#1 and Merging#2. In the case of
+1024 security level, it seems that the merging technique can
+be applied once again (Merging#3), but due to the charac-
+teristics of FFT/NTT, it is necessary to move the coefficient
+of the polynomial in the register for applying to the butterfly
+method. As we analyzed, introducing Merging#3 incurs
+an additional computational cost, so it is most efficient to
+implement a butterfly less than the 64th degree polynomial
+at 1024 security level through the standard/register-holding
+techniques.
+Even if ARMv8 supports Floating-Point (FP) instructions,
+there are cases in which NEON engine’s FP operation cannot
+be used for actual compilation reasons such as gcc options.
+However, the approximation operation, using integer data
+type, that does not use the FP operation does not convert the
+number of bits because only the data type difference exists
+(double -> uint64_t). Accordingly, the maximum polynomial
+coefficient that can be maintained in the NEON register is the
+same as when using the FP operation with two coefficients
+even when using the approximation operation based on the
+64-bit integer data type. Therefore, the number of merged
+layers of FFT and the Register-Holding technique are still
+applicable. Therefore, this technique can be applied to any
+device that has 128-bit parallel operation support register.
+D. POINT-WISE MULTIPLICATION
+To implement Point-wise multiplication in the ARMv8 envi-
+ronment, we take full advantage of the parallelization technol-
+ogy of the NEON engine to accelerate optimization. For FFT
+algorithm with FP coefficients in 64-bit units, ARMv8 can
+keep up to two in the NEON register; so, the two coefficients
+are processed simultaneously. Conversely, since NTT algo-
+rithm is processed by integer coefficients in 16-bit units, each
+44456 VOLUME 10, 2022

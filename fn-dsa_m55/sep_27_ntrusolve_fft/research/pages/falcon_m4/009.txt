@@ -1,0 +1,42 @@
+DOCUMENT: falcon_m4.pdf PAGE: 9/18
+
+It should be noted that at high frequencies, the Flash element cannot provide instructions
+fast enough to feed the CPU; the maximum bandwidth is 128 bits per 5 cycles (at 168 MHz),
+in that particular microcontroller. If a long sequence of 32-bit instructions is executed and
+falls outside of the instruction cache (or that cache is disabled), then the CPU will receive only
+4 instructions per 5 cycles, implying an up to 25% slowdown. This effect is mitigated by using
+the instruction cache, but only for routines which fit in that cache; long unrolled sequence
+can thus have a detrimental effect on performance. Judicious use of 16-bit instructions can
+help lower the CPU bandwidth requirements, but can be applied only in some situations (in
+particular, most 16-bit instructions can use only the “low” registers r0 to r7) and can break
+alignment of other instructions, which can lead to in-CPU contention with the fetch unit, as
+described previously.
+2.3 Key Pair Generation
+For key pair generation, we mostly reuse the implementation from ntrugen[15]. That imple-
+mentation improved on the original Falcon code by using a stricter memory management
+(yielding a lower RAM usage and better caching of internal values) and replacing all floating-
+point operations with fixed-point (over 64 bits). In our implementation, we merely added
+some inline assembly for four operations:
+– halving an integer modulo a small prime p;
+– Montgomery multiplication modulo a small prime p;
+– fixed-point multiplication;
+– fixed-point squaring.
+The halving operation deserves some explanations because it leverages integer multiplication
+in a non-obvious way. The inputs are an integer x and a modulus p, with p being a 31-bit
+prime, and x an unsigned integer in the [0, p−1]range. If x is in register r0 and p is in register
+r1, then the halving process would naturally use a 4-instruction sequence, which is about
+what is obtained by letting the C compiler translate the C code:
+lsls r2, r0, #31 @ r2 <- (x << 31)
+and r2, r1, r2, asr #31 @ r2 <- p & -(x & 1)
+adds r0, r0, r2 @ add p to x only if x is odd
+lsrs r0, r0, #1 @ x is even, halve it
+But we can do better, in three instructions only:
+ubfx r2, r0, #0, #1 @ r2 <- 1 if x is odd, or 0
+umlal r0, r2, r2, r1 @ add p to x only if x is odd
+lsrs r0, r0, #1 @ x is even, halve it
+The key to this sequence is the use of umlal, which computes a 32 ×32 →64 multiplica-
+tion, and adds the result to a 64-bit accumulator; we use it here to add either 0 ×p or 1 ×p
+to x. Conceptually, a large multiplication followed by a 64-bit addition ought to be vastly
+more expensive than a logical and and a 32-bit addition, but in the ARM Cortex-M4 umlal
+executes in one cycle, making it worthwhile to use.
+9

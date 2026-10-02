@@ -1,0 +1,57 @@
+DOCUMENT: m55_slothy.pdf PAGE: 13/46
+
+Abdulrahman, Becker, Kannwischer, Klein 13
+correctness, consumers must come after producers: If instruction J consumes output O
+produced by instruction I — that is, we have an edge I O
+−→J in the computational flow
+graph — then I.pos <J.pos.
+4.4 Correctness/Architecture constraints: Register Allocation
+For every instruction I, every output O of I, and every possible register R that I can use
+for O, we assign a Boolean variable alloc(I,O,R) indicating whether the instruction I uses
+register R for the output O. In analogy with the operation of out-of-order microarchitectures,
+we call this process register renaming. In contrast to out-of-order microarchitectures,
+however, simultaneous input/output arguments are not subject to register renaming as we
+need to preserve the architectural constraint that input and output use the same register.
+For those arguments, we use the notation alloc(I,O,R) as a shorthand for alloc(K,U,R),
+where K,U is the transitively computed source of O, with U being a pure output (not merely
+an input/output). For example, if I is an MLA in a {MUL; MLA; ...; MLA} chain and O
+is the accumulator, we would always go back to the initial MUL which made the choice
+for which register to use for the accumulator. Finally, note that the input source’s choice
+of registers is irrelevant for register renaming — it is only used initially to construct the
+computational flow graph from the source.
+Multiple constraints need to be satisfied: First, for the uniqueness of register renaming,
+we require that for fixed I and O, exactly one Boolean variable in {alloc(I,O,R)}R is
+set. Second, for functional correctness, we need to express that in between a register being
+produced and consumed, no other instruction uses the register for register renaming. We
+model this as a disjointness constraint as follows: First, for any instruction I and any
+output or input/output O, we add an interval [I O
+−→] starting at I.pos, and bound its
+endpoint below by J.pos for any I O
+−→J, as well as by I.pos + 1 (in case O has no
+consumers). For any choice of output register R, we then add a copy [I O
+−→]R of [I O
+−→] as
+a conditional interval constrained by alloc(I,O,R). Functional correctness then requires
+that for any R, the set of conditional intervals {[I O
+−→]R}I,O is non-overlapping.
+We note that our modelling of register usage is an instance of the flexible job shop
+problem, with jobs being instructions and “machines” being registers.
+Restricted instructions. Sometimes there are restrictions on the registers that an instruc-
+tion can use. Such restrictions often apply to individual arguments (such as requiring even,
+odd or low-half registers), but there are also more complex cases: For example, the output
+of VCMUL in Helium must not coincide with an input, and the four (!) vector arguments to
+the de-interleaving load VLD4x are constrained to the set {Qi,Q(i+1),Q(i+2),Q(i+3)}
+for i= 0,1,2,3,4. Individual restrictions on output arguments are straightforwardly added
+to the register renaming model by restricting the Boolean variables alloc(I,O,R) accord-
+ingly. To model restrictions for multiple register outputs, such as for VLD4x/VST4x, we
+introduce Booleans for the different choices, constrain that precisely one is set, and then
+add implications to the respective alloc(I,O,R) variables.
+Jointly destructive instruction patterns. The Armv8.1-M+Helium and AArch64+Neon
+architectures contain instruction patterns where each instruction individually overwrites
+onlypartofthedestinationregister, butwherethesequenceasawholeoverwritesitentirely:
+In AArch64+Neon, for example, the sequence {INS Vi[0].2D, Xj; INV Vi[1].2D, Xk}
+– writing each of the two 64-bit lanes of a vector in succession — is “jointly destructive”
+in this sense. In Armv8.1-M+Helium, examples include blocks of VLD4{0,1,2,3} as
+well as pairs of VQDMLSDH+VQDMLADHX (jointly performing a complex multiplication
+in fixed-point arithmetic). By default, the partially destructive components in a jointly
+destructive instruction pattern would be modelled as having their destination register as

@@ -1,0 +1,55 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 10/29
+
+10 Polynomial multiplication on embedded vector architectures
+Interleaving memory operations The Helium instruction set adds support for deinter-
+leaving data during loads via the instruction sequences VLD2{0-1} and VLD4{0-3}, and
+interleaving data during stores via VST2{0-1} and VST4{0-3}. Logically, those correspond
+to a load of {2,4}·16 bytes of data, combined with 2 ×
+↔
+×2 and 4 ×
+↔
+×4
+_
+_
+_
+_
+transpositions. It should be noted that the feasibility of such instructions in an embedded
+architecture is a non-trivial question, as the required interleaving logic has to be imple-
+mentable at low cost. We refer to [Armc, Part 2] for details on how this is achieved. See
+Figure 4 for an illustration of VLD2{0,1}. The instructions can appear in any order and
+be interleaved with other operations in support of instruction overlapping.
+1 VPTE . s32 LT , Qi , Qj // If Qi [ r ] < Qj [ r ]
+2 VSUBT . s32 Qk , Qj , Qi // Then Qk [ r ] := Qj [ r ] - Qi [ r ]
+3 VSUBE . s32 Qk , Qi , Qj // Else Qk [ r ] := Qi [ r ] - Qj [ r ]
+Listing 1 Computing the lane-wise absolute diﬀerence via lane predication
+Lane predication The Helium vector architecture supports restricting the eﬀect of a
+vector instruction to a subset of lanes through lane predication. Here, the subset of “active”
+lanes is determined by a dedicated register VPR.P0 (see e.g. Figure 1) which can be set
+directly or defined via a “predicate” over contents of vector registers. Moreover, the
+predicate can be inverted, thereby allowing for the construction of if-then-else style
+instruction sequences using predication. For example, Listing 1 shows how to compute the
+absolute diﬀerence between two vectors using predication. See also [Mar21, Section 4.4].
+3.3 Cortex-M55
+The Cortex-M55 processor is the first implementation of the Arm v8.1-M architecture,
+including optional support for the Helium vector extension. Cortex-M55r1 is the most
+recent revision of the Cortex-M55 processor, providing additional features and performance
+optimizations. We give a very brief introduction here and refer to [Armd] for details.
+Pipeline and memory The Cortex-M55 processor has a 5-stage in-order pipeline when
+Helium is included, and instruction scheduling is single-issue with a few exceptions. In
+addition to cache-able main memory, the Cortex-M55 processor supports tightly coupled
+memory(TCM)interfacesforinstructionsanddata, allowingfastanddeterministicmemory
+access which is useful for real-time or performance critical applications. The total D-TCM
+bandwidth is 128-bit/cycle, allowing 64-bit/cycle bandwidth for processing such as vector
+processing, plus 64-bit/cycle for DMA transfers to/from TCM running in the background.
+We locate all our code and data in TCM for our measurements.
+Vector processing The Cortex-M55 processor is a dual-beat implementation of the
+Helium instruction set which supports instruction overlapping. This means that it takes
+two cycles to perform the work of a vector instruction, and that parallel execution of
+the next instruction can commence in the second cycle, computing resources permitting.
+Figure 2 shows how a sequence of alternating VMLA, VLDR would perform on the Cortex-M55
+processor, absent of other hazards and assuming data and code in TCM.
+The Cortex-M55 processor has separate units for load/store (e.g. VLDR,VSTR), additive
+integer operations (e.g. VADD,VSUB), and multiplicative integer as well as floating point
+operations (e.g. VMUL). We therefore tried to achieve an alternation of those three kinds of
+operations as a first step towards good instruction overlapping. The assembly snippets
+below reflect the diﬀerent instruction types through their color.

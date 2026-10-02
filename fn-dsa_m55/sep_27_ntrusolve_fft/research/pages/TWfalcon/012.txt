@@ -1,0 +1,33 @@
+DOCUMENT: TWfalcon.pdf PAGE: 12/25
+
+12 TWFalcon: Triple-Word Arithmetic for Falcon
+Our implementation of Falcon using TW arithmetic is available at [TWF]. This
+repository includes both C and ARM assembly code for all TW operations, which can be
+selected via a macro in the Falcon code. The code is a modification of the latest Falcon
+implementation [Por25b]. Falcon with TW passes all tests in the code, except for the
+floating-point tests due to precision discrepancies when rounding from a TW to a double.
+4.1 Exponent Range in Falcon
+Recall, the exponent value is the ein the floating-point formula (−1)s×1.d0d1...dp−2 ×2e
+.
+Falcon Exponent Range in Practice To determine the exponent range used in Falcon in
+practice, we collected its frequency using 100 million signature generation runs for both
+Falcon-512 and Falcon-1024, each using a new key and a new random message. The result
+for Falcon-1024 is shown in Figure 4.
+Figure 4: Frequency of each floating-point exponent in Falcon-1024 signatures (log scale),
+based on 100 million runs. The red line indicates the zero, which does not have a meaningful
+exponent in this context.
+The minimum and maximum exponent values of the floating-point inputs for each
+operation, as well as the occurrence of zero values, are shown in Table 4 for both Falcon
+security levels.
+Table 4: Observed exponent range and zero occurrence in floating-point inputs for each
+operation in 100 million Falcon-512 and Falcon-1024 runs.
+Operation Falcon-512 Falcon-1024
+Min Max Zero Min Max Zero
+addition -103 33 Y -105 34 Y
+multiplication div numerator div denominator square-root -103 33 Y -105 34 Y
+0 0 N 0 0 N
+77 18 N 6 19 N
+13 14 N 13 14 N
+From these figures, it is evident that the exponent range in Falcon is quite large. For
+Falcon-512, the smallest observed exponent is -103, while the largest is 33. In the case of
+Falcon-1024, the range is slightly wider, spanning from -105 to 34. Notably, this implies

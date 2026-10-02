@@ -1,0 +1,45 @@
+DOCUMENT: falcon_m7.pdf PAGE: 16/22
+
+16 James Howe and Bas Westerbaan
+7 uint64_t mask ;
+8 uint32_t high , low;
+x.d = a;
+mask = x.i >> 63;
+1 int64_t cast ( double a) {
+2 union {
+3 double d;
+4 uint64_t u;
+5 int64_t i;
+6 } x;
+9
+10 11
+12 13 14
+15 16 17
+18 19 20 21
+22 23 24 }
+x.u &= 0 x7fffffffffffffffL ;
+// a / 0 x1p32f ;
+high = x.d / 4294967296. f;
+// high * 0 x1p32f ;
+low = x.d - ( double ) high * 4294967296. f;
+x.u = (( int64_t ) high << 32) | low;
+return (x.u & (( uint64_t ) -1 - mask ))
+| ((-x.u) & mask );
+Listing 1.2: The proposed fix for casting a double to an int64_t in LLVM.
+6 Results and Discussions
+In Section 3, we observe from the benchmarking of Dilithium in Table 1 that all
+procedures show a slight improvement, but not many of significance in compari-
+son to those reported on the ARM Cortex M4 in the pqm4 repository. The per-
+formance improvements seen range from 1.09–1.19x which essentially accounts
+for the slightly better performance of the Cortex M7 vs the Cortex M4 in general.
+For Falcon, however, we see a lot of significant improvements from the bench-
+marking in Table 2, in particular we see that:
+– Key generation does somewhat benefit from the FPU, showing a 1.66–1.76x
+improvement in comparison to emulated floating points. We also see similar
+results compared to the Cortex M4, with improvements between 2.21–2.56x.
+– Sign dynamic has a significant improvement using the FPU; showing an
+increase between 6.16–6.31x between the emulated code and between 8.16–
+8.31x compared to the Cortex M4.
+– Sign tree also has a significant improvement using the FPU; showing an
+increase between 4.69–4.92x between the emulated code and 6.23x compared
+to the Cortex M4 for Falcon-512 parameters. As already stated, Falcon-1024

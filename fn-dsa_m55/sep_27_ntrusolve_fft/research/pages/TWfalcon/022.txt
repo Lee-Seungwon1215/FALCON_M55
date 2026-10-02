@@ -1,0 +1,36 @@
+DOCUMENT: TWfalcon.pdf PAGE: 22/25
+
+22 TWFalcon: Triple-Word Arithmetic for Falcon
+Figure 7: The frequency of each exponent of the combined error value (δc + δσ) for
+Falcon-1024 implemented with TW from 100,000 signature generation runs.
+short of the 264 signing queries required by NIST. In contrast, Section 5.2 shows that
+implementing Falcon with triple-word arithmetic achieves error values of at most 2−57
+,
+which is well within the proof requirement of 2−46. This ensures that the Gaussian
+sampler remains secure and meets the necessary cryptographic standards. We show that
+the exponent range of single-precision floating-point values is sufficient for all values
+encountered in Falcon, enabling its use with TW for its implementation.
+We note that our novel method to increase the precision is not the only possible
+approach. The higher precision could also be reached with integer emulation, by creating a
+custom standard that, like TW, uses three words to contain sufficient precision. However,
+for such a custom standard, the required arithmetic operations are not straightforward,
+and it is not known if this would result in a faster implementation. Additionally, for devices
+with a double-precision FPU, the use of double-word precision could be investigated, to
+yield the combined precision of two double-precision values. We leave both open as future
+work.
+In this paper, we also present novel TW algorithms, and as a result, enable a constant-
+time implementation of Falcon using TW that can efficiently leverage the single-precision
+FPU available on processors such as the Cortex-M4F. We show that performance com-
+parison of Falcon on a Nucleo-L4R5ZI board with a Cortex-M4F, comparing an integer-
+emulation and TW implementation, incurs a slowdown of less than 85%. For use cases
+where such a slowdown is acceptable, our work enables a highly secure Falcon imple-
+mentation, which, verified through testing, contains a provably secure Gaussian sampler
+implementation available for a large class of constrained devices.
+Acknowledgements We would like to thank Thomas Pornin and Thomas Prest from the
+Falcon team for helpful discussions and clarifications regarding Falcon and preliminary
+results. We further thank Andreas Hülsing for valuable discussions and insights during
+the project. Lastly, we would like to thank William R. Duro and Markus Schönauer for
+preliminary work and discussions.
+Part of this work was supported by the SINFONIA project, which has received funding
+from the Recovery and Resilience Facility (RRF) as the centrepiece of NextGenerationEU
+via the Austrian Research Promotion Agency (FFG) and Austria Wirtschaftsservice

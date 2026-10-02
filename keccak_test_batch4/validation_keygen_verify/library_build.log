@@ -1,0 +1,29 @@
+arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c shake_independent4.c -o build/shake_independent4.o
+arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen.c -o build/kgen.o
+arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c kgen_gauss.c -o build/kgen_gauss.o
+arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c sign.c -o build/sign.o
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen_gauss.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from shake_independent4.h:4,
+                 from shake_independent4.c:2:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from inner.h:6,
+                 from kgen_inner.h:10,
+                 from kgen.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -mcpu=cortex-m55 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard -O3 -ffp-contract=off -fno-fast-math -fno-strict-aliasing -Wall -Wextra -ffunction-sections -fdata-sections -MMD -MP -c vrfy.c -o build/vrfy.o
+In file included from inner.h:6,
+                 from vrfy.c:5:
+fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-ar rcs build/libfndsa_m55.a build/codec.o build/mq.o build/sha3.o build/shake_batch4.o build/shake_independent4.o build/sysrng.o build/util.o build/kgen.o build/kgen_fxp.o build/kgen_gauss.o build/kgen_mp31.o build/kgen_ntru.o build/kgen_poly.o build/kgen_zint31.o build/kgen_fft_mve.o build/kgen_fft_bridge.o build/sign.o build/sign_core.o build/sign_fpoly.o build/sign_fpr.o build/sign_sampler.o build/vrfy.o build/codec_cm4.o build/sha3_cm4.o build/sign_fpr_cm4.o build/sign_sampler_cm4.o build/mq_cm55.o build/kgen_mp31_cm55.o build/kgen_fft_cm55.o build/sha3x4_cm55.o build/sign_fft_cm55.o build/sign_ldl_cm55.o build/sign_split_merge_cm55.o

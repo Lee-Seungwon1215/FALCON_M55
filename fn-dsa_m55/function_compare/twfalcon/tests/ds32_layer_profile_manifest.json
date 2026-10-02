@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "method": "Exact function-body comparison; remove only PROFILE_ timestamp lines",
+  "checked_functions": [
+    "q32_tw",
+    "ds_splat4",
+    "ds_load_tail",
+    "ds_store_tail",
+    "ds_final_scale",
+    "ds32_fft_mve",
+    "ds32_ifft_mve",
+    "tw32_init_twiddles"
+  ],
+  "sha256": {
+    "tw32_mve/fft_tw32_mve.c": "65a99104760793295f65d4061233bc9ef08c9bef003f5996aa078f44fb3f4cc3",
+    "tests/ds32_layer_profile.c": "ff4c7c64829a6898e5c773ce6272136cf3c2f9613074c93dfab106983ff8b8e4",
+    "tests/stage9_snapshot/fft_tw32_mve.c": "22616da14238785ff9178d318f91ee82daacd41462c14bce86087b84a55d5479",
+    "tw32_mve/tw32_primitives_cm55.s": "2a983f18d4857fd108703f7e777ea27cf584abf964c1b43a21f97981a2dbba4e"
+  },
+  "scope": "Control equals frozen stage9, profile equals current stage10 after hook removal; no timing equivalence claim"
+}

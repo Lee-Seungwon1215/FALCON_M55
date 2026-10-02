@@ -1,0 +1,307 @@
+{
+  "run_directory": "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/results/ntt_opt/runs/20260917T070324Z",
+  "totals": {
+    "512_keygen": {
+      "calls": 10,
+      "total": 517203780,
+      "minimum": 42561394,
+      "maximum": 68305258
+    },
+    "512_sign": {
+      "calls": 100,
+      "total": 1753346046,
+      "minimum": 17371882,
+      "maximum": 17687043
+    },
+    "512_verify": {
+      "calls": 100,
+      "total": 32434100,
+      "minimum": 324341,
+      "maximum": 324341
+    },
+    "1024_keygen": {
+      "calls": 10,
+      "total": 2616697867,
+      "minimum": 160384710,
+      "maximum": 434953058
+    },
+    "1024_sign": {
+      "calls": 100,
+      "total": 3754854202,
+      "minimum": 37190078,
+      "maximum": 37847860
+    },
+    "1024_verify": {
+      "calls": 100,
+      "total": 62588800,
+      "minimum": 625888,
+      "maximum": 625888
+    }
+  },
+  "phases": {
+    "512_keygen_other": {
+      "cycles_per_call": 667.0,
+      "share_percent": 0.001289627078904953,
+      "cycles": 6670,
+      "entries": 10
+    },
+    "1024_keygen_other": {
+      "cycles_per_call": 666.9,
+      "share_percent": 0.00025486320312730244,
+      "cycles": 6669,
+      "entries": 10
+    },
+    "512_keygen_kg_generate": {
+      "cycles_per_call": 4233210.1,
+      "share_percent": 8.184801162899467,
+      "cycles": 42332101,
+      "entries": 247
+    },
+    "1024_keygen_kg_generate": {
+      "cycles_per_call": 28278604.2,
+      "share_percent": 10.806981026212608,
+      "cycles": 282786042,
+      "entries": 877
+    },
+    "512_keygen_kg_check": {
+      "cycles_per_call": 6098683.3,
+      "share_percent": 11.791644871582339,
+      "cycles": 60986833,
+      "entries": 247
+    },
+    "1024_keygen_kg_check": {
+      "cycles_per_call": 48966687.1,
+      "share_percent": 18.713160475091257,
+      "cycles": 489666871,
+      "entries": 877
+    },
+    "512_keygen_kg_ntru": {
+      "cycles_per_call": 41215445.6,
+      "share_percent": 79.68898757855173,
+      "cycles": 412154456,
+      "entries": 11
+    },
+    "1024_keygen_kg_ntru": {
+      "cycles_per_call": 184071189.5,
+      "share_percent": 70.34483874557307,
+      "cycles": 1840711895,
+      "entries": 17
+    },
+    "512_keygen_kg_sk_complete": {
+      "cycles_per_call": 14512.0,
+      "share_percent": 0.028058572967119458,
+      "cycles": 145120,
+      "entries": 10
+    },
+    "1024_keygen_kg_sk_complete": {
+      "cycles_per_call": 28256.0,
+      "share_percent": 0.010798342581444081,
+      "cycles": 282560,
+      "entries": 10
+    },
+    "512_keygen_kg_pk_compute": {
+      "cycles_per_call": 157860.0,
+      "share_percent": 0.3052181869204436,
+      "cycles": 1578600,
+      "entries": 10
+    },
+    "1024_keygen_kg_pk_compute": {
+      "cycles_per_call": 324383.0,
+      "share_percent": 0.12396654733849714,
+      "cycles": 3243830,
+      "entries": 10
+    },
+    "512_sign_other": {
+      "cycles_per_call": 149.0,
+      "share_percent": 0.0008498037243698783,
+      "cycles": 14900,
+      "entries": 0
+    },
+    "1024_sign_other": {
+      "cycles_per_call": 147.0,
+      "share_percent": 0.00039149323007455617,
+      "cycles": 14700,
+      "entries": 0
+    },
+    "512_sign_sg_message_hash": {
+      "cycles_per_call": 15666.0,
+      "share_percent": 0.08934916205354708,
+      "cycles": 1566600,
+      "entries": 100
+    },
+    "1024_sign_sg_message_hash": {
+      "cycles_per_call": 15666.0,
+      "share_percent": 0.04172199280508841,
+      "cycles": 1566600,
+      "entries": 100
+    },
+    "512_sign_sg_key_prep": {
+      "cycles_per_call": 248725.0,
+      "share_percent": 1.4185733647241476,
+      "cycles": 24872500,
+      "entries": 100
+    },
+    "1024_sign_sg_key_prep": {
+      "cycles_per_call": 452211.0,
+      "share_percent": 1.2043370412601708,
+      "cycles": 45221100,
+      "entries": 100
+    },
+    "512_sign_sg_hash_to_point": {
+      "cycles_per_call": 157021.78,
+      "share_percent": 0.8955549896052863,
+      "cycles": 15702178,
+      "entries": 100
+    },
+    "1024_sign_sg_hash_to_point": {
+      "cycles_per_call": 288933.31,
+      "share_percent": 0.7694927537961432,
+      "cycles": 28893331,
+      "entries": 100
+    },
+    "512_sign_sg_fft_basis": {
+      "cycles_per_call": 3816629.0,
+      "share_percent": 21.767688179450232,
+      "cycles": 381662900,
+      "entries": 100
+    },
+    "1024_sign_sg_fft_basis": {
+      "cycles_per_call": 8367140.0,
+      "share_percent": 22.283528333918515,
+      "cycles": 836714000,
+      "entries": 100
+    },
+    "512_sign_sg_ldl_ffsampling": {
+      "cycles_per_call": 7621317.0,
+      "share_percent": 43.46727228995616,
+      "cycles": 762131700,
+      "entries": 100
+    },
+    "1024_sign_sg_ldl_ffsampling": {
+      "cycles_per_call": 16860357.0,
+      "share_percent": 44.90282736149764,
+      "cycles": 1686035700,
+      "entries": 100
+    },
+    "512_sign_sg_gaussian_berexp": {
+      "cycles_per_call": 4175155.07,
+      "share_percent": 23.81249884770322,
+      "cycles": 417515507,
+      "entries": 102400
+    },
+    "1024_sign_sg_gaussian_berexp": {
+      "cycles_per_call": 8230584.36,
+      "share_percent": 21.91985072447295,
+      "cycles": 823058436,
+      "entries": 204800
+    },
+    "512_sign_sg_recon_norm": {
+      "cycles_per_call": 1481031.0,
+      "share_percent": 8.446883622196276,
+      "cycles": 148103100,
+      "entries": 100
+    },
+    "1024_sign_sg_recon_norm": {
+      "cycles_per_call": 3298331.0,
+      "share_percent": 8.78417861935402,
+      "cycles": 329833100,
+      "entries": 100
+    },
+    "512_sign_sg_encode": {
+      "cycles_per_call": 17766.61,
+      "share_percent": 0.10132974058675923,
+      "cycles": 1776661,
+      "entries": 100
+    },
+    "1024_sign_sg_encode": {
+      "cycles_per_call": 35172.35,
+      "share_percent": 0.0936716796653933,
+      "cycles": 3517235,
+      "entries": 100
+    },
+    "512_verify_other": {
+      "cycles_per_call": 177.0,
+      "share_percent": 0.05457219407968773,
+      "cycles": 17700,
+      "entries": 0
+    },
+    "1024_verify_other": {
+      "cycles_per_call": 177.0,
+      "share_percent": 0.028279820031698964,
+      "cycles": 17700,
+      "entries": 0
+    },
+    "512_verify_vr_message_hash": {
+      "cycles_per_call": 119702.0,
+      "share_percent": 36.90621907190272,
+      "cycles": 11970200,
+      "entries": 100
+    },
+    "1024_verify_vr_message_hash": {
+      "cycles_per_call": 223295.0,
+      "share_percent": 35.676510813436266,
+      "cycles": 22329500,
+      "entries": 100
+    },
+    "512_verify_vr_decode": {
+      "cycles_per_call": 18101.0,
+      "share_percent": 5.58085471771993,
+      "cycles": 1810100,
+      "entries": 100
+    },
+    "1024_verify_vr_decode": {
+      "cycles_per_call": 35919.0,
+      "share_percent": 5.738886190500537,
+      "cycles": 3591900,
+      "entries": 100
+    },
+    "512_verify_vr_ntt": {
+      "cycles_per_call": 31267.0,
+      "share_percent": 9.640162668302805,
+      "cycles": 3126700,
+      "entries": 100
+    },
+    "1024_verify_vr_ntt": {
+      "cycles_per_call": 72461.0,
+      "share_percent": 11.577310956592873,
+      "cycles": 7246100,
+      "entries": 100
+    },
+    "512_verify_vr_hash_to_point": {
+      "cycles_per_call": 147554.0,
+      "share_percent": 45.493477543696294,
+      "cycles": 14755400,
+      "entries": 100
+    },
+    "1024_verify_vr_hash_to_point": {
+      "cycles_per_call": 279456.0,
+      "share_percent": 44.64952195920037,
+      "cycles": 27945600,
+      "entries": 100
+    },
+    "512_verify_vr_poly": {
+      "cycles_per_call": 3616.0,
+      "share_percent": 1.114876010125146,
+      "cycles": 361600,
+      "entries": 100
+    },
+    "1024_verify_vr_poly": {
+      "cycles_per_call": 7072.0,
+      "share_percent": 1.1299146173117236,
+      "cycles": 707200,
+      "entries": 100
+    },
+    "512_verify_vr_norm": {
+      "cycles_per_call": 3924.0,
+      "share_percent": 1.2098377941734162,
+      "cycles": 392400,
+      "entries": 200
+    },
+    "1024_verify_vr_norm": {
+      "cycles_per_call": 7508.0,
+      "share_percent": 1.19957564292653,
+      "cycles": 750800,
+      "entries": 200
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "source_tree_sha256": "8356267ec5434628f98c6ef33d194d9fa60cae9f99d975d173b82f14b8aebe74",
+  "control_run": "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/results/ntt_opt_control/runs/20260917T072811Z",
+  "fft_run": "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/results/ntt_opt_fft/runs/20260917T072909Z",
+  "degrees": {
+    "512": {
+      "ratios": {
+        "fft": 4.191551184394741,
+        "ifft": 4.116555145440633,
+        "fxp_spectral": 5.341810504180007,
+        "fixed_convert": 3.4384922662605937,
+        "other": 82.91159089972402,
+        "fft_ifft": 8.308106329835374,
+        "fft_with_spectral": 13.64991683401538
+      },
+      "kernels": {
+        "fft": {
+          "cycles": 17706215,
+          "entries": 8434
+        },
+        "ifft": {
+          "cycles": 17389412,
+          "entries": 8342
+        },
+        "fxp_spectral": {
+          "cycles": 22565213,
+          "entries": 8424
+        },
+        "fixed_convert": {
+          "cycles": 14525096,
+          "entries": 8414
+        },
+        "other": {
+          "cycles": 350240374,
+          "entries": 0
+        }
+      },
+      "ntru_calls": 11,
+      "total_cycles": 422426310,
+      "focused_cycles_per_call": 38402391.81818182,
+      "control_cycles_per_call": 37467756.90909091,
+      "observed_instrumentation_delta_pct": 2.4945045719140246
+    },
+    "1024": {
+      "ratios": {
+        "fft": 2.513026291737962,
+        "ifft": 2.5154408486668296,
+        "fxp_spectral": 2.5953937808339322,
+        "fixed_convert": 2.5591416516418692,
+        "other": 89.8169974271194,
+        "fft_ifft": 5.028467140404792,
+        "fft_with_spectral": 7.623860921238724
+      },
+      "kernels": {
+        "fft": {
+          "cycles": 47023551,
+          "entries": 25025
+        },
+        "ifft": {
+          "cycles": 47068732,
+          "entries": 24906
+        },
+        "fxp_spectral": {
+          "cycles": 48564805,
+          "entries": 25015
+        },
+        "fixed_convert": {
+          "cycles": 47886458,
+          "entries": 25005
+        },
+        "other": {
+          "cycles": 1680648616,
+          "entries": 0
+        }
+      },
+      "ntru_calls": 17,
+      "total_cycles": 1871192162,
+      "focused_cycles_per_call": 110070127.1764706,
+      "control_cycles_per_call": 108279135.1764706,
+      "observed_instrumentation_delta_pct": 1.6540508908582385
+    }
+  }
+}

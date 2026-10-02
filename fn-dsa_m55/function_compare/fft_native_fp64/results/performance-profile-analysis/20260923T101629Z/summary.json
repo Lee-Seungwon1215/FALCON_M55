@@ -1,0 +1,4035 @@
+{
+  "source_guard_header_sha256": "85aeb8782d289695d39cfff873339892d4b8c60909e8b05f1b18e0a4002e49e4",
+  "kernel_performance": [
+    {
+      "n": 2,
+      "op": "FFT",
+      "fixed_cycles": 26.0,
+      "trial_cycles": 26.0,
+      "trial_over_fixed": 1.0,
+      "cycle_increase_percent": 0.0
+    },
+    {
+      "n": 2,
+      "op": "iFFT",
+      "fixed_cycles": 44.0,
+      "trial_cycles": 77.0,
+      "trial_over_fixed": 1.75,
+      "cycle_increase_percent": 75.0
+    },
+    {
+      "n": 2,
+      "op": "pointwise",
+      "fixed_cycles": 120.0,
+      "trial_cycles": 1675.0,
+      "trial_over_fixed": 13.958333333333334,
+      "cycle_increase_percent": 1295.8333333333335
+    },
+    {
+      "n": 2,
+      "op": "inverse",
+      "fixed_cycles": 3597.0,
+      "trial_cycles": 2213.0,
+      "trial_over_fixed": 0.6152349179872115,
+      "cycle_increase_percent": -38.47650820127885
+    },
+    {
+      "n": 2,
+      "op": "prepare",
+      "fixed_cycles": 3614.0,
+      "trial_cycles": 2230.0,
+      "trial_over_fixed": 0.6170448256779192,
+      "cycle_increase_percent": -38.29551743220808
+    },
+    {
+      "n": 2,
+      "op": "repeat",
+      "fixed_cycles": 188.0,
+      "trial_cycles": 1877.0,
+      "trial_over_fixed": 9.98404255319149,
+      "cycle_increase_percent": 898.404255319149
+    },
+    {
+      "n": 2,
+      "op": "pipeline",
+      "fixed_cycles": 3789.0,
+      "trial_cycles": 4094.0,
+      "trial_over_fixed": 1.0804961731327527,
+      "cycle_increase_percent": 8.04961731327527
+    },
+    {
+      "n": 4,
+      "op": "FFT",
+      "fixed_cycles": 236.0,
+      "trial_cycles": 2363.0,
+      "trial_over_fixed": 10.01271186440678,
+      "cycle_increase_percent": 901.271186440678
+    },
+    {
+      "n": 4,
+      "op": "iFFT",
+      "fixed_cycles": 263.0,
+      "trial_cycles": 3395.0,
+      "trial_over_fixed": 12.908745247148289,
+      "cycle_increase_percent": 1190.874524714829
+    },
+    {
+      "n": 4,
+      "op": "pointwise",
+      "fixed_cycles": 188.0,
+      "trial_cycles": 3252.0,
+      "trial_over_fixed": 17.29787234042553,
+      "cycle_increase_percent": 1629.787234042553
+    },
+    {
+      "n": 4,
+      "op": "inverse",
+      "fixed_cycles": 7148.0,
+      "trial_cycles": 4288.0,
+      "trial_over_fixed": 0.599888080581981,
+      "cycle_increase_percent": -40.011191941801904
+    },
+    {
+      "n": 4,
+      "op": "prepare",
+      "fixed_cycles": 7375.0,
+      "trial_cycles": 6642.0,
+      "trial_over_fixed": 0.9006101694915254,
+      "cycle_increase_percent": -9.938983050847462
+    },
+    {
+      "n": 4,
+      "op": "repeat",
+      "fixed_cycles": 702.0,
+      "trial_cycles": 9213.0,
+      "trial_over_fixed": 13.123931623931623,
+      "cycle_increase_percent": 1212.3931623931624
+    },
+    {
+      "n": 4,
+      "op": "pipeline",
+      "fixed_cycles": 8064.0,
+      "trial_cycles": 15842.0,
+      "trial_over_fixed": 1.9645337301587302,
+      "cycle_increase_percent": 96.45337301587303
+    },
+    {
+      "n": 8,
+      "op": "FFT",
+      "fixed_cycles": 690.0,
+      "trial_cycles": 8926.0,
+      "trial_over_fixed": 12.936231884057971,
+      "cycle_increase_percent": 1193.623188405797
+    },
+    {
+      "n": 8,
+      "op": "iFFT",
+      "fixed_cycles": 786.0,
+      "trial_cycles": 13101.0,
+      "trial_over_fixed": 16.66793893129771,
+      "cycle_increase_percent": 1566.7938931297708
+    },
+    {
+      "n": 8,
+      "op": "pointwise",
+      "fixed_cycles": 324.0,
+      "trial_cycles": 6406.0,
+      "trial_over_fixed": 19.771604938271604,
+      "cycle_increase_percent": 1877.1604938271605
+    },
+    {
+      "n": 8,
+      "op": "inverse",
+      "fixed_cycles": 14250.0,
+      "trial_cycles": 8536.0,
+      "trial_over_fixed": 0.5990175438596491,
+      "cycle_increase_percent": -40.098245614035086
+    },
+    {
+      "n": 8,
+      "op": "prepare",
+      "fixed_cycles": 14931.0,
+      "trial_cycles": 17453.0,
+      "trial_over_fixed": 1.168910320809055,
+      "cycle_increase_percent": 16.8910320809055
+    },
+    {
+      "n": 8,
+      "op": "repeat",
+      "fixed_cycles": 1850.0,
+      "trial_cycles": 28844.0,
+      "trial_over_fixed": 15.591351351351351,
+      "cycle_increase_percent": 1459.1351351351352
+    },
+    {
+      "n": 8,
+      "op": "pipeline",
+      "fixed_cycles": 16768.0,
+      "trial_cycles": 46284.0,
+      "trial_over_fixed": 2.7602576335877864,
+      "cycle_increase_percent": 176.02576335877865
+    },
+    {
+      "n": 16,
+      "op": "FFT",
+      "fixed_cycles": 1789.0,
+      "trial_cycles": 26101.0,
+      "trial_over_fixed": 14.589714924538848,
+      "cycle_increase_percent": 1358.9714924538848
+    },
+    {
+      "n": 16,
+      "op": "iFFT",
+      "fixed_cycles": 2052.0,
+      "trial_cycles": 38677.0,
+      "trial_over_fixed": 18.848440545808966,
+      "cycle_increase_percent": 1784.8440545808967
+    },
+    {
+      "n": 16,
+      "op": "pointwise",
+      "fixed_cycles": 596.0,
+      "trial_cycles": 12714.0,
+      "trial_over_fixed": 21.33221476510067,
+      "cycle_increase_percent": 2033.2214765100669
+    },
+    {
+      "n": 16,
+      "op": "inverse",
+      "fixed_cycles": 28454.0,
+      "trial_cycles": 17018.0,
+      "trial_over_fixed": 0.598088142264708,
+      "cycle_increase_percent": -40.191185773529206
+    },
+    {
+      "n": 16,
+      "op": "prepare",
+      "fixed_cycles": 30234.0,
+      "trial_cycles": 43110.0,
+      "trial_over_fixed": 1.425878150426672,
+      "cycle_increase_percent": 42.5878150426672
+    },
+    {
+      "n": 16,
+      "op": "repeat",
+      "fixed_cycles": 4557.0,
+      "trial_cycles": 78319.0,
+      "trial_over_fixed": 17.186526223392583,
+      "cycle_increase_percent": 1618.6526223392584
+    },
+    {
+      "n": 16,
+      "op": "pipeline",
+      "fixed_cycles": 34778.0,
+      "trial_cycles": 121416.0,
+      "trial_over_fixed": 3.4911725803668987,
+      "cycle_increase_percent": 249.11725803668986
+    },
+    {
+      "n": 32,
+      "op": "FFT",
+      "fixed_cycles": 4403.0,
+      "trial_cycles": 68580.0,
+      "trial_over_fixed": 15.57574381103793,
+      "cycle_increase_percent": 1457.574381103793
+    },
+    {
+      "n": 32,
+      "op": "iFFT",
+      "fixed_cycles": 5054.0,
+      "trial_cycles": 102187.0,
+      "trial_over_fixed": 20.219034428175704,
+      "cycle_increase_percent": 1921.9034428175703
+    },
+    {
+      "n": 32,
+      "op": "pointwise",
+      "fixed_cycles": 1140.0,
+      "trial_cycles": 25330.0,
+      "trial_over_fixed": 22.219298245614034,
+      "cycle_increase_percent": 2121.9298245614036
+    },
+    {
+      "n": 32,
+      "op": "inverse",
+      "fixed_cycles": 56862.0,
+      "trial_cycles": 33860.0,
+      "trial_over_fixed": 0.5954767683162745,
+      "cycle_increase_percent": -40.45232316837255
+    },
+    {
+      "n": 32,
+      "op": "prepare",
+      "fixed_cycles": 61256.0,
+      "trial_cycles": 102431.0,
+      "trial_over_fixed": 1.6721790518479822,
+      "cycle_increase_percent": 67.21790518479823
+    },
+    {
+      "n": 32,
+      "op": "repeat",
+      "fixed_cycles": 10857.0,
+      "trial_cycles": 197756.0,
+      "trial_over_fixed": 18.214608086948513,
+      "cycle_increase_percent": 1721.4608086948513
+    },
+    {
+      "n": 32,
+      "op": "pipeline",
+      "fixed_cycles": 72100.0,
+      "trial_cycles": 300174.0,
+      "trial_over_fixed": 4.163300970873786,
+      "cycle_increase_percent": 316.33009708737865
+    },
+    {
+      "n": 64,
+      "op": "FFT",
+      "fixed_cycles": 10497.0,
+      "trial_cycles": 169827.0,
+      "trial_over_fixed": 16.178622463561016,
+      "cycle_increase_percent": 1517.8622463561017
+    },
+    {
+      "n": 64,
+      "op": "iFFT",
+      "fixed_cycles": 12028.0,
+      "trial_cycles": 253953.0,
+      "trial_over_fixed": 21.113485201197207,
+      "cycle_increase_percent": 2011.3485201197207
+    },
+    {
+      "n": 64,
+      "op": "pointwise",
+      "fixed_cycles": 2228.0,
+      "trial_cycles": 50562.0,
+      "trial_over_fixed": 22.693895870736085,
+      "cycle_increase_percent": 2169.3895870736087
+    },
+    {
+      "n": 64,
+      "op": "inverse",
+      "fixed_cycles": 113678.0,
+      "trial_cycles": 67706.0,
+      "trial_over_fixed": 0.5955945741480322,
+      "cycle_increase_percent": -40.44054258519678
+    },
+    {
+      "n": 64,
+      "op": "prepare",
+      "fixed_cycles": 124166.0,
+      "trial_cycles": 237524.0,
+      "trial_over_fixed": 1.912955237343556,
+      "cycle_increase_percent": 91.29552373435561
+    },
+    {
+      "n": 64,
+      "op": "repeat",
+      "fixed_cycles": 25293.0,
+      "trial_cycles": 477665.0,
+      "trial_over_fixed": 18.885264697742457,
+      "cycle_increase_percent": 1788.5264697742457
+    },
+    {
+      "n": 64,
+      "op": "pipeline",
+      "fixed_cycles": 149446.0,
+      "trial_cycles": 715176.0,
+      "trial_over_fixed": 4.785514500220816,
+      "cycle_increase_percent": 378.5514500220816
+    },
+    {
+      "n": 128,
+      "op": "FFT",
+      "fixed_cycles": 24451.0,
+      "trial_cycles": 404930.0,
+      "trial_over_fixed": 16.560876855752323,
+      "cycle_increase_percent": 1556.0876855752322
+    },
+    {
+      "n": 128,
+      "op": "iFFT",
+      "fixed_cycles": 27946.0,
+      "trial_cycles": 607007.0,
+      "trial_over_fixed": 21.720711371931582,
+      "cycle_increase_percent": 2072.0711371931584
+    },
+    {
+      "n": 128,
+      "op": "pointwise",
+      "fixed_cycles": 4404.0,
+      "trial_cycles": 101026.0,
+      "trial_over_fixed": 22.939600363306084,
+      "cycle_increase_percent": 2193.9600363306085
+    },
+    {
+      "n": 128,
+      "op": "inverse",
+      "fixed_cycles": 227310.0,
+      "trial_cycles": 135364.0,
+      "trial_over_fixed": 0.5955039373542739,
+      "cycle_increase_percent": -40.449606264572616
+    },
+    {
+      "n": 128,
+      "op": "prepare",
+      "fixed_cycles": 251752.0,
+      "trial_cycles": 540285.0,
+      "trial_over_fixed": 2.146100130286949,
+      "cycle_increase_percent": 114.6100130286949
+    },
+    {
+      "n": 128,
+      "op": "repeat",
+      "fixed_cycles": 57901.0,
+      "trial_cycles": 1119614.0,
+      "trial_over_fixed": 19.336695393861937,
+      "cycle_increase_percent": 1833.6695393861937
+    },
+    {
+      "n": 128,
+      "op": "pipeline",
+      "fixed_cycles": 309640.0,
+      "trial_cycles": 1659886.0,
+      "trial_over_fixed": 5.360696292468673,
+      "cycle_increase_percent": 436.0696292468673
+    },
+    {
+      "n": 256,
+      "op": "FFT",
+      "fixed_cycles": 55925.0,
+      "trial_cycles": 940385.0,
+      "trial_over_fixed": 16.81510952168082,
+      "cycle_increase_percent": 1581.510952168082
+    },
+    {
+      "n": 256,
+      "op": "iFFT",
+      "fixed_cycles": 63752.0,
+      "trial_cycles": 1412189.0,
+      "trial_over_fixed": 22.15128937131384,
+      "cycle_increase_percent": 2115.128937131384
+    },
+    {
+      "n": 256,
+      "op": "pointwise",
+      "fixed_cycles": 8756.0,
+      "trial_cycles": 201954.0,
+      "trial_over_fixed": 23.06464138876199,
+      "cycle_increase_percent": 2206.4641388761993
+    },
+    {
+      "n": 256,
+      "op": "inverse",
+      "fixed_cycles": 454574.0,
+      "trial_cycles": 270796.0,
+      "trial_over_fixed": 0.5957137891740398,
+      "cycle_increase_percent": -40.42862108259602
+    },
+    {
+      "n": 256,
+      "op": "prepare",
+      "fixed_cycles": 510490.0,
+      "trial_cycles": 1211172.0,
+      "trial_over_fixed": 2.3725675331544203,
+      "cycle_increase_percent": 137.25675331544204
+    },
+    {
+      "n": 256,
+      "op": "repeat",
+      "fixed_cycles": 130653.0,
+      "trial_cycles": 2567835.0,
+      "trial_over_fixed": 19.65385410208721,
+      "cycle_increase_percent": 1865.385410208721
+    },
+    {
+      "n": 256,
+      "op": "pipeline",
+      "fixed_cycles": 641130.0,
+      "trial_cycles": 3778994.0,
+      "trial_over_fixed": 5.894271052672625,
+      "cycle_increase_percent": 489.4271052672625
+    },
+    {
+      "n": 512,
+      "op": "FFT",
+      "fixed_cycles": 126039.0,
+      "trial_cycles": 2141800.0,
+      "trial_over_fixed": 16.99315291298725,
+      "cycle_increase_percent": 1599.3152912987248
+    },
+    {
+      "n": 512,
+      "op": "iFFT",
+      "fixed_cycles": 143334.0,
+      "trial_cycles": 3220731.0,
+      "trial_over_fixed": 22.470111766922013,
+      "cycle_increase_percent": 2147.0111766922014
+    },
+    {
+      "n": 512,
+      "op": "pointwise",
+      "fixed_cycles": 17460.0,
+      "trial_cycles": 403810.0,
+      "trial_over_fixed": 23.127720504009165,
+      "cycle_increase_percent": 2212.7720504009167
+    },
+    {
+      "n": 512,
+      "op": "inverse",
+      "fixed_cycles": 909102.0,
+      "trial_cycles": 541588.0,
+      "trial_over_fixed": 0.5957395319777099,
+      "cycle_increase_percent": -40.42604680222901
+    },
+    {
+      "n": 512,
+      "op": "prepare",
+      "fixed_cycles": 1035132.0,
+      "trial_cycles": 2683379.0,
+      "trial_over_fixed": 2.592306102023703,
+      "cycle_increase_percent": 159.23061020237031
+    },
+    {
+      "n": 512,
+      "op": "repeat",
+      "fixed_cycles": 291293.0,
+      "trial_cycles": 5792984.0,
+      "trial_over_fixed": 19.887137692975802,
+      "cycle_increase_percent": 1888.7137692975803
+    },
+    {
+      "n": 512,
+      "op": "pipeline",
+      "fixed_cycles": 1326412.0,
+      "trial_cycles": 8476350.0,
+      "trial_over_fixed": 6.39043524937953,
+      "cycle_increase_percent": 539.043524937953
+    }
+  ],
+  "profiles": {
+    "reference_profile": {
+      "degrees": {
+        "512": {
+          "runs": 100,
+          "summed_region_cycles": 590211713,
+          "mean_region_cycles_per_key": 5902117.13,
+          "empty_hook_estimate_percent": 0.7853232827997095,
+          "groups": {
+            "input_conversion": {
+              "cycles": 145317537,
+              "mean_cycles_per_key": 1453175.37,
+              "share_percent": 24.621256033934387
+            },
+            "FFT": {
+              "cycles": 145701641,
+              "mean_cycles_per_key": 1457016.41,
+              "share_percent": 24.686335054146916
+            },
+            "inverse": {
+              "cycles": 93219518,
+              "mean_cycles_per_key": 932195.18,
+              "share_percent": 15.79425076574175
+            },
+            "pointwise": {
+              "cycles": 37897318,
+              "mean_cycles_per_key": 378973.18,
+              "share_percent": 6.420970164650053
+            },
+            "iFFT": {
+              "cycles": 155763293,
+              "mean_cycles_per_key": 1557632.93,
+              "share_percent": 26.39108807384851
+            },
+            "round_and_guard": {
+              "cycles": 12312406,
+              "mean_cycles_per_key": 123124.06,
+              "share_percent": 2.0860999076783826
+            }
+          },
+          "individual_steps": {
+            "guard": {
+              "calls": 0,
+              "cycles": 0
+            },
+            "input_f": {
+              "calls": 879,
+              "cycles": 5084731
+            },
+            "iFFT": {
+              "calls": 92174,
+              "cycles": 155763293
+            },
+            "FFT_f": {
+              "calls": 879,
+              "cycles": 10037165
+            },
+            "pointwise": {
+              "calls": 92174,
+              "cycles": 37897318
+            },
+            "FFT_F": {
+              "calls": 92174,
+              "cycles": 135664476
+            },
+            "round": {
+              "calls": 92174,
+              "cycles": 12312406
+            },
+            "inverse": {
+              "calls": 879,
+              "cycles": 93219518
+            },
+            "input_F": {
+              "calls": 92174,
+              "cycles": 140232806
+            }
+          }
+        },
+        "1024": {
+          "runs": 100,
+          "summed_region_cycles": 1585643565,
+          "mean_region_cycles_per_key": 15856435.65,
+          "empty_hook_estimate_percent": 0.7946874239671889,
+          "groups": {
+            "input_conversion": {
+              "cycles": 458904313,
+              "mean_cycles_per_key": 4589043.13,
+              "share_percent": 28.941202369146563
+            },
+            "FFT": {
+              "cycles": 389928348,
+              "mean_cycles_per_key": 3899283.48,
+              "share_percent": 24.59117273307258
+            },
+            "inverse": {
+              "cycles": 187076975,
+              "mean_cycles_per_key": 1870769.75,
+              "share_percent": 11.798173254655753
+            },
+            "pointwise": {
+              "cycles": 97225233,
+              "mean_cycles_per_key": 972252.33,
+              "share_percent": 6.1315944608270145
+            },
+            "iFFT": {
+              "cycles": 420913012,
+              "mean_cycles_per_key": 4209130.12,
+              "share_percent": 26.545247701995372
+            },
+            "round_and_guard": {
+              "cycles": 31595684,
+              "mean_cycles_per_key": 315956.84,
+              "share_percent": 1.9926094803027186
+            }
+          },
+          "individual_steps": {
+            "guard": {
+              "calls": 0,
+              "cycles": 0
+            },
+            "input_f": {
+              "calls": 1107,
+              "cycles": 10206705
+            },
+            "iFFT": {
+              "calls": 251354,
+              "cycles": 420913012
+            },
+            "FFT_f": {
+              "calls": 1107,
+              "cycles": 22933818
+            },
+            "pointwise": {
+              "calls": 251354,
+              "cycles": 97225233
+            },
+            "FFT_F": {
+              "calls": 251354,
+              "cycles": 366994530
+            },
+            "round": {
+              "calls": 251354,
+              "cycles": 31595684
+            },
+            "inverse": {
+              "calls": 1107,
+              "cycles": 187076975
+            },
+            "input_F": {
+              "calls": 251354,
+              "cycles": 448697608
+            }
+          }
+        }
+      },
+      "raw": [
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "input_f",
+          "calls": 125,
+          "cycles": 60125
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "input_f",
+          "calls": 125,
+          "cycles": 92125
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "input_f",
+          "calls": 112,
+          "cycles": 128688
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "input_f",
+          "calls": 105,
+          "cycles": 224805
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "input_f",
+          "calls": 104,
+          "cycles": 359112
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "input_f",
+          "calls": 104,
+          "cycles": 701896
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "input_f",
+          "calls": 102,
+          "cycles": 1360782
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "input_f",
+          "calls": 102,
+          "cycles": 2157198
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "FFT_f",
+          "calls": 125,
+          "cycles": 3875
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "FFT_f",
+          "calls": 125,
+          "cycles": 30000
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "FFT_f",
+          "calls": 112,
+          "cycles": 77616
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "FFT_f",
+          "calls": 105,
+          "cycles": 187950
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "FFT_f",
+          "calls": 104,
+          "cycles": 457600
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "FFT_f",
+          "calls": 104,
+          "cycles": 1090544
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "FFT_f",
+          "calls": 102,
+          "cycles": 2491248
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "FFT_f",
+          "calls": 102,
+          "cycles": 5698332
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "inverse",
+          "calls": 125,
+          "cycles": 450250
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "inverse",
+          "calls": 125,
+          "cycles": 894125
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "inverse",
+          "calls": 112,
+          "cycles": 1596560
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "inverse",
+          "calls": 105,
+          "cycles": 2988195
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "inverse",
+          "calls": 104,
+          "cycles": 5914168
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "inverse",
+          "calls": 104,
+          "cycles": 11823032
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "inverse",
+          "calls": 102,
+          "cycles": 23186130
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "inverse",
+          "calls": 102,
+          "cycles": 46367058
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "input_F",
+          "calls": 46250,
+          "cycles": 36774000
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "input_F",
+          "calls": 21776,
+          "cycles": 17195112
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "input_F",
+          "calls": 10850,
+          "cycles": 13788180
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "input_F",
+          "calls": 5956,
+          "cycles": 13806125
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "input_F",
+          "calls": 3328,
+          "cycles": 12648480
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "input_F",
+          "calls": 1974,
+          "cycles": 13797069
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "input_F",
+          "calls": 1224,
+          "cycles": 15328968
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "input_F",
+          "calls": 816,
+          "cycles": 16894872
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "FFT_F",
+          "calls": 46250,
+          "cycles": 1433750
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "FFT_F",
+          "calls": 21776,
+          "cycles": 5226240
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "FFT_F",
+          "calls": 10850,
+          "cycles": 7519050
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "FFT_F",
+          "calls": 5956,
+          "cycles": 10661240
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "FFT_F",
+          "calls": 3328,
+          "cycles": 14643200
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "FFT_F",
+          "calls": 1974,
+          "cycles": 20699364
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "FFT_F",
+          "calls": 1224,
+          "cycles": 29894976
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "FFT_F",
+          "calls": 816,
+          "cycles": 45586656
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "pointwise",
+          "calls": 46250,
+          "cycles": 5781250
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "pointwise",
+          "calls": 21776,
+          "cycles": 4202768
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "pointwise",
+          "calls": 10850,
+          "cycles": 3569650
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "pointwise",
+          "calls": 5956,
+          "cycles": 3579556
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "pointwise",
+          "calls": 3328,
+          "cycles": 3810560
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "pointwise",
+          "calls": 1974,
+          "cycles": 4407942
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "pointwise",
+          "calls": 1224,
+          "cycles": 5396616
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "pointwise",
+          "calls": 816,
+          "cycles": 7148976
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "iFFT",
+          "calls": 46250,
+          "cycles": 2266250
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "iFFT",
+          "calls": 21776,
+          "cycles": 5835968
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "iFFT",
+          "calls": 10850,
+          "cycles": 8582350
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "iFFT",
+          "calls": 5956,
+          "cycles": 12251493
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "iFFT",
+          "calls": 3328,
+          "cycles": 16836352
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "iFFT",
+          "calls": 1974,
+          "cycles": 23753142
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "iFFT",
+          "calls": 1224,
+          "cycles": 34212024
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "iFFT",
+          "calls": 816,
+          "cycles": 52025714
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "round",
+          "calls": 46250,
+          "cycles": 1896250
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "round",
+          "calls": 21776,
+          "cycles": 1371888
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "round",
+          "calls": 10850,
+          "cycles": 1160950
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "round",
+          "calls": 5956,
+          "cycles": 1161420
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "round",
+          "calls": 3328,
+          "cycles": 1234688
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "round",
+          "calls": 1974,
+          "cycles": 1427202
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "round",
+          "calls": 1224,
+          "cycles": 1746648
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "round",
+          "calls": 816,
+          "cycles": 2313360
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "input_f",
+          "calls": 173,
+          "cycles": 149299
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "input_f",
+          "calls": 173,
+          "cycles": 139265
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "input_f",
+          "calls": 137,
+          "cycles": 180429
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "input_f",
+          "calls": 110,
+          "cycles": 235510
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "input_f",
+          "calls": 104,
+          "cycles": 429000
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "input_f",
+          "calls": 103,
+          "cycles": 695147
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "input_f",
+          "calls": 103,
+          "cycles": 1374123
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "input_f",
+          "calls": 102,
+          "cycles": 2705550
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "input_f",
+          "calls": 102,
+          "cycles": 4298382
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "FFT_f",
+          "calls": 173,
+          "cycles": 5363
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "FFT_f",
+          "calls": 173,
+          "cycles": 41520
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "FFT_f",
+          "calls": 137,
+          "cycles": 94941
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "FFT_f",
+          "calls": 110,
+          "cycles": 196900
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "FFT_f",
+          "calls": 104,
+          "cycles": 457600
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "FFT_f",
+          "calls": 103,
+          "cycles": 1080058
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "FFT_f",
+          "calls": 103,
+          "cycles": 2515672
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "FFT_f",
+          "calls": 102,
+          "cycles": 5698332
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "FFT_f",
+          "calls": 102,
+          "cycles": 12843432
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "inverse",
+          "calls": 173,
+          "cycles": 623146
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "inverse",
+          "calls": 173,
+          "cycles": 1237469
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "inverse",
+          "calls": 137,
+          "cycles": 1952935
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "inverse",
+          "calls": 110,
+          "cycles": 3130490
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "inverse",
+          "calls": 104,
+          "cycles": 5914168
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "inverse",
+          "calls": 103,
+          "cycles": 11709350
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "inverse",
+          "calls": 103,
+          "cycles": 23413445
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "inverse",
+          "calls": 102,
+          "cycles": 46367058
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "inverse",
+          "calls": 102,
+          "cycles": 92728914
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "input_F",
+          "calls": 141687,
+          "cycles": 143287254
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "input_F",
+          "calls": 58371,
+          "cycles": 82804833
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "input_F",
+          "calls": 24665,
+          "cycles": 34918687
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "input_F",
+          "calls": 12004,
+          "cycles": 28630272
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "input_F",
+          "calls": 6513,
+          "cycles": 29202178
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "input_F",
+          "calls": 3708,
+          "cycles": 27580516
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "input_F",
+          "calls": 2162,
+          "cycles": 30052560
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "input_F",
+          "calls": 1326,
+          "cycles": 33166934
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "input_F",
+          "calls": 918,
+          "cycles": 39054374
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "FFT_F",
+          "calls": 141687,
+          "cycles": 4392297
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "FFT_F",
+          "calls": 58371,
+          "cycles": 14009040
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "FFT_F",
+          "calls": 24665,
+          "cycles": 17092845
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "FFT_F",
+          "calls": 12004,
+          "cycles": 21487160
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "FFT_F",
+          "calls": 6513,
+          "cycles": 28657202
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "FFT_F",
+          "calls": 3708,
+          "cycles": 38882088
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "FFT_F",
+          "calls": 2162,
+          "cycles": 52804688
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "FFT_F",
+          "calls": 1326,
+          "cycles": 74078317
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "FFT_F",
+          "calls": 918,
+          "cycles": 115590893
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "pointwise",
+          "calls": 141687,
+          "cycles": 17710875
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "pointwise",
+          "calls": 58371,
+          "cycles": 11265603
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "pointwise",
+          "calls": 24665,
+          "cycles": 8114785
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "pointwise",
+          "calls": 12004,
+          "cycles": 7214404
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "pointwise",
+          "calls": 6513,
+          "cycles": 7457385
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "pointwise",
+          "calls": 3708,
+          "cycles": 8279964
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "pointwise",
+          "calls": 2162,
+          "cycles": 9532258
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "pointwise",
+          "calls": 1326,
+          "cycles": 11617087
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "pointwise",
+          "calls": 918,
+          "cycles": 16032872
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "iFFT",
+          "calls": 141687,
+          "cycles": 6942663
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "iFFT",
+          "calls": 58371,
+          "cycles": 15643428
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "iFFT",
+          "calls": 24665,
+          "cycles": 19510015
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "iFFT",
+          "calls": 12004,
+          "cycles": 24692228
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "iFFT",
+          "calls": 6513,
+          "cycles": 32949267
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "iFFT",
+          "calls": 3708,
+          "cycles": 44618364
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "iFFT",
+          "calls": 2162,
+          "cycles": 60430062
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "iFFT",
+          "calls": 1326,
+          "cycles": 84541782
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "iFFT",
+          "calls": 918,
+          "cycles": 131585203
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "round",
+          "calls": 141687,
+          "cycles": 5809167
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "round",
+          "calls": 58371,
+          "cycles": 3677373
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "round",
+          "calls": 24665,
+          "cycles": 2639155
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "round",
+          "calls": 12004,
+          "cycles": 2340780
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "round",
+          "calls": 6513,
+          "cycles": 2416323
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "round",
+          "calls": 3708,
+          "cycles": 2680884
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "round",
+          "calls": 2162,
+          "cycles": 3085174
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "round",
+          "calls": 1326,
+          "cycles": 3759210
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "round",
+          "calls": 918,
+          "cycles": 5187618
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "guard",
+          "calls": 0,
+          "cycles": 0
+        }
+      ],
+      "empty_interval_mean": 10.0
+    },
+    "trial_profile": {
+      "degrees": {
+        "512": {
+          "runs": 100,
+          "summed_region_cycles": 6532502897,
+          "mean_region_cycles_per_key": 65325028.97,
+          "empty_hook_estimate_percent": 0.11058323454119702,
+          "groups": {
+            "input_conversion": {
+              "cycles": 189119052,
+              "mean_cycles_per_key": 1891190.52,
+              "share_percent": 2.895047349873376
+            },
+            "FFT": {
+              "cycles": 2289573021,
+              "mean_cycles_per_key": 22895730.21,
+              "share_percent": 35.048940002023855
+            },
+            "inverse": {
+              "cycles": 55557903,
+              "mean_cycles_per_key": 555579.03,
+              "share_percent": 0.8504841693298678
+            },
+            "pointwise": {
+              "cycles": 765371291,
+              "mean_cycles_per_key": 7653712.91,
+              "share_percent": 11.716355936887386
+            },
+            "iFFT": {
+              "cycles": 3174216133,
+              "mean_cycles_per_key": 31742161.33,
+              "share_percent": 48.59111711160103
+            },
+            "round_and_guard": {
+              "cycles": 58665497,
+              "mean_cycles_per_key": 586654.97,
+              "share_percent": 0.8980554302844881
+            }
+          },
+          "individual_steps": {
+            "guard": {
+              "calls": 92174,
+              "cycles": 6935176
+            },
+            "input_f": {
+              "calls": 879,
+              "cycles": 7477504
+            },
+            "iFFT": {
+              "calls": 92174,
+              "cycles": 3174216133
+            },
+            "FFT_f": {
+              "calls": 879,
+              "cycles": 166066575
+            },
+            "pointwise": {
+              "calls": 92174,
+              "cycles": 765371291
+            },
+            "FFT_F": {
+              "calls": 92174,
+              "cycles": 2123506446
+            },
+            "round": {
+              "calls": 92174,
+              "cycles": 51730321
+            },
+            "inverse": {
+              "calls": 879,
+              "cycles": 55557903
+            },
+            "input_F": {
+              "calls": 92174,
+              "cycles": 181641548
+            }
+          }
+        },
+        "1024": {
+          "runs": 100,
+          "summed_region_cycles": 17700667688,
+          "mean_region_cycles_per_key": 177006676.88,
+          "empty_hook_estimate_percent": 0.11100589732736867,
+          "groups": {
+            "input_conversion": {
+              "cycles": 569920100,
+              "mean_cycles_per_key": 5699201.0,
+              "share_percent": 3.219766113039747
+            },
+            "FFT": {
+              "cycles": 6206107916,
+              "mean_cycles_per_key": 62061079.16,
+              "share_percent": 35.06143398312241
+            },
+            "inverse": {
+              "cycles": 111485826,
+              "mean_cycles_per_key": 1114858.26,
+              "share_percent": 0.6298396646109613
+            },
+            "pointwise": {
+              "cycles": 1946357746,
+              "mean_cycles_per_key": 19463577.46,
+              "share_percent": 10.995956651508207
+            },
+            "iFFT": {
+              "cycles": 8716047707,
+              "mean_cycles_per_key": 87160477.07,
+              "share_percent": 49.241349878055516
+            },
+            "round_and_guard": {
+              "cycles": 150748393,
+              "mean_cycles_per_key": 1507483.93,
+              "share_percent": 0.8516537096631583
+            }
+          },
+          "individual_steps": {
+            "guard": {
+              "calls": 251354,
+              "cycles": 18860694
+            },
+            "input_f": {
+              "calls": 1107,
+              "cycles": 15005352
+            },
+            "iFFT": {
+              "calls": 251354,
+              "cycles": 8716047707
+            },
+            "FFT_f": {
+              "calls": 1107,
+              "cycles": 385238455
+            },
+            "pointwise": {
+              "calls": 251354,
+              "cycles": 1946357746
+            },
+            "FFT_F": {
+              "calls": 251354,
+              "cycles": 5820869461
+            },
+            "round": {
+              "calls": 251354,
+              "cycles": 131887699
+            },
+            "inverse": {
+              "calls": 1107,
+              "cycles": 111485826
+            },
+            "input_F": {
+              "calls": 251354,
+              "cycles": 554914748
+            }
+          }
+        }
+      },
+      "raw": [
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "input_f",
+          "calls": 125,
+          "cycles": 72000
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "input_f",
+          "calls": 125,
+          "cycles": 115625
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "input_f",
+          "calls": 112,
+          "cycles": 170128
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "input_f",
+          "calls": 105,
+          "cycles": 301875
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "input_f",
+          "calls": 104,
+          "cycles": 511160
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "input_f",
+          "calls": 104,
+          "cycles": 1005368
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "input_f",
+          "calls": 102,
+          "cycles": 1955442
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "input_f",
+          "calls": 102,
+          "cycles": 3345906
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "FFT_f",
+          "calls": 125,
+          "cycles": 4875
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "FFT_f",
+          "calls": 125,
+          "cycles": 297000
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "FFT_f",
+          "calls": 112,
+          "cycles": 1001168
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "FFT_f",
+          "calls": 105,
+          "cycles": 2741970
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "FFT_f",
+          "calls": 104,
+          "cycles": 7133672
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "FFT_f",
+          "calls": 104,
+          "cycles": 17663360
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "FFT_f",
+          "calls": 102,
+          "cycles": 41304186
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "FFT_f",
+          "calls": 102,
+          "cycles": 95920344
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "inverse",
+          "calls": 125,
+          "cycles": 280772
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "inverse",
+          "calls": 125,
+          "cycles": 543050
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "inverse",
+          "calls": 112,
+          "cycles": 959406
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "inverse",
+          "calls": 105,
+          "cycles": 1786782
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "inverse",
+          "calls": 104,
+          "cycles": 3526452
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "inverse",
+          "calls": 104,
+          "cycles": 7039362
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "inverse",
+          "calls": 102,
+          "cycles": 13800472
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "inverse",
+          "calls": 102,
+          "cycles": 27621607
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "input_F",
+          "calls": 46250,
+          "cycles": 41021751
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "input_F",
+          "calls": 21776,
+          "cycles": 21124087
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "input_F",
+          "calls": 10850,
+          "cycles": 17729474
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "input_F",
+          "calls": 5956,
+          "cycles": 18083625
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "input_F",
+          "calls": 3328,
+          "cycles": 17352712
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "input_F",
+          "calls": 1974,
+          "cycles": 19248535
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "input_F",
+          "calls": 1224,
+          "cycles": 21867270
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "input_F",
+          "calls": 816,
+          "cycles": 25214094
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "FFT_F",
+          "calls": 46250,
+          "cycles": 1803750
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "FFT_F",
+          "calls": 21776,
+          "cycles": 51647969
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "FFT_F",
+          "calls": 10850,
+          "cycles": 96731837
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "FFT_F",
+          "calls": 5956,
+          "cycles": 154921399
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "FFT_F",
+          "calls": 3328,
+          "cycles": 227124494
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "FFT_F",
+          "calls": 1974,
+          "cycles": 333771075
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "FFT_F",
+          "calls": 1224,
+          "cycles": 493424527
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "FFT_F",
+          "calls": 816,
+          "cycles": 764081395
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "pointwise",
+          "calls": 46250,
+          "cycles": 78007987
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "pointwise",
+          "calls": 21776,
+          "cycles": 70999785
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "pointwise",
+          "calls": 10850,
+          "cycles": 69533550
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "pointwise",
+          "calls": 5956,
+          "cycles": 75645414
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "pointwise",
+          "calls": 3328,
+          "cycles": 84126116
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "pointwise",
+          "calls": 1974,
+          "cycles": 99580209
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "pointwise",
+          "calls": 1224,
+          "cycles": 123269881
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "pointwise",
+          "calls": 816,
+          "cycles": 164208349
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "iFFT",
+          "calls": 46250,
+          "cycles": 4162500
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "iFFT",
+          "calls": 21776,
+          "cycles": 74148022
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "iFFT",
+          "calls": 10850,
+          "cycles": 142137211
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "iFFT",
+          "calls": 5956,
+          "cycles": 230136427
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "iFFT",
+          "calls": 3328,
+          "cycles": 339479747
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "iFFT",
+          "calls": 1974,
+          "cycles": 499592143
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "iFFT",
+          "calls": 1224,
+          "cycles": 739321915
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "iFFT",
+          "calls": 816,
+          "cycles": 1145238168
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "round",
+          "calls": 46250,
+          "cycles": 6105000
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "round",
+          "calls": 21776,
+          "cycles": 5095584
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "round",
+          "calls": 10850,
+          "cycles": 4752300
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "round",
+          "calls": 5956,
+          "cycles": 5038776
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "round",
+          "calls": 3328,
+          "cycles": 5531136
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "round",
+          "calls": 1974,
+          "cycles": 6502356
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "round",
+          "calls": 1224,
+          "cycles": 8026992
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "round",
+          "calls": 816,
+          "cycles": 10678177
+        },
+        {
+          "degree": 512,
+          "logn": 1,
+          "op": "guard",
+          "calls": 46250,
+          "cycles": 3052500
+        },
+        {
+          "degree": 512,
+          "logn": 2,
+          "op": "guard",
+          "calls": 21776,
+          "cycles": 1959840
+        },
+        {
+          "degree": 512,
+          "logn": 3,
+          "op": "guard",
+          "calls": 10850,
+          "cycles": 1497300
+        },
+        {
+          "degree": 512,
+          "logn": 4,
+          "op": "guard",
+          "calls": 5956,
+          "cycles": 190592
+        },
+        {
+          "degree": 512,
+          "logn": 5,
+          "op": "guard",
+          "calls": 3328,
+          "cycles": 106496
+        },
+        {
+          "degree": 512,
+          "logn": 6,
+          "op": "guard",
+          "calls": 1974,
+          "cycles": 63168
+        },
+        {
+          "degree": 512,
+          "logn": 7,
+          "op": "guard",
+          "calls": 1224,
+          "cycles": 39168
+        },
+        {
+          "degree": 512,
+          "logn": 8,
+          "op": "guard",
+          "calls": 816,
+          "cycles": 26112
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "input_f",
+          "calls": 173,
+          "cycles": 166080
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "input_f",
+          "calls": 173,
+          "cycles": 171097
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "input_f",
+          "calls": 137,
+          "cycles": 231119
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "input_f",
+          "calls": 110,
+          "cycles": 316250
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "input_f",
+          "calls": 104,
+          "cycles": 581048
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "input_f",
+          "calls": 103,
+          "cycles": 995701
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "input_f",
+          "calls": 103,
+          "cycles": 1974613
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "input_f",
+          "calls": 102,
+          "cycles": 3894258
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "input_f",
+          "calls": 102,
+          "cycles": 6675186
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "FFT_f",
+          "calls": 173,
+          "cycles": 6747
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "FFT_f",
+          "calls": 173,
+          "cycles": 411048
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "FFT_f",
+          "calls": 137,
+          "cycles": 1224643
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "FFT_f",
+          "calls": 110,
+          "cycles": 2872540
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "FFT_f",
+          "calls": 104,
+          "cycles": 7133672
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "FFT_f",
+          "calls": 103,
+          "cycles": 17493520
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "FFT_f",
+          "calls": 103,
+          "cycles": 41709129
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "FFT_f",
+          "calls": 102,
+          "cycles": 95920600
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "FFT_f",
+          "calls": 102,
+          "cycles": 218466556
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "inverse",
+          "calls": 173,
+          "cycles": 388700
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "inverse",
+          "calls": 173,
+          "cycles": 750515
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "inverse",
+          "calls": 137,
+          "cycles": 1172199
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "inverse",
+          "calls": 110,
+          "cycles": 1871445
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "inverse",
+          "calls": 104,
+          "cycles": 3527644
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "inverse",
+          "calls": 103,
+          "cycles": 6975811
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "inverse",
+          "calls": 103,
+          "cycles": 13941363
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "inverse",
+          "calls": 102,
+          "cycles": 27614217
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "inverse",
+          "calls": 102,
+          "cycles": 55243932
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "input_F",
+          "calls": 141687,
+          "cycles": 156303771
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "input_F",
+          "calls": 58371,
+          "cycles": 93349743
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "input_F",
+          "calls": 24665,
+          "cycles": 43747483
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "input_F",
+          "calls": 12004,
+          "cycles": 37325227
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "input_F",
+          "calls": 6513,
+          "cycles": 38553325
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "input_F",
+          "calls": 3708,
+          "cycles": 38089504
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "input_F",
+          "calls": 2162,
+          "cycles": 42050765
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "input_F",
+          "calls": 1326,
+          "cycles": 47428165
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "input_F",
+          "calls": 918,
+          "cycles": 58066765
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "FFT_F",
+          "calls": 141687,
+          "cycles": 5525793
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "FFT_F",
+          "calls": 58371,
+          "cycles": 138480477
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "FFT_F",
+          "calls": 24665,
+          "cycles": 220012718
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "FFT_F",
+          "calls": 12004,
+          "cycles": 312641231
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "FFT_F",
+          "calls": 6513,
+          "cycles": 444995026
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "FFT_F",
+          "calls": 3708,
+          "cycles": 626772704
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "FFT_F",
+          "calls": 2162,
+          "cycles": 872051769
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "FFT_F",
+          "calls": 1326,
+          "cycles": 1241810972
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "FFT_F",
+          "calls": 918,
+          "cycles": 1958578771
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "pointwise",
+          "calls": 141687,
+          "cycles": 239001264
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "pointwise",
+          "calls": 58371,
+          "cycles": 190342413
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "pointwise",
+          "calls": 24665,
+          "cycles": 158117524
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "pointwise",
+          "calls": 12004,
+          "cycles": 152575858
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "pointwise",
+          "calls": 6513,
+          "cycles": 164773743
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "pointwise",
+          "calls": 3708,
+          "cycles": 187115800
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "pointwise",
+          "calls": 2162,
+          "cycles": 217942368
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "pointwise",
+          "calls": 1326,
+          "cycles": 266990120
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "pointwise",
+          "calls": 918,
+          "cycles": 369498656
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "iFFT",
+          "calls": 141687,
+          "cycles": 12751830
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "iFFT",
+          "calls": 58371,
+          "cycles": 198732019
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "iFFT",
+          "calls": 24665,
+          "cycles": 323103441
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "iFFT",
+          "calls": 12004,
+          "cycles": 464112960
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "iFFT",
+          "calls": 6513,
+          "cycles": 665018431
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "iFFT",
+          "calls": 3708,
+          "cycles": 940242867
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "iFFT",
+          "calls": 2162,
+          "cycles": 1308562654
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "iFFT",
+          "calls": 1326,
+          "cycles": 1863865147
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "iFFT",
+          "calls": 918,
+          "cycles": 2939658358
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "round",
+          "calls": 141687,
+          "cycles": 18702684
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "round",
+          "calls": 58371,
+          "cycles": 13658814
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "round",
+          "calls": 24665,
+          "cycles": 10803270
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "round",
+          "calls": 12004,
+          "cycles": 10155384
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "round",
+          "calls": 6513,
+          "cycles": 10824606
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "round",
+          "calls": 3708,
+          "cycles": 12214153
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "round",
+          "calls": 2162,
+          "cycles": 14178396
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "round",
+          "calls": 1326,
+          "cycles": 17352036
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "round",
+          "calls": 918,
+          "cycles": 23998356
+        },
+        {
+          "degree": 1024,
+          "logn": 1,
+          "op": "guard",
+          "calls": 141687,
+          "cycles": 9351342
+        },
+        {
+          "degree": 1024,
+          "logn": 2,
+          "op": "guard",
+          "calls": 58371,
+          "cycles": 5253390
+        },
+        {
+          "degree": 1024,
+          "logn": 3,
+          "op": "guard",
+          "calls": 24665,
+          "cycles": 3403770
+        },
+        {
+          "degree": 1024,
+          "logn": 4,
+          "op": "guard",
+          "calls": 12004,
+          "cycles": 384128
+        },
+        {
+          "degree": 1024,
+          "logn": 5,
+          "op": "guard",
+          "calls": 6513,
+          "cycles": 208416
+        },
+        {
+          "degree": 1024,
+          "logn": 6,
+          "op": "guard",
+          "calls": 3708,
+          "cycles": 118656
+        },
+        {
+          "degree": 1024,
+          "logn": 7,
+          "op": "guard",
+          "calls": 2162,
+          "cycles": 69184
+        },
+        {
+          "degree": 1024,
+          "logn": 8,
+          "op": "guard",
+          "calls": 1326,
+          "cycles": 42432
+        },
+        {
+          "degree": 1024,
+          "logn": 9,
+          "op": "guard",
+          "calls": 918,
+          "cycles": 29376
+        }
+      ],
+      "empty_interval_mean": 13.0
+    }
+  },
+  "evidence": {
+    "perf": {
+      "path": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/results/q32_trial-perfct/20260923T100752Z",
+      "run": {
+        "valid_measurement": true,
+        "errors": [],
+        "backend": "q32_trial",
+        "kind": "perfct",
+        "kat": null,
+        "host_board": null,
+        "elf_sha256": "464e3136d949345f890810c44d669a77c023316e467b4a5aab54d17826dfb3be",
+        "source": {
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sysrng.c": "663d943595102660f0c98ec3fef37d3b7825f162cd8a9218cf9df8317cb38bd1",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_mp31.c": "c41e661b6cf9d6a1ac5f71cb007f37eab9667efcde928b7f76ea01155bcaedbc",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/codec.c": "d72b5b03b6b74aec02de60cc69bbe232c6f13e0ff94cbd096f157ea178bb6cc7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_ntru.c": "7484d40b479f6cd376258d6258504bf13839d4f4b7cbd6e6ee2af835595e9550",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/util.c": "eeaaa063aa1e5987ba81d6cb13941300d9e55d0c428aa33ef6127693d8eca80f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/test_sign.c": "761db5680f06c72bd1bf2a4a4bad5d5de8d81ee2aa6e47ab21316d8d405073fc",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_fxp.c": "b2ccfada0f47c0df05823d385ecc00040d49bd9e9c930e52bfeb280252e78e2f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sha3_cm4.s": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_mp31_cm55.s": "bad74cbe6f569a948b70f887b47cc0c5fc9f7e6130605df27adb70f3d88ece88",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpoly.c": "d6187c282576f8f1b534f9e48da8dedcca8f6f4f2a4ab6aa73bfd5412492b1e6",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen.c": "a034de222847ef5a5532d404df3bfd422bea2deffe0e54f25361dc6cb149f5cd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign.c": "e23b7a63ea92e535cf16cfeef4a1500ad0984047adfe15696b7642b795f2a732",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/speed_fndsa.c": "621f9069bbafd6b2422656f69a1143a778cb9a7f5e0f5ec7f02ed24ae55ab096",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/codec_cm4.s": "53a380bcb500ed2d665405fa6ef5f3eb39bbeb9def4f86b29a9be532bbd7cd94",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/test_fndsa.c": "893ef158f2c55110c157293184cb4d87dbc294d16b08e531af4ee07d64927bdd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpr.c": "995ad5b954913cd1d63a5d14d3cffdeb48e7fa2ccb9afacc3f8bda129ea1aa95",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_sampler_cm4.s": "546ff1ad3ce37778a55ad3aa5c20ce73e83e4f97920351609e1a1d16e3af7fde",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_poly.c": "53017e4978224c1705efb0bb23abd575b5ead1bb76a4941b3bcc3ddd15380388",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_core.c": "d64678400179f60ecbcc53624c2aa93fde3539cf8dc064a53e8778fa79c29861",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpr_cm4.s": "ba5b3cdff48f7302d3229bdd00db9fca8a6bf8b420ee0eb0c1ff167079a51789",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_zint31.c": "ba655aabdfb7c36cf8d723c8a69521915c07f5d023cbbf96a05a35f6e759f81e",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/vrfy.c": "d6db7c9a50ef36c30ef951127bdee0ed90774b4a5811817beb19850c265db58f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_inner.h": "85aeb8782d289695d39cfff873339892d4b8c60909e8b05f1b18e0a4002e49e4",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_sampler.c": "9f91e55b8d7f9a48c730affe05bffc3c9c304121df5d2ce5542b99854c53c69b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/upstream_kat.h": "e5a2148bc910e4929087e05fa033c9382315fd895b3af7c561b2bac62244fa07",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/failure_cases.h": "86722a2739165fcbef0c455456bb56f3bfa2d9ee07c97812cf9f6a3f2037f84c",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/perf_cases.h": "f2838df4103d9132cb9f2c7dbaaab02ca014fc4eb4b7e8340238404301d00f13",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/upstream_signkat.h": "cf96bef1894e9a44d646e8e3330b314bdbb8421ad6c1167a3d4007b3f106bf78",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/cases.h": "70d936136a67c4eb617c9e5cc6db9f7afbf7e8300df7fd63d28bf586af81cbf7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/perfct.c": "21cce6b5ce71ab346c0a5aea701613b59e1d82bb17340c035e4aaae55791161e"
+        },
+        "compile_commands_sha256": "ebf3b5cecdbb65d6e2b367dcd737210231de22cb3f88693a4677aa2c3db11dcb",
+        "raw_sha256": "367b9a96c258a86a1d7d09d99c30496f34ebd611b60778974856bbea752feb24",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "/Users/seungwon/FALCON/fn-dsa_m55/ntt_final_compare/exec_board.py",
+          "--verbose",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/q32_trial-perfct/zephyr/zephyr.elf"
+        ]
+      }
+    },
+    "repeat_perf": {
+      "path": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/results/q32_trial-perfct/20260923T101215Z",
+      "run": {
+        "valid_measurement": true,
+        "errors": [],
+        "backend": "q32_trial",
+        "kind": "perfct",
+        "kat": null,
+        "host_board": null,
+        "elf_sha256": "464e3136d949345f890810c44d669a77c023316e467b4a5aab54d17826dfb3be",
+        "source": {
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sysrng.c": "663d943595102660f0c98ec3fef37d3b7825f162cd8a9218cf9df8317cb38bd1",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_mp31.c": "c41e661b6cf9d6a1ac5f71cb007f37eab9667efcde928b7f76ea01155bcaedbc",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/codec.c": "d72b5b03b6b74aec02de60cc69bbe232c6f13e0ff94cbd096f157ea178bb6cc7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_ntru.c": "7484d40b479f6cd376258d6258504bf13839d4f4b7cbd6e6ee2af835595e9550",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/util.c": "eeaaa063aa1e5987ba81d6cb13941300d9e55d0c428aa33ef6127693d8eca80f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/test_sign.c": "761db5680f06c72bd1bf2a4a4bad5d5de8d81ee2aa6e47ab21316d8d405073fc",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_fxp.c": "b2ccfada0f47c0df05823d385ecc00040d49bd9e9c930e52bfeb280252e78e2f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sha3_cm4.s": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_mp31_cm55.s": "bad74cbe6f569a948b70f887b47cc0c5fc9f7e6130605df27adb70f3d88ece88",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpoly.c": "d6187c282576f8f1b534f9e48da8dedcca8f6f4f2a4ab6aa73bfd5412492b1e6",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen.c": "a034de222847ef5a5532d404df3bfd422bea2deffe0e54f25361dc6cb149f5cd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign.c": "e23b7a63ea92e535cf16cfeef4a1500ad0984047adfe15696b7642b795f2a732",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/speed_fndsa.c": "621f9069bbafd6b2422656f69a1143a778cb9a7f5e0f5ec7f02ed24ae55ab096",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/codec_cm4.s": "53a380bcb500ed2d665405fa6ef5f3eb39bbeb9def4f86b29a9be532bbd7cd94",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/test_fndsa.c": "893ef158f2c55110c157293184cb4d87dbc294d16b08e531af4ee07d64927bdd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpr.c": "995ad5b954913cd1d63a5d14d3cffdeb48e7fa2ccb9afacc3f8bda129ea1aa95",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_sampler_cm4.s": "546ff1ad3ce37778a55ad3aa5c20ce73e83e4f97920351609e1a1d16e3af7fde",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_poly.c": "53017e4978224c1705efb0bb23abd575b5ead1bb76a4941b3bcc3ddd15380388",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_core.c": "d64678400179f60ecbcc53624c2aa93fde3539cf8dc064a53e8778fa79c29861",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpr_cm4.s": "ba5b3cdff48f7302d3229bdd00db9fca8a6bf8b420ee0eb0c1ff167079a51789",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_zint31.c": "ba655aabdfb7c36cf8d723c8a69521915c07f5d023cbbf96a05a35f6e759f81e",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/vrfy.c": "d6db7c9a50ef36c30ef951127bdee0ed90774b4a5811817beb19850c265db58f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_inner.h": "85aeb8782d289695d39cfff873339892d4b8c60909e8b05f1b18e0a4002e49e4",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_sampler.c": "9f91e55b8d7f9a48c730affe05bffc3c9c304121df5d2ce5542b99854c53c69b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/upstream_kat.h": "e5a2148bc910e4929087e05fa033c9382315fd895b3af7c561b2bac62244fa07",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/failure_cases.h": "86722a2739165fcbef0c455456bb56f3bfa2d9ee07c97812cf9f6a3f2037f84c",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/perf_cases.h": "f2838df4103d9132cb9f2c7dbaaab02ca014fc4eb4b7e8340238404301d00f13",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/upstream_signkat.h": "cf96bef1894e9a44d646e8e3330b314bdbb8421ad6c1167a3d4007b3f106bf78",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/cases.h": "70d936136a67c4eb617c9e5cc6db9f7afbf7e8300df7fd63d28bf586af81cbf7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/perfct.c": "21cce6b5ce71ab346c0a5aea701613b59e1d82bb17340c035e4aaae55791161e"
+        },
+        "compile_commands_sha256": "ebf3b5cecdbb65d6e2b367dcd737210231de22cb3f88693a4677aa2c3db11dcb",
+        "raw_sha256": "d92590335f007ce5830ee8d7530b469350edbd940160c3b84d8dd0a55c58c1e0",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "/Users/seungwon/FALCON/fn-dsa_m55/ntt_final_compare/exec_board.py",
+          "--verbose",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/q32_trial-perfct/zephyr/zephyr.elf"
+        ]
+      }
+    },
+    "reference_profile": {
+      "path": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/results/reference-keyprofile/20260923T101324Z",
+      "run": {
+        "valid_measurement": true,
+        "errors": [],
+        "backend": "reference",
+        "kind": "keyprofile",
+        "kat": {
+          "count": 200,
+          "mismatches": 0
+        },
+        "host_board": null,
+        "elf_sha256": "ac0f3ea4ee84fbc36a8c8f29e1b92fecb0ff348cd448d0ac510ff0f91881ca26",
+        "source": {
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sysrng.c": "663d943595102660f0c98ec3fef37d3b7825f162cd8a9218cf9df8317cb38bd1",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen_mp31.c": "c41e661b6cf9d6a1ac5f71cb007f37eab9667efcde928b7f76ea01155bcaedbc",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/codec.c": "d72b5b03b6b74aec02de60cc69bbe232c6f13e0ff94cbd096f157ea178bb6cc7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen_ntru.c": "35696b1619bbaaa14046ab85a66f384670e9f8c8d44e523a0dcf8cd402fb8abf",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/util.c": "eeaaa063aa1e5987ba81d6cb13941300d9e55d0c428aa33ef6127693d8eca80f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/test_sign.c": "761db5680f06c72bd1bf2a4a4bad5d5de8d81ee2aa6e47ab21316d8d405073fc",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen_fxp.c": "cf93446862da0ba3429326bddb6633595cb2b2cb310b0e8489cb1b7f9c100edd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sha3_cm4.s": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen_mp31_cm55.s": "bad74cbe6f569a948b70f887b47cc0c5fc9f7e6130605df27adb70f3d88ece88",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sign_fpoly.c": "d6187c282576f8f1b534f9e48da8dedcca8f6f4f2a4ab6aa73bfd5412492b1e6",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen.c": "a034de222847ef5a5532d404df3bfd422bea2deffe0e54f25361dc6cb149f5cd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sign.c": "e23b7a63ea92e535cf16cfeef4a1500ad0984047adfe15696b7642b795f2a732",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/speed_fndsa.c": "621f9069bbafd6b2422656f69a1143a778cb9a7f5e0f5ec7f02ed24ae55ab096",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/codec_cm4.s": "53a380bcb500ed2d665405fa6ef5f3eb39bbeb9def4f86b29a9be532bbd7cd94",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/test_fndsa.c": "893ef158f2c55110c157293184cb4d87dbc294d16b08e531af4ee07d64927bdd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sign_fpr.c": "995ad5b954913cd1d63a5d14d3cffdeb48e7fa2ccb9afacc3f8bda129ea1aa95",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sign_sampler_cm4.s": "546ff1ad3ce37778a55ad3aa5c20ce73e83e4f97920351609e1a1d16e3af7fde",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen_poly.c": "4508e2feeb7a19a5616243d205e395c6709b8c90dbcc19d1feb05421a8f71f7f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sign_core.c": "d64678400179f60ecbcc53624c2aa93fde3539cf8dc064a53e8778fa79c29861",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sign_fpr_cm4.s": "ba5b3cdff48f7302d3229bdd00db9fca8a6bf8b420ee0eb0c1ff167079a51789",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen_zint31.c": "ba655aabdfb7c36cf8d723c8a69521915c07f5d023cbbf96a05a35f6e759f81e",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/vrfy.c": "d6db7c9a50ef36c30ef951127bdee0ed90774b4a5811817beb19850c265db58f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/kgen_inner.h": "0e124f2cbfee404b9e51c1723ef21544f0849a14e5b61ffa76c32f083fa0ec11",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/reference/sign_sampler.c": "9f91e55b8d7f9a48c730affe05bffc3c9c304121df5d2ce5542b99854c53c69b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/upstream_kat.h": "e5a2148bc910e4929087e05fa033c9382315fd895b3af7c561b2bac62244fa07",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/failure_cases.h": "86722a2739165fcbef0c455456bb56f3bfa2d9ee07c97812cf9f6a3f2037f84c",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/perf_cases.h": "f2838df4103d9132cb9f2c7dbaaab02ca014fc4eb4b7e8340238404301d00f13",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/upstream_signkat.h": "cf96bef1894e9a44d646e8e3330b314bdbb8421ad6c1167a3d4007b3f106bf78",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/cases.h": "70d936136a67c4eb617c9e5cc6db9f7afbf7e8300df7fd63d28bf586af81cbf7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/keyprofile.c": "6159e534732dba2f3437892547e453607da153c0091c3daf3b6e6ef08b2bfd0b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/approx_profile.c": "1bd7156fb5bd26c6291417393b71675f279539715de8ac6b8a17b4ca205263af",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/approx_profile.h": "af9c1890bab2db6c1b3a2cf01b63fa236c527108b47f71680c560dc78bc46f11",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generate_approx_profile.py": "f14a1e825ea670e2e59c108cf7c2235173837fd73bfa5633d03d478404699cd8",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/reference-keyprofile/generated/kgen_ntru.c": "513da46f800a814eb4a7522a44dabac6b1ec920bce0a093adaaced25acc445d4",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/reference-keyprofile/generated/profile_manifest.json": "cb195ae0b988f8e2cd58b37aee1ef897c8648c689887035091a0a9459e3a2856"
+        },
+        "compile_commands_sha256": "b037b9f8ff91eb6afed1c68514740691b1ac0afa4999bdecad8e2aba4ac4279b",
+        "raw_sha256": "4c702dcce35bede712c06f9849967e04f00de072259905feacf2986395d5c6b1",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "/Users/seungwon/FALCON/fn-dsa_m55/ntt_final_compare/exec_board.py",
+          "--verbose",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/reference-keyprofile/zephyr/zephyr.elf"
+        ]
+      }
+    },
+    "trial_profile": {
+      "path": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/results/q32_trial-keyprofile/20260923T101423Z",
+      "run": {
+        "valid_measurement": true,
+        "errors": [],
+        "backend": "q32_trial",
+        "kind": "keyprofile",
+        "kat": {
+          "count": 200,
+          "mismatches": 0
+        },
+        "host_board": null,
+        "elf_sha256": "97e4667315334d485a0ace7d4e6601f62a0bbe16358001e79d5395a9e40b3e7e",
+        "source": {
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sysrng.c": "663d943595102660f0c98ec3fef37d3b7825f162cd8a9218cf9df8317cb38bd1",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_mp31.c": "c41e661b6cf9d6a1ac5f71cb007f37eab9667efcde928b7f76ea01155bcaedbc",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/codec.c": "d72b5b03b6b74aec02de60cc69bbe232c6f13e0ff94cbd096f157ea178bb6cc7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_ntru.c": "7484d40b479f6cd376258d6258504bf13839d4f4b7cbd6e6ee2af835595e9550",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/util.c": "eeaaa063aa1e5987ba81d6cb13941300d9e55d0c428aa33ef6127693d8eca80f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/test_sign.c": "761db5680f06c72bd1bf2a4a4bad5d5de8d81ee2aa6e47ab21316d8d405073fc",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_fxp.c": "b2ccfada0f47c0df05823d385ecc00040d49bd9e9c930e52bfeb280252e78e2f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sha3_cm4.s": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_mp31_cm55.s": "bad74cbe6f569a948b70f887b47cc0c5fc9f7e6130605df27adb70f3d88ece88",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpoly.c": "d6187c282576f8f1b534f9e48da8dedcca8f6f4f2a4ab6aa73bfd5412492b1e6",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen.c": "a034de222847ef5a5532d404df3bfd422bea2deffe0e54f25361dc6cb149f5cd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign.c": "e23b7a63ea92e535cf16cfeef4a1500ad0984047adfe15696b7642b795f2a732",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/speed_fndsa.c": "621f9069bbafd6b2422656f69a1143a778cb9a7f5e0f5ec7f02ed24ae55ab096",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/codec_cm4.s": "53a380bcb500ed2d665405fa6ef5f3eb39bbeb9def4f86b29a9be532bbd7cd94",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/test_fndsa.c": "893ef158f2c55110c157293184cb4d87dbc294d16b08e531af4ee07d64927bdd",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpr.c": "995ad5b954913cd1d63a5d14d3cffdeb48e7fa2ccb9afacc3f8bda129ea1aa95",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_sampler_cm4.s": "546ff1ad3ce37778a55ad3aa5c20ce73e83e4f97920351609e1a1d16e3af7fde",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_poly.c": "53017e4978224c1705efb0bb23abd575b5ead1bb76a4941b3bcc3ddd15380388",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_core.c": "d64678400179f60ecbcc53624c2aa93fde3539cf8dc064a53e8778fa79c29861",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_fpr_cm4.s": "ba5b3cdff48f7302d3229bdd00db9fca8a6bf8b420ee0eb0c1ff167079a51789",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_zint31.c": "ba655aabdfb7c36cf8d723c8a69521915c07f5d023cbbf96a05a35f6e759f81e",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/vrfy.c": "d6db7c9a50ef36c30ef951127bdee0ed90774b4a5811817beb19850c265db58f",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/kgen_inner.h": "85aeb8782d289695d39cfff873339892d4b8c60909e8b05f1b18e0a4002e49e4",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/q32_trial/sign_sampler.c": "9f91e55b8d7f9a48c730affe05bffc3c9c304121df5d2ce5542b99854c53c69b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/upstream_kat.h": "e5a2148bc910e4929087e05fa033c9382315fd895b3af7c561b2bac62244fa07",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/failure_cases.h": "86722a2739165fcbef0c455456bb56f3bfa2d9ee07c97812cf9f6a3f2037f84c",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/perf_cases.h": "f2838df4103d9132cb9f2c7dbaaab02ca014fc4eb4b7e8340238404301d00f13",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/upstream_signkat.h": "cf96bef1894e9a44d646e8e3330b314bdbb8421ad6c1167a3d4007b3f106bf78",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generated/cases.h": "70d936136a67c4eb617c9e5cc6db9f7afbf7e8300df7fd63d28bf586af81cbf7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/keyprofile.c": "6159e534732dba2f3437892547e453607da153c0091c3daf3b6e6ef08b2bfd0b",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/approx_profile.c": "1bd7156fb5bd26c6291417393b71675f279539715de8ac6b8a17b4ca205263af",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/approx_profile.h": "af9c1890bab2db6c1b3a2cf01b63fa236c527108b47f71680c560dc78bc46f11",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/validation/generate_approx_profile.py": "f14a1e825ea670e2e59c108cf7c2235173837fd73bfa5633d03d478404699cd8",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/q32_trial-keyprofile/generated/kgen_ntru.c": "14d704cdf791068c081d922824ac301e528112be99273f42649a1229b00ed6e7",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/q32_trial-keyprofile/generated/profile_manifest.json": "3f9edf4032ba74cb4a00cca6a3deca60ca98ddfe8788cedbfcaa7163d7b600e1"
+        },
+        "compile_commands_sha256": "96012c36edc5b98645c19b25b1839fa14bfe114ee576583f50c9054bba5ad266",
+        "raw_sha256": "c5365985445752d23bfb50ceb0de3987b5e96bb41bef566db30aabcd6f6ec190",
+        "command": [
+          "/Library/Developer/CommandLineTools/usr/bin/python3",
+          "/Users/seungwon/FALCON/fn-dsa_m55/ntt_final_compare/exec_board.py",
+          "--verbose",
+          "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/q32_trial-keyprofile/zephyr/zephyr.elf"
+        ]
+      }
+    }
+  },
+  "same_elf_kernel_repeat_exact": true,
+  "profile_key_kat": "200/200 each; reference/trial/pre-profile actual digests identical",
+  "frozen_kernel_outputs": "19/19 final k and original fixtures match, both runs",
+  "profile_denominator": "sum of instrumented disjoint approximate-k regions inside solve_NTRU_intermediate, 100 actual keygens, all reached attempts/depths",
+  "exclusions": "not whole keygen/NTRU; excludes integer update, RNS/CRT, other solve stages, scaling/control outside regions, timer bookkeeping between regions",
+  "profile_caveat": "raw region times include measurement overhead; separate ELFs/addresses, no forced address matching; kernel comparison is same ELF and data buffers",
+  "ct_fft_rows": [
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "zero",
+      "count": 50,
+      "min": 1788,
+      "max": 1788,
+      "sum": 89400,
+      "sumsq": 159847200
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "unit",
+      "count": 50,
+      "min": 1788,
+      "max": 1788,
+      "sum": 89400,
+      "sumsq": 159847200
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "alternating",
+      "count": 50,
+      "min": 1788,
+      "max": 1788,
+      "sum": 89400,
+      "sumsq": 159847200
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "fractions",
+      "count": 50,
+      "min": 1788,
+      "max": 1788,
+      "sum": 89400,
+      "sumsq": 159847200
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "tiny",
+      "count": 50,
+      "min": 1788,
+      "max": 1788,
+      "sum": 89400,
+      "sumsq": 159847200
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "nearone",
+      "count": 50,
+      "min": 1788,
+      "max": 1788,
+      "sum": 89400,
+      "sumsq": 159847200
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "zero",
+      "count": 50,
+      "min": 25288,
+      "max": 25288,
+      "sum": 1264400,
+      "sumsq": 31974147200
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "unit",
+      "count": 50,
+      "min": 26104,
+      "max": 26104,
+      "sum": 1305200,
+      "sumsq": 34070940800
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "alternating",
+      "count": 50,
+      "min": 26104,
+      "max": 26104,
+      "sum": 1305200,
+      "sumsq": 34070940800
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "fractions",
+      "count": 50,
+      "min": 26104,
+      "max": 26104,
+      "sum": 1305200,
+      "sumsq": 34070940800
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "tiny",
+      "count": 50,
+      "min": 25486,
+      "max": 25486,
+      "sum": 1274300,
+      "sumsq": 32476809800
+    },
+    {
+      "logn": 4,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "nearone",
+      "count": 50,
+      "min": 26104,
+      "max": 26104,
+      "sum": 1305200,
+      "sumsq": 34070940800
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "zero",
+      "count": 50,
+      "min": 2055,
+      "max": 2055,
+      "sum": 102750,
+      "sumsq": 211151250
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "unit",
+      "count": 50,
+      "min": 2055,
+      "max": 2055,
+      "sum": 102750,
+      "sumsq": 211151250
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "alternating",
+      "count": 50,
+      "min": 2055,
+      "max": 2055,
+      "sum": 102750,
+      "sumsq": 211151250
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "fractions",
+      "count": 50,
+      "min": 2055,
+      "max": 2055,
+      "sum": 102750,
+      "sumsq": 211151250
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "tiny",
+      "count": 50,
+      "min": 2055,
+      "max": 2055,
+      "sum": 102750,
+      "sumsq": 211151250
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "nearone",
+      "count": 50,
+      "min": 2055,
+      "max": 2055,
+      "sum": 102750,
+      "sumsq": 211151250
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "zero",
+      "count": 50,
+      "min": 37000,
+      "max": 37000,
+      "sum": 1850000,
+      "sumsq": 68450000000
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "unit",
+      "count": 50,
+      "min": 37301,
+      "max": 37301,
+      "sum": 1865050,
+      "sumsq": 69568230050
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "alternating",
+      "count": 50,
+      "min": 37962,
+      "max": 37962,
+      "sum": 1898100,
+      "sumsq": 72055672200
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "fractions",
+      "count": 50,
+      "min": 38680,
+      "max": 38680,
+      "sum": 1934000,
+      "sumsq": 74807120000
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "tiny",
+      "count": 50,
+      "min": 37583,
+      "max": 37583,
+      "sum": 1879150,
+      "sumsq": 70624094450
+    },
+    {
+      "logn": 4,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "nearone",
+      "count": 50,
+      "min": 37450,
+      "max": 37450,
+      "sum": 1872500,
+      "sumsq": 70125125000
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "zero",
+      "count": 50,
+      "min": 55864,
+      "max": 55864,
+      "sum": 2793200,
+      "sumsq": 156039324800
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "unit",
+      "count": 50,
+      "min": 55864,
+      "max": 55864,
+      "sum": 2793200,
+      "sumsq": 156039324800
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "alternating",
+      "count": 50,
+      "min": 55864,
+      "max": 55864,
+      "sum": 2793200,
+      "sumsq": 156039324800
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "fractions",
+      "count": 50,
+      "min": 55864,
+      "max": 55864,
+      "sum": 2793200,
+      "sumsq": 156039324800
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "tiny",
+      "count": 50,
+      "min": 55864,
+      "max": 55864,
+      "sum": 2793200,
+      "sumsq": 156039324800
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "nearone",
+      "count": 50,
+      "min": 55864,
+      "max": 55864,
+      "sum": 2793200,
+      "sumsq": 156039324800
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "zero",
+      "count": 50,
+      "min": 909924,
+      "max": 909924,
+      "sum": 45496200,
+      "sumsq": 41398084288800
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "unit",
+      "count": 50,
+      "min": 940388,
+      "max": 940388,
+      "sum": 47019400,
+      "sumsq": 44216479527200
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "alternating",
+      "count": 50,
+      "min": 940388,
+      "max": 940388,
+      "sum": 47019400,
+      "sumsq": 44216479527200
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "fractions",
+      "count": 50,
+      "min": 940388,
+      "max": 940388,
+      "sum": 47019400,
+      "sumsq": 44216479527200
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "tiny",
+      "count": 50,
+      "min": 918652,
+      "max": 918652,
+      "sum": 45932600,
+      "sumsq": 42196074855200
+    },
+    {
+      "logn": 8,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "nearone",
+      "count": 50,
+      "min": 940388,
+      "max": 940388,
+      "sum": 47019400,
+      "sumsq": 44216479527200
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "zero",
+      "count": 50,
+      "min": 63755,
+      "max": 63755,
+      "sum": 3187750,
+      "sumsq": 203235001250
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "unit",
+      "count": 50,
+      "min": 63755,
+      "max": 63755,
+      "sum": 3187750,
+      "sumsq": 203235001250
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "alternating",
+      "count": 50,
+      "min": 63755,
+      "max": 63755,
+      "sum": 3187750,
+      "sumsq": 203235001250
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "fractions",
+      "count": 50,
+      "min": 63755,
+      "max": 63755,
+      "sum": 3187750,
+      "sumsq": 203235001250
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "tiny",
+      "count": 50,
+      "min": 63755,
+      "max": 63755,
+      "sum": 3187750,
+      "sumsq": 203235001250
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "nearone",
+      "count": 50,
+      "min": 63755,
+      "max": 63755,
+      "sum": 3187750,
+      "sumsq": 203235001250
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "zero",
+      "count": 50,
+      "min": 1347680,
+      "max": 1347680,
+      "sum": 67384000,
+      "sumsq": 90812069120000
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "unit",
+      "count": 50,
+      "min": 1353141,
+      "max": 1353141,
+      "sum": 67657050,
+      "sumsq": 91549528294050
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "alternating",
+      "count": 50,
+      "min": 1381888,
+      "max": 1381888,
+      "sum": 69094400,
+      "sumsq": 95480722227200
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "fractions",
+      "count": 50,
+      "min": 1412192,
+      "max": 1412192,
+      "sum": 70609600,
+      "sumsq": 99714312243200
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "tiny",
+      "count": 50,
+      "min": 1363092,
+      "max": 1363092,
+      "sum": 68154600,
+      "sumsq": 92900990023200
+    },
+    {
+      "logn": 8,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "nearone",
+      "count": 50,
+      "min": 1355736,
+      "max": 1355736,
+      "sum": 67786800,
+      "sumsq": 91901005084800
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "zero",
+      "count": 50,
+      "min": 125914,
+      "max": 125914,
+      "sum": 6295700,
+      "sumsq": 792716769800
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "unit",
+      "count": 50,
+      "min": 125914,
+      "max": 125914,
+      "sum": 6295700,
+      "sumsq": 792716769800
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "alternating",
+      "count": 50,
+      "min": 125914,
+      "max": 125914,
+      "sum": 6295700,
+      "sumsq": 792716769800
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "fractions",
+      "count": 50,
+      "min": 125914,
+      "max": 125914,
+      "sum": 6295700,
+      "sumsq": 792716769800
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "tiny",
+      "count": 50,
+      "min": 125914,
+      "max": 125914,
+      "sum": 6295700,
+      "sumsq": 792716769800
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "fixed",
+      "class": "nearone",
+      "count": 50,
+      "min": 125914,
+      "max": 125914,
+      "sum": 6295700,
+      "sumsq": 792716769800
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "zero",
+      "count": 50,
+      "min": 2072195,
+      "max": 2072195,
+      "sum": 103609750,
+      "sumsq": 214699605901250
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "unit",
+      "count": 50,
+      "min": 2141827,
+      "max": 2141827,
+      "sum": 107091350,
+      "sumsq": 229371144896450
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "alternating",
+      "count": 50,
+      "min": 2141827,
+      "max": 2141827,
+      "sum": 107091350,
+      "sumsq": 229371144896450
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "fractions",
+      "count": 50,
+      "min": 2141827,
+      "max": 2141827,
+      "sum": 107091350,
+      "sumsq": 229371144896450
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "tiny",
+      "count": 50,
+      "min": 2092871,
+      "max": 2092871,
+      "sum": 104643550,
+      "sumsq": 219005451132050
+    },
+    {
+      "logn": 9,
+      "op": "FFT",
+      "backend": "q32_trial",
+      "class": "nearone",
+      "count": 50,
+      "min": 2141827,
+      "max": 2141827,
+      "sum": 107091350,
+      "sumsq": 229371144896450
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "zero",
+      "count": 50,
+      "min": 143337,
+      "max": 143337,
+      "sum": 7166850,
+      "sumsq": 1027274778450
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "unit",
+      "count": 50,
+      "min": 143337,
+      "max": 143337,
+      "sum": 7166850,
+      "sumsq": 1027274778450
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "alternating",
+      "count": 50,
+      "min": 143337,
+      "max": 143337,
+      "sum": 7166850,
+      "sumsq": 1027274778450
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "fractions",
+      "count": 50,
+      "min": 143337,
+      "max": 143337,
+      "sum": 7166850,
+      "sumsq": 1027274778450
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "tiny",
+      "count": 50,
+      "min": 143337,
+      "max": 143337,
+      "sum": 7166850,
+      "sumsq": 1027274778450
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "fixed",
+      "class": "nearone",
+      "count": 50,
+      "min": 143337,
+      "max": 143337,
+      "sum": 7166850,
+      "sumsq": 1027274778450
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "zero",
+      "count": 50,
+      "min": 3072894,
+      "max": 3072894,
+      "sum": 153644700,
+      "sumsq": 472133876761800
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "unit",
+      "count": 50,
+      "min": 3083859,
+      "max": 3083859,
+      "sum": 154192950,
+      "sumsq": 475509316594050
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "alternating",
+      "count": 50,
+      "min": 3150718,
+      "max": 3150718,
+      "sum": 157535900,
+      "sumsq": 496351195776200
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "fractions",
+      "count": 50,
+      "min": 3220734,
+      "max": 3220734,
+      "sum": 161036700,
+      "sumsq": 518656374937800
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "tiny",
+      "count": 50,
+      "min": 3105681,
+      "max": 3105681,
+      "sum": 155284050,
+      "sumsq": 482262723688050
+    },
+    {
+      "logn": 9,
+      "op": "iFFT",
+      "backend": "q32_trial",
+      "class": "nearone",
+      "count": 50,
+      "min": 3089092,
+      "max": 3089092,
+      "sum": 154454600,
+      "sumsq": 477124469223200
+    }
+  ],
+  "software_double_helpers": [],
+  "constant_time_status": "known operand-dependent timing remains; not a security certification",
+  "counterexample": [
+    {
+      "fixed": "00000000ffffffff",
+      "trial": "3ff0000000000000",
+      "fixed_k": 0,
+      "trial_k": 1
+    }
+  ]
+}

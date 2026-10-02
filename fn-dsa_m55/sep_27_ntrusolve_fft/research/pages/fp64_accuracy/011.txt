@@ -1,0 +1,43 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 11/18
+
+Formal Verification of Emulated Floating-Point Arithmetic in Falcon 11
+store its existence (it always exists in all the ranges). The range arithmetic of
+floating-point multiplication is straightforward as shown in Algorithm 5. For
+the floating-point addition/subtraction with the ranges a and b, we distinguish
+between two cases:
+1. Case a ∩b= {0}: The upper bound is computed as the sum of upper bounds,
+and the lower bound is defined as the minimum of the absolute values of the
+differences between an upper bound and a lower bound from different ranges.
+In other words, the lower bound is defined as min (|a.u−b.l|, |b.u−a.l|).
+2. Case a ∩b= t ̸= {0}: The upper bound is also computed as the sum of
+upper bounds, and the lower bound is defined as the floating-point value
+with mantissa 0 and exponent field 52 smaller than the exponent field of t.l,
+since the smallest value occurs when subtracting two values with the real
+value difference 2e−1075 where e is the smallest exponent field of the two
+and choosing e as the exponent field of t.l results in a worse case analysis.
+Since we have to shift the leading bit of mantissa to the 52-th bit possition,
+the exponent field is subtracted by 52 and the mantissa becomes 252. By
+the definition of floating-point numbers, the leading bit of mantissa is stored
+implicity. This is why we set the mantissa to 0 in the floating-point number
+representation.
+Algorithm 6 is an illustration of the range arithmetic of floating-point addi-
+tion/subtraction. After replacing all the floating-point arithmetic with the range
+arithmetic in the FFT of Falcon, we transform all the input-output tuples into
+pre- and post-conditions for the corresponding CryptoLine model. We then run
+CryptoLine to verify the conditions. Our CryptoLine verification shows that
+– All the range arithmetic are correct within our modeling of floating-point
+addition, subtraction, and multiplication.
+– All non-zero intermediate floating-point numbers have absolute values lie in
+2−529
+, 2−26(252 + 605182448294568)
+when the input coefficients of FFT are integers in−215
+, 215
+.
+Table 1 summarizes the verification time of the range conditions of floating-point
+additions and multiplications in Falcon’s size-1024 complex FFT.
+Algorithm 5: Range arithmetic of floating-point multiplication.
+Inputs: a= (a.l,a.u) ,b= (b.l,b.u)
+Output: c= (c.l,c.u)
+1: c.l= a.l·b.l
+2: c.u= a.u·b.u
+3: return c

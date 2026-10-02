@@ -1,0 +1,102 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 3/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+Algorithm 1: Key Generation KeyGen(φ,q)
+Require: A monic polynomial φ∈Z[x], a modulus q
+Ensure : A secret key sk, a public key pk
+1 f,g,F ,G,γ ←NTRUGen(φ,q) 2 B ← g−f
+G−F
+3ˆ
+B ←FFT(B) ˆ
+ˆ
+4 G ←
+B ×
+B∗
+5 T ←ffLDL∗(G) 6 for each leaf leaf of T do 7 leaf.value ←σ/√leaf.value
+8 sk ←(ˆ
+B,T)
+9 h ←gf−1 mod q
+10 pk ←h
+11 return sk,pk
+◃ Solving the NTRU equation
+◃ Compute the FFT for each of the 4 components {g,−f,G,−F }
+◃ Computing the LDL∗tree
+◃ Normalization step
+2 coefficients (in case of FFT-based polynomial multi-
+plication) and 8 coefficients (in case of NTT-based poly-
+nomial multiplication). Furthermore, we make the most
+of fused multiplication instructions in order to reduce the
+number of redundant addition and subtraction instruc-
+tions. The number of memory accesses during poly-
+nomial multiplication could be reduced by extending
+the previous merging technique. Through the proposed
+several implementation techniques, the performance of
+FFT-based polynomial multiplication could be improved
+as 210% (resp. 188%) on security level 1 (resp. 5). The
+performance of NTT-based polynomial multiplication
+could be also improved as 250% (resp. 228%) on secu-
+rity level 1 (resp. 5).
+• Presenting Optimized Software of Falcon on All
+Security Parameters
+NIST defines the security level of Post Quantum Cryp-
+tosystems from 1 to 5 and Falcon provides parame-
+ters about security level 1 and 5. Thus, we optimize
+the performance of Falcon regarding security 1 and
+5 parameters. Because the polynomial degrees change
+as the parameters change, it is necessary to care-
+fully optimize the performance of FFT-based and
+NTT-based polynomial multiplication. As a result,
+we have optimized the performance of Falcon by prop-
+erly optimizing them for parameters and presented
+the comprehensive performance analysis on all Falcon
+parameters.
+The remainder of this paper is organized as follows
+Section II introduces the Falcon signature scheme and perfor-
+mance profiling of the reference code, as well as a descrip-
+tion of the ARMv8 microcontroller. Section III discusses
+and analyzes existing implementation research for PQC in
+an embedded environment. Section IV presents our opti-
+mized FFT/NTT-based multiplication implementation for the
+ARMv8 platform. Section V compares the performance of
+FFT/NTT-based multiplications and the overall performance
+of Falcon in ARMv8 platforms to the reference implementa-
+tion. Finally, in section VI, we conclude this paper.
+II. PRELIMINARIES
+A. FALCON
+Falcon has a significantly smaller key and signature size
+than other PQC-DSA competitors. Falcon is designed based
+on NTRU lattice, so it satisfies compact DSA by using
+FFT/NTT, which is the core operation of Falcon. The whole
+process of Falcon is quite complex, but we do our best to
+explain Falcon DSA. In this article, we express Falcon’s
+whole algorithm based on PQC-specification.
+KeyGen process of Falcon consists of two distinct parts.
+Algorithm 1 shows the overview of the KeyGen process.
+First, it generates F and G that satisfy the NTRU equation
+through the NTRUGen algorithm. f and g are chosen in
+Gaussian-distribution and check if f−1 exists. Then compute
+h= gf−1mod (q,xn +1). Finally, NTRUGen generates
+F and G that satisfy fG−gF= q mod φ. This process
+moves to the upper field after performing calculations in
+the lower field using the field norm map. NTRUGen is
+efficiently computed using FFT/NTT. In addition, since addi-
+tional operations on one polynomial are used in another, one
+FFT/NTT representation can be used repeatedly. Therefore,
+compared to Crystals-Dilithium, which is the same lattice-
+based PQC-DSA, FFT/NTT are called quite a lot during
+the KeyGen process. Therefore, Falcon’s KeyGen causes a
+lot of performance load compared to other PQC-DSAs. The
+remaining process of KeyGen is generating a Falcon Tree for
+trapdoor sampler operation. In this process, KeyGen process
+performs an LDL∗ decomposition on theˆ
+ˆ
+B ×
+B∗ matrix.
+Finally, it returns the private key sk=(ˆ
+B,T) and the public
+key sk=h=gf−1mod (q,xn +1).
+In Sign process, as shown in Algorithm 2, the signer
+computes a hash value c ∈Zq[x]/<xn +1 >. for message
+m and random seed r. It calculates the short values s1 and
+s2 satisfying s1 +s2h ≡c mod q using the private keys f, g,
+44448 VOLUME 10, 2022

@@ -1,0 +1,46 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 1/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Fast Implementation of Binary Field Multiplication on Arm
+Helium with Applications to Post-Quantum Signatures
+Eric Azevedo de Oliveira', Décio Luiz Gazzoni Filho?3,
+Felix Carvalho Rodrigues, , Julio López'
+'Instituto de Computação - Universidade Estadual de Campinas (UNICAMP)
+2Technology Innovation Institute (TII), Abu Dhabi, UAE
+3Departamento de Engenharia Elétrica - Universidade Estadual de Londrina
+^Universidade Virtual do Estado de São Paulo (UNIVESP)
+e291073@dac.unicamp.br,
+{felix.rodrigues,jlopez}@ic.unicamp.br,
+decio.gazzoni@tii.ae
+Abstract. Polynomial multiplication over binary fields GF(2") is a major bot-
+tleneck in post-quantum cryptographic algorithms, demanding constant-time
+implementations on constrained devices. This paper presents constant-time al-
+gorithms for multiplication and squaring in GF(2"), with n € {128, 192, 256},
+tailored for the Arm Cortex-M85 and applied to the AIMer and FAEST signature
+schemes. By leveraging the VMULLB and VMULLI carry-less multiplication
+instructions from the Helium MVE extension, we deliver vectorized routines
+integrated into the reference codebases of both schemes. Benchmarks on the
+Renesas EK-RA8M1 board show speedups of up to 1.35x for AlMer and 1.30x
+for FAEST-EM.
+1. Introduction
+Polynomial multiplication over binary extension fields is a central operation in many
+cryptographic algorithms. In symmetric cryptography, it appears in AES, the most
+widely used block cipher in practice. The growing family of post-quantum signature
+schemes whose security is based on symmetric primitives also relies heavily on effi-
+cient field arithmetic. Two representative examples are FAEST [Baum et al. 2025] and
+AIMer [Ha et al. 2024]. FAEST, a candidate currently in the second round of the NIST
+post-quantum digital signature standardization process [Alagic et al. 2024], is based on
+the VOLE-in-the-Head (VOLEitH) paradigm, which treats signature generation as a non-
+interactive zero-knowledge (NIZK) argument that the signer knows a secret AES key
+corresponding to a public key. Its security is directly tied to AES-128, AES-192, and AES-
+256, requiring multiplications in GF(2128), GF(2192), and GF(2256) during key generation,
+signing, and verification. AIMer, recently standardized by the Korean KpqC [Firmin 2025]
+competition, is built around the tweakable one-way function AIM2, whose nonlinear layer
+consists of parallel inverse Mersenne S-boxes performing exponentiations of the form
+x?°-1 over the same three fields; these decompose into sequences of squarings and field
+multiplications [Kim et al. 2023] that are invoked repeatedly on every evaluation of AIM2.
+Efficient deployment of these schemes on resource-constrained devices requires
+fast binary polynomial multiplication, since this operation is invoked many times per
+signature operation. In this setting, non-vectorized implementations become a performance

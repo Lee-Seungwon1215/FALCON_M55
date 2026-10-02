@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "scope": "Assembly arithmetic/control and fixed index bounds; not a full CT proof",
+  "loops": [
+    {
+      "symbol": "ds32_tail_fwd4",
+      "loop_instructions": 173,
+      "fp_instructions": {
+        "vmul.f32": 4,
+        "vneg.f32": 7,
+        "vfma.f32": 12,
+        "vadd.f32": 31,
+        "vsub.f32": 47
+      },
+      "FP_sequence_equals_span_except_public_conjugation": true,
+      "vector_memory": 52,
+      "gather": 24,
+      "scatter": 8,
+      "scratch_memory": 4,
+      "conditional_branches_in_loop": 1,
+      "gather_indices_from_fixed_public_tables": true,
+      "private_stack_bytes": 32,
+      "total_stack_bytes_including_ABI": 136
+    },
+    {
+      "symbol": "ds32_tail_inv4",
+      "loop_instructions": 179,
+      "fp_instructions": {
+        "vneg.f32": 11,
+        "vadd.f32": 31,
+        "vsub.f32": 47,
+        "vmul.f32": 4,
+        "vfma.f32": 12
+      },
+      "FP_sequence_equals_span_except_public_conjugation": true,
+      "vector_memory": 58,
+      "gather": 24,
+      "scatter": 8,
+      "scratch_memory": 12,
+      "conditional_branches_in_loop": 1,
+      "gather_indices_from_fixed_public_tables": true,
+      "private_stack_bytes": 64,
+      "total_stack_bytes_including_ABI": 168
+    }
+  ],
+  "all_logN4_to_10_coefficient_indices_covered_exactly_once_per_layer": true
+}

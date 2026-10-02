@@ -1,0 +1,47 @@
+{
+  "result": "PASS_STATIC",
+  "scope": [
+    "fndsa_mqpoly_int_to_ntt",
+    "fndsa_mqpoly_ntt_to_int",
+    "stage-3 constant-twiddle multiplication macros"
+  ],
+  "checks": {
+    "secret_dependent_branch_added": false,
+    "secret_indexed_memory_added": false,
+    "multiply_macros_have_conditional_branches": false,
+    "normalization_uses_mve_predication": true,
+    "branch_inputs": [
+      "public logn",
+      "public implementation dispatch",
+      "fixed loop counters"
+    ]
+  },
+  "final_elf_sites": {
+    "m1": {
+      "vqrdmulh_s16": 57,
+      "vqrdmlah_s16": 57,
+      "vmla_i16": 0,
+      "elf_sha256": "fbfac72d5a62f6499352f1740eaa8bd662f4d286f2ae41e28b0c220a7191f23c"
+    },
+    "b1": {
+      "vqrdmulh_s16": 57,
+      "vqrdmlah_s16": 0,
+      "vmla_i16": 57,
+      "elf_sha256": "13d0eaf22133d81ab48bdae84a7d779e6fbe1d5e682e1b0883b3bbf07f1c4d09"
+    },
+    "ntt_opt_integrated": {
+      "vqrdmulh_s16": 57,
+      "vqrdmlah_s16": 0,
+      "vmla_i16": 57,
+      "elf_sha256": "0a6e2474a2081f0e6ff493f028124df32200ac8fcade17a5707f5bb7a1e2839a",
+      "stripped_loadable_sha256": "21740ac64339cdb29ae827527320949a2c2cb1e70964bb575b30e40c158d69fd",
+      "loadable_image_identical_to_b1": true
+    }
+  },
+  "source_delta": {
+    "mq_c": "reference mq.c plus append-only generated root/twist arrays",
+    "mq_cm55_s": "stage-3 implementation",
+    "all_other_c_h_s": "byte-identical to ref"
+  },
+  "limitation": "Static source/disassembly audit only; not a power/EM TVLA measurement or a proof of absence of microarchitectural leakage."
+}

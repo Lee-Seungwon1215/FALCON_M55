@@ -1,0 +1,84 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 5/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+FIGURE 1. Butterfly diagrams for the cooley-tukey and gentleman-sande for FFT/NTT algorithms [7], [8].
+FFT/NTT for low dimension is calculated in NTRU equation
+and ffSampling, etc., a considerable number of FFT/NTT are
+actually called in Falcon. In the case of Falcon, depending on
+the security level, each polynomial has a depth of 9 to 10 and
+can be divided until a single rational/integer coefficient. Sev-
+eral methods have been proposed to perform the FFT/NTT.
+Falcon uses a butterfly technique based on Cooley-Tukey [7]
+and Gentlemen-Sande [8] because it uses a bit-reversal repre-
+sentation at low dimension. Butterfly method is used to match
+the two transformation methods, and since both algorithms
+are bit-reverse-based, there is no need to invert additional bits.
+Figure 1 shows a diagram of the Cooley-Tukey and
+Gentleman-Sande algorithms. Since both algorithms are
+based on bit-reversal, when multiplying n-th of unity, the data
+tree containing the bit-reversal must be multiplied together
+(ξ=n-th of unity ×bit-reversal tree). In real implemen-
+tations, this can be pre-computed and processed to the
+FFT/NTT algorithm in the form of a lookup table. For the
+FFT algorithm, the coefficients of the polynomial are rational
+domains; therefore, no additional operations are required.
+In this case, the only thing to consider in the FFT algorithm
+is to determine whether each polynomial belongs to the real
+or image part of the complex vector. When Cooley-Tukey
+and Gentleman-Sande are applied, it is divided into real and
+image parts. However, it should be noted that all parts are used
+during calculation. In the case of the NTT algorithm, since
+the main operation is performed in the montgomery domain,
+additional operations are required. Therefore, inevitably,
+in Falcon, NTT is slower than FFT. For the Gentleman-Sande
+algorithm, the coefficients produced when one butterfly oper-
+ation is completed are doubled. Therefore, in the last layer, all
+coefficients must be divided by the size of the vector. In the
+reference implementation, this was processed through shift
+operation in the montgomery domain.
+The number of butterflies of FFT/NTT is calculated in half
+the order per layer (ie, 256/512 times at 512/1024 security
+level). Since it is impossible to hold in the register of ARMv8,
+each polynomial is updated when the butterfly operation on
+the original address is finished. This causes a lot of mem-
+ory access load, so it is necessary that an implementation
+strategy that can minimize memory access for solving this
+mechanism. Therefore, in Section IV, we propose the optimal
+implementation for FFT/NTT implementation in the ARMv8
+environment.
+C. PEFORMANCE PROFILING OF FALCON
+REFERENCE CODES
+In this section, we profile the Falcon code submitted to
+the NIST PQC Competition 3 Round; and, we discuss the
+optimization strategy in this paper. There are three types of
+reference codes for Falcon. Of these, implementation using
+AVX instructions is not of our interest because its target
+platform is the CPU environment. Falcon’s reference imple-
+mentation has an optimized implementation and a generic
+implementation. The optimization implementation uses a
+floating-point data type, and the general implementation uses
+a 64-bit data type for approximating the floating-point oper-
+ation. Currently, public libraries such as PQM4, PQClean,
+and liboqs all have implementations that use approximation-
+based 64-bit data types for generality [4]–[6]. However, the
+ARMv8 platform provides floating-point-based instructions
+in a compact way. Therefore, the target implementation of
+our optimization technique is an optimized implementation
+using Falcon’s floating-point data type. As far as we know,
+Falcon’s development team did not submit the code for the
+ARMv8-A series; thus, the code submitted to the 3 Round is
+the best choice as a result. For profiling, the reference code is
+compiled on Jetson Xavier’s ARMv8.2.
+Table 2 shows the profiling performance of Falcon’s ref-
+erence code in Jetson Xavier. Falcon consists of three parts:
+KeyGen, Sign, and Verify. As shown in Section 1,
+KeyGen generates the NTRU lattices and calls FFT/NTT
+hundreds of times to solve the NTRU equation. The number
+of times is variable; however, it is extremely rare to repeat
+KeyGen’s main loop more than 5 times. Various versions
+of FFT are called in internal functions including LDL∗that
+KeyGen and Sign processes call. For this reason, construct-
+ing Falcon’s optimization strategy is not easy. In addition,
+the dividing process of all FFT/NTT in each inner function
+is variable without working up to the first-order coefficients.
+44450 VOLUME 10, 2022

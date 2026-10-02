@@ -1,0 +1,47 @@
+DOCUMENT: m55_slothy.pdf PAGE: 40/46
+
+40 Fast and Clean: Auditable high-performance assembly via constraint solving
+not able to work with symbolic registers, we let slothy preprocess the entire loop body to
+replace all symbolic registers (by setting constraints.allow_reordering=False
+and constraints.functional_only=True).
+AArch64Registerviews. AnotherchallengewhenoptimizingAArch64codewithSLOTHY
+are partial register views: For example, the lower 32-bit of the 64-bit register x0 can
+be accessed using the w0 alias, and similarly d0 corresponds to the lower 64-bit of the
+128-bit vector register v0. The core of SLOTHY is not aware of these register views
+and only models the full registers. To accommodate, we extend the instruction parser to
+replace those register views with the corresponding full register names before passing the
+instructions to SLOTHY, and re-apply the views when writing out the result. For symbolic
+registers, we extend the parser to allow accessing different views of the symbolic register:
+For example, to access the w-view of a register with name reg, one can write W<reg>.
+8.4.2 Results
+Benchmarking environment. For the Cortex-A55 processor, we use the same platform
+as in Section 8.3 (a Qualcomm Snapdragon SM8350P). To verify that our changes do
+not lower the performance on the target platform of [Len19], we also benchmark on a
+Raspberry Pi 3 Model A+ which comes with four 1.4 GHz Cortex-A53 cores.
+Performance. Table 5 contains the cycle counts for a single variable-base-point scalar
+multiplication on the Cortex-A53 and Cortex-A55 CPUs. Note that we do not apply
+optimizations specific to Cortex-A53, i.e., we benchmark the Cortex-A55-optimized code
+on the Cortex-A53. Our implementation is slightly faster than the implementation from
+[Len19], while maintaining exactly the same instructions and code size. Around 1000
+cycles of the improvement are due to aligning the stack, while the rest is due to slothy.
+Our main loop takes 483 cycles on the Cortex-A55, which is 15 cycles less than the main
+loop of [Len19], and thereby achieves a near-perfect 1.98 IPC.
+Optimality. As noted in Section 7, global optimality of SLOTHY-optimized source code is
+no longer guaranteed once heuristics are used. Yet, the near-perfect IPCs obtained in this
+example demonstrate that SLOTHY remains a very powerful tool even for large kernels
+requiring extensive use of heuristics.
+Type Cycles Code size Readable1 Flexible
+µarch
+X25519
+[Len19] Our work Cortex-A55
+Handwritten ASM 143849 5.8 KB- ✕
+Clean 265739 5.8 KB
++ ✓
+slothyA55 139752 5.8 KB
+[Len19] Our work Cortex-A53
+Handwritten ASM 144168 5.8 KB- ✕
+Clean 270186 5.8 KB
++ ✓
+slothyA55 140096 5.8 KB
+1 See Table 2 for a legend.
+Table 5: Comparison of variable-base-point scalar multiplications for X25519 on AArch64.

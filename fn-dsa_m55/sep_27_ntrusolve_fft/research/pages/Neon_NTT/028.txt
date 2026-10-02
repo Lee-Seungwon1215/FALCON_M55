@@ -1,0 +1,22 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 28/38
+
+28 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 28 Dilithium verification
+Input: pk= (r,t1)
+Input: Message M ∈{0,1}∗
+Input: Signature σ= (z,h,˜
+c)
+Output: Valid or Invalid
+1: ntt(A) ∈Rk×ℓ
+q ←ExpandA(r)
+2: µ∈{0,1}384 ←H(H(r||t1)||M)
+3: c←HB(˜ c)
+4: w′
+1 ←UseHint(h,Az−2dct1)
+5: if˜
+c= H(µ||w′
+1) and ∥z∥∞<γ1−β and # 1’s in h≤ω then
+6: return Valid
+7: else
+8: return Invalid
+9: end if

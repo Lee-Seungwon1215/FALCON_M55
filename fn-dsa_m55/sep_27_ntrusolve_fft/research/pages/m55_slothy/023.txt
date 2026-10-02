@@ -1,0 +1,35 @@
+DOCUMENT: m55_slothy.pdf PAGE: 23/46
+
+Abdulrahman, Becker, Kannwischer, Klein 23
+Section 4.10, where the theoretically optimal throughput seems achievable only with careful
+scheduling in consideration of the frontend’s dispatch constraints.
+Finally, there are newergenerations of A-profile coresin theCortex-A5x and Cortex-A7x
+lines one can consider, such as the Cortex-A510 processor and the Cortex-A78, Cortex-A710
+and Cortex-A715 processors. We believe that SLOTHY will generally prove useful for the
+Cortex-A5x in-order range — the Cortex-A510 CPU is particularly interesting because it
+shares two Neon-units between two CPUs. Newer generations of Cortex-A7x cores, in turn,
+seem likely to benefit less from SLOTHY for Neon workloads: While they have a backend
+throughput of 2 Neon-IPC, many of them have a frontend that can achieve a maximum
+of 4 Neon-IPC, and so we expect to observe less scheduling sensitivity. Where newer
+generations of A-profile cores are explored, newer vector extensions such as SVE/SVE2
+should be considered as well.
+Otherarchitectures. WhilethisworkisfocusedontheArmM-andA-profilearchitectures,
+the SLOTHY approach itself is architecture-agnostic and can be used to optimize for other
+CPU or DSP/AI/ML accelerator (micro)architectures as well. Doing so, however, is beyond
+the scope of this work, and left for further research.
+7 SLOTHY as a development tool
+Figure 6: High-level structure of slothy, our implementation of SLOTHY.
+In this section, we describe our implementation and the intended usage of SLOTHY.
+7.1 Overview
+Goal. We aim for SLOTHY to enable an automated, non-interactive and auditable
+optimization-step, operating on a clean and readable “base implementation” maintained
+by the developer(s). In this vision, the developer’s responsibility and focus is to identify
+algorithms for the target workload and to express those in terms of the target architecture,
+without being impeded by microarchitectural performance concerns. The base implementa-
+tion ought to be auditable and verifiable because of its clarity, while the SLOTHY-generated
+optimizations ought to be auditable and eventually verifiable on the basis of information
+emitted by SLOTHY, without trust in SLOTHY or its implementation.
+We emphasize that “clean assembly” is not an oxymoron: For example, .req directives
+allow for the use of symbolic register names, while .macro directives allow for the
+encapsulation of common functionality. The examples discussed below will demonstrate
+that those two constructs alone enable very readable assembly implementations.

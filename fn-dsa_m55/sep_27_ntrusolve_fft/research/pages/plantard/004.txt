@@ -1,0 +1,65 @@
+DOCUMENT: plantard.pdf PAGE: 4/24
+
+4 Improved Plantard Arithmetic for Lattice-based Cryptography
+Ring-LWE. More recently, Langlois and Stehlé [LS15] proposed the Module-LWE problem,
+which bridges LWE and Ring-LWE. One of the NIST PQC KEM finalists, Kyber, is
+constructed based on Module-LWE. The original NTRU, which was proposed in 1996 and
+first published in 1998 [HPS98] by Hoffstein, Pipher, and Silverman, has gone through a
+long research history. As one of the KEM finalists, NTRU has been significantly improved
+in terms of security and efficiency compared with the original design.
+2.1 Kyber
+The security of Kyber is based on the Module-LWE problem, whose formal definition is
+given as follows:
+(A,b= ATs + e). (1)
+Here, the secret vector s is sampled from a centered binomial distribution Bη(Rk×1
+q ),
+where k is the dimension of the underlying Module-LWE problem. The public matrix A
+is sampled from a uniform random distribution U(Rk×k
+q ). The decisional Module-LWE
+problem indicates that (A,b) is computationally indistinguishable from a uniform random
+sampling.
+The polynomial ring used within Kyber is Rq = Zq[X]/(Xn + 1) with q = 3329 and
+n= 256 across all parameter sets. Each polynomial coefficient in Rq can be accommodated
+ina16-bitinteger, whichenablesa16-bitNTTpolynomialmultiplication. Kyberconstructs
+a CCA-secure KEM from a CPA-secure public key encryption (PKE). Kyber PKE consists
+of key generation (Algorithm 1), encryption (Algorithm 2), and decryption (Algorithm 3).
+We refer readers to Kyber’s specification [ABD+20] for more details about the CCA-secure
+KEM. The core operation of Kyber in key generation and encryption is the matrix-vector
+multiplication, i.e.,ˆ
+A ◦NTT(s) andˆ
+AT ◦
+ˆ
+t, where each element of the matrix and vector
+is a polynomial.
+Algorithm 1 Kyber.PKE Key Generation [ABD+20]
+ˆ
+Output: pk= (
+b,ρ),sk=
+ˆ
+s
+1: seed←{0,···
+,255}32
+2: ρ,σ←SHAKE256(64,seed)
+3:ˆ
+A ←GenMatrixA(ρ)
+4: s ←SampleVec(σ,0)
+5: e ←SampleVec(σ,1)
+6:ˆ
+b ←ˆ
+A ◦NTT(s) + NTT(e)
+ˆ
+7: return pk= (
+b,ρ),sk=
+ˆ
+s
+2.2 NTRU and NTTRU
+NTRU, as a finalist in the third round of the NIST PQC project, is the combination of
+two first-round candidates, NTRUEncrypt [ZCHW] and NTRU-HRSS-KEM [SHRS]. The
+KEM specified in the NTRU’s specification is constructed using a generic transformation
+of a correct deterministic public-key encryption scheme (correct DPKE)[CDH+20]. The
+polynomial arithmetic of NTRU operates in three polynomial rings Z3[x]/Φn,Zq[x]/Φn,
+and Zq[x]/(Φ1·Φn) with Φ1 = (x−1) and Φn = xn−1 + xn−2 +···+ 1.
+NTTRU[LS19], an NTT-friendly variant of NTRU, is constructed using a partially
+correct probabilistic public-key encryption scheme (partially correct PPKE). The speed
+of NTTRU is faster than other NTRU variants, including the third-round finalist NTRU
+and alternate candidate NTRU Prime. However, the authors only provided security proof

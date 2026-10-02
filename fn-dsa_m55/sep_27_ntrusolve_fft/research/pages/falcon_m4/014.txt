@@ -1,0 +1,47 @@
+DOCUMENT: falcon_m4.pdf PAGE: 14/18
+
+In an fpr_add_sub operation, we compute x +y and x−y. The first shift (for “mantissa
+phasing”) can be mutualized, since it does not depend on the operand signs. The scond shift
+must be performed twice, though, since the two results need not have the same size as integers.
+Rounding. The used rounding policy is “roundTiesToEven”, which means that the true
+mathematical result is rounded to the nearest representable value, and if there is a tie (the
+value falls right in the middle of the range between two representable values) then the output
+should use the value whose least significant bit is zero. This rounding rule can be implemented
+in several ways; we use the following method, which is efficient on the M4. Consider the true
+mathematical result, which ends with the following sequence of bits (with rightmost bit being
+the least significant):
+. . . bnbn−1bn−2 . . . b0
+To bring the value into the representable mantissa range, it must be right-shifted by n bits,
+making bn the new least significant bit. In that case, rounding really means:
+1. 2. Right-shift the value by n bits.
+Add 1 to the resulting shifted value in exactly the following cases:
+– bn = 1 and bn−1 = 1
+– bn−1 = 1 and there exists j ∈[0, n−2]such that bj ≠ 0
+Note that the two cases are not mutually exclusive.
+It is equivalent to consider the n +1-bit integer r = bn−1bn−2 . . . b0bn (i.e. all n dropped bits,
+and the least significant non-dropped bit bn pushed at the low position): 1 must be added to
+the shifted value if and only if r ≥2n +1, i.e. r +(2n
+−1)≥2n+1. We arrange for assembling
+r in the top bits of a register, so that the comparison is really an addition that may or may
+not generate a carry, which we propagate into the shifted value. Here is an example, extracted
+from fpr_add; the value to normalize is in r6:r12 and is in the [263
+, 264
+−1]range (the
+top bit of r12 is set); the low 7 bits of r6 are zero; the shift count is n = 11. The output is
+expected in r0:r1 and the sign and exponent have already been set in r1, so the mantissa
+must be added into r1. The whole operation executes in 6 cycles:
+@ The low 12 @ bits of r6 (in high-to-low order) are:
+@ b4 b3 b2 b1 b0 0000000
+@ After a strict right shift, b4 is the lowest bit. Rounding
+@ will add +1 to the value if and only if:
+@ - b4 = 0 and b3:b2:b1:b0 >= 1001
+@ - b4 = 1 and b3:b2:b1:b0 >= 1000
+@ Equivalently, we must add +1 after the shift if and only if:
+@ b3:b2:b1:b0:b4 + 01111 >= 100000
+lsls r3, r6, #21 @ top(r3) = b3:b2:b1:b0:00...
+lsrs r0, r6, #11
+bfi r3, r0, #27, #1 @ top(r3) = b3:b2:b1:b0:b4:00...
+adds r3, r3, #0x78000000 @ add 01111 to top bits
+adcs r0, r0, r12, lsl #21 @ propagate carry
+adcs r1, r1, r12, lsr #11 @ ... into the whole value
+14

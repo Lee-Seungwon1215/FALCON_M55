@@ -1,0 +1,42 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 3/18
+
+Formal Verification of Emulated Floating-Point Arithmetic in Falcon 3
+Algorithm 1: Falcon key generation from the reference implementation.
+Outputs: a public key pk and a secret key sk
+1: (f,g) = mkgauss() 2: (F,G) = solve_NTRU(f,g,xn + 1,q) 3: h= gf−1 mod (xn + 1,q)
+4: sk = (f,g,F,G)
+5: pk= h
+6: return pk,sk
+▷ Generate f,g from a discrete gaussian distribution.
+▷ fG−gF= qmod (xn + 1)
+operations in C up to the bitreversal permutation. In Falcon, since the input co-
+efficients are integers, [Por19] implemented an optimized variant of the complex
+Cooley–Tukey FFT with C= R[z]/ z2 + 1 . They also approximated the real
+number arithmetic by floating-point arithmetic in the signature generation.
+2.3 Emulated Floating-Point Arithmetic
+In Falcon, the real arithmetic in the signature generation is implemented as
+floating-pointarithmetic.WebrieflyreviewtheIEEE754double-precisionfloating-
+point specification.
+A double-precision floating-point number is a 64-bit element consists of three
+parts (most significant bits first): a 1-bit s for the sign, an 11-bit e for the biased
+exponent, and a 52-bit m for the mantissa. We denote a floating-point as s|e|m
+with the sign s, the biased exponent e, and the mantissa m. When the biased
+exponent satisfies 0 < e < 2047, the floating-point number corresponds to the
+following real number:
+(−1)s 2e−1075 252 + m .
+We call such a floating-point number normal. In addition to the normal values,
+we also have the following special values:
+– e = 0, m = 0: This corresponds to a zero value. Notice that there are two
+zeros ±0 distinguished by the sign s.
+– e = 0, m ̸= 0: This corresponds to the denormalized number (−1)s 2e−1074m.
+– e = 2047, m = 0: This corresponds to an infinity. Notice that there are also
+two infinities ±∞distinguished by the sign s.
+– e = 2047, m ̸= 0: This corresponds to a NaN (not-a-number) value.
+In IEEE-754, “rounding to the nearest even” is adopted by default for rounding
+the real number result to a floating-point number. In Falcon, the authors claimed
+that infinites, NaNs, and denormalized numbers are not used and implemented
+a set of functions emulating the elementary floating-point arithmetic where the
+results are, according to their claim, correctly rounded for all normal values and
+zeros with “rounding to the nearest even” rule [Por19, Section 3.3]. We show that
+the latter doesn’t hold, but it doesn’t impact the complex fast Fourier transform
+in the signature generation of Falcon.

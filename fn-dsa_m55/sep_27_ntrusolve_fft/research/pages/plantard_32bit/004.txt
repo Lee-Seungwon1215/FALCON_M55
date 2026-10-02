@@ -1,0 +1,120 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 4/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 4
+Algorithm 2 Signed Plantard multiplication [20]
+Input: Two signed integers a,b ∈ [−q2α,q2α],q <
+2l−α−1,q′
+= q−1 mod±22l
+Output: r= ab(−2−2l) mod±q where r∈[−
+q+1
+q
+2 )
+1: r= [[abq′]2l]l + 2α q
+l
+2: return r
+2 ,
+Barrett arithmetic. As suggested in [9], when Montgomery-
+like algorithms are used in the modular multiplication by the
+twiddle factor in NTT, we can store the twiddle factor in
+the Montgomery or Plantard domain, namely multiplying the
+twiddle factor with 2l or 22l mod q. In this way, the Mont-
+gomery/Plantard multiplication by the twiddle factor could
+cancel the special term (2−l or 2−2l) and generate output in
+the normal domain.
+The biggest difference between these two algorithms is that
+the product abis only used once in the Plantard multiplication,
+while it is used twice in the Montgomery multiplication. Then,
+when operand b is a constant, the Plantard multiplication can
+precompute the product of b and q−1 mod 22l. Therefore, if
+we can handle the l×2l-bit multiplication a·(bq′) in one
+instruction on the target platform, the Plantard multiplication
+is one multiplication fewer than the Montgomery and Barrett
+arithmetic. Apart from this advantage, Huang et al. [20] further
+improved the Plantard arithmetic’s input range and output
+range, making it a better modular arithmetic in LBC schemes.
+D. Target Platforms: Cortex-M3 and RISC-V
+The ARM Cortex-M3 platform we use is Arduino Due
+which integrates an Atmel SAM3X8E core [27]. It comprises
+96 KiB of RAM and 512 KiB of Flash, and operates at a
+maximum frequency of 16 MHz. Similar to Cortex-M4, the
+Cortex-M3 platform has 16 32-bit general-purpose registers,
+of which fourteen are programmable. However, it doesn’t
+provide any floating-point (FP) registers and SIMD extensions.
+It should be noted that there are some non-constant-time
+instructions like umull, smull, umlal and smlal [28] that we
+need to avoid using during the cryptographic implementation,
+otherwise it may suffer from timing attacks. The only two “se-
+cure” multiplication instructions one can use in this platform
+are the mul and mla instructions for computing the low 32
+bits of the 64-bit product. The mul instruction costs one cycle
+while the mla instruction takes two cycles. Most of the other
+instructions are 1-cycle, while the memory access operations
+such as ldrh, ldr, ldrd, strh, str and strd are relatively
+expensive. Loading or storing half-word/word requires two
+cycles, and loading or storing double-word (ldrd/strd) takes
+three cycles. Cortex-M3 also provides a useful inline barrel
+shifter operation, similar to Cortex-M4, which performs an
+additional shift operation before the addition and subtraction
+instructions, without additional overhead. For instance, the
+instruction (add.w rd, rn, rm, asr #16) first right-shifts the
+operand rm by 16 bits, and subsequently, the addition is
+performed using the right-shifted result.
+RISC-V is an open-source standard Instruction Set Ar-
+chitecture (ISA), enabling a new era of processor innova-
+tion through open collaboration. Because of its open-source
+features, it has attracted huge attention from both research
+community and industry. We select two RISC-V platforms as
+the benchmark platforms. The first one is the SiFive Freedom
+E310 board, which integrates a 32-bit E31 RISC-V core [29].
+The RV32IMAC instruction set is instantiated in this core.
+This platform is a memory-constrained IoT device with only
+16KiB of RAM, making it a suitable platform for measuring
+the performance and applicability of LBC schemes on low-
+end IoT devices. The second platform is a RISC-V simulator
+based on VexRiscv2, as described in pqriscv-vexriscv3 and
+used in PQRISC4. The RV32IM instruction set is instantiated
+in this simulator. In the following sections, we will denote
+the VexRiscv RISC-V simulator as PQRISCV. Both platforms
+comprise of 32 32-bit general-purpose registers, of which
+thirty are programmable. Similar to the Cortex-M3 platform,
+they do not have powerful SIMD extensions. The cycle counts
+of some instructions of PQRISCV are not well-specified in the
+documents, so we will not discuss them in detail. The cycle
+counts mentioned below only refer to the SiFive board. There
+are only two multiplication instructions (mul, mulh) that can
+be used, and both of them take five cycles on the SiFive board.
+Loading or storing one word (lw, sw) requires two cycles
+while loading or storing one half-word or byte (lh, lhu, lb,
+lu) takes three cycles. Apart from the multiplication, division,
+and memory access operations, most of the other instructions
+consume one cycle. All instructions are constant-time except
+the division.
+III. IMPROVEMENTS ON PLANTARD ARITHMETIC
+In this section, the detail of the Plantard arithmetic with
+enlarged input range will be introduced. And this improved
+version is further tailored for Kyber’s modulus.
+A. Plantard Arithmetic with Enlarged Input Range
+We observe that the signed-version Plantard multiplication
+(see Algorithm 2) proposed in [20] accepts inputs a,b in
+range [−q2α,q2α]. By replacing q < 2l−α−1 into the range
+of a,b, we can see that it approximately covers most of the
+l-bit signed integers (−2l−1
+,2l−1). Therefore, the Plantard
+reduction, which takes a·b as input, can only accept input
+in (−22l−2
+,22l−2), and it cannot cover all the 2l-bit signed
+integers (i.e., [−22l−1
+,22l−1)). As mentioned before, the co-
+efficients in the NTT/INTT implementation in [20] cannot
+overflow 16-bit signed integer due to the use of the SIMD ex-
+tension on Cortex-M4. Therefore, the signed-version Plantard
+arithmetic proposed in [20] is already quite sufficient for the
+implementation on Cortex-M4. However, their implementation
+did not fully utilize the large input range, which is larger
+than the maximum bound of a 16-bit signed integer, of the
+Plantard multiplication by a constant [20, Algorithm 11]. On
+the contrary, the implementation on low-end 32-bit platforms
+stores each coefficient in a 32-bit register. It enables us to
+2https://github.com/SpinalHDL/VexRiscv
+3https://github.com/mupq/pqriscv-vexriscv
+4https://github.com/mupq/pqriscv

@@ -1,0 +1,380 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 63322
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :63322 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10005bf0
+hbreak *0x10008e5c
+set $early_fault_bp = $bpnum
+jump *0x10008e71
+if $pc != 0x10005bf0
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpv6y9o5gb/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10005ba0
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10008e5c
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 63322
+Info : Listening on port 63322 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/63322
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x1800350e msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+C_KERNEL logn=4 op=0 backend=0 calls=100 total=179300 min=1793 max=1793 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=4 op=0 backend=1 calls=100 total=152200 min=1522 max=1522 differences=1597 max_lsb_ceil=4 invalid=0
+C_KERNEL logn=4 op=1 backend=0 calls=100 total=206000 min=2060 max=2060 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=4 op=1 backend=1 calls=100 total=166700 min=1667 max=1667 differences=1300 max_lsb_ceil=3 invalid=0
+C_KERNEL logn=4 op=2 backend=0 calls=100 total=2846300 min=28463 max=28463 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=4 op=2 backend=1 calls=100 total=278900 min=2789 max=2789 differences=1599 max_lsb_ceil=1 invalid=0
+C_KERNEL logn=4 op=3 backend=0 calls=100 total=60500 min=605 max=605 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=4 op=3 backend=1 calls=100 total=80600 min=806 max=806 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=4 op=4 backend=0 calls=100 total=148000 min=1480 max=1480 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=4 op=4 backend=1 calls=100 total=282000 min=2820 max=2820 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=4 op=5 backend=0 calls=100 total=17800 min=178 max=178 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=4 op=5 backend=1 calls=100 total=232500 min=2325 max=2325 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=0 backend=0 calls=100 total=440300 min=4403 max=4403 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=0 backend=1 calls=100 total=345100 min=3451 max=3451 differences=3197 max_lsb_ceil=8 invalid=0
+C_KERNEL logn=5 op=1 backend=0 calls=100 total=506200 min=5062 max=5062 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=1 backend=1 calls=100 total=376200 min=3762 max=3762 differences=2941 max_lsb_ceil=3 invalid=0
+C_KERNEL logn=5 op=2 backend=0 calls=100 total=5687100 min=56871 max=56871 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=2 backend=1 calls=100 total=550100 min=5501 max=5501 differences=3190 max_lsb_ceil=1 invalid=0
+C_KERNEL logn=5 op=3 backend=0 calls=100 total=114900 min=1149 max=1149 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=3 backend=1 calls=100 total=155000 min=1550 max=1550 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=4 backend=0 calls=100 total=279200 min=2792 max=2792 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=4 backend=1 calls=100 total=542000 min=5420 max=5420 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=5 backend=0 calls=100 total=32200 min=322 max=322 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=5 op=5 backend=1 calls=100 total=457300 min=4573 max=4573 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=0 backend=0 calls=100 total=1048900 min=10489 max=10489 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=0 backend=1 calls=100 total=786800 min=7868 max=7868 differences=6389 max_lsb_ceil=12 invalid=0
+C_KERNEL logn=6 op=1 backend=0 calls=100 total=1203600 min=12036 max=12036 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=1 backend=1 calls=100 total=857100 min=8571 max=8571 differences=6177 max_lsb_ceil=4 invalid=0
+C_KERNEL logn=6 op=2 backend=0 calls=100 total=11368701 min=113687 max=113688 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=2 backend=1 calls=100 total=1092500 min=10925 max=10925 differences=6387 max_lsb_ceil=1 invalid=0
+C_KERNEL logn=6 op=3 backend=0 calls=100 total=223700 min=2237 max=2237 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=3 backend=1 calls=100 total=303800 min=3038 max=3038 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=4 backend=0 calls=100 total=541600 min=5416 max=5416 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=4 backend=1 calls=100 total=1062000 min=10620 max=10620 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=5 backend=0 calls=100 total=61000 min=610 max=610 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=6 op=5 backend=1 calls=100 total=906900 min=9069 max=9069 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=0 backend=0 calls=100 total=2442700 min=24427 max=24427 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=0 backend=1 calls=100 total=1786500 min=17865 max=17865 differences=12773 max_lsb_ceil=24 invalid=0
+C_KERNEL logn=7 op=1 backend=0 calls=100 total=2795400 min=27954 max=27954 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=1 backend=1 calls=100 total=1946300 min=19463 max=19463 differences=12591 max_lsb_ceil=4 invalid=0
+C_KERNEL logn=7 op=2 backend=0 calls=100 total=22731900 min=227319 max=227319 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=2 backend=1 calls=100 total=2177300 min=21773 max=21773 differences=12766 max_lsb_ceil=1 invalid=0
+C_KERNEL logn=7 op=3 backend=0 calls=100 total=441300 min=4413 max=4413 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=3 backend=1 calls=100 total=601400 min=6014 max=6014 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=4 backend=0 calls=100 total=1066400 min=10664 max=10664 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=4 backend=1 calls=100 total=2102000 min=21020 max=21020 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=5 backend=0 calls=100 total=118600 min=1186 max=1186 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=7 op=5 backend=1 calls=100 total=1806100 min=18061 max=18061 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=0 backend=0 calls=100 total=5586900 min=55869 max=55869 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=0 backend=1 calls=100 total=4023400 min=40234 max=40234 differences=25563 max_lsb_ceil=41 invalid=0
+C_KERNEL logn=8 op=1 backend=0 calls=100 total=6376000 min=63760 max=63760 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=1 backend=1 calls=100 total=4383300 min=43833 max=43833 differences=25396 max_lsb_ceil=4 invalid=0
+C_KERNEL logn=8 op=2 backend=0 calls=100 total=45458301 min=454583 max=454584 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=2 backend=1 calls=100 total=4346900 min=43469 max=43469 differences=25552 max_lsb_ceil=1 invalid=0
+C_KERNEL logn=8 op=3 backend=0 calls=100 total=876500 min=8765 max=8765 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=3 backend=1 calls=100 total=1196600 min=11966 max=11966 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=4 backend=0 calls=100 total=2116000 min=21160 max=21160 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=4 backend=1 calls=100 total=4182000 min=41820 max=41820 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=5 backend=0 calls=100 total=233800 min=2338 max=2338 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=8 op=5 backend=1 calls=100 total=3604500 min=36045 max=36045 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=0 backend=0 calls=100 total=12591900 min=125919 max=125919 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=0 backend=1 calls=100 total=8977100 min=89771 max=89771 differences=51091 max_lsb_ceil=77 invalid=0
+C_KERNEL logn=9 op=1 backend=0 calls=100 total=14334200 min=143342 max=143342 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=1 backend=1 calls=100 total=9778300 min=97783 max=97783 differences=50996 max_lsb_ceil=5 invalid=0
+C_KERNEL logn=9 op=2 backend=0 calls=100 total=90911101 min=909111 max=909112 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=2 backend=1 calls=100 total=8686100 min=86861 max=86861 differences=51097 max_lsb_ceil=1 invalid=0
+C_KERNEL logn=9 op=3 backend=0 calls=100 total=1746900 min=17469 max=17469 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=3 backend=1 calls=100 total=2387000 min=23870 max=23870 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=4 backend=0 calls=100 total=4215200 min=42152 max=42152 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=4 backend=1 calls=100 total=8342000 min=83420 max=83420 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=5 backend=0 calls=100 total=464200 min=4642 max=4642 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=9 op=5 backend=1 calls=100 total=7201300 min=72013 max=72013 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=0 backend=0 calls=100 total=28038500 min=280385 max=280385 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=0 backend=1 calls=100 total=19849201 min=198492 max=198493 differences=102184 max_lsb_ceil=141 invalid=0
+C_KERNEL logn=10 op=1 backend=0 calls=100 total=31847601 min=318476 max=318477 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=1 backend=1 calls=100 total=21614100 min=216141 max=216141 differences=102197 max_lsb_ceil=5 invalid=0
+C_KERNEL logn=10 op=2 backend=0 calls=100 total=181816703 min=1818167 max=1818168 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=2 backend=1 calls=100 total=17364500 min=173645 max=173645 differences=102179 max_lsb_ceil=1 invalid=0
+C_KERNEL logn=10 op=3 backend=0 calls=100 total=3487700 min=34877 max=34877 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=3 backend=1 calls=100 total=4767800 min=47678 max=47678 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=4 backend=0 calls=100 total=8413600 min=84136 max=84136 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=4 backend=1 calls=100 total=16662001 min=166620 max=166621 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=5 backend=0 calls=100 total=925000 min=9250 max=9250 differences=0 max_lsb_ceil=0 invalid=0
+C_KERNEL logn=10 op=5 backend=1 calls=100 total=14394900 min=143949 max=143949 differences=0 max_lsb_ceil=0 invalid=0
+C_SEGMENT logn=4 backend=0 calls=100 total=3769500 min=37695 max=37695 k_differences=0
+C_SEGMENT logn=4 backend=1 calls=100 total=1610300 min=16103 max=16103 k_differences=0
+C_TIMING logn=4 class=0 calls=100 total=1610500 min=16105 max=16105 valid=1
+C_TIMING logn=4 class=1 calls=100 total=1610500 min=16105 max=16105 valid=1
+C_TIMING logn=4 class=2 calls=100 total=1610500 min=16105 max=16105 valid=1
+C_TIMING logn=4 class=3 calls=100 total=1610500 min=16105 max=16105 valid=1
+C_TIMING logn=4 class=4 calls=100 total=1610500 min=16105 max=16105 valid=1
+C_TIMING logn=4 class=5 calls=100 total=1610500 min=16105 max=16105 valid=1
+C_SEGMENT logn=5 backend=0 calls=100 total=7766101 min=77661 max=77662 k_differences=0
+C_SEGMENT logn=5 backend=1 calls=100 total=3294100 min=32941 max=32941 k_differences=0
+C_TIMING logn=5 class=0 calls=100 total=3294300 min=32943 max=32943 valid=1
+C_TIMING logn=5 class=1 calls=100 total=3294300 min=32943 max=32943 valid=1
+C_TIMING logn=5 class=2 calls=100 total=3294300 min=32943 max=32943 valid=1
+C_TIMING logn=5 class=3 calls=100 total=3294300 min=32943 max=32943 valid=1
+C_TIMING logn=5 class=4 calls=100 total=3294300 min=32943 max=32943 valid=1
+C_TIMING logn=5 class=5 calls=100 total=3294300 min=32943 max=32943 valid=1
+C_SEGMENT logn=6 backend=0 calls=100 total=16029500 min=160295 max=160295 k_differences=0
+C_SEGMENT logn=6 backend=1 calls=100 total=6833200 min=68332 max=68332 k_differences=0
+C_TIMING logn=6 class=0 calls=100 total=6833400 min=68334 max=68334 valid=1
+C_TIMING logn=6 class=1 calls=100 total=6833400 min=68334 max=68334 valid=1
+C_TIMING logn=6 class=2 calls=100 total=6833400 min=68334 max=68334 valid=1
+C_TIMING logn=6 class=3 calls=100 total=6833400 min=68334 max=68334 valid=1
+C_TIMING logn=6 class=4 calls=100 total=6833400 min=68334 max=68334 valid=1
+C_TIMING logn=6 class=5 calls=100 total=6833400 min=68334 max=68334 valid=1
+C_SEGMENT logn=7 backend=0 calls=100 total=33106501 min=331065 max=331066 k_differences=0
+C_SEGMENT logn=7 backend=1 calls=100 total=14269000 min=142690 max=142690 k_differences=0
+C_TIMING logn=7 class=0 calls=100 total=14269200 min=142692 max=142692 valid=1
+C_TIMING logn=7 class=1 calls=100 total=14269200 min=142692 max=142692 valid=1
+C_TIMING logn=7 class=2 calls=100 total=14269200 min=142692 max=142692 valid=1
+C_TIMING logn=7 class=3 calls=100 total=14269200 min=142692 max=142692 valid=1
+C_TIMING logn=7 class=4 calls=100 total=14269200 min=142692 max=142692 valid=1
+C_TIMING logn=7 class=5 calls=100 total=14269200 min=142692 max=142692 valid=1
+C_SEGMENT logn=8 backend=0 calls=100 total=68370701 min=683707 max=683708 k_differences=0
+C_SEGMENT logn=8 backend=1 calls=100 total=29869400 min=298694 max=298694 k_differences=0
+C_TIMING logn=8 class=0 calls=100 total=29869600 min=298696 max=298696 valid=1
+C_TIMING logn=8 class=1 calls=100 total=29869600 min=298696 max=298696 valid=1
+C_TIMING logn=8 class=2 calls=100 total=29869600 min=298696 max=298696 valid=1
+C_TIMING logn=8 class=3 calls=100 total=29869600 min=298696 max=298696 valid=1
+C_TIMING logn=8 class=4 calls=100 total=29869600 min=298696 max=298696 valid=1
+C_TIMING logn=8 class=5 calls=100 total=29869600 min=298696 max=298696 valid=1
+C_SEGMENT logn=9 backend=0 calls=100 total=141129301 min=1411293 max=1411294 k_differences=0
+C_SEGMENT logn=9 backend=1 calls=100 total=62541402 min=625414 max=625415 k_differences=0
+C_TIMING logn=9 class=0 calls=100 total=62541600 min=625416 max=625416 valid=1
+C_TIMING logn=9 class=1 calls=100 total=62541600 min=625416 max=625416 valid=1
+C_TIMING logn=9 class=2 calls=100 total=62541600 min=625416 max=625416 valid=1
+C_TIMING logn=9 class=3 calls=100 total=62541600 min=625416 max=625416 valid=1
+C_TIMING logn=9 class=4 calls=100 total=62541600 min=625416 max=625416 valid=1
+C_TIMING logn=9 class=5 calls=100 total=62541600 min=625416 max=625416 valid=1
+C_SEGMENT logn=10 backend=0 calls=100 total=291116703 min=2911167 max=2911168 k_differences=0
+C_SEGMENT logn=10 backend=1 calls=100 total=130841402 min=1308414 max=1308415 k_differences=0
+C_TIMING logn=10 class=0 calls=100 total=130841600 min=1308416 max=1308416 valid=1
+C_TIMING logn=10 class=1 calls=100 total=130841600 min=1308416 max=1308416 valid=1
+C_TIMING logn=10 class=2 calls=100 total=130841600 min=1308416 max=1308416 valid=1
+C_TIMING logn=10 class=3 calls=100 total=130841600 min=1308416 max=1308416 valid=1
+C_TIMING logn=10 class=4 calls=100 total=130841600 min=1308416 max=1308416 valid=1
+C_TIMING logn=10 class=5 calls=100 total=130841600 min=1308416 max=1308416 valid=1
+C_ROUND count=18576 differences=0
+C_DIAGNOSTIC_DONE
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x1800350e in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xd9ac lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xabb4 lma 0x30000980
+Loading section datas, size 0x50 lma 0x3000b540
+Loading section device_states, size 0x2c lma 0x3000b590
+Loading section k_mutex_area, size 0x14 lma 0x3000b5bc
+Loading section .last_section, size 0x4 lma 0x3000b5d0
+Start address 0x10008e70, load size 103064
+Transfer rate: 541 KB/sec, 4907 bytes/write.
+Temporary breakpoint 1 at 0x10005bf0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10008e5c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpv6y9o5gb/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10005ba0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10008e5c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984634            9979444
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x300221f0          805446128
+r8             0x300000d0          805306576
+r9             0x30032330          805511984
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x300322e0          0x300322e0 <z_main_stack+65456>
+lr             0x10005be7          268458983
+pc             0x10005ba0          0x10005ba0 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x80040010          -2147221488
+msp            0x300221f0          0x300221f0 <z_idle_stacks>
+psp            0x300322e0          0x300322e0 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x300221f0          0x300221f0 <z_idle_stacks>
+psp_s          0x300322e0          0x300322e0 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x300219f0          0x300219f0 <z_interrupt_stacks>
+psplim_s       0x30022330          0x30022330 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x300322e0 <z_main_stack+65456>:	0x00000000	0x10005c03	0x00000000	0x1000c563
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x300221f0
+PSP=0x300322e0
+LR=0x10005be7
+PC=0x10005ba0
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x300322e0 <z_main_stack+65456>:	0x00000000	0x10005c03	0x00000000	0x1000c563
+0x300322f0 <z_main_stack+65472>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

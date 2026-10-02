@@ -1,0 +1,115 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 7/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+Within a 128-bit vector register, this parallel processing can
+be done in 64-bit, 32-bit, 16-bit, and 8-bit units. In addition,
+the target device supports FP instruction to efficiently process
+floating point operation. Table 1 describes the FP/NEON
+instructions and clock cycles used in this study to optimize
+FFT/NTT-based multiplication.
+III. RELATED WORKS
+Benchmarking research on Post Quantum Cryptography in
+various environments has continued since the NIST PQC
+competition started. NIST asked algorithm developers to
+measure their performance in ARM-Cortex M4 and Artix-7
+environments. In addition, not only performance evaluation
+but also integration with commercial libraries and perfor-
+mance indicators of protocols are one of the important evalu-
+ation factors.
+PQM4, benchmarking research conducted in an environ-
+ment on ARM Cortex-M4, presented performance measure-
+ment results for PKE/KEM and DSA algorithms. This study
+provides basic guidance for frameworks targeting embedded
+platforms [4]. In addition, recently, standalone implemen-
+tations work has been done such as PQClean project [5].
+Additionally, research on applying PQC to the application
+layer continues [6]. This work can test PQC’s algorithm
+in TLS/SSL protocol using liboqs, a library that inte-
+grates PQC and OpenSSL. Also, performance evaluation of
+PQC-DSA in V2X protocol-related work was recently pro-
+posed. V2Verifier tests PQC-DSA in various autonomous
+driving environments [2]. The key point of related studies
+is that Falcon is competitive enough because it has a short
+key and signature length. This advantage means that there
+is no consideration of packet size in protocols, unlike other
+DSA algorithms. Since the maximum signature size of Falcon
+is less than 2000 bytes, it can be sufficiently applied to the
+WAVE communication standard required in the autonomous
+driving environment.
+Since Falcon’s security is based on the long-proven NTRU-
+lattice, the only consideration for the final competition algo-
+rithm is the performance of KeyGen and Sign algorithm.
+As explained in Section II-C, the main operation of KeyGen
+and Sign algorithm is the FFT/NTT-based multiplication
+algorithm. An optimization technique for ffSampling for
+ARM Cortex-M4 environment was proposed in [13], but
+this technique aims to reduce memory consumption by
+approaching the memory layout modification point of view.
+Unfortunately, as far as we know, performance optimization
+studies targeting FFT/NTT of the Falcon algorithm do not
+yet exist. On the other hand, various polynomial multiplica-
+tion algorithms used in LWE/LWR-based schemes, includ-
+ing Crystals-Dilithium, have been actively studied. In this
+paper, we review various implementation studies for NTT
+and Toom-Cook-based multiplication in the ARMv8 plat-
+forms. Research on PQC in the ARMv8 environment has
+been actively conducted starting with the implementation
+for Newhope. [14] was the first to use an unsigned 16-bit
+integer representation for NTT. In addition, parallel logic for
+the NEON engine was proposed. The proposed Newhope
+implementation was maximally compressed using barrel-
+shifters etc. Finally, on the ARM Cortex-A53, [14] achieved
+an 8.3x performance improvement compared to the reference
+implementation.
+Recently, an optimization method for Crystals-Kyber has
+been proposed. NTT for 16-bit coefficients is used similarly
+to the method proposed in [15], but the technique for Mont-
+gomery reduction is redesigned because of the difference of
+polynomial-ring. Additionally, all of Crystals-Kyber’s core
+functions for symmetric functions have been accelerated
+through ARMv8 encryption extensions. In the end, they have
+achieved a performance improvement of up to 8.6x com-
+pared to the reference implementation code. Optimization
+techniques for NTT are constantly being updated. A method
+to effectively load and store data for NTT multiplication used
+by LWE/LWR based algorithms including Crystals-Dilithium
+has been proposed in [16]. In addition, effective methods for
+integrating depth-specific layers in NTT have been proposed
+in [17]. These methods are methods that can be used through-
+out embedded devices.
+Except for ARM-based architectures, there are several
+studies that implement lattice-based cryptography schemes
+in various environments. Implementation method studies for
+various lattice-based schemes have also been conducted on
+GPU, which is one of the representatives of high-end pro-
+cessors [18]–[22]. However, considerations in the FFT/NTT
+implementation in a GPU environment are issues such as
+thread placement per block and warp divergence. Due to the
+characteristics of the GPU, one NTT per block is calculated in
+parallel; therefore, the optimization strategy is significantly
+different from the embedded environment. The core of the
+FFT/NTT implementation in the embedded environment is
+a strategy to reduce memory access cost and a strategy to
+parallelize each coefficient. Since the number of registers
+and their size is constrained in the embedded environment,
+there are very small coefficients that can be kept in general
+registers. In addition, in the case of GPU, the factors of
+block and thread arrangement rather than the advantage of
+PTX implementation take up a large cost for performance
+improvement, but in the case of an embedded environment,
+using assembly and reducing the number of instructions is an
+important issue. Another difference from the GPU environ-
+ment is that the embedded environment uses multiple cores
+and the cost of creating threads is very high.
+There are several studies for lattice-based cryptography
+schemes on AVR and RISC-V devices. Implementation study
+of NTRU in AVR environment was conducted in [23]. To per-
+form the optimization in the AVR environment with 8-bit reg-
+isters, [23] reduced the total cost of the entire cryptographic
+operation by using the latest parameter set of NTRU and the
+hybrid technique proposed in [24]. Since it is impossible for
+the implementations of NTT to be combined in parallel logic
+on an AVR environment, the authors proposed an implemen-
+tation methodology that can achieve high performance and
+resistance to timing attacks by minimizing the use of branches
+44452 VOLUME 10, 2022

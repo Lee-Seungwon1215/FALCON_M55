@@ -1,0 +1,47 @@
+DOCUMENT: m55_slothy.pdf PAGE: 24/46
+
+24 Fast and Clean: Auditable high-performance assembly via constraint solving
+Dependence on microarchitecture. Sometimes, there are multiple approaches to express-
+ing a workload in terms of the target architecture’s instruction set, with the best choice
+depending on the target microarchitecture. We will see a few examples later. In those
+instances, we expect developers to maintain multiple base implementations reflecting the
+different approaches. Then, for a given microarchitecture target, slothy would be run on
+all base implementations, and the most suitable optimization chosen for use.
+Compiler-based approaches. Using SLOTHY frees the developer from per-workload
+microarchitecture-specific optimizations. However, it remains a more laborious development
+approach than compiler-based techniques such as intrinsics and or even auto-vectorization.
+We primarily see SLOTHY as worthwhile in contexts where unlocking the last % of
+performance is desirable, and/or where high workload complexity lowers the efficacy of
+compilation-based techniques. Further, we believe that SLOTHY can be a useful tool for
+the discovery of new optimization potentials, supporting compiler development.
+7.2 Implementation
+We implement the SLOTHY framework in Python, referred to as slothy in the following.
+User interface. slothy can be called from Python or via the command line application
+slothy-cli. Convenience wrappers are provided for automatic instantiation to our
+various target architectures and microarchitectures.
+Constraint solver interface. For the interface to the underlying constraint solver, a small
+abstraction layer is introduced, facilitating the experimentation with different constraint
+solvers. Currently, slothy is based on CP-SAT from Google OR-Tools.
+Implementation structure. Figure 6 provides an overview over the different components
+of slothy. The core implements the SLOTHY constraint modelling approach and provides
+some heuristics expanding the reach of slothy to larger kernels. Other helper modules
+provide configurability, functionality around computational flow graphs, and assembly
+support functions (such as support for .req and .macro). Finally, as discussed, there are
+multiple architecture and microarchitecture modules describing the target of optimizations.
+Usage. Afterfixingatargetarchitectureandmicroarchitecture, theuserloadsanassembly
+file, which can range from a small stub to a standalone assembly file with multiple functions,
+macros, or similar — slothy does not attempt to make sense of it at this point. The user
+then provides a configuration and issues one or more optimization commands, operating
+on selected parts of the loaded file in-place. Finally, functions may be renamed to avoid
+symbol clashes, and the optimized version of the code be stored to a file.
+Optimizations are typically focused on a particular region, specified by assembly labels.
+In case of a loop, the label at the start of the loop body is sufficient. slothy will
+only attempt to parse the instruction in the selected regions. In particular, even when
+standalone files are loaded, the underlying (micro)architecture models need only specify
+the regions to be optimized, allowing example-driven expansion of the models.
+Symbolic registers. slothy supports the use of assembly “templates” using symbolic
+registers which have not been concretized using .req aliases. In this case, slothy takes
+care of finding suitable instantiations. This further simplifies the provision of the “base”
+implementation as it frees the developer from having to assign concrete architectural
+registers to logical variables. In many cases, slothy can instantiate the template without
+any reordering of instructions or renaming of registers which are already architectural —

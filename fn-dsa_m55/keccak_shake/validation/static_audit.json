@@ -1,0 +1,34 @@
+{
+  "source_sha256": "fe2febdb478c0bb4cb5ab3150a512b80b2c897ee921e1133e5fcac796e2733ca",
+  "elf_sha256": "961261f33af014a872db01b6f21187f1646ffd1f0af79d098883d32876c21c60",
+  "function_address": "0x10000844",
+  "function_size_including_round_constants": 3196,
+  "original_function_size": 2900,
+  "conditional_branches": [
+    [
+      "10000fe6",
+      "bne.w",
+      "10000b12 <fndsa_sha3_process_block+0x2ce>"
+    ]
+  ],
+  "calls": [],
+  "mve_integer_instructions_present": true,
+  "floating_point_arithmetic": false,
+  "helper_bytes_unchanged": true,
+  "maximum_stack_bytes": 1056,
+  "all_state_arithmetic_mve": true,
+  "scalar_memory_operations": [
+    [
+      "1000085a",
+      "str",
+      "r2, [sp, #928]\t@ 0x3a0"
+    ],
+    [
+      "100011a8",
+      "ldr",
+      "r2, [sp, #928]\t@ 0x3a0"
+    ]
+  ],
+  "public_gather_tables_verified": true,
+  "scope": "All state arithmetic MVE, public 24-round loop and lane-0 predicates; manual address-flow review plus bounded opcode checks, not a formal proof"
+}

@@ -1,0 +1,81 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 6/29
+
+6 Polynomial multiplication on embedded vector architectures
+2.3.1 Barrett reduction
+The idea behind Barrett reduction is to pick ℓ such that 2ℓ >n and approximatea
+n
+=
+a2ℓ
+n/2ℓ ≈ a 2ℓ
+n /2ℓ
+, where C := 2ℓ
+n can be precomputed. See Algorithm 1. For
+a<2ℓ and ℓbounded by the machine word size, the resulting modular reduction a−n·
+aC
+2ℓ
+is amenable for direct mapping to many instruction sets: It is a combination of a high-
+multiply with rounding for x→ x·C
+2ℓ and a low-multiply-accumulate for x,a→a−n·x.
+We will discuss the details in the case of the Helium vector extension in Section 6.4.1.
+2.3.2 Montgomery reduction and multiplication
+Montgomery reduction is a way to compute a representative a′s.t. 2ℓa′≡a modulo n if
+n is odd; in other words, a′is a small representative of the quotienta
+2ℓ computed in Zn–
+note that the latter expression makes sense because n is odd, so 2ℓ is invertible modulo n.
+If a is already divisible by 2ℓ in Z, we can set a′:= a
+2ℓ , computed in Z. Otherwise, if
+we pick k:= a·n−1 mod±2ℓ, where a·n−1 is computed in Z2ℓ , we have n·k≡amodulo
+2ℓ by construction, and so a−n·k is divisible by 2ℓ. We can thus set a′:= (a−n·k)/2ℓ
+.
+We are interested in Montgomery reduction for ℓ bounded by the machine word size,
+and a<22ℓ a product of two single-width values x,y<2ℓ. In this case, it can be expressed
+in single-width operations: two high-multiplications x,y → xy
+2ℓ , k → n·k
+2ℓ , and two low
+multiplications x,y →xy mod+ 2ℓ
+, a →a·n−1 in Z2ℓ . See Algorithm 2 for both the
+double-width and the single-width description of Montgomery multiplication. We will
+discuss the details in the case of the Helium vector extension in Section 6.4.1.
+Alg. 1: Barrett reduction
+Alg. 2: Montgomery multiplication
+In: n odd modulus, 2ℓ >n, a,b<2ℓ
+.
+In: ω modular inverse of n w.r.t. 2ℓ
+.
+Out: Montgomery multiplication of a,b
+1: h←ab h← ab
+2ℓ , l←ab mod+ 2ℓ
+2: r←hω mod±2ℓ r←lω mod±2ℓ
+3: c←r·n c← r·n
+2ℓ
+4: return (h−c)/2ℓ return h−c
+In: n modulus, 2ℓ >n, z<2ℓ
+.
+Out: Barrett reduction of z
+1: t← z 2ℓ
+n /2ℓ
+2: c←nt
+3: return z−c
+3 M-profile Vector Extension (MVE)
+In this section we give an introduction to the M-profile Vector Extension (MVE), also
+referred to as Arm® Helium™ Technology. We will focus on aspects of MVE that are
+relevant to the algorithms studied in this paper, and refer to [Arme,Mar21] more exhaustive
+introductions to the Helium instruction set, as well as to [Armb] for the full reference. We
+also found the blog series [Armc, Part 1-4] very useful.
+128
+112
+96
+80
+64
+48
+32
+16
+0
+Qi[7] Qi[6] Qi[5] Qi[4] Qi[3] Qi[2] Qi[1] Qi[0]
++ + + + + + + +
+Qj[7] Qj[6] Qj[5] Qj[4] Qj[3] Qj[2] Qj[1] Qj[0]
+(VPR.P0[ℓ])
+(VPST)
+VADD(T).u16 Qk, Qi, Qj
+Qk[7] Qk[6] Qk[5] Qk[4] Qk[3] Qk[2] Qk[1] Qk[0]
+Figure 1 Parallel 16-bit addition using VADD.u16, with/without predication

@@ -1,0 +1,423 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 61475
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :61475 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x1000ea30
+hbreak *0x10011cc0
+set $early_fault_bp = $bpnum
+jump *0x10011cd5
+if $pc != 0x1000ea30
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpvm8x1unp/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x1000e9e0
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10011cc0
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 61475
+Info : Listening on port 61475 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/61475
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003510 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+BENCH_BEGIN dispatch candidate=C_two_plus threshold=2 mode=control keygen=0
+BENCH_HW cpu=800000000 ccr=00000611 control=00000099 fpscr=00040000 primask=0
+CALIBRATION runs=4000 wrapped=2116000 self=864000 raw=396000
+EDGE_DISPATCH all25_words=2048 all16_masks=PASS transitions=PASS inactive=PASS
+DISPATCH_KERNEL active=1 runs=200 scalar=3322088 masked_x4=8278800 selected=3327400
+DISPATCH_KERNEL active=2 runs=200 scalar=6627688 masked_x4=8249489 selected=8275800
+DISPATCH_KERNEL active=3 runs=200 scalar=9932200 masked_x4=8177800 selected=8201287
+DISPATCH_KERNEL active=4 runs=200 scalar=13240085 masked_x4=7974400 selected=7980886
+PAIR n=512 op=1 batch=0 original=41843262 batch4=41087036
+VERIFY_PAIR n=512 batch=0 original=925156 batch4=925213
+PAIR n=512 op=1 batch=1 original=42076403 batch4=41341962
+VERIFY_PAIR n=512 batch=1 original=893507 batch4=893564
+PAIR n=512 op=1 batch=2 original=41922889 batch4=41142891
+VERIFY_PAIR n=512 batch=2 original=925266 batch4=925323
+PAIR n=512 op=1 batch=3 original=42140052 batch4=41423284
+VERIFY_PAIR n=512 batch=3 original=924955 batch4=925012
+PAIR n=512 op=1 batch=4 original=42049662 batch4=41311419
+VERIFY_PAIR n=512 batch=4 original=924964 batch4=925021
+PAIR n=512 op=1 batch=5 original=42154760 batch4=41431456
+VERIFY_PAIR n=512 batch=5 original=924816 batch4=924873
+PAIR n=512 op=1 batch=6 original=42144917 batch4=41429279
+VERIFY_PAIR n=512 batch=6 original=925452 batch4=925509
+PAIR n=512 op=1 batch=7 original=41765667 batch4=41000265
+VERIFY_PAIR n=512 batch=7 original=925367 batch4=925424
+PAIR n=512 op=1 batch=8 original=41745077 batch4=40968625
+VERIFY_PAIR n=512 batch=8 original=924792 batch4=924849
+PAIR n=512 op=1 batch=9 original=41938470 batch4=41160577
+VERIFY_PAIR n=512 batch=9 original=925138 batch4=925195
+PAIR n=512 op=1 batch=10 original=42149698 batch4=41427068
+VERIFY_PAIR n=512 batch=10 original=925066 batch4=925123
+PAIR n=512 op=1 batch=11 original=42086876 batch4=41329275
+VERIFY_PAIR n=512 batch=11 original=925013 batch4=925070
+PAIR n=512 op=1 batch=12 original=42150543 batch4=41419919
+VERIFY_PAIR n=512 batch=12 original=926078 batch4=925046
+PAIR n=512 op=1 batch=13 original=41659538 batch4=40872410
+VERIFY_PAIR n=512 batch=13 original=924993 batch4=925050
+PAIR n=512 op=1 batch=14 original=41909489 batch4=41163377
+VERIFY_PAIR n=512 batch=14 original=926181 batch4=925152
+PAIR n=512 op=1 batch=15 original=41876384 batch4=41126228
+VERIFY_PAIR n=512 batch=15 original=925151 batch4=925208
+PAIR n=512 op=1 batch=16 original=41946809 batch4=41189050
+VERIFY_PAIR n=512 batch=16 original=925894 batch4=924864
+PAIR n=512 op=1 batch=17 original=41781101 batch4=41010338
+VERIFY_PAIR n=512 batch=17 original=924927 batch4=924984
+PAIR n=512 op=1 batch=18 original=41915804 batch4=41154222
+VERIFY_PAIR n=512 batch=18 original=926338 batch4=925311
+PAIR n=512 op=1 batch=19 original=41839403 batch4=41067734
+VERIFY_PAIR n=512 batch=19 original=924860 batch4=924917
+PAIR n=512 op=1 batch=20 original=42034554 batch4=41297453
+VERIFY_PAIR n=512 batch=20 original=924844 batch4=925988
+PAIR n=512 op=1 batch=21 original=42110548 batch4=41391312
+VERIFY_PAIR n=512 batch=21 original=925091 batch4=925148
+PAIR n=512 op=1 batch=22 original=42020047 batch4=41280134
+VERIFY_PAIR n=512 batch=22 original=924888 batch4=924945
+PAIR n=512 op=1 batch=23 original=42003112 batch4=41270191
+VERIFY_PAIR n=512 batch=23 original=924924 batch4=924981
+PAIR n=512 op=1 batch=24 original=41757263 batch4=40982885
+VERIFY_PAIR n=512 batch=24 original=925248 batch4=925305
+CHECK n=512 keys=0 signatures=104 tamper=104 guards=PASS profile_error=0
+PAIR n=1024 op=1 batch=0 original=88892302 batch4=89871730
+VERIFY_PAIR n=1024 batch=0 original=1799859 batch4=1799986
+PAIR n=1024 op=1 batch=1 original=89259540 batch4=90285270
+VERIFY_PAIR n=1024 batch=1 original=1799846 batch4=1799973
+PAIR n=1024 op=1 batch=2 original=88964599 batch4=89918418
+VERIFY_PAIR n=1024 batch=2 original=1801365 batch4=1800404
+PAIR n=1024 op=1 batch=3 original=89276964 batch4=90274248
+VERIFY_PAIR n=1024 batch=3 original=1800337 batch4=1800464
+PAIR n=1024 op=1 batch=4 original=88980278 batch4=89954351
+VERIFY_PAIR n=1024 batch=4 original=1800020 batch4=1800147
+PAIR n=1024 op=1 batch=5 original=89012873 batch4=89989856
+VERIFY_PAIR n=1024 batch=5 original=1800286 batch4=1800413
+PAIR n=1024 op=1 batch=6 original=88978882 batch4=89951787
+VERIFY_PAIR n=1024 batch=6 original=1800338 batch4=1800465
+PAIR n=1024 op=1 batch=7 original=89240363 batch4=90258666
+VERIFY_PAIR n=1024 batch=7 original=1799739 batch4=1799866
+PAIR n=1024 op=1 batch=8 original=89373807 batch4=90399538
+VERIFY_PAIR n=1024 batch=8 original=1800214 batch4=1800341
+PAIR n=1024 op=1 batch=9 original=89434481 batch4=90483767
+VERIFY_PAIR n=1024 batch=9 original=1800158 batch4=1800285
+PAIR n=1024 op=1 batch=10 original=88999029 batch4=89957379
+VERIFY_PAIR n=1024 batch=10 original=1801260 batch4=1800300
+PAIR n=1024 op=1 batch=11 original=88913628 batch4=89881197
+VERIFY_PAIR n=1024 batch=11 original=1800167 batch4=1800294
+PAIR n=1024 op=1 batch=12 original=88964882 batch4=89954945
+VERIFY_PAIR n=1024 batch=12 original=1800263 batch4=1800390
+PAIR n=1024 op=1 batch=13 original=89462405 batch4=90515714
+VERIFY_PAIR n=1024 batch=13 original=1799928 batch4=1800055
+PAIR n=1024 op=1 batch=14 original=88726000 batch4=89649222
+VERIFY_PAIR n=1024 batch=14 original=1800196 batch4=1800323
+PAIR n=1024 op=1 batch=15 original=89495172 batch4=90520663
+VERIFY_PAIR n=1024 batch=15 original=1800219 batch4=1800346
+PAIR n=1024 op=1 batch=16 original=88718509 batch4=89659854
+VERIFY_PAIR n=1024 batch=16 original=1800102 batch4=1800229
+PAIR n=1024 op=1 batch=17 original=88776321 batch4=89722458
+VERIFY_PAIR n=1024 batch=17 original=1801208 batch4=1800247
+PAIR n=1024 op=1 batch=18 original=89025451 batch4=90020575
+VERIFY_PAIR n=1024 batch=18 original=1800072 batch4=1800199
+PAIR n=1024 op=1 batch=19 original=89067978 batch4=90052871
+VERIFY_PAIR n=1024 batch=19 original=1800112 batch4=1800239
+PAIR n=1024 op=1 batch=20 original=88901644 batch4=89866485
+VERIFY_PAIR n=1024 batch=20 original=1799938 batch4=1800065
+PAIR n=1024 op=1 batch=21 original=111001430 batch4=113015014
+VERIFY_PAIR n=1024 batch=21 original=1799844 batch4=1799971
+PAIR n=1024 op=1 batch=22 original=88979037 batch4=89935326
+VERIFY_PAIR n=1024 batch=22 original=1800259 batch4=1800386
+PAIR n=1024 op=1 batch=23 original=88797485 batch4=89746603
+VERIFY_PAIR n=1024 batch=23 original=1799868 batch4=1799995
+PAIR n=1024 op=1 batch=24 original=89354857 batch4=90396486
+VERIFY_PAIR n=1024 batch=24 original=1799540 batch4=1800753
+CHECK n=1024 keys=0 signatures=208 tamper=208 guards=PASS profile_error=0
+TOTAL n=512 op=1 variant=0 batches=25 cycles=1049022328
+CATEGORY n=512 op=1 variant=0 name=other cycles=1049022328 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=single_keccak cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=shake_init cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=shake_inject cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=shake_flip cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=shake_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=inject_chunk cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=x4_permute cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=x4_squeeze cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=batch_prepare cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=batch_absorb cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=batch_export cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=batch_block cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=sampler_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=batch_clear cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=0 name=scalar_bridge cycles=0 calls=0 children=0 inclusive=0
+LANES n=512 op=1 variant=0 one=0 two=0 three=0 four=0
+TOTAL n=512 op=1 variant=1 batches=25 cycles=1030278390
+CATEGORY n=512 op=1 variant=1 name=other cycles=1030278390 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=single_keccak cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=shake_init cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=shake_inject cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=shake_flip cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=shake_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=inject_chunk cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=x4_permute cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=x4_squeeze cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=batch_prepare cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=batch_absorb cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=batch_export cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=batch_block cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=sampler_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=batch_clear cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=512 op=1 variant=1 name=scalar_bridge cycles=0 calls=0 children=0 inclusive=0
+LANES n=512 op=1 variant=1 one=0 two=0 three=0 four=0
+TOTAL n=1024 op=1 variant=0 batches=25 cycles=2248597917
+CATEGORY n=1024 op=1 variant=0 name=other cycles=2248597917 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=single_keccak cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=shake_init cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=shake_inject cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=shake_flip cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=shake_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=inject_chunk cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=x4_permute cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=x4_squeeze cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=batch_prepare cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=batch_absorb cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=batch_export cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=batch_block cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=sampler_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=batch_clear cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=0 name=scalar_bridge cycles=0 calls=0 children=0 inclusive=0
+LANES n=1024 op=1 variant=0 one=0 two=0 three=0 four=0
+TOTAL n=1024 op=1 variant=1 batches=25 cycles=2274282423
+CATEGORY n=1024 op=1 variant=1 name=other cycles=2274282423 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=single_keccak cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=shake_init cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=shake_inject cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=shake_flip cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=shake_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=inject_chunk cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=x4_permute cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=x4_squeeze cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=batch_prepare cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=batch_absorb cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=batch_export cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=batch_block cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=sampler_extract cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=batch_clear cycles=0 calls=0 children=0 inclusive=0
+CATEGORY n=1024 op=1 variant=1 name=scalar_bridge cycles=0 calls=0 children=0 inclusive=0
+LANES n=1024 op=1 variant=1 one=0 two=0 three=0 four=0
+EDGE_STREAM checks=10112 policies=0,1,2,7 unequal=PASS tails=PASS retry_1_26=PASS
+EDGE_SIGN byte_exact=16 batch_verified=16 mixed_degrees=PASS domains=PASS lane_isolation=PASS
+BENCH_DONE result=0 keys=0 signatures=208 tamper=208 fingerprint=b8c5869b profile_error=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003510 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x168b8 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xb468 lma 0x30000980
+Loading section datas, size 0x50 lma 0x3000be00
+Loading section device_states, size 0x2c lma 0x3000be50
+Loading section k_mutex_area, size 0x14 lma 0x3000be7c
+Loading section .last_section, size 0x4 lma 0x3000be90
+Start address 0x10011cd4, load size 141912
+Transfer rate: 554 KB/sec, 6170 bytes/write.
+Temporary breakpoint 1 at 0x1000ea30: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10011cc0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpvm8x1unp/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x1000e9e0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10011cc0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984631            9979441
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30037088          805531784
+r8             0x300000d0          805306576
+r9             0x3003f1c8          805564872
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3003f178          0x3003f178 <z_main_stack+32688>
+lr             0x1000ea27          268495399
+pc             0x1000e9e0          0x1000e9e0 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x40010             262160
+msp            0x30037088          0x30037088 <z_idle_stacks>
+psp            0x3003f178          0x3003f178 <z_main_stack+32688>
+vpr            0xc00f              [ P0=49167 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30037088          0x30037088 <z_idle_stacks>
+psp_s          0x3003f178          0x3003f178 <z_main_stack+32688>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30036888          0x30036888 <z_interrupt_stacks>
+psplim_s       0x300371c8          0x300371c8 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xc00f              -16369
+0x3003f178 <z_main_stack+32688>:	0x00000000	0x1000ea43	0x00000000	0x100154a7
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30037088
+PSP=0x3003f178
+LR=0x1000ea27
+PC=0x1000e9e0
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3003f178 <z_main_stack+32688>:	0x00000000	0x1000ea43	0x00000000	0x100154a7
+0x3003f188 <z_main_stack+32704>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

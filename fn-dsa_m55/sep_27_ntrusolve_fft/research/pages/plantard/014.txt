@@ -1,0 +1,54 @@
+DOCUMENT: plantard.pdf PAGE: 14/24
+
+14 Improved Plantard Arithmetic for Lattice-based Cryptography
+Algorithm 13 The 2-cycle improved Plantard reduction on Cortex-M4
+Input: A 2l-bit signed integer c∈[−q222α,q222α]
+Output: rtop ≡c(−2−2l) mod q,rtop ∈[−
+q+1
+2 ,
+q
+2 )
+1: q′←q−1 mod±22l ▷ precomputed
+2: mul r,c,q′
+3: smlatb r,r,q,q2α
+4: return rtop
+a 32-bit signed product c∈[−q222α,q222α], which is shown in Algorithm 13. Instead of
+using smulwb as we did in Algorithm 11, the mul instruction is used to compute [[cq′]2l]l
+,
+and the intermediate result locates in the top half of r. The result is then obtained by the
+smlatb instruction. It is worth noting that the input range of Algorithm 13 is q22α−l+1
+times larger than the Montgomery reduction (the reduction version of Algorithm 12).
+Since α is chosen to ensure q<2l−α−1, we have q2α+1 <2l−α−1
+·2α+1 = 2l. As for the
+maximum α, we have q2α+1 ≈2l, then q22α+1−l = q2α+1−l
+·2α ≈2α. Therefore, the input
+range of the Plantard reduction is approximately 2α times larger than the Montgomery
+reduction. The excellent input range and output range of the improved Plantard arithmetic
+enable better lazy reduction strategies in NTT/INTT (see Subsubsection 4.2.3).
+4.2 Efficient 16-bit NTT/INTT Implementation
+This subsection details the improvements the improved Plantard arithmetic brings to the
+butterfly unit, layer merging, and lazy reduction in NTT/INTT.
+4.2.1 Butterfly Unit
+The core operations in NTT/INTT are performed in the butterfly unit. Commonly, there
+are two types of butterfly structures, namely the CT butterfly and GS butterfly. In
+Kyber, using CT butterfly in NTT and GS butterfly in INTT is a common strategy to
+avoid coefficients flipping. However, recent reports [CHK+21, AHKS22] state that using
+CT butterfly for both NTT and INTT in LBC schemes would also result in faster code.
+For both strategies in 16-bit NTT/INTT, one needs to compute CT/GS butterfly over
+two 32-bit packed integers and return two 32-bit packed results [BKS19, ABCG20]. The
+improved Plantard multiplication by a constant (Algorithm 11) can be well adapted into
+the double CT/GS butterflies with the help of the smulw{b,t} instruction on Cortex-M4.
+Algorithm 14 Double CT butterfly on Cortex-M4
+Input: Two 32-bit packed signed integers a,b (each containing a pair of 16-bit signed
+coefficients), the 32-bit twiddle factor ζ
+Output: a= (atop + btopζ)||(abottom + bbottomζ),b= (atop−btopζ)||(abottom−bbottomζ)
+1: smulwb t,ζ,b
+2: smulwt b,ζ,b
+3: smlabb t,t,q,q2α
+4: smlabb b,b,q,q2α
+5: pkhtb t,b,t, asr#16
+6: usub16 b,a,t
+7: uadd16 a,a,t
+8: return a,b
+The key operation in the butterfly unit is the modular multiplication by a proper
+twiddle factor ζ, which is a precomputed constant. It is common to store the twiddle

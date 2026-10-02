@@ -1,0 +1,53 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 22/29
+
+22 Polynomial multiplication on embedded vector architectures
+Table 5 Comparison of diﬀerent approaches for Matrix-Vector multiplication.
+Matrix-Vector Multiplication
+NTT Toom-Cook + Karatsuba
+Dim Cortex-M4
+[CHK+21]
+Cortex-M55r1
+(this work) Speedup Cortex-M4
+[MKV20]
+Cortex-M55r1
+(this work) Speedup
+l=2 66k 18.4k 3.5x 159k 28.1k 5.6x
+l=3 125k 35.9k 3.4x 317k 61.6k 5.1x
+l=4 205k 58.9k 3.4x 528k 107.7k 4.9x
+Table 6 Comparison of the memory utilization of Saber on Cortex-M4 processor when
+implementing diﬀerent polynomial multiplication algorithms.
+NTT [CHK+21]‡ TC classical† TC striding [This]
+KeyGen/Encaps/Decaps KeyGen/Encaps/Decaps KeyGen/Encaps/Decaps
+LightSaber 5,3 / 5,3 / 5,3 KB 6,1 / 6,0 / 6,0 KB 4,3 / 4,3 / 4,3 KB
+Saber 6,4 / 6,3 / 6,3 KB 6,6 / 6,5 / 6,6 KB 4,8 / 4,8 / 4,8 KB
+FireSaber 7,4 / 7,3 / 7,4 KB 7,1 / 7,1 / 7,1 KB 5,3 / 5,3 / 5,3 KB
+†Saber implementation from [KRSS] using Toom-Cook for polynomial multiplication instead of NTT.
+‡Stack-optimized implementation of [CHK+ 21] from PQM4 [KRSS], commit
+https://github.com/mupq/pqm4/commit/992f0f226503d43b6d33278ecb60a9168ed8d787.
+see that implementations based on the striding technique are slightly faster than classical
+Toom-Cook/Karatsuba. Additionally, the main benefit of the striding approach is the
+reduced memory usage. We show this in Table 6, where the memory footprint of diﬀerent
+Saber implementations on Cortex-M4 is compared. The striding Toom-Cook approach
+provides a memory compact alternative to the NTT based implementation.
+We repeat the common observation that arithmetic underlying Saber, and many other
+PQC schemes, is outweighed by the computational complexity of hashing; see Section 6.6.
+8 Conclusion
+In this work, we have introduced the Helium vector extension for the M-profile of the Arm
+architecture and studied its use for structured lattice-based cryptography in the example
+of the Cortex-M55 processor and the NIST PQC finalist Saber. We have demonstrated
+that even within the tight constraints of the embedded market, features like instruction
+overlapping, scalar-vector operations and careful instruction design allow a speedup close
+to the theoretical optimum for the core mathematical primitives – despite only 8 vector
+registers and an in-order, single-issue pipeline of the Cortex-M55 processor. We have also
+introduced and implemented a memory-eﬃcient variant of the Toom-Cook multiplication
+suitable for highly constrained devices. Though we have performed numerous optimizations,
+there is still scope for further improvements and extension: We hope that our results will
+motivate further research into the capabilities of the Helium vector extension, esp. within
+the realm of PQC, and to explore further schemes and optimizations.
+9 Acknowledgements
+This work was supported partially by the Research Council KU Leuven: C16/15/058 and
+by CyberSecurity Research Flanders with reference number VR20192203. In addition,
+Angshuman Karmakar is funded by FWO (Research Foundation – Flanders) as junior
+post-doctoral fellow (contract number 203056 / 1241722N LV).
+WethankJackAndrew, FrancoisBotman, TomGrocutt, FabienKleinandJunMendoza
+for sharing their insights into the Helium vector extension and the Cortex-M55 processor.

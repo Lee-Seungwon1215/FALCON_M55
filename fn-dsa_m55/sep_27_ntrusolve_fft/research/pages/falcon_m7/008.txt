@@ -1,0 +1,42 @@
+DOCUMENT: falcon_m7.pdf PAGE: 8/22
+
+8 James Howe and Bas Westerbaan
+Table 2: Benchmarking results of Falcon on the ARM Cortex M7 using the
+STM32F767ZI NUCLEO-144 development board. Results in KCycles.
+Parameter Set Opera-
+tion
+Min Avg Max SDev/
+SErr
+Avg
+(ms)
+Falcon-512-FPU Key Gen 44,196 77,475 256,115 226k/7k 358.7
+Falcon-512-EMU Key Gen 76,809 128,960 407,855 303k/9k 597.0
+FPU vs EMU Key Gen 1.74x 1.66x 1.59x -/- 1.66x
+Falcon-1024-FPU Key Gen 127,602 193,707 807,321 921k/29k 896.8
+Falcon-1024-EMU Key Gen 202,216 342,533 1,669,083 2.4m/76k 1585.8
+FPU vs EMU Key Gen 1.58x 1.76x 2.07x -/- 1.77x
+Falcon-512-FPU Sign Dyn 4,705 4,778 4,863 149/4 22.1
+Falcon-512-EMU Sign Dyn 29,278 29,447 29,640 188/6 136.3
+FPU vs EMU Sign Dyn 6.22x 6.16x 6.10x -/- 6.17x
+Falcon-1024-FPU Sign Dyn 10,144 10,243 10,361 1408/44 47.4
+Falcon-1024-EMU Sign Dyn 64,445 64,681 64,957 3k/101 299.5
+FPU vs EMU Sign Dyn 6.35x 6.31x 6.27x -/- 6.32x
+Falcon-512-FPU Sign Tree 2,756 2,836 2,927 6/.2 13.1
+Falcon-512-EMU Sign Tree 13,122 13,298 13,506 126/4 61.6
+FPU vs EMU Sign Tree 4.76x 4.69x 4.61x -/- 4.70x
+Falcon-1024-FPU Sign Tree 5,707 5,812 5,919 1422/45 26.9
+Falcon-1024-EMU Sign Tree 28,384 28,621 28,877 3k/115 132.5
+FPU vs EMU Sign Tree 4.97x 4.92x 4.88x -/- 4.93x
+Falcon-512-FPU Exp SK 1,406 1,407 1,410 8.6/0.3 6.5
+Falcon-512-EMU Exp SK 11,779 11,781 11,788 7/0.2 54.5
+FPU vs EMU Exp SK 8.38x 8.37x 8.36x -/- 8.38x
+Falcon-1024-FPU Exp SK 3,071 3,075 3,080 39/1.3 14.2
+Falcon-1024-EMU Exp SK 26,095 26,101 26,120 109/3.5 120.8
+FPU vs EMU Exp SK 8.50x 8.49x 8.48x -/- 8.51x
+Table 3: Dilithium stack usage in bytes.
+Parameter Set Key
+Gen
+Sign Verify
+Dilithium-2 38,444 52,052 36,332
+Dilithium-3 60,972 79,728 57,836
+Dilithium-5 97,836 122,708 92,908

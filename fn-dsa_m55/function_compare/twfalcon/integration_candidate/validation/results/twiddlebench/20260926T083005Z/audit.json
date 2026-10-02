@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "frozen_baseline": {
+    "tw32_fft_mve.c": "c089f5f500be344364446dc1333b1a7cbf92d5f34fd9a51896827d675e2bb5d5",
+    "tw32_bridge.c": "b213e3a396667e85cc17f84542e60019b27372670738a442aa17e2f636150e1a"
+  },
+  "unchanged_source_hashes": {
+    "tw32_bridge.c": "b213e3a396667e85cc17f84542e60019b27372670738a442aa17e2f636150e1a",
+    "tw32_primitives_cm55.s": "2a983f18d4857fd108703f7e777ea27cf584abf964c1b43a21f97981a2dbba4e",
+    "kgen_fxp.c": "244332f67aad05e221b41a43f96d0d953ce06e0118ee6e18ddc6c54bf242c367",
+    "kgen_inner.h": "0b71e23ccc212f0769474b0ea86b6ce4b8ccdd2f9e19b5c6f40b2cc658ace773"
+  },
+  "linked_root_components_exact": 6144,
+  "board_root_components_exact": 6144,
+  "kernel_audit": {
+    "ds32_fft_mve": {
+      "runtime_int64_to_double_conversion_calls": 0,
+      "source_loops_and_addresses": "public logn/layer/group, no coefficient-driven table indices"
+    },
+    "ds32_ifft_mve": {
+      "runtime_int64_to_double_conversion_calls": 0,
+      "source_loops_and_addresses": "public logn/layer/group, no coefficient-driven table indices"
+    }
+  },
+  "note": "Local control/address review and timing evidence, not a complete side-channel proof"
+}

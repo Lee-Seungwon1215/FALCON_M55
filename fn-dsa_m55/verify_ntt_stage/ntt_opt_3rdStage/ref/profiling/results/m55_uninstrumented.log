@@ -1,0 +1,29 @@
+0x3418d560 in SystemCoreClockUpdate () at /private/tmp/STM32CubeN6/Projects/NUCLEO-N657X0-Q/Templates/Template/FSBL/Src/system_stm32n6xx_fsbl.c:332
+332	  uint32_t sysclk = 0;
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x81000000 pc: 0x18003a1a msp: 0x341037a0
+Loading section .isr_vector, size 0x34c lma 0x34180400
+Loading section .text, size 0xe828 lma 0x34180750
+Loading section .rodata, size 0xb860 lma 0x3418ef80
+Loading section .init_array, size 0x4 lma 0x3419a7e0
+Loading section .fini_array, size 0x4 lma 0x3419a7e4
+Loading section .data, size 0xc lma 0x3419a7e8
+Loading section .gnu.sgstubs, size 0x20 lma 0x3419a800
+Start address 0x3418d6a0, load size 107528
+Transfer rate: 555 KB/sec, 8960 bytes/write.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+platform_finish () at platform_m55.c:22
+22	    __BKPT(0);
+FNDSA_JSON_BEGIN
+{"state":1611464704,"error":0,"profile_error":0,"core_clock_hz":600000000,"cpuid":1092604449,"device_id":0,"cache_control":197121,"fingerprint":567370050,"operations":[{"calls":10,"total_cycles":523521518,"minimum_cycles":46387483,"maximum_cycles":70037950,"cycles":[523521518,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"entries":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"calls":100,"total_cycles":3771365170,"minimum_cycles":37392732,"maximum_cycles":38020328,"cycles":[3771365170,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"entries":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"calls":100,"total_cycles":58414432,"minimum_cycles":584117,"maximum_cycles":584202,"cycles":[58414432,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"entries":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}]}
+FNDSA_JSON_END
+[Inferior 1 (Remote target) detached]

@@ -1,0 +1,812 @@
+[
+  {
+    "label": "kernels",
+    "elf_sha256": "455cc753ec5bde1051d26f767528e7a128cba2b33d18f604d94727fb018424f4",
+    "functions": [
+      {
+        "function": "fndsa_fp64e_mul",
+        "symbol": "fndsa_fp64e_mul",
+        "instructions": 99,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 76
+      },
+      {
+        "function": "fxr_div_fp64_exact",
+        "symbol": "fxr_div_fp64_exact",
+        "instructions": 294,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 15
+      },
+      {
+        "function": "fp64e_cmul",
+        "symbol": null,
+        "instructions": 0,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 0,
+        "note": "No separate symbol: inlined or not retained. Reviewed separately in standalone production TUs, not claimed as a separately audited kernel body."
+      },
+      {
+        "function": "fndsa_vect_FFT_fp64_exact",
+        "symbol": "fndsa_vect_FFT_fp64_exact.constprop.0",
+        "instructions": 277,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bls.w",
+            "10000e26 <fndsa_vect_FFT_fp64_exact.constprop.0+0x406>"
+          ],
+          [
+            "bcs.w",
+            "10000df8 <fndsa_vect_FFT_fp64_exact.constprop.0+0x3d8>"
+          ],
+          [
+            "bne.w",
+            "10000b16 <fndsa_vect_FFT_fp64_exact.constprop.0+0xf6>"
+          ],
+          [
+            "bne.w",
+            "10000a90 <fndsa_vect_FFT_fp64_exact.constprop.0+0x70>"
+          ],
+          [
+            "bne.w",
+            "10000a56 <fndsa_vect_FFT_fp64_exact.constprop.0+0x36>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10000718 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10000718 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10000718 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 124
+      },
+      {
+        "function": "fndsa_vect_iFFT_fp64_exact",
+        "symbol": "fndsa_vect_iFFT_fp64_exact.constprop.0",
+        "instructions": 380,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "beq.w",
+            "100013e4 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x5bc>"
+          ],
+          [
+            "bcs.w",
+            "100013c4 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x59c>"
+          ],
+          [
+            "bne.w",
+            "10000f4c <fndsa_vect_iFFT_fp64_exact.constprop.0+0x124>"
+          ],
+          [
+            "bne.w",
+            "10000e94 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x6c>"
+          ],
+          [
+            "bne.w",
+            "10000e54 <fndsa_vect_iFFT_fp64_exact.constprop.0+0x2c>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10000718 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10000718 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10000718 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 221
+      },
+      {
+        "function": "fndsa_vect_mul_fft_fp64_exact",
+        "symbol": null,
+        "instructions": 0,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 0,
+        "note": "No separate symbol: inlined or not retained. Reviewed separately in standalone production TUs, not claimed as a separately audited kernel body."
+      },
+      {
+        "function": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "symbol": null,
+        "instructions": 0,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 0,
+        "note": "No separate symbol: inlined or not retained. Reviewed separately in standalone production TUs, not claimed as a separately audited kernel body."
+      },
+      {
+        "function": "fndsa_poly_big_to_fp64_exact",
+        "symbol": null,
+        "instructions": 0,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 0,
+        "note": "No separate symbol: inlined or not retained. Reviewed separately in standalone production TUs, not claimed as a separately audited kernel body."
+      }
+    ]
+  },
+  {
+    "label": "kat",
+    "elf_sha256": "dcc9c23e606d90ec5e16f21387cfc4c58780fd6350cff781b8e49e1ece5cc96b",
+    "functions": [
+      {
+        "function": "fndsa_fp64e_mul",
+        "symbol": "fndsa_fp64e_mul",
+        "instructions": 99,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 76
+      },
+      {
+        "function": "fxr_div_fp64_exact",
+        "symbol": "fxr_div_fp64_exact",
+        "instructions": 294,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 15
+      },
+      {
+        "function": "fp64e_cmul",
+        "symbol": null,
+        "instructions": 0,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 0,
+        "note": "No separate symbol: inlined or not retained. Reviewed separately in standalone production TUs, not claimed as a separately audited kernel body."
+      },
+      {
+        "function": "fndsa_vect_FFT_fp64_exact",
+        "symbol": "fndsa_vect_FFT_fp64_exact",
+        "instructions": 279,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bls.w",
+            "10005782 <fndsa_vect_FFT_fp64_exact+0x40a>"
+          ],
+          [
+            "bcs.w",
+            "10005754 <fndsa_vect_FFT_fp64_exact+0x3dc>"
+          ],
+          [
+            "bne.w",
+            "10005472 <fndsa_vect_FFT_fp64_exact+0xfa>"
+          ],
+          [
+            "bne.w",
+            "100053ec <fndsa_vect_FFT_fp64_exact+0x74>"
+          ],
+          [
+            "bne.w",
+            "100053b0 <fndsa_vect_FFT_fp64_exact+0x38>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 124
+      },
+      {
+        "function": "fndsa_vect_iFFT_fp64_exact",
+        "symbol": "fndsa_vect_iFFT_fp64_exact",
+        "instructions": 377,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "beq.w",
+            "10005d2e <fndsa_vect_iFFT_fp64_exact+0x5a6>"
+          ],
+          [
+            "bcs.w",
+            "10005d0c <fndsa_vect_iFFT_fp64_exact+0x584>"
+          ],
+          [
+            "bne.w",
+            "10005894 <fndsa_vect_iFFT_fp64_exact+0x10c>"
+          ],
+          [
+            "bne.w",
+            "100057e4 <fndsa_vect_iFFT_fp64_exact+0x5c>"
+          ],
+          [
+            "bne.w",
+            "100057aa <fndsa_vect_iFFT_fp64_exact+0x22>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 221
+      },
+      {
+        "function": "fndsa_vect_mul_fft_fp64_exact",
+        "symbol": "fndsa_vect_mul_fft_fp64_exact",
+        "instructions": 169,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bne.w",
+            "10005d70 <fndsa_vect_mul_fft_fp64_exact+0x38>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 77
+      },
+      {
+        "function": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "symbol": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "instructions": 126,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bne.w",
+            "100051bc <fndsa_vect_inv_mul2e_fft_fp64_exact+0x2c>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10004fe0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10004c30 <fxr_div_fp64_exact>"
+          ],
+          [
+            "bl",
+            "10004c30 <fxr_div_fp64_exact>"
+          ]
+        ],
+        "FP64_ops": 67
+      },
+      {
+        "function": "fndsa_poly_big_to_fp64_exact",
+        "symbol": "fndsa_poly_big_to_fp64_exact",
+        "instructions": 343,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "beq.w",
+            "100064c2 <fndsa_poly_big_to_fp64_exact+0x4fa>"
+          ],
+          [
+            "bls.w",
+            "100064b6 <fndsa_poly_big_to_fp64_exact+0x4ee>"
+          ],
+          [
+            "beq.w",
+            "10006430 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.w",
+            "10006430 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10006430 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10006430 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10006430 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bne.w",
+            "1000608a <fndsa_poly_big_to_fp64_exact+0xc2>"
+          ]
+        ],
+        "calls": [],
+        "FP64_ops": 2
+      }
+    ]
+  },
+  {
+    "label": "compat-perf",
+    "elf_sha256": "c8be798fab8f150915511eed3355d02a8a02933dc5eb58f6970921b4bf40b98d",
+    "functions": [
+      {
+        "function": "fndsa_fp64e_mul",
+        "symbol": "fndsa_fp64e_mul",
+        "instructions": 99,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 76
+      },
+      {
+        "function": "fxr_div_fp64_exact",
+        "symbol": "fxr_div_fp64_exact",
+        "instructions": 294,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 15
+      },
+      {
+        "function": "fp64e_cmul",
+        "symbol": null,
+        "instructions": 0,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 0,
+        "note": "No separate symbol: inlined or not retained. Reviewed separately in standalone production TUs, not claimed as a separately audited kernel body."
+      },
+      {
+        "function": "fndsa_vect_FFT_fp64_exact",
+        "symbol": "fndsa_vect_FFT_fp64_exact",
+        "instructions": 279,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bls.w",
+            "10006c72 <fndsa_vect_FFT_fp64_exact+0x40a>"
+          ],
+          [
+            "bcs.w",
+            "10006c44 <fndsa_vect_FFT_fp64_exact+0x3dc>"
+          ],
+          [
+            "bne.w",
+            "10006962 <fndsa_vect_FFT_fp64_exact+0xfa>"
+          ],
+          [
+            "bne.w",
+            "100068dc <fndsa_vect_FFT_fp64_exact+0x74>"
+          ],
+          [
+            "bne.w",
+            "100068a0 <fndsa_vect_FFT_fp64_exact+0x38>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 124
+      },
+      {
+        "function": "fndsa_vect_iFFT_fp64_exact",
+        "symbol": "fndsa_vect_iFFT_fp64_exact",
+        "instructions": 377,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "beq.w",
+            "1000721e <fndsa_vect_iFFT_fp64_exact+0x5a6>"
+          ],
+          [
+            "bcs.w",
+            "100071fc <fndsa_vect_iFFT_fp64_exact+0x584>"
+          ],
+          [
+            "bne.w",
+            "10006d84 <fndsa_vect_iFFT_fp64_exact+0x10c>"
+          ],
+          [
+            "bne.w",
+            "10006cd4 <fndsa_vect_iFFT_fp64_exact+0x5c>"
+          ],
+          [
+            "bne.w",
+            "10006c9a <fndsa_vect_iFFT_fp64_exact+0x22>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 221
+      },
+      {
+        "function": "fndsa_vect_mul_fft_fp64_exact",
+        "symbol": "fndsa_vect_mul_fft_fp64_exact",
+        "instructions": 169,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bne.w",
+            "10007260 <fndsa_vect_mul_fft_fp64_exact+0x38>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 77
+      },
+      {
+        "function": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "symbol": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "instructions": 126,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bne.w",
+            "100066ac <fndsa_vect_inv_mul2e_fft_fp64_exact+0x2c>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10006120 <fxr_div_fp64_exact>"
+          ],
+          [
+            "bl",
+            "10006120 <fxr_div_fp64_exact>"
+          ]
+        ],
+        "FP64_ops": 67
+      },
+      {
+        "function": "fndsa_poly_big_to_fp64_exact",
+        "symbol": "fndsa_poly_big_to_fp64_exact",
+        "instructions": 343,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "beq.w",
+            "100079b2 <fndsa_poly_big_to_fp64_exact+0x4fa>"
+          ],
+          [
+            "bls.w",
+            "100079a6 <fndsa_poly_big_to_fp64_exact+0x4ee>"
+          ],
+          [
+            "beq.w",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.w",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bne.w",
+            "1000757a <fndsa_poly_big_to_fp64_exact+0xc2>"
+          ]
+        ],
+        "calls": [],
+        "FP64_ops": 2
+      }
+    ]
+  },
+  {
+    "label": "compat-profile",
+    "elf_sha256": "58dc614588102009a34d1c2bcab9f090d9c54589bd8583f55a6e2ab8a0b823cf",
+    "functions": [
+      {
+        "function": "fndsa_fp64e_mul",
+        "symbol": "fndsa_fp64e_mul",
+        "instructions": 99,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 76
+      },
+      {
+        "function": "fxr_div_fp64_exact",
+        "symbol": "fxr_div_fp64_exact",
+        "instructions": 294,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 15
+      },
+      {
+        "function": "fp64e_cmul",
+        "symbol": null,
+        "instructions": 0,
+        "IT": [],
+        "conditional_branches": [],
+        "calls": [],
+        "FP64_ops": 0,
+        "note": "No separate symbol: inlined or not retained. Reviewed separately in standalone production TUs, not claimed as a separately audited kernel body."
+      },
+      {
+        "function": "fndsa_vect_FFT_fp64_exact",
+        "symbol": "fndsa_vect_FFT_fp64_exact",
+        "instructions": 279,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bls.w",
+            "10006c72 <fndsa_vect_FFT_fp64_exact+0x40a>"
+          ],
+          [
+            "bcs.w",
+            "10006c44 <fndsa_vect_FFT_fp64_exact+0x3dc>"
+          ],
+          [
+            "bne.w",
+            "10006962 <fndsa_vect_FFT_fp64_exact+0xfa>"
+          ],
+          [
+            "bne.w",
+            "100068dc <fndsa_vect_FFT_fp64_exact+0x74>"
+          ],
+          [
+            "bne.w",
+            "100068a0 <fndsa_vect_FFT_fp64_exact+0x38>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 124
+      },
+      {
+        "function": "fndsa_vect_iFFT_fp64_exact",
+        "symbol": "fndsa_vect_iFFT_fp64_exact",
+        "instructions": 377,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "beq.w",
+            "1000721e <fndsa_vect_iFFT_fp64_exact+0x5a6>"
+          ],
+          [
+            "bcs.w",
+            "100071fc <fndsa_vect_iFFT_fp64_exact+0x584>"
+          ],
+          [
+            "bne.w",
+            "10006d84 <fndsa_vect_iFFT_fp64_exact+0x10c>"
+          ],
+          [
+            "bne.w",
+            "10006cd4 <fndsa_vect_iFFT_fp64_exact+0x5c>"
+          ],
+          [
+            "bne.w",
+            "10006c9a <fndsa_vect_iFFT_fp64_exact+0x22>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 221
+      },
+      {
+        "function": "fndsa_vect_mul_fft_fp64_exact",
+        "symbol": "fndsa_vect_mul_fft_fp64_exact",
+        "instructions": 169,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bne.w",
+            "10007260 <fndsa_vect_mul_fft_fp64_exact+0x38>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        ],
+        "FP64_ops": 77
+      },
+      {
+        "function": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "symbol": "fndsa_vect_inv_mul2e_fft_fp64_exact",
+        "instructions": 126,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "bne.w",
+            "100066ac <fndsa_vect_inv_mul2e_fft_fp64_exact+0x2c>"
+          ]
+        ],
+        "calls": [
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          [
+            "bl",
+            "10006120 <fxr_div_fp64_exact>"
+          ],
+          [
+            "bl",
+            "10006120 <fxr_div_fp64_exact>"
+          ]
+        ],
+        "FP64_ops": 67
+      },
+      {
+        "function": "fndsa_poly_big_to_fp64_exact",
+        "symbol": "fndsa_poly_big_to_fp64_exact",
+        "instructions": 343,
+        "IT": [],
+        "conditional_branches": [
+          [
+            "beq.w",
+            "100079b2 <fndsa_poly_big_to_fp64_exact+0x4fa>"
+          ],
+          [
+            "bls.w",
+            "100079a6 <fndsa_poly_big_to_fp64_exact+0x4ee>"
+          ],
+          [
+            "beq.w",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.w",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bls.n",
+            "10007920 <fndsa_poly_big_to_fp64_exact+0x468>"
+          ],
+          [
+            "bne.w",
+            "1000757a <fndsa_poly_big_to_fp64_exact+0xc2>"
+          ]
+        ],
+        "calls": [],
+        "FP64_ops": 2
+      }
+    ]
+  }
+]

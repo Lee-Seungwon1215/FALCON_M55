@@ -1,0 +1,539 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 55104
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :55104 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10012838
+hbreak *0x10015ac8
+set $early_fault_bp = $bpnum
+jump *0x10015add
+if $pc != 0x10012838
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpw_dh9m7z/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x100127cc
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10015ac8
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 55104
+Info : Listening on port 55104 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/55104
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x1800350e msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+BOARD_KAT degree=256 index=0 match=1 equation=PASS actual=206b494ecc7aca5e551e8c3fffcaee03a1aa409d649012d2ef77e9e0d32bc669
+BOARD_KAT degree=256 index=1 match=1 equation=PASS actual=fe988bc048ca8f81cf81b8f09431d5ce6eed5248e83c34dec84ce7054081535a
+BOARD_KAT degree=256 index=2 match=1 equation=PASS actual=c3ec5a94a3064cb3e5a79cb768bd413e695a0eeb4d32b03a8035a0332e647a96
+BOARD_KAT degree=256 index=3 match=1 equation=PASS actual=57b99a08146b4a7c8b9c53bb5134ae09ef203e151c4bcf2e186bcbcf6e3497e6
+BOARD_KAT degree=256 index=4 match=1 equation=PASS actual=a61d20df14fb7d31fff611a6a2131ce698d233d34bb0db258f60fa0701a4cc07
+BOARD_KAT degree=256 index=5 match=1 equation=PASS actual=acac7634fe94797d5356c55b0f82f8ca442e568f61864fa74d9bbed71fd2c075
+BOARD_KAT degree=256 index=6 match=1 equation=PASS actual=56dc20ed3026656c006752c86bd5e69ddd36c034e41d2a6516cba2e3565b0142
+BOARD_KAT degree=256 index=7 match=1 equation=PASS actual=9a1f24954a4e3c2f6b3ec62710b4ed0e107b343be42df4df43f978ebc8cb3d46
+BOARD_KAT degree=256 index=8 match=1 equation=PASS actual=b4547e7799d4fa464f82fc1949f3b5750140ca0f12133671b10f0c8648e70fec
+BOARD_KAT degree=256 index=9 match=1 equation=PASS actual=0a7502a68a32976d2836705087659f99b861158974b03f888345ce67f87eeede
+BOARD_KAT degree=256 index=10 match=1 equation=PASS actual=3531deef706fe77b855461b1741a86c12a704ad2db85ed34add5971628577b43
+BOARD_KAT degree=256 index=11 match=1 equation=PASS actual=5ee1ec7926369ded5d85ace34936090aff15caf7474bc9afc6012e0b309bba78
+BOARD_KAT degree=256 index=12 match=1 equation=PASS actual=c3dc1c30a8fd1a7a96ab678a7a0bee59e69fef914d22d888fe7560d430d9c65a
+BOARD_KAT degree=256 index=13 match=1 equation=PASS actual=8f79dbfa998bb343258e4aea87855e0329992344b6efcefdf8ffb5cfff8fc2ca
+BOARD_KAT degree=256 index=14 match=1 equation=PASS actual=aae98183cd095474025396e411b4e46be9482e1e7feb4ef232fcf81e18218dd2
+BOARD_KAT degree=256 index=15 match=1 equation=PASS actual=8bb553686aeac15be91a5ac813453f61312bf95385ad0553d6f8f2093adba76e
+BOARD_KAT degree=256 index=16 match=1 equation=PASS actual=05b888fde821375fd43086cc3ce6c59534db351d2d4a5c7637c7c27b1b1e87c1
+BOARD_KAT degree=256 index=17 match=1 equation=PASS actual=af1c0f7a7c32acbedfd8b0e882b1d9520983980af6a8e577dc5715fa636ee47c
+BOARD_KAT degree=256 index=18 match=1 equation=PASS actual=a1a28fe65eccf2fbf4ff3ac798906236fe3e12d85c4ba60547b61fbc33e1f2a1
+BOARD_KAT degree=256 index=19 match=1 equation=PASS actual=bd3a7d9ae70058c45e630eb5ed8a60264215bfcaf10a38722b22df7edf85d596
+BOARD_KAT degree=256 index=20 match=1 equation=PASS actual=6cb5d598a53afabc3e1fff844ff004dbdd62aa51f7987d18cdbd1934d4cf1cf4
+BOARD_KAT degree=256 index=21 match=1 equation=PASS actual=85e2e6a93088ec1708df74bd1c4a9f0f9b73cd6811a95ca434a95aadc3b5738f
+BOARD_KAT degree=256 index=22 match=1 equation=PASS actual=0606c4aee4f068cc1e967c0b89e124a80e86abab185a193b41e91766ecfec65c
+BOARD_KAT degree=256 index=23 match=1 equation=PASS actual=92bedd186d08a577b1ab568d2161c31abf4388acee1c046f7400d98bd1fc895e
+BOARD_KAT degree=256 index=24 match=1 equation=PASS actual=3eaf7af7149e2c10b30294fd89e9b9cd9ecbf0be6eeb95c4ff0a64f4b048fec7
+BOARD_KAT degree=256 index=25 match=1 equation=PASS actual=401746f36c83668aa9d6c10d1568a5068f1c09d37b30d60e5081566e62b6f3e8
+BOARD_KAT degree=256 index=26 match=1 equation=PASS actual=4303de2173118f893d9d14f1b57fc519ce2140aa5e103564fe87951f0926d4be
+BOARD_KAT degree=256 index=27 match=1 equation=PASS actual=b3c70e7afe227e7dadcdf36c573968442acb2fb6cdb89081095f537256291c53
+BOARD_KAT degree=256 index=28 match=1 equation=PASS actual=9a3a57eea9ad4a2583057a5ce157e2607de8a40c643703a4e5d247022295c410
+BOARD_KAT degree=256 index=29 match=1 equation=PASS actual=8b2da6cb3d50cbc76f7913fed8cdccfb2e9ca20380b239bf0e5342499133f460
+BOARD_KAT degree=256 index=30 match=1 equation=PASS actual=f7b4ca6dd157bf90cccd4913bff843fc958f4db872c2481eefe9a6b3fb84472d
+BOARD_KAT degree=256 index=31 match=1 equation=PASS actual=fce7cd3215c6f488a3934e07373ea9b3cbc8759a302847f3aad4c828c1153aba
+BOARD_KAT degree=256 index=32 match=1 equation=PASS actual=25e869eb14b04040c11d7b6d90ab8a04f8d350c3aa732239946bbb9bc8a61c2b
+BOARD_KAT degree=256 index=33 match=1 equation=PASS actual=fcb2de3885c602ee4ef7a64710b917f051d30d384e3de7c08ea81b9f33b4fa02
+BOARD_KAT degree=256 index=34 match=1 equation=PASS actual=5967ba9efea4b7f5ffbb023fee85e2ddb457e54a4d77e964a6e0ae2b039bf20c
+BOARD_KAT degree=256 index=35 match=1 equation=PASS actual=9c83116b4ba3845bfdbbe644921f43cbaff19492fff4c1ec61a04c9932960bd7
+BOARD_KAT degree=256 index=36 match=1 equation=PASS actual=8bc57952d41cdd9f2a5577584cbe557a165b9cb9b8d5caf4172f82a62eebaa7a
+BOARD_KAT degree=256 index=37 match=1 equation=PASS actual=f9a25c1947f457b6b6be428bb0f0e4b5eedf35435afd8fcd7ae88123472e92a2
+BOARD_KAT degree=256 index=38 match=1 equation=PASS actual=d923ea3889cc9e6b27503a54adc8f0f018515db4c786b7141f616854bec3bd9c
+BOARD_KAT degree=256 index=39 match=1 equation=PASS actual=d07d8ee579a65f0e636afa4767bd71079599fb01353e11355ea3411901edfc9e
+BOARD_KAT degree=256 index=40 match=1 equation=PASS actual=6deeb51be70650e8fcb390fb01d70cc41825b7ad7a37087feacd54fe77778666
+BOARD_KAT degree=256 index=41 match=1 equation=PASS actual=ab3b6afad6aa307e0cfb979564dd0a97af0b7f3cf43b589c27da56b8078a7289
+BOARD_KAT degree=256 index=42 match=1 equation=PASS actual=92fbf469718f5f446c8f21b4c3493b5f09a77a91bf3195ebb62d83d9d920684a
+BOARD_KAT degree=256 index=43 match=1 equation=PASS actual=a1aafad7e250bdfe465a040922f4b8a8c40c5a7e633dae5dfea80ec21ea0fc9d
+BOARD_KAT degree=256 index=44 match=1 equation=PASS actual=c13dda1fd2d9c4ba2b751c2e7f79a00d660d2f3bc26b8ddd7cfde5373dbc14f6
+BOARD_KAT degree=256 index=45 match=1 equation=PASS actual=67519f6554854eb8d5b915a0d3f5df6f9d03a1aabbe810ff66a04e1d2939c571
+BOARD_KAT degree=256 index=46 match=1 equation=PASS actual=a2b5cb33b4bd49a1e4a59fbb921959700fc1f7e8f43ab6c9b3167990a4fd065d
+BOARD_KAT degree=256 index=47 match=1 equation=PASS actual=30fd6b34287ac827139e4210d8d43466414919d1a4eb76c0511c3a33886dfeb7
+BOARD_KAT degree=256 index=48 match=1 equation=PASS actual=8389ef9f612b5783e277e449b92b855db150d2c0c3765bc82f6f75eb38761545
+BOARD_KAT degree=256 index=49 match=1 equation=PASS actual=aefe6d5e6dc5e672ff6b4a8947ace69daac7358355d13c34b8aca9191b221307
+BOARD_KAT degree=256 index=50 match=1 equation=PASS actual=d8fb47384efe6db139fe7f562e3db30b81d38af6a8bdc4f34f1594a57681434d
+BOARD_KAT degree=256 index=51 match=1 equation=PASS actual=7a147202a4f98d817c1dc3510a7f5b24ef2864262c3b034325ebbbf1cea582e6
+BOARD_KAT degree=256 index=52 match=1 equation=PASS actual=ccc9278db11d7dd510f5d7a5261b15f9b6b0b28ef698bfa17c174cf023d8b256
+BOARD_KAT degree=256 index=53 match=1 equation=PASS actual=20c929d2a3d3e08b4b50c23c8fcd95fc53a42e71e2085e006fc6a6969c3bc797
+BOARD_KAT degree=256 index=54 match=1 equation=PASS actual=9b6cb1439282ac50d08c7852c283994a1db43e300596fff170b4d9e2c8267e4d
+BOARD_KAT degree=256 index=55 match=1 equation=PASS actual=6311b5ef01c8251dbbbb73a6c47cae7760023a7d08f0513161db24961ab381f8
+BOARD_KAT degree=256 index=56 match=1 equation=PASS actual=4f86d5507011010d1b2cae35b0e55fb471ccbb6def44d852a1230788b1e0c2ec
+BOARD_KAT degree=256 index=57 match=1 equation=PASS actual=7afcb39c4af622ace5ff57f66d9adbd1ea3a706c8036de9e953a932fc25b92ea
+BOARD_KAT degree=256 index=58 match=1 equation=PASS actual=7489362b7175e7426c8fe9aa079d160cbb312d0b2b9a16779c2971d625da5aaf
+BOARD_KAT degree=256 index=59 match=1 equation=PASS actual=ded27cd18bbf4d0792780886e07fbab452cad2b2f3a4aa9f0e1d4b4119a6953a
+BOARD_KAT degree=256 index=60 match=1 equation=PASS actual=1e0610c4c0781bec641f79aba92fce45325497e4e8d94332438248f8319bdb25
+BOARD_KAT degree=256 index=61 match=1 equation=PASS actual=e92f62755d6e0857a1639580a88340653ec82f69c0e481b4481e63e3c6dd3067
+BOARD_KAT degree=256 index=62 match=1 equation=PASS actual=7ba38c675f4d1fea1d4b6e667c5c439ade0118c45584a94a4e7011d291414d24
+BOARD_KAT degree=256 index=63 match=1 equation=PASS actual=89b633ec074465e682cb2c263ba4a7166ad40f6dfb7e6eda3be66e6ceb69671c
+BOARD_KAT degree=256 index=64 match=1 equation=PASS actual=993e5e23240844c4ec02052e2e788a0b2fcd48cebdd3a6dc69f532637b565d8b
+BOARD_KAT degree=256 index=65 match=1 equation=PASS actual=31c7f54f215bc6cfaee38bfefc3c5bcb4373994aa7062fccf74bdec91e4a8f55
+BOARD_KAT degree=256 index=66 match=1 equation=PASS actual=8a4f0b568168bee20734689d6b2c772b65770e3f78ce1c647ade5da0fd840345
+BOARD_KAT degree=256 index=67 match=1 equation=PASS actual=995d07f18cc72e256c49ff8c628531246ab1090cd52acc68e9e3d65618f793c2
+BOARD_KAT degree=256 index=68 match=1 equation=PASS actual=ff76f25df616b5f0912bae6b301288a91a775991e709638da48b9dbd3bab6240
+BOARD_KAT degree=256 index=69 match=1 equation=PASS actual=19ed8969e51694c2b9d3a61d019e3d61e0711f47afbedd004d5a876c06f528ae
+BOARD_KAT degree=256 index=70 match=1 equation=PASS actual=e6ba00ad0bda6831173a647a1497f94f6f28287722b60f67e35ae2e1463d28b5
+BOARD_KAT degree=256 index=71 match=1 equation=PASS actual=f89fc3d91101a2fdd9990b15a6f665b6b483a41119ad9af35f5358063cc9d36a
+BOARD_KAT degree=256 index=72 match=1 equation=PASS actual=f8a7913f1c8c2c37237f110bbd380576d86267ec78ca73349a605bd8f4a51c37
+BOARD_KAT degree=256 index=73 match=1 equation=PASS actual=df6c619c8bf7ae428a3c150c0b0e4b38f568757a25fcbde24f2584dce754a07a
+BOARD_KAT degree=256 index=74 match=1 equation=PASS actual=9013ed990e60b8872e1b8cbd514be07a562d59b187c969d453396f2806aaeac5
+BOARD_KAT degree=256 index=75 match=1 equation=PASS actual=369e013dca5e78b8ce7c9aaeb2fe93a41a03f19520dd7c1736f5d7e2204bfb18
+BOARD_KAT degree=256 index=76 match=1 equation=PASS actual=bf3fa2b29bf4c4ba82b99314b3666cc76472e9abf62dd1ad0d56f906f8061ae7
+BOARD_KAT degree=256 index=77 match=1 equation=PASS actual=f0be8d05a791af3e069e88852489c565e878e2691a40c1947938d2efa150d135
+BOARD_KAT degree=256 index=78 match=1 equation=PASS actual=8fa2ac124413a51c443357ea7c93149c490d5a970d28681f3d13c607fab0cb88
+BOARD_KAT degree=256 index=79 match=1 equation=PASS actual=7619e0ccfe4763872f308be5a19a139dc4d5b796b071188cbce29c6330a2c2a6
+BOARD_KAT degree=256 index=80 match=1 equation=PASS actual=3466251215a1ccd52a38e6807714d4b88e87ad2ff2d2afcb8c0517ce298cf57f
+BOARD_KAT degree=256 index=81 match=1 equation=PASS actual=ec754c6eb57803ca7f591ce1cfd788be23d24df530052d9ae335386a405129da
+BOARD_KAT degree=256 index=82 match=1 equation=PASS actual=6114fe0ee5bafa29fc2302ee0e6df9e2370e4fa4c87608f9df7e7caafdc29426
+BOARD_KAT degree=256 index=83 match=1 equation=PASS actual=e0f56f32e814d3b74b407f08825f2180e54d1304e3058ce94d0a58d1f5e19314
+BOARD_KAT degree=256 index=84 match=1 equation=PASS actual=bd582e106b652cd94611148896742aeff8bca084a38c8ef72afd568ded6248b1
+BOARD_KAT degree=256 index=85 match=1 equation=PASS actual=042733e39f77bb1e2dc860d0911ed9a9031acae793ea8418c0d586806813119d
+BOARD_KAT degree=256 index=86 match=1 equation=PASS actual=97cb26e6ec1b665e174b43f3e931e9e631ed619fc400374a36b5784e3013ba8d
+BOARD_KAT degree=256 index=87 match=1 equation=PASS actual=7b4eb8d05b6e06006eda47ccb0c737320b30395db78cf2bb4dd385cf7e2ecf0a
+BOARD_KAT degree=256 index=88 match=1 equation=PASS actual=3243df5500ca207f28a10d996a6a578965201b75be7368fe0ef515d808098fed
+BOARD_KAT degree=256 index=89 match=1 equation=PASS actual=2dddcc86211d367562f264339fe48ab3832ed871f0936a300081b7c799715b5b
+BOARD_KAT degree=256 index=90 match=1 equation=PASS actual=d23f73a45876901db1cb973daf74b029b11cd5a55eaf0adbe1d70dc43b4ba8d0
+BOARD_KAT degree=256 index=91 match=1 equation=PASS actual=a25dc8b7ca99f42b1603d35550b21fe8c3e528dc8e3745e67e09aabf7c173119
+BOARD_KAT degree=256 index=92 match=1 equation=PASS actual=fc901c73f11b14f4dabb6d6a23dc4926e23a699e5dfc0d68b9be944b884c0672
+BOARD_KAT degree=256 index=93 match=1 equation=PASS actual=8fbcfe2fcf97b91d7ea810380d6aa1bf05ac70ec5da48a12bfd39841bbe39f68
+BOARD_KAT degree=256 index=94 match=1 equation=PASS actual=f85addcf0df484638fd7072caafc1ebbadce19af74a647182815605d6e2897da
+BOARD_KAT degree=256 index=95 match=1 equation=PASS actual=8cd56e1b62cc32539c348f1c07fb91244a5a259631b8dbe5e447c72ea6410dde
+BOARD_KAT degree=256 index=96 match=1 equation=PASS actual=65ed1040c5a29d76fe1f0dadc1a2c2c5cf82742e46a3945e14f66c5faad3bda6
+BOARD_KAT degree=256 index=97 match=1 equation=PASS actual=27155aac5edd23f4ca6ba67b305339f05c9a6ad24edbaa834ef077173f977501
+BOARD_KAT degree=256 index=98 match=1 equation=PASS actual=f5c385850408d1c6c590a99eb78a8d1c9755fd5c6db309b07be3d073b4396d9a
+BOARD_KAT degree=256 index=99 match=1 equation=PASS actual=245e2d4aaa86bb991ad770602bf2ba815f8c5f1c6f73f351667bb38b705d0794
+BOARD_KAT degree=512 index=0 match=1 equation=PASS actual=db276bab6b6aa450540c105c1cbaf4a0bdf1171e9e0712a60bd77e34f93353e0
+BOARD_KAT degree=512 index=1 match=1 equation=PASS actual=b63fd80c6cc7acae7e917d62d76b8686ddce5763cb25dba854504074980ebd60
+BOARD_KAT degree=512 index=2 match=1 equation=PASS actual=bb5f2c72f1d84ad88a20d6fa37a1d170becb94bedc0fa332df4d18c91e789b96
+BOARD_KAT degree=512 index=3 match=1 equation=PASS actual=b5da3864d55e2b08af1a622c442dfc90fb86bd5e22cb36a1ac93679c2fc09489
+BOARD_KAT degree=512 index=4 match=1 equation=PASS actual=7a574e0e7eefd1a5af8bc960db618d59a0a7bde270e4767041fd5fd9dc204527
+BOARD_KAT degree=512 index=5 match=1 equation=PASS actual=af566e0bc83946d610d968566b15e21bede4981b05775c46c659189fd15a9997
+BOARD_KAT degree=512 index=6 match=1 equation=PASS actual=e6dc2f1ffedb5a6a3af263dea6ad076d5faee78bfacc42502ed0927f1951dfdf
+BOARD_KAT degree=512 index=7 match=1 equation=PASS actual=e946ad7a0773c678ceb4060477d5de71776f0b7ad0dfba31136b745afd266c23
+BOARD_KAT degree=512 index=8 match=1 equation=PASS actual=2ee1fab9f9b7ea193dff0348d8e677575338d2748899d80d39f4c9b488cf40d6
+BOARD_KAT degree=512 index=9 match=1 equation=PASS actual=31902b155a0938d89214d184d025eff594e557120115a69ca8781a509313bd0d
+BOARD_KAT degree=512 index=10 match=1 equation=PASS actual=97703c8e81e9addef6321d5466bee5c46948395e8388f28f1569dc9213952411
+BOARD_KAT degree=512 index=11 match=1 equation=PASS actual=afc768435d4c6740471ade8aa2e7e3a1723ea36cbb10372e318e698c03e3bc75
+BOARD_KAT degree=512 index=12 match=1 equation=PASS actual=7c83611473f4f0ebb96b2143b4f48ca869f3470609350f49dffcde2d58393b2c
+BOARD_KAT degree=512 index=13 match=1 equation=PASS actual=f5a9abaf2c5a5c1f679eaff8adb28800a150261197c5da40ae88f66e31504651
+BOARD_KAT degree=512 index=14 match=1 equation=PASS actual=a8cc26de3c3f108096eac9374278c9972ba99a42ddc0623f6e6aebbe88b93102
+BOARD_KAT degree=512 index=15 match=1 equation=PASS actual=075f4b1ecc2dd780930b9ceb31a5798d6fcd223cb7cb4a266980a07f9002353f
+BOARD_KAT degree=512 index=16 match=1 equation=PASS actual=cbc3c6988c94f09fb90ede5af53d0a8ccb033f735913c42438adf4f1eb24e876
+BOARD_KAT degree=512 index=17 match=1 equation=PASS actual=cace74b826f8b941ff8b5961727e77373aae93ed220be86f3b0f40805764b612
+BOARD_KAT degree=512 index=18 match=1 equation=PASS actual=89021f4708fc1c63da7005c08f371f443cb9b0e31f30928672f2296404ec7771
+BOARD_KAT degree=512 index=19 match=1 equation=PASS actual=e8e4bcc694881b6c71f6dac375f98754e40794ffafb068c1bd48dd83188eda17
+BOARD_KAT degree=512 index=20 match=1 equation=PASS actual=c067d4a696f8bc2aa1e48cdee15892acdf046290e987629e10e7cf5139fd6dd9
+BOARD_KAT degree=512 index=21 match=1 equation=PASS actual=39360a479460e2b2f44aafcfc24d54ae13ab3f4e95846e00eeb90fc891064dc4
+BOARD_KAT degree=512 index=22 match=1 equation=PASS actual=1050140e07d3f846da7a649a2b8379e7a084c6b05f70164b36a97359c0fabb32
+BOARD_KAT degree=512 index=23 match=1 equation=PASS actual=c9f7eb1d1ebd5ee6b502eb50fb718249821f48242520e4d46ee1b1c3c41ac6c0
+BOARD_KAT degree=512 index=24 match=1 equation=PASS actual=72bbcd86aac489bb3860e59443f75d323b0fbe1c42ebb4cecffe849a5a9461fd
+BOARD_KAT degree=512 index=25 match=1 equation=PASS actual=a7164f8976b68b6bad76cc7fa6c12f5677f24f83dc8db667deaefa969cff375f
+BOARD_KAT degree=512 index=26 match=1 equation=PASS actual=987874d1cff8ab383a2b5e2068e2037b5b4c2869f20d0d87d81fa4f502dd5118
+BOARD_KAT degree=512 index=27 match=1 equation=PASS actual=b5dde89d2b04acd42451a07179a46e6061613e3a31ad13dc55bad1c39ed2478d
+BOARD_KAT degree=512 index=28 match=1 equation=PASS actual=878fe3acbf74ea68588023df1bb69c704dd97fb44aaa75ffa9670bb9f20a3c8c
+BOARD_KAT degree=512 index=29 match=1 equation=PASS actual=9a3bb25f793af7d69717dea8987e50ea49991074a3b1686c3b85e2ec6a5a6237
+BOARD_KAT degree=512 index=30 match=1 equation=PASS actual=86ea725c2f30d01465d2fa87f0961ff52f87a0979ddc1663fde4f7730d36d526
+BOARD_KAT degree=512 index=31 match=1 equation=PASS actual=c562a45b124bcd64b2cc71d7da82e1976ee7f856f61c5f5bb60734ab27ae66ea
+BOARD_KAT degree=512 index=32 match=1 equation=PASS actual=701ac604d0d1ffcbc5afa8a54fe1789c5ef3f0a2a10b071d393884a14d9d6821
+BOARD_KAT degree=512 index=33 match=1 equation=PASS actual=2ff1d3932a40042a3fca5b52ce3fb715657733ec4b653e72adb47df192aaaa59
+BOARD_KAT degree=512 index=34 match=1 equation=PASS actual=8afb2670ec7ea9f29c6ad89f63b53ed44af9f2f4bc3efc5ed378c56c9fc1861b
+BOARD_KAT degree=512 index=35 match=1 equation=PASS actual=3d13ae44ba1b9525306bc6ea289eaed4aa7dc497e491e1fa6b834bd748986257
+BOARD_KAT degree=512 index=36 match=1 equation=PASS actual=902d161486779d72a0ea7e0d4b19edcc47c8e8bc941ddcf863bc9dd68c7c6bb8
+BOARD_KAT degree=512 index=37 match=1 equation=PASS actual=4042655bf7fd9d994908817bfe7a5946e49ef7099e7b70886e6e05e6ddbc423d
+BOARD_KAT degree=512 index=38 match=1 equation=PASS actual=b04fd4483eb1c6aa8b72e123545603c290f48426dc0efbf43167151f35c41128
+BOARD_KAT degree=512 index=39 match=1 equation=PASS actual=d0dc59e340db93f183b1271d43839a40f39276a740d49a574cf621c6e74ef3da
+BOARD_KAT degree=512 index=40 match=1 equation=PASS actual=06698eacde732381ab4fa7e4169d51f00d79021d0714cd536f63f905cfd5cdb8
+BOARD_KAT degree=512 index=41 match=1 equation=PASS actual=9dc126000f5e82a2f1213cc1258929bf93b69914d3ae2afa0990488f6d3d65f1
+BOARD_KAT degree=512 index=42 match=1 equation=PASS actual=20242b9ee1dab5f7afc5954966f734c91a7a6d864d7ae415de455fa58e51b5d6
+BOARD_KAT degree=512 index=43 match=1 equation=PASS actual=2a1b65600716b84695b09bad7b815b06f420c65d02362a1de62e6b7b5ee42cee
+BOARD_KAT degree=512 index=44 match=1 equation=PASS actual=cada456db6c15c81580de32a03cd0efcc0e4b80eea496934cda9651d196b9911
+BOARD_KAT degree=512 index=45 match=1 equation=PASS actual=bb469fa5b386e35eca3627cf609f36fa3059fa0e95e0012dd77946152422f592
+BOARD_KAT degree=512 index=46 match=1 equation=PASS actual=8bd9af2830028af1e22f27f56a358d43e4c526b2dc967c82c9256b6f472e69b3
+BOARD_KAT degree=512 index=47 match=1 equation=PASS actual=9ae4030f54f0e7a3fae70b8c35d278c5e3c12de7b23b2b02c8d723d884f71671
+BOARD_KAT degree=512 index=48 match=1 equation=PASS actual=921d05a8b0923be175f2aac0dc4f36dbfbabe2a994f41ca75ae52fdb1dcc3090
+BOARD_KAT degree=512 index=49 match=1 equation=PASS actual=0d3c65186567ee25290e078c6933f1614936e170f205a6855ce9de51c9589801
+BOARD_KAT degree=512 index=50 match=1 equation=PASS actual=8b448f593a4caaae7b0de41d00f641b4edbc0a92ae7b4688c2e0bd9afc992609
+BOARD_KAT degree=512 index=51 match=1 equation=PASS actual=9f25182041670f965863b2b72efcc30671760c686ede55a842b1077c236b9d9e
+BOARD_KAT degree=512 index=52 match=1 equation=PASS actual=3feec1e8b469d89c092757191fca0313ca17e5cc89c6a8e0b54929b10016c4d8
+BOARD_KAT degree=512 index=53 match=1 equation=PASS actual=a2cce405bee05b207ccd34e5798a2bcbc4a4973eb2164a39ffc791e1c89d5740
+BOARD_KAT degree=512 index=54 match=1 equation=PASS actual=aaa5d73ccde813528027acb814bd5e0bec04a44c4315d313d4031c00fe2d4ffc
+BOARD_KAT degree=512 index=55 match=1 equation=PASS actual=d3db5de53b2d9b0a5490b9482c01beb51300a5bee38211e557a30e287340fd81
+BOARD_KAT degree=512 index=56 match=1 equation=PASS actual=6795dc3add7703a14200cb77b1a43a6326165e7b091f59f29c9d87dc3d118325
+BOARD_KAT degree=512 index=57 match=1 equation=PASS actual=2cc60f8187d3cb9fb8a8e5902d540a62cd4843ebcc7ac978b4d25c549b02abdb
+BOARD_KAT degree=512 index=58 match=1 equation=PASS actual=2f4dcbcb5bf0aa9efc7a1f963622873e2af37a626ab44db7e4e8b3881851913b
+BOARD_KAT degree=512 index=59 match=1 equation=PASS actual=28eb3b20a296a9faef6ebe7eb8535bab58ccd57ba18b76b6f903993ccabb1515
+BOARD_KAT degree=512 index=60 match=1 equation=PASS actual=d15fc102f7aa86fa07d973378d6f6abad7b857af043599349fcf7c3f2c47ca95
+BOARD_KAT degree=512 index=61 match=1 equation=PASS actual=cef15dec0c8d2ab296ab11714e1814a2bed38eaffec6c60afb669fe282d1a2bf
+BOARD_KAT degree=512 index=62 match=1 equation=PASS actual=165489cdacea881346af410b2bec9f5f3912e38dff9d64432cf4978976f6544b
+BOARD_KAT degree=512 index=63 match=1 equation=PASS actual=cc88952a15b3f13a8967a9706c1498a99eed3cf0052b71a4008712fba00efe96
+BOARD_KAT degree=512 index=64 match=1 equation=PASS actual=0bc08a05c388edc14ee90a688ee8755b011a62ea878829dfe8b905ab5cdc3609
+BOARD_KAT degree=512 index=65 match=1 equation=PASS actual=6f48467cbcba88c36d6e40ac433eb4604557091a9465c1e9b0c8a41684429c72
+BOARD_KAT degree=512 index=66 match=1 equation=PASS actual=f76fd79b7fe225c636b88cd54629fb9a405811110a758432e4f13d153188f173
+BOARD_KAT degree=512 index=67 match=1 equation=PASS actual=932d4ba4856d782ffd6f5412119debf92d522b9ad0a825970d6305e6c3faa52f
+BOARD_KAT degree=512 index=68 match=1 equation=PASS actual=e5ede003a16bc72bcc88c3f1d5fa30f5b495ff0d7152853f2eb822cc93fc6d06
+BOARD_KAT degree=512 index=69 match=1 equation=PASS actual=aba465ed7f8efb945d35745500d6622887dd79a645d8de7fc6160bacbfb9a6c0
+BOARD_KAT degree=512 index=70 match=1 equation=PASS actual=8c2f527dcc8c09f6accc6a2085991b1bb063d95fa20b5d51c1877d813913e54e
+BOARD_KAT degree=512 index=71 match=1 equation=PASS actual=e79e1ef4d158e1bd25227ab768e4fa3ad9fd92a9691cc0f90736e8258ff9763e
+BOARD_KAT degree=512 index=72 match=1 equation=PASS actual=d0230739d2a0ab45dc419a07958e57a0799ec8910f40a4554254c7a8cfa8270a
+BOARD_KAT degree=512 index=73 match=1 equation=PASS actual=bf6c647c57c09600cd914d6f4bfd06da5eb330dbb25d6d504ca5c45fcbd5ae43
+BOARD_KAT degree=512 index=74 match=1 equation=PASS actual=b4769a4eb84fa429e066a56d94097512f52cca1e1ea4cfb2c0169a309d162aed
+BOARD_KAT degree=512 index=75 match=1 equation=PASS actual=61714c9c8579934ca820bc17bc2d14eafb7299c17955a1b089139a2dc9333778
+BOARD_KAT degree=512 index=76 match=1 equation=PASS actual=19a918dd5974e2b118ff08bc25e16a86291fa77887bd0ff73b3ebb881a656d2d
+BOARD_KAT degree=512 index=77 match=1 equation=PASS actual=d2c83638307ad76801ab413360f9fd5440f449e9f73bb870937bc9af8a949980
+BOARD_KAT degree=512 index=78 match=1 equation=PASS actual=14be976f9794c7513582fc9762598f4185d2d159469aafe95b56984181b75659
+BOARD_KAT degree=512 index=79 match=1 equation=PASS actual=843046b12acbf1188c635238ec6fb220af2e763db43ca02385c20de44f46a458
+BOARD_KAT degree=512 index=80 match=1 equation=PASS actual=083fccba439f1695630ccb798968682e75e79e41ca2a4a0df33a90cad4ef2caa
+BOARD_KAT degree=512 index=81 match=1 equation=PASS actual=e73ddefc5092b90cab50d645a052f31ff6b86af0dccad3c15d28b88b7ce8bd44
+BOARD_KAT degree=512 index=82 match=1 equation=PASS actual=257e51a21bad4a6fa735863dcb4d8d76fc40f0c1033f327c238e4aa3013ab38f
+BOARD_KAT degree=512 index=83 match=1 equation=PASS actual=a26740673ab6c3a090766e2b7a28a3a2058929f0655b834b69af59b5dd99d56b
+BOARD_KAT degree=512 index=84 match=1 equation=PASS actual=95430c2b4b79cb2cab39f9d65f80c2b08f01d4b495bfa52139ce5621aa5026e2
+BOARD_KAT degree=512 index=85 match=1 equation=PASS actual=fa80f7d410cac756cd40db9ee0641be30ff8c337549075f3123f3fbce21f6cd9
+BOARD_KAT degree=512 index=86 match=1 equation=PASS actual=a0f6673d0866b1437ff55d8ea281c10a546e9d1eb2900c3b6da6d09422d7defd
+BOARD_KAT degree=512 index=87 match=1 equation=PASS actual=847763bfd01d7332da785593e2e352123f9aae1e4ccf2169677f7c63f3c236b4
+BOARD_KAT degree=512 index=88 match=1 equation=PASS actual=13349e21ffaeda3a666b7e34ae5db29011d0d53ca1a5742f760f0e93757afa1f
+BOARD_KAT degree=512 index=89 match=1 equation=PASS actual=29fd2aa05a6f7fb0b9693e937383525679ce3dc812ecaa22886b30c1c5ea9f26
+BOARD_KAT degree=512 index=90 match=1 equation=PASS actual=7dd5399948c8e6c567a0de95e5513c2079b3e079a09bcc06f3a528fbb08d081c
+BOARD_KAT degree=512 index=91 match=1 equation=PASS actual=baa4cc0c5a5842d748b07a04c1a1809e047c3dd76936cbc32205473f9e09c3fb
+BOARD_KAT degree=512 index=92 match=1 equation=PASS actual=dc7f85099d83fdcf3c64fa26f328cb740bb245b6492d5dc8de02d9671b957345
+BOARD_KAT degree=512 index=93 match=1 equation=PASS actual=1dabd8cde988e96bc0f808e6f664375403f53fe54ee3a24c4174003bb66651d5
+BOARD_KAT degree=512 index=94 match=1 equation=PASS actual=ca743ca6af27b34616b7f02fb3b54735c3636b17b5246886a5c37239920a9b71
+BOARD_KAT degree=512 index=95 match=1 equation=PASS actual=03514e454bb18b5c1593e87f685e7b0da63127484515f41a8beb22e51848ed27
+BOARD_KAT degree=512 index=96 match=1 equation=PASS actual=fded9e90f578d3b90d3d3272d73387cfdd4454e14ae1cd9c0890daed29942d2f
+BOARD_KAT degree=512 index=97 match=1 equation=PASS actual=fd1a045368aea15ac736b97243712150502a77244c9cf20b6344e8285e94d695
+BOARD_KAT degree=512 index=98 match=1 equation=PASS actual=ba7cf2ae38a1e6a5196ac6d0305492da98dc3cd51d174dba2b0788f6924510c1
+BOARD_KAT degree=512 index=99 match=1 equation=PASS actual=30ba243e90adc42969ae755cd32823d9bee53cd174e968a191eb673097e31169
+BOARD_KAT degree=1024 index=0 match=1 equation=PASS actual=f01ed7563f54c3dd6d5a6069695fc60cc9f7dd6abb1c6e43df07066de9dc11ad
+BOARD_KAT degree=1024 index=1 match=1 equation=PASS actual=8cca27fa9a3fe030227b9c347f20c401377f0bc91b5c737d00e5c0cd5184fe17
+BOARD_KAT degree=1024 index=2 match=1 equation=PASS actual=a9d5a6270ffa04b24ead19e6418dd477932eabc0f7693fc07ff47dbe3592d2cc
+BOARD_KAT degree=1024 index=3 match=1 equation=PASS actual=0d0133d4f15bbc918c6556801aca030e7f834f33ce7c85d06de65234aab25f73
+BOARD_KAT degree=1024 index=4 match=1 equation=PASS actual=4cbbe4e44eed6f8d893840ec8527606e762130c2213101de7a10996c3d424cd0
+BOARD_KAT degree=1024 index=5 match=1 equation=PASS actual=68903ac13fc153457253c3cdca167301dc99d0f908fd6562150f9648cb54688a
+BOARD_KAT degree=1024 index=6 match=1 equation=PASS actual=56f1e57b78bd33a20925be6476f81de66b65a9e7d1f8da8d4e406fec1d4c0885
+BOARD_KAT degree=1024 index=7 match=1 equation=PASS actual=5e91c2ca6d1fd5f797861af996abfd41cd2327aeaa8be25c1aec71bfa2b4a6b6
+BOARD_KAT degree=1024 index=8 match=1 equation=PASS actual=45a073ee3f7134aac26da0992067e1f9746d484812d9fde39c045bf5e7cca0a1
+BOARD_KAT degree=1024 index=9 match=1 equation=PASS actual=b9965a46a474317988711751ac010abcd259eb32ef14174aa73bc50d40738da1
+BOARD_KAT degree=1024 index=10 match=1 equation=PASS actual=660b41a8bd5d74bec7c4c0f51a7ee0bf836bb076a5077d59e8f3630873a20f14
+BOARD_KAT degree=1024 index=11 match=1 equation=PASS actual=f999945e083bbf4800937d2201ed93844ea02b6c6d35bdd0e7566d6134cf6834
+BOARD_KAT degree=1024 index=12 match=1 equation=PASS actual=38d191b520b0faa25f2c20599972aed99d82e9f77d819b035ad18610f8f4ae78
+BOARD_KAT degree=1024 index=13 match=1 equation=PASS actual=3b4a7bd814fec7708e874a9420c301def58b6caa991d2134f61f5783dfc2ef82
+BOARD_KAT degree=1024 index=14 match=1 equation=PASS actual=0ec3c88b6044cf60af6872c66a800de11e5a7a9054e9e85b59595b0f438cbdae
+BOARD_KAT degree=1024 index=15 match=1 equation=PASS actual=fa08e49d47670d68c11b1865a7bd13b922f25683c258e025c38c33ddc47c89af
+BOARD_KAT degree=1024 index=16 match=1 equation=PASS actual=be24cbc45096eb1663fa90c97f7b410c5853d6fc88646cdf288ba3495bbf7ada
+BOARD_KAT degree=1024 index=17 match=1 equation=PASS actual=d3d96d87471addd044feac71f5446409c153ae96e2a31d0630a18eb1ffddb926
+BOARD_KAT degree=1024 index=18 match=1 equation=PASS actual=14dbcfa07a1c495dfaa9427662ce26f521f20e15a56ec134f8ae133597763af9
+BOARD_KAT degree=1024 index=19 match=1 equation=PASS actual=7d5802c4e7619e494311fb86de14d5a5bed0f6dad7bcac1b1a4d4358f78cafdc
+BOARD_KAT degree=1024 index=20 match=1 equation=PASS actual=d05b9bb652a95760281309f26f6cbeab9e5fab51f8cb8662f50c2472758e95fa
+BOARD_KAT degree=1024 index=21 match=1 equation=PASS actual=563645d25648d876f1d982f8ad4aa6191dc56cb48a123655ee8db0a5f43ef3de
+BOARD_KAT degree=1024 index=22 match=1 equation=PASS actual=e0931317919a8636c46d09747be03453a62db818a3499602660b295757f67869
+BOARD_KAT degree=1024 index=23 match=1 equation=PASS actual=82a5587764d5d9e948b8b7ab43162e9c1f9d7b92fe84037995046acf5ef27463
+BOARD_KAT degree=1024 index=24 match=1 equation=PASS actual=c3271bce4756ac51ab0580637157ddb8d485bd343827c10c149b272d168b9e16
+BOARD_KAT degree=1024 index=25 match=1 equation=PASS actual=437d3ddde1a7585318dd41bda21eba8aa7c218f4c156a50177b0a1c08cd68f84
+BOARD_KAT degree=1024 index=26 match=1 equation=PASS actual=8729ad68cc692ab7c0fef793470a5bacb7143170c07a0c8deb767204eb1fa979
+BOARD_KAT degree=1024 index=27 match=1 equation=PASS actual=87498365feb7715b2b4f064dfb19d0a4ca44eb35b87aeeaf4e72ad2d91ae829d
+BOARD_KAT degree=1024 index=28 match=1 equation=PASS actual=02de58c3dc45c115a9481f620b500cc966cbdb86316db1371fc23250c8805642
+BOARD_KAT degree=1024 index=29 match=1 equation=PASS actual=0655059da34627fcd3e3c3a9565909fd0b0a4aa7a25a8143ef4007efd5df6f32
+BOARD_KAT degree=1024 index=30 match=1 equation=PASS actual=6dabeeef2cb6b3288806969a17ca92356dc217df1b9e3c5b7041524c9d342ecd
+BOARD_KAT degree=1024 index=31 match=1 equation=PASS actual=3aef3d1f4186db25ee99525e9afb52834d5826dc781e44ae99302b3cd54f7766
+BOARD_KAT degree=1024 index=32 match=1 equation=PASS actual=93c37b5ab4260640b5473261f4fb611994dc31c3153f49eb2d4eedaf5c2ffa3f
+BOARD_KAT degree=1024 index=33 match=1 equation=PASS actual=007e8c5c819e42e4462b6c48acaf656ebc1eed2051f8538bb7351d2ed964b083
+BOARD_KAT degree=1024 index=34 match=1 equation=PASS actual=26d87b6994b38a518e0d3237a282cdee7dbadd271b41918b6cccd5ff1b18640d
+BOARD_KAT degree=1024 index=35 match=1 equation=PASS actual=d67544c9c15bf59416aec8284af1a43ae76c48ac4be644bcb1378f74a6652ce3
+BOARD_KAT degree=1024 index=36 match=1 equation=PASS actual=743be305ae458ac5ccde3ca5d68b2e75b2e7bf27dae7d0bf3a3772ab859724fc
+BOARD_KAT degree=1024 index=37 match=1 equation=PASS actual=0cd3982d877713964b2ff8075003a2ccabf04f46e184e6616d1f9fbb7a4b4a9b
+BOARD_KAT degree=1024 index=38 match=1 equation=PASS actual=50ef4a7f6a00e7ee6fa00bbd7af0f298c9ebfc3196a2bbcb400f365d5743ae0f
+BOARD_KAT degree=1024 index=39 match=1 equation=PASS actual=f0cbd6fc0f81ec2968c3985e6f65cc6a87c6d2a461a62650d273cdcdeb4238d1
+BOARD_KAT degree=1024 index=40 match=1 equation=PASS actual=6f46c3f36407d89d7915d0cae5fa1ab11d4382c24533522ad34323b4acc4f257
+BOARD_KAT degree=1024 index=41 match=1 equation=PASS actual=2511cf44bd58190da5e5f26c47ba1691f807a9f39557dc62174179998a25bdbe
+BOARD_KAT degree=1024 index=42 match=1 equation=PASS actual=989e5ed50b3ffc5e4ab9fb424b94201efd3112991c5ce0d3b22b3a51478396df
+BOARD_KAT degree=1024 index=43 match=1 equation=PASS actual=a608571943744763387687a95995d4dd90f397506df6d5104af8f43483f9b785
+BOARD_KAT degree=1024 index=44 match=1 equation=PASS actual=ead358243a18e2d17fae3db1fdf94e91ded41594d4606eb39b0a9d37310cd759
+BOARD_KAT degree=1024 index=45 match=1 equation=PASS actual=b64d9ff85b75cffe631cefcc36f9c466ece2c794f100743e1fa30df653703c44
+BOARD_KAT degree=1024 index=46 match=1 equation=PASS actual=ad924faaee6dbf8f1a66fae9939a87f85f8f2ff9c0a1ed25b4859c88b5ef7434
+BOARD_KAT degree=1024 index=47 match=1 equation=PASS actual=d01a2722be347e7aa96da855ae4196a844d880adc16e7207e10ec58937178e08
+BOARD_KAT degree=1024 index=48 match=1 equation=PASS actual=900fd44e20f271837301a62c509dc5828067d7aae5380382fdbfe846f341b635
+BOARD_KAT degree=1024 index=49 match=1 equation=PASS actual=4370329df3207677c1760b94a47a89e13774267d9a6a802050bc098ab4654b32
+BOARD_KAT degree=1024 index=50 match=1 equation=PASS actual=8e5e47fd1fff0d7f7577d5e0b00829a31d2db8709f5a4d93f9d5bb795794c189
+BOARD_KAT degree=1024 index=51 match=1 equation=PASS actual=df56faf43bd7f391a2d2a0f9fc6bdb756b08a06000be41b4f808dc241dc6bce2
+BOARD_KAT degree=1024 index=52 match=1 equation=PASS actual=192cf71a0f3f1d36898067293e53e1c5d80a9ade40b57f7931adf812f4b943bb
+BOARD_KAT degree=1024 index=53 match=1 equation=PASS actual=d6a5e94bc5403c472985431174dcb0db2ec46e70b956e303b954e8d0698f8360
+BOARD_KAT degree=1024 index=54 match=1 equation=PASS actual=e2ca46e7cd12c8aa7f7661be55ab3e75d3989c829e5416f5fc953dd6aefad12f
+BOARD_KAT degree=1024 index=55 match=1 equation=PASS actual=2e19193308a2297ccc95ae1797477c629b3c4eea7b205448cf3d14ffe7bffb58
+BOARD_KAT degree=1024 index=56 match=1 equation=PASS actual=df8dd83e751df6d0732048f869b352709df6eda2a3e87af854cf7263ce0f6ac2
+BOARD_KAT degree=1024 index=57 match=1 equation=PASS actual=2ecc8ce2a7e154a500d227d66b548bf5d1119425c077cab88f403cd48b808faf
+BOARD_KAT degree=1024 index=58 match=1 equation=PASS actual=3d09a57dddad698f9a3993faac9f6b4119dc0679177ddc48362acf29b5e221d3
+BOARD_KAT degree=1024 index=59 match=1 equation=PASS actual=3bf3703b763ddbceaf922045aac303f533a9d1726b70655eed847aa3e0a575f2
+BOARD_KAT degree=1024 index=60 match=1 equation=PASS actual=48660639da837299a9a39fc0ee9914ae563a5f6d4f38c5a383080873806b77aa
+BOARD_KAT degree=1024 index=61 match=1 equation=PASS actual=d51347795cb052aabfaace0e969e75909c186c5147e43aefe26352d1813a9aa3
+BOARD_KAT degree=1024 index=62 match=1 equation=PASS actual=38e4007e7a5bf9854d0561f4f5da2d6ec650f822208c9fcbb46073c151f44db1
+BOARD_KAT degree=1024 index=63 match=1 equation=PASS actual=56095881b5ebcfaacd87aeb96326bb60c59eeae189c33f8add82a2f38c110129
+BOARD_KAT degree=1024 index=64 match=1 equation=PASS actual=c8980b3b25f4051b1c246cfb9eab03ec00d7268c05dcceaef65ff215844e560a
+BOARD_KAT degree=1024 index=65 match=1 equation=PASS actual=922b66c063d86662a1a13944fefdb1f8214c1d7e3f7a6701b0223f03ab523a83
+BOARD_KAT degree=1024 index=66 match=1 equation=PASS actual=661ec39292bb8ee298683310bb31108d9929cbaa739ec609900152a675da9137
+BOARD_KAT degree=1024 index=67 match=1 equation=PASS actual=ddc202f6829dfb211cff710727ad5bc5c2a80b87a42718c7bb95ed42b0b60e76
+BOARD_KAT degree=1024 index=68 match=1 equation=PASS actual=5e9708d27ba56902633c80a765b320539cee1a1ff6bd39666aec5a9abc087724
+BOARD_KAT degree=1024 index=69 match=1 equation=PASS actual=f54cd6166dbd077fe765fa019fd3a25b8a3b87118173a178cda402ae085fc9d0
+BOARD_KAT degree=1024 index=70 match=1 equation=PASS actual=9fff1a913070dfb891b346c6993deb32f340fb0500d27d460deb7f5c4df9fc0d
+BOARD_KAT degree=1024 index=71 match=1 equation=PASS actual=cdb0e0f27bdea574c60261e375248b7195f50bb7b7b243db158e409187f7718b
+BOARD_KAT degree=1024 index=72 match=1 equation=PASS actual=f3a1bf5819206249f8aa889f86c7ecede59030ae2be5892029c16f38cdb25711
+BOARD_KAT degree=1024 index=73 match=1 equation=PASS actual=64f50868d2d0c9f8e3dcfa95ebe301c739ad76153654502346f73a572d141e86
+BOARD_KAT degree=1024 index=74 match=1 equation=PASS actual=3e2d6e93890ea84b6b7cc79d7906bdb70570d3521d10d506350db9cb57ad0b29
+BOARD_KAT degree=1024 index=75 match=1 equation=PASS actual=a277176408b2461b95ecbdacbaaa646bf65b5ce92d9652e793dbbf99716d3701
+BOARD_KAT degree=1024 index=76 match=1 equation=PASS actual=5fc6269bb31b58be51e505347d1434fd171d7f4b585c43cd1eb18e3ebca6f9ec
+BOARD_KAT degree=1024 index=77 match=1 equation=PASS actual=9df8884d588a33cae613c417e766aef746b37f4ad0113b4fb160e682d555789d
+BOARD_KAT degree=1024 index=78 match=1 equation=PASS actual=c380332dc7ba90de73643b7de47c755f90cc15abc01f5919661cea993b8befa4
+BOARD_KAT degree=1024 index=79 match=1 equation=PASS actual=db55114b36c88454ad033ebe7c8423f10de4577db95cdcca0f676ce96d643550
+BOARD_KAT degree=1024 index=80 match=1 equation=PASS actual=2736d177069081ca71daa1ffbd5cea40656f231a1cccac889de870b41669bafe
+BOARD_KAT degree=1024 index=81 match=1 equation=PASS actual=421438aa683d07eacb166468ed11660308bc9545fef51857c48b0fa318b509fc
+BOARD_KAT degree=1024 index=82 match=1 equation=PASS actual=767e0c19a3624cbf40d634e2c26c043c7fc87dcc7fdb63edc80ea61d2e988f09
+BOARD_KAT degree=1024 index=83 match=1 equation=PASS actual=286649c8deadb0226fc3caee150c062f45b8f436580ee4269113336de2893f80
+BOARD_KAT degree=1024 index=84 match=1 equation=PASS actual=4c54e04b2b3ae660b8cf7d230d1fb7b5a8040d200aeb207e0f148cbba68705a4
+BOARD_KAT degree=1024 index=85 match=1 equation=PASS actual=352bd528d99add092c6d2721448cd724c408cf9e6a6bccad7bb08de9f3cd3f57
+BOARD_KAT degree=1024 index=86 match=1 equation=PASS actual=eb66f3287c7aa4b418d110488352a3ac6721128302ac4b14dc74ed980147daf2
+BOARD_KAT degree=1024 index=87 match=1 equation=PASS actual=f6a5a443e4b1da14a44c7f103c6e3d8d1cb857cb5a2935b007eba4296689abfa
+BOARD_KAT degree=1024 index=88 match=1 equation=PASS actual=51e350d2731afd92059417c17250a2ab1284ef694eca1cafbe1f04dafc050505
+BOARD_KAT degree=1024 index=89 match=1 equation=PASS actual=47153523a1e5382ad70a9d0386ea5f924140197208b2d764fe2fa8dd6fe691fc
+BOARD_KAT degree=1024 index=90 match=1 equation=PASS actual=7977141d8199d401cb2aab4d309ba371456363d3292fd4d73928bc9f040f9711
+BOARD_KAT degree=1024 index=91 match=1 equation=PASS actual=922c51461815b55940d2ce2d6ade1929b0a472599348f4e3c6a9c4355c56e252
+BOARD_KAT degree=1024 index=92 match=1 equation=PASS actual=0dd52f4684c55c2d650946f1004a5e78149c563ad09f8654fa059d1333815c40
+BOARD_KAT degree=1024 index=93 match=1 equation=PASS actual=db8943061700b85b0f522f8db587f1227a7f30aab31fddd4b89aa7acc7c13ec3
+BOARD_KAT degree=1024 index=94 match=1 equation=PASS actual=d35176012f9dfde0932efb1fd61d98f267be6a70c9ffc3be4f5d62716c8a73ec
+BOARD_KAT degree=1024 index=95 match=1 equation=PASS actual=804b61eea00c836ec2a01e54a4dae07768b5a69d7a2cad533bd8f34afabd0dea
+BOARD_KAT degree=1024 index=96 match=1 equation=PASS actual=f278ecb21d46cb75b2c6f3aa3e7fc16707152da0ebde8a6b6ca864da46ac1b77
+BOARD_KAT degree=1024 index=97 match=1 equation=PASS actual=92c39e19a39a45764aeafcbfc29b69c294ba366903d7455232e0ee793067960b
+BOARD_KAT degree=1024 index=98 match=1 equation=PASS actual=0f8ce984bb31f213c8988a6363bc23dfc7ca041b99faebb882d3aae9ebf42b8f
+BOARD_KAT degree=1024 index=99 match=1 equation=PASS actual=84b43aca51e63115f2ac546fc94bb4c9024c2637607508c595934463f873a425
+BOARD_KAT_DONE result=0 count=300 mismatches=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x1800350e in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1a66c lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x15700 lma 0x30000980
+Loading section datas, size 0x4c lma 0x30016080
+Loading section device_states, size 0x2c lma 0x300160cc
+Loading section k_mutex_area, size 0x14 lma 0x300160f8
+Loading section .last_section, size 0x4 lma 0x3001610c
+Start address 0x10015adc, load size 199328
+Transfer rate: 549 KB/sec, 7382 bytes/write.
+Temporary breakpoint 1 at 0x10012838: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10015ac8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpw_dh9m7z/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x100127cc: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10015ac8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x985e4b            9985611
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x300255a8          805459368
+r8             0x300000d0          805306576
+r9             0x300356e8          805525224
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30035698          0x30035698 <z_main_stack+65456>
+lr             0x1001282f          268511279
+pc             0x100127cc          0x100127cc <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x40010             262160
+msp            0x300255a8          0x300255a8 <z_idle_stacks>
+psp            0x30035698          0x30035698 <z_main_stack+65456>
+vpr            0xf3c0              [ P0=62400 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x300255a8          0x300255a8 <z_idle_stacks>
+psp_s          0x30035698          0x30035698 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30024da8          0x30024da8 <z_interrupt_stacks>
+psplim_s       0x300256e8          0x300256e8 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xf3c0              -3136
+0x30035698 <z_main_stack+65456>:	0x00000000	0x1001284b	0x00000000	0x1001925f
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x300255a8
+PSP=0x30035698
+LR=0x1001282f
+PC=0x100127cc
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30035698 <z_main_stack+65456>:	0x00000000	0x1001284b	0x00000000	0x1001925f
+0x300356a8 <z_main_stack+65472>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

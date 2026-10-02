@@ -1,0 +1,50 @@
+DOCUMENT: TWfalcon.pdf PAGE: 21/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 21
+What does this mean for a full Falcon signature generation? The results shown in
+Table 6 show that the TW implementation is still slower by a factor of approximately
+1.8. This slowdown is primarily due to the increased usage of addition and multiplication
+operations, which are more frequent and faster with integer emulation.
+Multiplication is the most frequently used operation, followed by addition and combined
+addition/subtraction. Table 1 from Section 2.1 shows, for Falcon-512, how often each
+operation is invoked. Although TW excels in operations like division and square root, their
+infrequent use does not offset the slowdown from addition and multiplication. Additionally,
+the TW implementation uses more registers, as each floating-point value uses three
+values, instead of 2 in the integer-emulation, leading to increased overhead from stack
+operations. Despite these factors, the TW implementation offers higher precision, and
+next, in Section 5.2, the effect on the security will be discussed.
+Table 6: Average cycle count of Falcon signature generation with integer-emulated and
+TW arithmetic, assembly-optimized for Cortex-M4F, over 100 runs on the Nucleo-L4R5ZI.
+Falcon- Integer emulated TW
+512 22,493,190 40,684,889
+1024 48,477,027 89,534,446
+5.2 Gaussian Sampler Floating-Point Errors
+In this section, the error values δµ and δσ resulting from running Falcon with TW arithmetic
+are discussed. Further details on the importance of these error values for precision are
+provided in Section 3. The code used for the error evaluation in Section 3.2 and in this
+section is available at [TWF].
+To compute the error values, the methodology described in Section 3.2 is followed. The
+MPFR library is used for high-precision arithmetic and error computation [FHL+07]. For
+the TW arithmetic, the fast, constant-time C implementations of all relevant functions
+are used. The exponent values of the combined error (δµ + δσ) are shown in Figure 7.
+These results demonstrate that the higher precision of TW, even when using faster and
+less precise algorithms, yields significantly lower error values compared to the standard
+double-precision implementation, as illustrated in Figure 3. As discussed in Section 3.1,
+the combined error should remain below 2−46. This threshold is not met by the double-
+precision implementation, which produces errors as low as 2−37 with a median of 2−43. In
+contrast, the TW implementation performs substantially better, with the smallest observed
+combined error being 2−57 and a median of 2−62. The use of double-word arithmetic is
+not investigated, because it provides only 48 bits of precision. This is less precise than
+the double-precision floating-point standard, which itself does not meet the required error
+bounds. Like we discussed in Section 3.2, empirical testing cannot prove that a bound
+will never be exceeded. Though, up to 11 lower exponents are allowed before the proven
+bound is exceeded, which if we look at the exponential reduction of frequency for the lower
+exponents, gives us high assurance that this will never happen. These results confirm that
+Falcon implemented with TW provides more than sufficient precision for a provably secure
+Gaussian sampler.
+6 Conclusion
+In this work we demonstrated that employing the double-precision standard in Falcon
+yields observed error values of at most 2−37. For a security level of λ= 256, this restricts
+the number of allowed signing queries to 247 in order to maintain a Gaussian sampler
+implementation that is indistinguishable from an exact Gaussian distribution. This falls

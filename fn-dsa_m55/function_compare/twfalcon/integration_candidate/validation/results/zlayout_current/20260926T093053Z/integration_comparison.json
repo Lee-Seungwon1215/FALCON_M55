@@ -1,0 +1,1347 @@
+{
+  "reference_run": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/results/zlayout_ref/20260926T092936Z",
+  "current_run": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/results/zlayout_current/20260926T093053Z",
+  "comparison": {
+    "512": {
+      "reference": {
+        "total": 6400176665,
+        "control_total": 6273824421,
+        "instrumentation_percent": 2.0139588793251617,
+        "ops": {
+          "sample": {
+            "calls": 2596,
+            "cycles": 444945954,
+            "success": 0
+          },
+          "invert": {
+            "calls": 1318,
+            "cycles": 54259856,
+            "success": 1278
+          },
+          "ortho": {
+            "calls": 680,
+            "cycles": 720765096,
+            "success": 127
+          },
+          "ntru": {
+            "calls": 127,
+            "cycles": 5149761099,
+            "success": 100
+          },
+          "finish": {
+            "calls": 100,
+            "cycles": 21902622,
+            "success": 0
+          },
+          "I_input": {
+            "calls": 93053,
+            "cycles": 152648752,
+            "success": 0
+          },
+          "I_fft": {
+            "calls": 93053,
+            "cycles": 152645622,
+            "success": 0
+          },
+          "I_recip": {
+            "calls": 879,
+            "cycles": 93290699,
+            "success": 0
+          },
+          "I_mul": {
+            "calls": 92174,
+            "cycles": 44812414,
+            "success": 0
+          },
+          "I_ifft": {
+            "calls": 92174,
+            "cycles": 162773634,
+            "success": 0
+          },
+          "I_round": {
+            "calls": 92174,
+            "cycles": 19872718,
+            "success": 0
+          },
+          "I_update": {
+            "calls": 92174,
+            "cycles": 1867902852,
+            "success": 0
+          },
+          "D_input": {
+            "calls": 204,
+            "cycles": 1015002,
+            "success": 0
+          },
+          "D_fft": {
+            "calls": 204,
+            "cycles": 25705029,
+            "success": 0
+          },
+          "D_div": {
+            "calls": 102,
+            "cycles": 91981977,
+            "success": 0
+          },
+          "D_ifft": {
+            "calls": 102,
+            "cycles": 14628432,
+            "success": 0
+          },
+          "D_round": {
+            "calls": 102,
+            "cycles": 690030,
+            "success": 0
+          },
+          "O_input": {
+            "calls": 1360,
+            "cycles": 4328200,
+            "success": 0
+          },
+          "O_fft": {
+            "calls": 1360,
+            "cycles": 171530029,
+            "success": 0
+          },
+          "O_invnorm": {
+            "calls": 680,
+            "cycles": 315711452,
+            "success": 0
+          },
+          "O_adj": {
+            "calls": 1360,
+            "cycles": 3295280,
+            "success": 0
+          },
+          "O_real": {
+            "calls": 1360,
+            "cycles": 9902840,
+            "success": 0
+          },
+          "O_selfadj": {
+            "calls": 1360,
+            "cycles": 8866863,
+            "success": 0
+          },
+          "O_ifft": {
+            "calls": 1360,
+            "cycles": 195056683,
+            "success": 0
+          },
+          "O_norm": {
+            "calls": 680,
+            "cycles": 10865389,
+            "success": 0
+          },
+          "deepest": {
+            "calls": 127,
+            "cycles": 1372505768,
+            "success": 125
+          },
+          "intermediate": {
+            "calls": 879,
+            "cycles": 3396218909,
+            "success": 856
+          },
+          "depth0": {
+            "calls": 102,
+            "cycles": 379539616,
+            "success": 102
+          },
+          "fg_deep": {
+            "calls": 127,
+            "cycles": 302565733,
+            "success": 0
+          },
+          "crt_deep": {
+            "calls": 127,
+            "cycles": 70178200,
+            "success": 0
+          },
+          "bezout_deep": {
+            "calls": 127,
+            "cycles": 999490297,
+            "success": 125
+          },
+          "crt_fg": {
+            "calls": 1449,
+            "cycles": 132152323,
+            "success": 0
+          },
+          "crt_intermediate": {
+            "calls": 1758,
+            "cycles": 404336338,
+            "success": 0
+          }
+        },
+        "leaves": {
+          "sample": 444945954,
+          "invert": 54259856,
+          "finish": 21902622,
+          "I_input": 152648752,
+          "I_fft": 152645622,
+          "I_recip": 93290699,
+          "I_mul": 44812414,
+          "I_ifft": 162773634,
+          "I_round": 19872718,
+          "I_update": 1867902852,
+          "D_input": 1015002,
+          "D_fft": 25705029,
+          "D_div": 91981977,
+          "D_ifft": 14628432,
+          "D_round": 690030,
+          "O_input": 4328200,
+          "O_fft": 171530029,
+          "O_invnorm": 315711452,
+          "O_adj": 3295280,
+          "O_real": 9902840,
+          "O_selfadj": 8866863,
+          "O_ifft": 195056683,
+          "O_norm": 10865389,
+          "ortho_other": 1208360,
+          "ntru_other": 915636780,
+          "crt_deep": 70178200,
+          "bezout_deep": 999490297,
+          "crt_fg": 132152323,
+          "crt_intermediate": 404336338,
+          "top_other": 8542038
+        },
+        "fft": {
+          "fft_2": {
+            "calls": 46375,
+            "cycles": 4870523
+          },
+          "fft_4": {
+            "calls": 21901,
+            "cycles": 6898815
+          },
+          "fft_8": {
+            "calls": 10962,
+            "cycles": 8418816
+          },
+          "fft_16": {
+            "calls": 6061,
+            "cycles": 11303765
+          },
+          "fft_32": {
+            "calls": 3432,
+            "cycles": 15360246
+          },
+          "fft_64": {
+            "calls": 2078,
+            "cycles": 21947804
+          },
+          "fft_128": {
+            "calls": 1326,
+            "cycles": 32486698
+          },
+          "fft_256": {
+            "calls": 918,
+            "cycles": 51358955
+          },
+          "fft_512": {
+            "calls": 1564,
+            "cycles": 197235058
+          },
+          "ifft_2": {
+            "calls": 46250,
+            "cycles": 5781250
+          },
+          "ifft_4": {
+            "calls": 21776,
+            "cycles": 7491967
+          },
+          "ifft_8": {
+            "calls": 10850,
+            "cycles": 9406950
+          },
+          "ifft_16": {
+            "calls": 5956,
+            "cycles": 12705173
+          },
+          "ifft_32": {
+            "calls": 3328,
+            "cycles": 17090304
+          },
+          "ifft_64": {
+            "calls": 1974,
+            "cycles": 23903166
+          },
+          "ifft_128": {
+            "calls": 1224,
+            "cycles": 34306072
+          },
+          "ifft_256": {
+            "calls": 816,
+            "cycles": 52088752
+          },
+          "ifft_512": {
+            "calls": 1462,
+            "cycles": 209685115
+          }
+        }
+      },
+      "current": {
+        "total": 6169173066,
+        "control_total": 6713548933,
+        "instrumentation_percent": -8.108615464529601,
+        "ops": {
+          "sample": {
+            "calls": 2596,
+            "cycles": 445177225,
+            "success": 0
+          },
+          "invert": {
+            "calls": 1318,
+            "cycles": 23221340,
+            "success": 1278
+          },
+          "ortho": {
+            "calls": 680,
+            "cycles": 677170085,
+            "success": 127
+          },
+          "ntru": {
+            "calls": 127,
+            "cycles": 4997728405,
+            "success": 100
+          },
+          "finish": {
+            "calls": 100,
+            "cycles": 17221369,
+            "success": 0
+          },
+          "I_input": {
+            "calls": 93032,
+            "cycles": 196175689,
+            "success": 0
+          },
+          "I_fft": {
+            "calls": 93032,
+            "cycles": 222703221,
+            "success": 0
+          },
+          "I_recip": {
+            "calls": 879,
+            "cycles": 31197219,
+            "success": 0
+          },
+          "I_mul": {
+            "calls": 92153,
+            "cycles": 250551247,
+            "success": 0
+          },
+          "I_ifft": {
+            "calls": 92153,
+            "cycles": 231349966,
+            "success": 0
+          },
+          "I_round": {
+            "calls": 92153,
+            "cycles": 63238147,
+            "success": 0
+          },
+          "I_update": {
+            "calls": 92144,
+            "cycles": 1558509129,
+            "success": 0
+          },
+          "D_input": {
+            "calls": 204,
+            "cycles": 3051636,
+            "success": 0
+          },
+          "D_fft": {
+            "calls": 204,
+            "cycles": 24513915,
+            "success": 0
+          },
+          "D_div": {
+            "calls": 102,
+            "cycles": 17850000,
+            "success": 0
+          },
+          "D_ifft": {
+            "calls": 102,
+            "cycles": 13088742,
+            "success": 0
+          },
+          "D_round": {
+            "calls": 102,
+            "cycles": 2884560,
+            "success": 0
+          },
+          "O_input": {
+            "calls": 1360,
+            "cycles": 6419880,
+            "success": 0
+          },
+          "O_fft": {
+            "calls": 1360,
+            "cycles": 163544678,
+            "success": 0
+          },
+          "O_invnorm": {
+            "calls": 680,
+            "cycles": 43639326,
+            "success": 0
+          },
+          "O_adj": {
+            "calls": 1360,
+            "cycles": 2253520,
+            "success": 0
+          },
+          "O_real": {
+            "calls": 1360,
+            "cycles": 85152418,
+            "success": 0
+          },
+          "O_selfadj": {
+            "calls": 1360,
+            "cycles": 92086234,
+            "success": 0
+          },
+          "O_ifft": {
+            "calls": 1360,
+            "cycles": 175392794,
+            "success": 0
+          },
+          "O_norm": {
+            "calls": 680,
+            "cycles": 107323955,
+            "success": 0
+          },
+          "deepest": {
+            "calls": 127,
+            "cycles": 1333616813,
+            "success": 125
+          },
+          "intermediate": {
+            "calls": 879,
+            "cycles": 3397010015,
+            "success": 856
+          },
+          "depth0": {
+            "calls": 102,
+            "cycles": 265548188,
+            "success": 102
+          },
+          "fg_deep": {
+            "calls": 127,
+            "cycles": 263559735,
+            "success": 0
+          },
+          "crt_deep": {
+            "calls": 127,
+            "cycles": 70179879,
+            "success": 0
+          },
+          "bezout_deep": {
+            "calls": 127,
+            "cycles": 999575943,
+            "success": 125
+          },
+          "crt_fg": {
+            "calls": 1449,
+            "cycles": 132161161,
+            "success": 0
+          },
+          "crt_intermediate": {
+            "calls": 1758,
+            "cycles": 404344086,
+            "success": 0
+          }
+        },
+        "leaves": {
+          "sample": 445177225,
+          "invert": 23221340,
+          "finish": 17221369,
+          "I_input": 196175689,
+          "I_fft": 222703221,
+          "I_recip": 31197219,
+          "I_mul": 250551247,
+          "I_ifft": 231349966,
+          "I_round": 63238147,
+          "I_update": 1558509129,
+          "D_input": 3051636,
+          "D_fft": 24513915,
+          "D_div": 17850000,
+          "D_ifft": 13088742,
+          "D_round": 2884560,
+          "O_input": 6419880,
+          "O_fft": 163544678,
+          "O_invnorm": 43639326,
+          "O_adj": 2253520,
+          "O_real": 85152418,
+          "O_selfadj": 92086234,
+          "O_ifft": 175392794,
+          "O_norm": 107323955,
+          "ortho_other": 1357280,
+          "ntru_other": 776353865,
+          "crt_deep": 70179879,
+          "bezout_deep": 999575943,
+          "crt_fg": 132161161,
+          "crt_intermediate": 404344086,
+          "top_other": 8654642
+        },
+        "fft": {
+          "fft_2": {
+            "calls": 46375,
+            "cycles": 13821885
+          },
+          "fft_4": {
+            "calls": 21891,
+            "cycles": 28745015
+          },
+          "fft_8": {
+            "calls": 10951,
+            "cycles": 35360779
+          },
+          "fft_16": {
+            "calls": 6061,
+            "cycles": 16091955
+          },
+          "fft_32": {
+            "calls": 3432,
+            "cycles": 19028075
+          },
+          "fft_64": {
+            "calls": 2078,
+            "cycles": 24650304
+          },
+          "fft_128": {
+            "calls": 1326,
+            "cycles": 34005570
+          },
+          "fft_256": {
+            "calls": 918,
+            "cycles": 50999638
+          },
+          "fft_512": {
+            "calls": 1564,
+            "cycles": 188058593
+          },
+          "ifft_2": {
+            "calls": 46250,
+            "cycles": 20028386
+          },
+          "ifft_4": {
+            "calls": 21766,
+            "cycles": 31064352
+          },
+          "ifft_8": {
+            "calls": 10839,
+            "cycles": 36422247
+          },
+          "ifft_16": {
+            "calls": 5956,
+            "cycles": 17093720
+          },
+          "ifft_32": {
+            "calls": 3328,
+            "cycles": 19782700
+          },
+          "ifft_64": {
+            "calls": 1974,
+            "cycles": 25031560
+          },
+          "ifft_128": {
+            "calls": 1224,
+            "cycles": 33518930
+          },
+          "ifft_256": {
+            "calls": 816,
+            "cycles": 48408071
+          },
+          "ifft_512": {
+            "calls": 1462,
+            "cycles": 188481536
+          }
+        }
+      },
+      "delta_cycles_per_key": {
+        "sample": 2312.71,
+        "invert": -310385.16,
+        "finish": -46812.53,
+        "I_input": 435269.37,
+        "I_fft": 700575.99,
+        "I_recip": -620934.8,
+        "I_mul": 2057388.33,
+        "I_ifft": 685763.32,
+        "I_round": 433654.29,
+        "I_update": -3093937.23,
+        "D_input": 20366.34,
+        "D_fft": -11911.14,
+        "D_div": -741319.77,
+        "D_ifft": -15396.9,
+        "D_round": 21945.3,
+        "O_input": 20916.8,
+        "O_fft": -79853.51,
+        "O_invnorm": -2720721.26,
+        "O_adj": -10417.6,
+        "O_real": 752495.78,
+        "O_selfadj": 832193.71,
+        "O_ifft": -196638.89,
+        "O_norm": 964585.66,
+        "ortho_other": 1489.2,
+        "ntru_other": -1392829.15,
+        "crt_deep": 16.79,
+        "bezout_deep": 856.46,
+        "crt_fg": 88.38,
+        "crt_intermediate": 77.48,
+        "top_other": 1126.04
+      },
+      "delta_sum": -2310035.9899999998,
+      "calls_equal": {
+        "sample": true,
+        "invert": true,
+        "ortho": true,
+        "ntru": true,
+        "finish": true,
+        "I_input": false,
+        "I_fft": false,
+        "I_recip": true,
+        "I_mul": false,
+        "I_ifft": false,
+        "I_round": false,
+        "I_update": false,
+        "D_input": true,
+        "D_fft": true,
+        "D_div": true,
+        "D_ifft": true,
+        "D_round": true,
+        "O_input": true,
+        "O_fft": true,
+        "O_invnorm": true,
+        "O_adj": true,
+        "O_real": true,
+        "O_selfadj": true,
+        "O_ifft": true,
+        "O_norm": true,
+        "deepest": true,
+        "intermediate": true,
+        "depth0": true,
+        "fg_deep": true,
+        "crt_deep": true,
+        "bezout_deep": true,
+        "crt_fg": true,
+        "crt_intermediate": true
+      },
+      "success_equal": {
+        "sample": true,
+        "invert": true,
+        "ortho": true,
+        "ntru": true,
+        "finish": true,
+        "I_input": true,
+        "I_fft": true,
+        "I_recip": true,
+        "I_mul": true,
+        "I_ifft": true,
+        "I_round": true,
+        "I_update": true,
+        "D_input": true,
+        "D_fft": true,
+        "D_div": true,
+        "D_ifft": true,
+        "D_round": true,
+        "O_input": true,
+        "O_fft": true,
+        "O_invnorm": true,
+        "O_adj": true,
+        "O_real": true,
+        "O_selfadj": true,
+        "O_ifft": true,
+        "O_norm": true,
+        "deepest": true,
+        "intermediate": true,
+        "depth0": true,
+        "fg_deep": true,
+        "crt_deep": true,
+        "bezout_deep": true,
+        "crt_fg": true,
+        "crt_intermediate": true
+      }
+    },
+    "1024": {
+      "reference": {
+        "total": 26515074090,
+        "control_total": 26171643011,
+        "instrumentation_percent": 1.312225903645614,
+        "ops": {
+          "sample": {
+            "calls": 6221,
+            "cycles": 2004838882,
+            "success": 0
+          },
+          "invert": {
+            "calls": 3227,
+            "cycles": 289013737,
+            "success": 2994
+          },
+          "ortho": {
+            "calls": 1523,
+            "cycles": 3407549317,
+            "success": 173
+          },
+          "ntru": {
+            "calls": 173,
+            "cycles": 20730207873,
+            "success": 100
+          },
+          "finish": {
+            "calls": 100,
+            "cycles": 45140792,
+            "success": 0
+          },
+          "I_input": {
+            "calls": 252461,
+            "cycles": 478909739,
+            "success": 0
+          },
+          "I_fft": {
+            "calls": 252461,
+            "cycles": 408750900,
+            "success": 0
+          },
+          "I_recip": {
+            "calls": 1107,
+            "cycles": 187167075,
+            "success": 0
+          },
+          "I_mul": {
+            "calls": 251354,
+            "cycles": 116082915,
+            "success": 0
+          },
+          "I_ifft": {
+            "calls": 251354,
+            "cycles": 440036386,
+            "success": 0
+          },
+          "I_round": {
+            "calls": 251354,
+            "cycles": 52210806,
+            "success": 0
+          },
+          "I_update": {
+            "calls": 251354,
+            "cycles": 7632368641,
+            "success": 0
+          },
+          "D_input": {
+            "calls": 204,
+            "cycles": 2009306,
+            "success": 0
+          },
+          "D_fft": {
+            "calls": 204,
+            "cycles": 57215067,
+            "success": 0
+          },
+          "D_div": {
+            "calls": 102,
+            "cycles": 183956623,
+            "success": 0
+          },
+          "D_ifft": {
+            "calls": 102,
+            "cycles": 32494149,
+            "success": 0
+          },
+          "D_round": {
+            "calls": 102,
+            "cycles": 1368942,
+            "success": 0
+          },
+          "O_input": {
+            "calls": 3046,
+            "cycles": 19052228,
+            "success": 0
+          },
+          "O_fft": {
+            "calls": 3046,
+            "cycles": 855106057,
+            "success": 0
+          },
+          "O_invnorm": {
+            "calls": 1523,
+            "cycles": 1414040755,
+            "success": 0
+          },
+          "O_adj": {
+            "calls": 3046,
+            "cycles": 14400489,
+            "success": 0
+          },
+          "O_real": {
+            "calls": 3046,
+            "cycles": 44022381,
+            "success": 0
+          },
+          "O_selfadj": {
+            "calls": 3046,
+            "cycles": 39353321,
+            "success": 0
+          },
+          "O_ifft": {
+            "calls": 3046,
+            "cycles": 970357573,
+            "success": 0
+          },
+          "O_norm": {
+            "calls": 1523,
+            "cycles": 48507598,
+            "success": 0
+          },
+          "deepest": {
+            "calls": 173,
+            "cycles": 6837610988,
+            "success": 173
+          },
+          "intermediate": {
+            "calls": 1107,
+            "cycles": 13110865298,
+            "success": 1036
+          },
+          "depth0": {
+            "calls": 102,
+            "cycles": 778864193,
+            "success": 102
+          },
+          "fg_deep": {
+            "calls": 173,
+            "cycles": 1222238336,
+            "success": 0
+          },
+          "crt_deep": {
+            "calls": 173,
+            "cycles": 374708533,
+            "success": 0
+          },
+          "bezout_deep": {
+            "calls": 173,
+            "cycles": 5240012428,
+            "success": 173
+          },
+          "crt_fg": {
+            "calls": 2345,
+            "cycles": 557342152,
+            "success": 0
+          },
+          "crt_intermediate": {
+            "calls": 2214,
+            "cycles": 1949658665,
+            "success": 0
+          }
+        },
+        "leaves": {
+          "sample": 2004838882,
+          "invert": 289013737,
+          "finish": 45140792,
+          "I_input": 478909739,
+          "I_fft": 408750900,
+          "I_recip": 187167075,
+          "I_mul": 116082915,
+          "I_ifft": 440036386,
+          "I_round": 52210806,
+          "I_update": 7632368641,
+          "D_input": 2009306,
+          "D_fft": 57215067,
+          "D_div": 183956623,
+          "D_ifft": 32494149,
+          "D_round": 1368942,
+          "O_input": 19052228,
+          "O_fft": 855106057,
+          "O_invnorm": 1414040755,
+          "O_adj": 14400489,
+          "O_real": 44022381,
+          "O_selfadj": 39353321,
+          "O_ifft": 970357573,
+          "O_norm": 48507598,
+          "ortho_other": 2708915,
+          "ntru_other": 3015915546,
+          "crt_deep": 374708533,
+          "bezout_deep": 5240012428,
+          "crt_fg": 557342152,
+          "crt_intermediate": 1949658665,
+          "top_other": 38323489
+        },
+        "fft": {
+          "fft_2": {
+            "calls": 141860,
+            "cycles": 14897515
+          },
+          "fft_4": {
+            "calls": 58544,
+            "cycles": 18443408
+          },
+          "fft_8": {
+            "calls": 24802,
+            "cycles": 19049980
+          },
+          "fft_16": {
+            "calls": 12114,
+            "cycles": 22592610
+          },
+          "fft_32": {
+            "calls": 6617,
+            "cycles": 29614143
+          },
+          "fft_64": {
+            "calls": 3811,
+            "cycles": 40251042
+          },
+          "fft_128": {
+            "calls": 2265,
+            "cycles": 55494330
+          },
+          "fft_256": {
+            "calls": 1428,
+            "cycles": 79889888
+          },
+          "fft_512": {
+            "calls": 1020,
+            "cycles": 128517984
+          },
+          "fft_1024": {
+            "calls": 3250,
+            "cycles": 912321124
+          },
+          "ifft_2": {
+            "calls": 141687,
+            "cycles": 17710875
+          },
+          "ifft_4": {
+            "calls": 58371,
+            "cycles": 20079624
+          },
+          "ifft_8": {
+            "calls": 24665,
+            "cycles": 21385577
+          },
+          "ifft_16": {
+            "calls": 12004,
+            "cycles": 25606579
+          },
+          "ifft_32": {
+            "calls": 6513,
+            "cycles": 33446304
+          },
+          "ifft_64": {
+            "calls": 3708,
+            "cycles": 44902216
+          },
+          "ifft_128": {
+            "calls": 2162,
+            "cycles": 60598469
+          },
+          "ifft_256": {
+            "calls": 1326,
+            "cycles": 84645629
+          },
+          "ifft_512": {
+            "calls": 918,
+            "cycles": 131661113
+          },
+          "ifft_1024": {
+            "calls": 3148,
+            "cycles": 1002851722
+          }
+        }
+      },
+      "current": {
+        "total": 25540352047,
+        "control_total": 28565301591,
+        "instrumentation_percent": -10.589594282291992,
+        "ops": {
+          "sample": {
+            "calls": 6221,
+            "cycles": 2005988550,
+            "success": 0
+          },
+          "invert": {
+            "calls": 3227,
+            "cycles": 128683036,
+            "success": 2994
+          },
+          "ortho": {
+            "calls": 1523,
+            "cycles": 3146947368,
+            "success": 173
+          },
+          "ntru": {
+            "calls": 173,
+            "cycles": 20184898134,
+            "success": 100
+          },
+          "finish": {
+            "calls": 100,
+            "cycles": 35245600,
+            "success": 0
+          },
+          "I_input": {
+            "calls": 252300,
+            "cycles": 588857305,
+            "success": 0
+          },
+          "I_fft": {
+            "calls": 252300,
+            "cycles": 572933747,
+            "success": 0
+          },
+          "I_recip": {
+            "calls": 1107,
+            "cycles": 62502313,
+            "success": 0
+          },
+          "I_mul": {
+            "calls": 251193,
+            "cycles": 638361285,
+            "success": 0
+          },
+          "I_ifft": {
+            "calls": 251193,
+            "cycles": 603038234,
+            "success": 0
+          },
+          "I_round": {
+            "calls": 251193,
+            "cycles": 163211502,
+            "success": 0
+          },
+          "I_update": {
+            "calls": 251150,
+            "cycles": 6708511446,
+            "success": 0
+          },
+          "D_input": {
+            "calls": 204,
+            "cycles": 6080628,
+            "success": 0
+          },
+          "D_fft": {
+            "calls": 204,
+            "cycles": 52824770,
+            "success": 0
+          },
+          "D_div": {
+            "calls": 102,
+            "cycles": 35687704,
+            "success": 0
+          },
+          "D_ifft": {
+            "calls": 102,
+            "cycles": 28217682,
+            "success": 0
+          },
+          "D_round": {
+            "calls": 102,
+            "cycles": 5756880,
+            "success": 0
+          },
+          "O_input": {
+            "calls": 3046,
+            "cycles": 28418884,
+            "success": 0
+          },
+          "O_fft": {
+            "calls": 3046,
+            "cycles": 789536934,
+            "success": 0
+          },
+          "O_invnorm": {
+            "calls": 1523,
+            "cycles": 195209745,
+            "success": 0
+          },
+          "O_adj": {
+            "calls": 3046,
+            "cycles": 9726946,
+            "success": 0
+          },
+          "O_real": {
+            "calls": 3046,
+            "cycles": 380991699,
+            "success": 0
+          },
+          "O_selfadj": {
+            "calls": 3046,
+            "cycles": 412123970,
+            "success": 0
+          },
+          "O_ifft": {
+            "calls": 3046,
+            "cycles": 847330364,
+            "success": 0
+          },
+          "O_norm": {
+            "calls": 1523,
+            "cycles": 480568918,
+            "success": 0
+          },
+          "deepest": {
+            "calls": 173,
+            "cycles": 6709903388,
+            "success": 173
+          },
+          "intermediate": {
+            "calls": 1107,
+            "cycles": 12932689387,
+            "success": 1036
+          },
+          "depth0": {
+            "calls": 102,
+            "cycles": 539353099,
+            "success": 102
+          },
+          "fg_deep": {
+            "calls": 173,
+            "cycles": 1094240927,
+            "success": 0
+          },
+          "crt_deep": {
+            "calls": 173,
+            "cycles": 374724857,
+            "success": 0
+          },
+          "bezout_deep": {
+            "calls": 173,
+            "cycles": 5240218962,
+            "success": 173
+          },
+          "crt_fg": {
+            "calls": 2345,
+            "cycles": 557339468,
+            "success": 0
+          },
+          "crt_intermediate": {
+            "calls": 2214,
+            "cycles": 1949678593,
+            "success": 0
+          }
+        },
+        "leaves": {
+          "sample": 2005988550,
+          "invert": 128683036,
+          "finish": 35245600,
+          "I_input": 588857305,
+          "I_fft": 572933747,
+          "I_recip": 62502313,
+          "I_mul": 638361285,
+          "I_ifft": 603038234,
+          "I_round": 163211502,
+          "I_update": 6708511446,
+          "D_input": 6080628,
+          "D_fft": 52824770,
+          "D_div": 35687704,
+          "D_ifft": 28217682,
+          "D_round": 5756880,
+          "O_input": 28418884,
+          "O_fft": 789536934,
+          "O_invnorm": 195209745,
+          "O_adj": 9726946,
+          "O_real": 380991699,
+          "O_selfadj": 412123970,
+          "O_ifft": 847330364,
+          "O_norm": 480568918,
+          "ortho_other": 3039908,
+          "ntru_other": 2596952758,
+          "crt_deep": 374724857,
+          "bezout_deep": 5240218962,
+          "crt_fg": 557339468,
+          "crt_intermediate": 1949678593,
+          "top_other": 38589359
+        },
+        "fft": {
+          "fft_2": {
+            "calls": 141860,
+            "cycles": 42276416
+          },
+          "fft_4": {
+            "calls": 58453,
+            "cycles": 76751990
+          },
+          "fft_8": {
+            "calls": 24732,
+            "cycles": 79862834
+          },
+          "fft_16": {
+            "calls": 12114,
+            "cycles": 32164808
+          },
+          "fft_32": {
+            "calls": 6617,
+            "cycles": 36687852
+          },
+          "fft_64": {
+            "calls": 3811,
+            "cycles": 45209293
+          },
+          "fft_128": {
+            "calls": 2265,
+            "cycles": 58080199
+          },
+          "fft_256": {
+            "calls": 1428,
+            "cycles": 79341817
+          },
+          "fft_512": {
+            "calls": 1020,
+            "cycles": 122558538
+          },
+          "fft_1024": {
+            "calls": 3250,
+            "cycles": 842361704
+          },
+          "ifft_2": {
+            "calls": 141687,
+            "cycles": 61357944
+          },
+          "ifft_4": {
+            "calls": 58280,
+            "cycles": 83174109
+          },
+          "ifft_8": {
+            "calls": 24595,
+            "cycles": 82641339
+          },
+          "ifft_16": {
+            "calls": 12004,
+            "cycles": 34452547
+          },
+          "ifft_32": {
+            "calls": 6513,
+            "cycles": 38714350
+          },
+          "ifft_64": {
+            "calls": 3708,
+            "cycles": 47016943
+          },
+          "ifft_128": {
+            "calls": 2162,
+            "cycles": 59205256
+          },
+          "ifft_256": {
+            "calls": 1326,
+            "cycles": 78665003
+          },
+          "ifft_512": {
+            "calls": 918,
+            "cycles": 117810743
+          },
+          "ifft_1024": {
+            "calls": 3148,
+            "cycles": 875548046
+          }
+        }
+      },
+      "delta_cycles_per_key": {
+        "sample": 11496.68,
+        "invert": -1603307.01,
+        "finish": -98951.92,
+        "I_input": 1099475.66,
+        "I_fft": 1641828.47,
+        "I_recip": -1246647.62,
+        "I_mul": 5222783.7,
+        "I_ifft": 1630018.48,
+        "I_round": 1110006.96,
+        "I_update": -9238571.95,
+        "D_input": 40713.22,
+        "D_fft": -43902.97,
+        "D_div": -1482689.19,
+        "D_ifft": -42764.67,
+        "D_round": 43879.38,
+        "O_input": 93666.56,
+        "O_fft": -655691.23,
+        "O_invnorm": -12188310.1,
+        "O_adj": -46735.43,
+        "O_real": 3369693.18,
+        "O_selfadj": 3727706.49,
+        "O_ifft": -1230272.09,
+        "O_norm": 4320613.2,
+        "ortho_other": 3309.93,
+        "ntru_other": -4189627.88,
+        "crt_deep": 163.24,
+        "bezout_deep": 2065.34,
+        "crt_fg": -26.84,
+        "crt_intermediate": 199.28,
+        "top_other": 2658.7
+      },
+      "delta_sum": -9747220.429999998,
+      "calls_equal": {
+        "sample": true,
+        "invert": true,
+        "ortho": true,
+        "ntru": true,
+        "finish": true,
+        "I_input": false,
+        "I_fft": false,
+        "I_recip": true,
+        "I_mul": false,
+        "I_ifft": false,
+        "I_round": false,
+        "I_update": false,
+        "D_input": true,
+        "D_fft": true,
+        "D_div": true,
+        "D_ifft": true,
+        "D_round": true,
+        "O_input": true,
+        "O_fft": true,
+        "O_invnorm": true,
+        "O_adj": true,
+        "O_real": true,
+        "O_selfadj": true,
+        "O_ifft": true,
+        "O_norm": true,
+        "deepest": true,
+        "intermediate": true,
+        "depth0": true,
+        "fg_deep": true,
+        "crt_deep": true,
+        "bezout_deep": true,
+        "crt_fg": true,
+        "crt_intermediate": true
+      },
+      "success_equal": {
+        "sample": true,
+        "invert": true,
+        "ortho": true,
+        "ntru": true,
+        "finish": true,
+        "I_input": true,
+        "I_fft": true,
+        "I_recip": true,
+        "I_mul": true,
+        "I_ifft": true,
+        "I_round": true,
+        "I_update": true,
+        "D_input": true,
+        "D_fft": true,
+        "D_div": true,
+        "D_ifft": true,
+        "D_round": true,
+        "O_input": true,
+        "O_fft": true,
+        "O_invnorm": true,
+        "O_adj": true,
+        "O_real": true,
+        "O_selfadj": true,
+        "O_ifft": true,
+        "O_norm": true,
+        "deepest": true,
+        "intermediate": true,
+        "depth0": true,
+        "fg_deep": true,
+        "crt_deep": true,
+        "bezout_deep": true,
+        "crt_fg": true,
+        "crt_intermediate": true
+      }
+    }
+  },
+  "matching_encoded_keys": 200,
+  "source_unchanged": true,
+  "note": "Inclusive parents are not added to leaves. Every timing includes probe cost; no ad hoc overhead subtraction. Separate firmware, same memory policy, not identical code addresses."
+}

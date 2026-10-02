@@ -1,0 +1,694 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 63013
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :63013 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10007d4c
+hbreak *0x1000afb8
+set $early_fault_bp = $bpnum
+jump *0x1000afcd
+if $pc != 0x10007d4c
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmph5qzcsq4/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10007cfc
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x1000afb8
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.276064
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 63013
+Info : Listening on port 63013 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/63013
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003518 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+PERFCT_HW cpu=800000000 fpscr=00040000 ccr=00000611 tcm=00000099
+COUNTEREXAMPLE_BOARD fixed=00000000ffffffff trial=3ff0000000000000 fixed_k=0 trial_k=1
+KPERF case=0 logn=1 op=FFT backend=fixed count=100 min=26 max=26 sum=2600 sumsq=67600
+KPERF case=0 logn=1 op=FFT backend=q32_trial count=100 min=26 max=26 sum=2600 sumsq=67600
+KPERF case=0 logn=1 op=iFFT backend=fixed count=100 min=44 max=44 sum=4400 sumsq=193600
+KPERF case=0 logn=1 op=iFFT backend=q32_trial count=100 min=77 max=77 sum=7700 sumsq=592900
+KPERF case=0 logn=1 op=pointwise backend=fixed count=100 min=120 max=120 sum=12000 sumsq=1440000
+KPERF case=0 logn=1 op=pointwise backend=q32_trial count=100 min=1675 max=1675 sum=167500 sumsq=280562500
+KPERF case=0 logn=1 op=inverse backend=fixed count=100 min=3597 max=3597 sum=359700 sumsq=1293840900
+KPERF case=0 logn=1 op=inverse backend=q32_trial count=100 min=2213 max=2213 sum=221300 sumsq=489736900
+KPERF case=0 logn=1 op=prepare backend=fixed count=100 min=3614 max=3614 sum=361400 sumsq=1306099600
+KPERF case=0 logn=1 op=prepare backend=q32_trial count=100 min=2230 max=2230 sum=223000 sumsq=497290000
+KPERF case=0 logn=1 op=repeat backend=fixed count=100 min=188 max=188 sum=18800 sumsq=3534400
+KPERF case=0 logn=1 op=repeat backend=q32_trial count=100 min=1877 max=1877 sum=187700 sumsq=352312900
+KPERF case=0 logn=1 op=pipeline backend=fixed count=100 min=3789 max=3789 sum=378900 sumsq=1435652100
+KPERF case=0 logn=1 op=pipeline backend=q32_trial count=100 min=4094 max=4094 sum=409400 sumsq=1676083600
+PERF_K case=0 logn=1 differences=0 fixed_fixture_errors=0
+KPERF case=1 logn=1 op=FFT backend=fixed count=100 min=26 max=26 sum=2600 sumsq=67600
+KPERF case=1 logn=1 op=FFT backend=q32_trial count=100 min=26 max=26 sum=2600 sumsq=67600
+KPERF case=1 logn=1 op=iFFT backend=fixed count=100 min=44 max=44 sum=4400 sumsq=193600
+KPERF case=1 logn=1 op=iFFT backend=q32_trial count=100 min=77 max=77 sum=7700 sumsq=592900
+KPERF case=1 logn=1 op=pointwise backend=fixed count=100 min=120 max=120 sum=12000 sumsq=1440000
+KPERF case=1 logn=1 op=pointwise backend=q32_trial count=100 min=1675 max=1675 sum=167500 sumsq=280562500
+KPERF case=1 logn=1 op=inverse backend=fixed count=100 min=3597 max=3597 sum=359700 sumsq=1293840900
+KPERF case=1 logn=1 op=inverse backend=q32_trial count=100 min=2213 max=2213 sum=221300 sumsq=489736900
+KPERF case=1 logn=1 op=prepare backend=fixed count=100 min=3614 max=3614 sum=361400 sumsq=1306099600
+KPERF case=1 logn=1 op=prepare backend=q32_trial count=100 min=2230 max=2230 sum=223000 sumsq=497290000
+KPERF case=1 logn=1 op=repeat backend=fixed count=100 min=188 max=188 sum=18800 sumsq=3534400
+KPERF case=1 logn=1 op=repeat backend=q32_trial count=100 min=1877 max=1877 sum=187700 sumsq=352312900
+KPERF case=1 logn=1 op=pipeline backend=fixed count=100 min=3789 max=3789 sum=378900 sumsq=1435652100
+KPERF case=1 logn=1 op=pipeline backend=q32_trial count=100 min=4094 max=4094 sum=409400 sumsq=1676083600
+PERF_K case=1 logn=1 differences=0 fixed_fixture_errors=0
+KPERF case=2 logn=2 op=FFT backend=fixed count=100 min=236 max=236 sum=23600 sumsq=5569600
+KPERF case=2 logn=2 op=FFT backend=q32_trial count=100 min=2363 max=2363 sum=236300 sumsq=558376900
+KPERF case=2 logn=2 op=iFFT backend=fixed count=100 min=263 max=263 sum=26300 sumsq=6916900
+KPERF case=2 logn=2 op=iFFT backend=q32_trial count=100 min=3395 max=3395 sum=339500 sumsq=1152602500
+KPERF case=2 logn=2 op=pointwise backend=fixed count=100 min=188 max=188 sum=18800 sumsq=3534400
+KPERF case=2 logn=2 op=pointwise backend=q32_trial count=100 min=3252 max=3252 sum=325200 sumsq=1057550400
+KPERF case=2 logn=2 op=inverse backend=fixed count=100 min=7148 max=7148 sum=714800 sumsq=5109390400
+KPERF case=2 logn=2 op=inverse backend=q32_trial count=100 min=4288 max=4288 sum=428800 sumsq=1838694400
+KPERF case=2 logn=2 op=prepare backend=fixed count=100 min=7375 max=7375 sum=737500 sumsq=5439062500
+KPERF case=2 logn=2 op=prepare backend=q32_trial count=100 min=6642 max=6642 sum=664200 sumsq=4411616400
+KPERF case=2 logn=2 op=repeat backend=fixed count=100 min=702 max=702 sum=70200 sumsq=49280400
+KPERF case=2 logn=2 op=repeat backend=q32_trial count=100 min=9213 max=9213 sum=921300 sumsq=8487936900
+KPERF case=2 logn=2 op=pipeline backend=fixed count=100 min=8064 max=8064 sum=806400 sumsq=6502809600
+KPERF case=2 logn=2 op=pipeline backend=q32_trial count=100 min=15842 max=15842 sum=1584200 sumsq=25096896400
+PERF_K case=2 logn=2 differences=0 fixed_fixture_errors=0
+KPERF case=3 logn=2 op=FFT backend=fixed count=100 min=236 max=236 sum=23600 sumsq=5569600
+KPERF case=3 logn=2 op=FFT backend=q32_trial count=100 min=2363 max=2363 sum=236300 sumsq=558376900
+KPERF case=3 logn=2 op=iFFT backend=fixed count=100 min=263 max=263 sum=26300 sumsq=6916900
+KPERF case=3 logn=2 op=iFFT backend=q32_trial count=100 min=3395 max=3395 sum=339500 sumsq=1152602500
+KPERF case=3 logn=2 op=pointwise backend=fixed count=100 min=188 max=188 sum=18800 sumsq=3534400
+KPERF case=3 logn=2 op=pointwise backend=q32_trial count=100 min=3252 max=3252 sum=325200 sumsq=1057550400
+KPERF case=3 logn=2 op=inverse backend=fixed count=100 min=7148 max=7148 sum=714800 sumsq=5109390400
+KPERF case=3 logn=2 op=inverse backend=q32_trial count=100 min=4288 max=4288 sum=428800 sumsq=1838694400
+KPERF case=3 logn=2 op=prepare backend=fixed count=100 min=7375 max=7375 sum=737500 sumsq=5439062500
+KPERF case=3 logn=2 op=prepare backend=q32_trial count=100 min=6642 max=6642 sum=664200 sumsq=4411616400
+KPERF case=3 logn=2 op=repeat backend=fixed count=100 min=702 max=702 sum=70200 sumsq=49280400
+KPERF case=3 logn=2 op=repeat backend=q32_trial count=100 min=9213 max=9213 sum=921300 sumsq=8487936900
+KPERF case=3 logn=2 op=pipeline backend=fixed count=100 min=8064 max=8064 sum=806400 sumsq=6502809600
+KPERF case=3 logn=2 op=pipeline backend=q32_trial count=100 min=15842 max=15842 sum=1584200 sumsq=25096896400
+PERF_K case=3 logn=2 differences=0 fixed_fixture_errors=0
+KPERF case=4 logn=3 op=FFT backend=fixed count=100 min=690 max=690 sum=69000 sumsq=47610000
+KPERF case=4 logn=3 op=FFT backend=q32_trial count=100 min=8926 max=8926 sum=892600 sumsq=7967347600
+KPERF case=4 logn=3 op=iFFT backend=fixed count=100 min=786 max=786 sum=78600 sumsq=61779600
+KPERF case=4 logn=3 op=iFFT backend=q32_trial count=100 min=13101 max=13101 sum=1310100 sumsq=17163620100
+KPERF case=4 logn=3 op=pointwise backend=fixed count=100 min=324 max=324 sum=32400 sumsq=10497600
+KPERF case=4 logn=3 op=pointwise backend=q32_trial count=100 min=6406 max=6406 sum=640600 sumsq=4103683600
+KPERF case=4 logn=3 op=inverse backend=fixed count=100 min=14250 max=14250 sum=1425000 sumsq=20306250000
+KPERF case=4 logn=3 op=inverse backend=q32_trial count=100 min=8536 max=8536 sum=853600 sumsq=7286329600
+KPERF case=4 logn=3 op=prepare backend=fixed count=100 min=14931 max=14931 sum=1493100 sumsq=22293476100
+KPERF case=4 logn=3 op=prepare backend=q32_trial count=100 min=17453 max=17453 sum=1745300 sumsq=30460720900
+KPERF case=4 logn=3 op=repeat backend=fixed count=100 min=1850 max=1850 sum=185000 sumsq=342250000
+KPERF case=4 logn=3 op=repeat backend=q32_trial count=100 min=28844 max=28844 sum=2884400 sumsq=83197633600
+KPERF case=4 logn=3 op=pipeline backend=fixed count=100 min=16768 max=16768 sum=1676800 sumsq=28116582400
+KPERF case=4 logn=3 op=pipeline backend=q32_trial count=100 min=46284 max=46284 sum=4628400 sumsq=214220865600
+PERF_K case=4 logn=3 differences=0 fixed_fixture_errors=0
+KPERF case=5 logn=3 op=FFT backend=fixed count=100 min=690 max=690 sum=69000 sumsq=47610000
+KPERF case=5 logn=3 op=FFT backend=q32_trial count=100 min=8926 max=8926 sum=892600 sumsq=7967347600
+KPERF case=5 logn=3 op=iFFT backend=fixed count=100 min=786 max=786 sum=78600 sumsq=61779600
+KPERF case=5 logn=3 op=iFFT backend=q32_trial count=100 min=13101 max=13101 sum=1310100 sumsq=17163620100
+KPERF case=5 logn=3 op=pointwise backend=fixed count=100 min=324 max=324 sum=32400 sumsq=10497600
+KPERF case=5 logn=3 op=pointwise backend=q32_trial count=100 min=6406 max=6406 sum=640600 sumsq=4103683600
+KPERF case=5 logn=3 op=inverse backend=fixed count=100 min=14250 max=14250 sum=1425000 sumsq=20306250000
+KPERF case=5 logn=3 op=inverse backend=q32_trial count=100 min=8536 max=8536 sum=853600 sumsq=7286329600
+KPERF case=5 logn=3 op=prepare backend=fixed count=100 min=14931 max=14931 sum=1493100 sumsq=22293476100
+KPERF case=5 logn=3 op=prepare backend=q32_trial count=100 min=17453 max=17453 sum=1745300 sumsq=30460720900
+KPERF case=5 logn=3 op=repeat backend=fixed count=100 min=1850 max=1850 sum=185000 sumsq=342250000
+KPERF case=5 logn=3 op=repeat backend=q32_trial count=100 min=28844 max=28844 sum=2884400 sumsq=83197633600
+KPERF case=5 logn=3 op=pipeline backend=fixed count=100 min=16768 max=16768 sum=1676800 sumsq=28116582400
+KPERF case=5 logn=3 op=pipeline backend=q32_trial count=100 min=46284 max=46284 sum=4628400 sumsq=214220865600
+PERF_K case=5 logn=3 differences=0 fixed_fixture_errors=0
+KPERF case=6 logn=4 op=FFT backend=fixed count=100 min=1789 max=1789 sum=178900 sumsq=320052100
+KPERF case=6 logn=4 op=FFT backend=q32_trial count=100 min=26101 max=26101 sum=2610100 sumsq=68126220100
+KPERF case=6 logn=4 op=iFFT backend=fixed count=100 min=2052 max=2052 sum=205200 sumsq=421070400
+KPERF case=6 logn=4 op=iFFT backend=q32_trial count=100 min=38677 max=38677 sum=3867700 sumsq=149591032900
+KPERF case=6 logn=4 op=pointwise backend=fixed count=100 min=596 max=596 sum=59600 sumsq=35521600
+KPERF case=6 logn=4 op=pointwise backend=q32_trial count=100 min=12714 max=12714 sum=1271400 sumsq=16164579600
+KPERF case=6 logn=4 op=inverse backend=fixed count=100 min=28454 max=28454 sum=2845400 sumsq=80963011600
+KPERF case=6 logn=4 op=inverse backend=q32_trial count=100 min=17018 max=17018 sum=1701800 sumsq=28961232400
+KPERF case=6 logn=4 op=prepare backend=fixed count=100 min=30234 max=30234 sum=3023400 sumsq=91409475600
+KPERF case=6 logn=4 op=prepare backend=q32_trial count=100 min=43110 max=43110 sum=4311000 sumsq=185847210000
+KPERF case=6 logn=4 op=repeat backend=fixed count=100 min=4557 max=4557 sum=455700 sumsq=2076624900
+KPERF case=6 logn=4 op=repeat backend=q32_trial count=100 min=78319 max=78319 sum=7831900 sumsq=613386576100
+KPERF case=6 logn=4 op=pipeline backend=fixed count=100 min=34778 max=34778 sum=3477800 sumsq=120950928400
+KPERF case=6 logn=4 op=pipeline backend=q32_trial count=100 min=121416 max=121416 sum=12141600 sumsq=1474184505600
+PERF_K case=6 logn=4 differences=0 fixed_fixture_errors=0
+KPERF case=7 logn=4 op=FFT backend=fixed count=100 min=1789 max=1789 sum=178900 sumsq=320052100
+KPERF case=7 logn=4 op=FFT backend=q32_trial count=100 min=26101 max=26101 sum=2610100 sumsq=68126220100
+KPERF case=7 logn=4 op=iFFT backend=fixed count=100 min=2052 max=2052 sum=205200 sumsq=421070400
+KPERF case=7 logn=4 op=iFFT backend=q32_trial count=100 min=38677 max=38677 sum=3867700 sumsq=149591032900
+KPERF case=7 logn=4 op=pointwise backend=fixed count=100 min=596 max=596 sum=59600 sumsq=35521600
+KPERF case=7 logn=4 op=pointwise backend=q32_trial count=100 min=12714 max=12714 sum=1271400 sumsq=16164579600
+KPERF case=7 logn=4 op=inverse backend=fixed count=100 min=28454 max=28454 sum=2845400 sumsq=80963011600
+KPERF case=7 logn=4 op=inverse backend=q32_trial count=100 min=17018 max=17018 sum=1701800 sumsq=28961232400
+KPERF case=7 logn=4 op=prepare backend=fixed count=100 min=30234 max=30234 sum=3023400 sumsq=91409475600
+KPERF case=7 logn=4 op=prepare backend=q32_trial count=100 min=43110 max=43110 sum=4311000 sumsq=185847210000
+KPERF case=7 logn=4 op=repeat backend=fixed count=100 min=4557 max=4557 sum=455700 sumsq=2076624900
+KPERF case=7 logn=4 op=repeat backend=q32_trial count=100 min=78319 max=78319 sum=7831900 sumsq=613386576100
+KPERF case=7 logn=4 op=pipeline backend=fixed count=100 min=34778 max=34778 sum=3477800 sumsq=120950928400
+KPERF case=7 logn=4 op=pipeline backend=q32_trial count=100 min=121416 max=121416 sum=12141600 sumsq=1474184505600
+PERF_K case=7 logn=4 differences=0 fixed_fixture_errors=0
+KPERF case=8 logn=5 op=FFT backend=fixed count=100 min=4403 max=4403 sum=440300 sumsq=1938640900
+KPERF case=8 logn=5 op=FFT backend=q32_trial count=100 min=68580 max=68580 sum=6858000 sumsq=470321640000
+KPERF case=8 logn=5 op=iFFT backend=fixed count=100 min=5054 max=5054 sum=505400 sumsq=2554291600
+KPERF case=8 logn=5 op=iFFT backend=q32_trial count=100 min=102187 max=102187 sum=10218700 sumsq=1044218296900
+KPERF case=8 logn=5 op=pointwise backend=fixed count=100 min=1140 max=1140 sum=114000 sumsq=129960000
+KPERF case=8 logn=5 op=pointwise backend=q32_trial count=100 min=25330 max=25330 sum=2533000 sumsq=64160890000
+KPERF case=8 logn=5 op=inverse backend=fixed count=100 min=56862 max=56862 sum=5686200 sumsq=323328704400
+KPERF case=8 logn=5 op=inverse backend=q32_trial count=100 min=33860 max=33860 sum=3386000 sumsq=114649960000
+KPERF case=8 logn=5 op=prepare backend=fixed count=100 min=61256 max=61256 sum=6125600 sumsq=375229753600
+KPERF case=8 logn=5 op=prepare backend=q32_trial count=100 min=102431 max=102431 sum=10243100 sumsq=1049210976100
+KPERF case=8 logn=5 op=repeat backend=fixed count=100 min=10857 max=10857 sum=1085700 sumsq=11787444900
+KPERF case=8 logn=5 op=repeat backend=q32_trial count=100 min=197756 max=197756 sum=19775600 sumsq=3910743553600
+KPERF case=8 logn=5 op=pipeline backend=fixed count=100 min=72100 max=72100 sum=7210000 sumsq=519841000000
+KPERF case=8 logn=5 op=pipeline backend=q32_trial count=100 min=300174 max=300174 sum=30017400 sumsq=9010443027600
+PERF_K case=8 logn=5 differences=0 fixed_fixture_errors=0
+KPERF case=9 logn=5 op=FFT backend=fixed count=100 min=4403 max=4403 sum=440300 sumsq=1938640900
+KPERF case=9 logn=5 op=FFT backend=q32_trial count=100 min=68580 max=68580 sum=6858000 sumsq=470321640000
+KPERF case=9 logn=5 op=iFFT backend=fixed count=100 min=5054 max=5054 sum=505400 sumsq=2554291600
+KPERF case=9 logn=5 op=iFFT backend=q32_trial count=100 min=102187 max=102187 sum=10218700 sumsq=1044218296900
+KPERF case=9 logn=5 op=pointwise backend=fixed count=100 min=1140 max=1140 sum=114000 sumsq=129960000
+KPERF case=9 logn=5 op=pointwise backend=q32_trial count=100 min=25330 max=25330 sum=2533000 sumsq=64160890000
+KPERF case=9 logn=5 op=inverse backend=fixed count=100 min=56862 max=56862 sum=5686200 sumsq=323328704400
+KPERF case=9 logn=5 op=inverse backend=q32_trial count=100 min=33860 max=33860 sum=3386000 sumsq=114649960000
+KPERF case=9 logn=5 op=prepare backend=fixed count=100 min=61256 max=61256 sum=6125600 sumsq=375229753600
+KPERF case=9 logn=5 op=prepare backend=q32_trial count=100 min=102431 max=102431 sum=10243100 sumsq=1049210976100
+KPERF case=9 logn=5 op=repeat backend=fixed count=100 min=10857 max=10857 sum=1085700 sumsq=11787444900
+KPERF case=9 logn=5 op=repeat backend=q32_trial count=100 min=197756 max=197756 sum=19775600 sumsq=3910743553600
+KPERF case=9 logn=5 op=pipeline backend=fixed count=100 min=72100 max=72100 sum=7210000 sumsq=519841000000
+KPERF case=9 logn=5 op=pipeline backend=q32_trial count=100 min=300174 max=300174 sum=30017400 sumsq=9010443027600
+PERF_K case=9 logn=5 differences=0 fixed_fixture_errors=0
+KPERF case=10 logn=6 op=FFT backend=fixed count=100 min=10497 max=10497 sum=1049700 sumsq=11018700900
+KPERF case=10 logn=6 op=FFT backend=q32_trial count=100 min=169827 max=169827 sum=16982700 sumsq=2884120992900
+KPERF case=10 logn=6 op=iFFT backend=fixed count=100 min=12028 max=12028 sum=1202800 sumsq=14467278400
+KPERF case=10 logn=6 op=iFFT backend=q32_trial count=100 min=253953 max=253953 sum=25395300 sumsq=6449212620900
+KPERF case=10 logn=6 op=pointwise backend=fixed count=100 min=2228 max=2228 sum=222800 sumsq=496398400
+KPERF case=10 logn=6 op=pointwise backend=q32_trial count=100 min=50562 max=50562 sum=5056200 sumsq=255651584400
+KPERF case=10 logn=6 op=inverse backend=fixed count=100 min=113678 max=113678 sum=11367800 sumsq=1292268768400
+KPERF case=10 logn=6 op=inverse backend=q32_trial count=100 min=67706 max=67706 sum=6770600 sumsq=458410243600
+KPERF case=10 logn=6 op=prepare backend=fixed count=100 min=124166 max=124166 sum=12416600 sumsq=1541719555600
+KPERF case=10 logn=6 op=prepare backend=q32_trial count=100 min=237524 max=237524 sum=23752400 sumsq=5641765057600
+KPERF case=10 logn=6 op=repeat backend=fixed count=100 min=25293 max=25293 sum=2529300 sumsq=63973584900
+KPERF case=10 logn=6 op=repeat backend=q32_trial count=100 min=477665 max=477665 sum=47766500 sumsq=22816385222500
+KPERF case=10 logn=6 op=pipeline backend=fixed count=100 min=149446 max=149446 sum=14944600 sumsq=2233410691600
+KPERF case=10 logn=6 op=pipeline backend=q32_trial count=100 min=715176 max=715176 sum=71517600 sumsq=51147671097600
+PERF_K case=10 logn=6 differences=0 fixed_fixture_errors=0
+KPERF case=11 logn=6 op=FFT backend=fixed count=100 min=10497 max=10497 sum=1049700 sumsq=11018700900
+KPERF case=11 logn=6 op=FFT backend=q32_trial count=100 min=169827 max=169827 sum=16982700 sumsq=2884120992900
+KPERF case=11 logn=6 op=iFFT backend=fixed count=100 min=12028 max=12028 sum=1202800 sumsq=14467278400
+KPERF case=11 logn=6 op=iFFT backend=q32_trial count=100 min=253953 max=253953 sum=25395300 sumsq=6449212620900
+KPERF case=11 logn=6 op=pointwise backend=fixed count=100 min=2228 max=2228 sum=222800 sumsq=496398400
+KPERF case=11 logn=6 op=pointwise backend=q32_trial count=100 min=50562 max=50562 sum=5056200 sumsq=255651584400
+KPERF case=11 logn=6 op=inverse backend=fixed count=100 min=113678 max=113678 sum=11367800 sumsq=1292268768400
+KPERF case=11 logn=6 op=inverse backend=q32_trial count=100 min=67706 max=67706 sum=6770600 sumsq=458410243600
+KPERF case=11 logn=6 op=prepare backend=fixed count=100 min=124166 max=124166 sum=12416600 sumsq=1541719555600
+KPERF case=11 logn=6 op=prepare backend=q32_trial count=100 min=237524 max=237524 sum=23752400 sumsq=5641765057600
+KPERF case=11 logn=6 op=repeat backend=fixed count=100 min=25293 max=25293 sum=2529300 sumsq=63973584900
+KPERF case=11 logn=6 op=repeat backend=q32_trial count=100 min=477665 max=477665 sum=47766500 sumsq=22816385222500
+KPERF case=11 logn=6 op=pipeline backend=fixed count=100 min=149446 max=149446 sum=14944600 sumsq=2233410691600
+KPERF case=11 logn=6 op=pipeline backend=q32_trial count=100 min=715176 max=715176 sum=71517600 sumsq=51147671097600
+PERF_K case=11 logn=6 differences=0 fixed_fixture_errors=0
+KPERF case=12 logn=7 op=FFT backend=fixed count=100 min=24451 max=24451 sum=2445100 sumsq=59785140100
+KPERF case=12 logn=7 op=FFT backend=q32_trial count=100 min=404930 max=404930 sum=40493000 sumsq=16396830490000
+KPERF case=12 logn=7 op=iFFT backend=fixed count=100 min=27946 max=27946 sum=2794600 sumsq=78097891600
+KPERF case=12 logn=7 op=iFFT backend=q32_trial count=100 min=607007 max=607007 sum=60700700 sumsq=36845749804900
+KPERF case=12 logn=7 op=pointwise backend=fixed count=100 min=4404 max=4404 sum=440400 sumsq=1939521600
+KPERF case=12 logn=7 op=pointwise backend=q32_trial count=100 min=101026 max=101026 sum=10102600 sumsq=1020625267600
+KPERF case=12 logn=7 op=inverse backend=fixed count=100 min=227310 max=227310 sum=22731000 sumsq=5166983610000
+KPERF case=12 logn=7 op=inverse backend=q32_trial count=100 min=135364 max=135364 sum=13536400 sumsq=1832341249600
+KPERF case=12 logn=7 op=prepare backend=fixed count=100 min=251752 max=251752 sum=25175200 sumsq=6337906950400
+KPERF case=12 logn=7 op=prepare backend=q32_trial count=100 min=540285 max=540285 sum=54028500 sumsq=29190788122500
+KPERF case=12 logn=7 op=repeat backend=fixed count=100 min=57901 max=57901 sum=5790100 sumsq=335252580100
+KPERF case=12 logn=7 op=repeat backend=q32_trial count=100 min=1119614 max=1119614 sum=111961400 sumsq=125353550899600
+KPERF case=12 logn=7 op=pipeline backend=fixed count=100 min=309640 max=309640 sum=30964000 sumsq=9587692960000
+KPERF case=12 logn=7 op=pipeline backend=q32_trial count=100 min=1659886 max=1659886 sum=165988600 sumsq=275522153299600
+PERF_K case=12 logn=7 differences=0 fixed_fixture_errors=0
+KPERF case=13 logn=7 op=FFT backend=fixed count=100 min=24451 max=24451 sum=2445100 sumsq=59785140100
+KPERF case=13 logn=7 op=FFT backend=q32_trial count=100 min=404930 max=404930 sum=40493000 sumsq=16396830490000
+KPERF case=13 logn=7 op=iFFT backend=fixed count=100 min=27946 max=27946 sum=2794600 sumsq=78097891600
+KPERF case=13 logn=7 op=iFFT backend=q32_trial count=100 min=607007 max=607007 sum=60700700 sumsq=36845749804900
+KPERF case=13 logn=7 op=pointwise backend=fixed count=100 min=4404 max=4404 sum=440400 sumsq=1939521600
+KPERF case=13 logn=7 op=pointwise backend=q32_trial count=100 min=101026 max=101026 sum=10102600 sumsq=1020625267600
+KPERF case=13 logn=7 op=inverse backend=fixed count=100 min=227310 max=227310 sum=22731000 sumsq=5166983610000
+KPERF case=13 logn=7 op=inverse backend=q32_trial count=100 min=135364 max=135364 sum=13536400 sumsq=1832341249600
+KPERF case=13 logn=7 op=prepare backend=fixed count=100 min=251752 max=251752 sum=25175200 sumsq=6337906950400
+KPERF case=13 logn=7 op=prepare backend=q32_trial count=100 min=540285 max=540285 sum=54028500 sumsq=29190788122500
+KPERF case=13 logn=7 op=repeat backend=fixed count=100 min=57901 max=57901 sum=5790100 sumsq=335252580100
+KPERF case=13 logn=7 op=repeat backend=q32_trial count=100 min=1119614 max=1119614 sum=111961400 sumsq=125353550899600
+KPERF case=13 logn=7 op=pipeline backend=fixed count=100 min=309640 max=309640 sum=30964000 sumsq=9587692960000
+KPERF case=13 logn=7 op=pipeline backend=q32_trial count=100 min=1659886 max=1659886 sum=165988600 sumsq=275522153299600
+PERF_K case=13 logn=7 differences=0 fixed_fixture_errors=0
+KPERF case=14 logn=8 op=FFT backend=fixed count=100 min=55925 max=55925 sum=5592500 sumsq=312760562500
+KPERF case=14 logn=8 op=FFT backend=q32_trial count=100 min=940385 max=940385 sum=94038500 sumsq=88432394822500
+KPERF case=14 logn=8 op=iFFT backend=fixed count=100 min=63752 max=63752 sum=6375200 sumsq=406431750400
+KPERF case=14 logn=8 op=iFFT backend=q32_trial count=100 min=1412189 max=1412189 sum=141218900 sumsq=199427777172100
+KPERF case=14 logn=8 op=pointwise backend=fixed count=100 min=8756 max=8756 sum=875600 sumsq=7666753600
+KPERF case=14 logn=8 op=pointwise backend=q32_trial count=100 min=201954 max=201954 sum=20195400 sumsq=4078541811600
+KPERF case=14 logn=8 op=inverse backend=fixed count=100 min=454574 max=454574 sum=45457400 sumsq=20663752147600
+KPERF case=14 logn=8 op=inverse backend=q32_trial count=100 min=270796 max=270796 sum=27079600 sumsq=7333047361600
+KPERF case=14 logn=8 op=prepare backend=fixed count=100 min=510490 max=510490 sum=51049000 sumsq=26060004010000
+KPERF case=14 logn=8 op=prepare backend=q32_trial count=100 min=1211172 max=1211172 sum=121117200 sumsq=146693761358400
+KPERF case=14 logn=8 op=repeat backend=fixed count=100 min=130653 max=130653 sum=13065300 sumsq=1707020640900
+KPERF case=14 logn=8 op=repeat backend=q32_trial count=100 min=2567835 max=2567835 sum=256783500 sumsq=659377658722500
+KPERF case=14 logn=8 op=pipeline backend=fixed count=100 min=641130 max=641130 sum=64113000 sumsq=41104767690000
+KPERF case=14 logn=8 op=pipeline backend=q32_trial count=100 min=3778994 max=3778994 sum=377899400 sumsq=1428079565203600
+PERF_K case=14 logn=8 differences=0 fixed_fixture_errors=0
+KPERF case=15 logn=8 op=FFT backend=fixed count=100 min=55925 max=55925 sum=5592500 sumsq=312760562500
+KPERF case=15 logn=8 op=FFT backend=q32_trial count=100 min=940385 max=940385 sum=94038500 sumsq=88432394822500
+KPERF case=15 logn=8 op=iFFT backend=fixed count=100 min=63752 max=63752 sum=6375200 sumsq=406431750400
+KPERF case=15 logn=8 op=iFFT backend=q32_trial count=100 min=1412189 max=1412189 sum=141218900 sumsq=199427777172100
+KPERF case=15 logn=8 op=pointwise backend=fixed count=100 min=8756 max=8756 sum=875600 sumsq=7666753600
+KPERF case=15 logn=8 op=pointwise backend=q32_trial count=100 min=201954 max=201954 sum=20195400 sumsq=4078541811600
+KPERF case=15 logn=8 op=inverse backend=fixed count=100 min=454574 max=454574 sum=45457400 sumsq=20663752147600
+KPERF case=15 logn=8 op=inverse backend=q32_trial count=100 min=270796 max=270796 sum=27079600 sumsq=7333047361600
+KPERF case=15 logn=8 op=prepare backend=fixed count=100 min=510490 max=510490 sum=51049000 sumsq=26060004010000
+KPERF case=15 logn=8 op=prepare backend=q32_trial count=100 min=1211172 max=1211172 sum=121117200 sumsq=146693761358400
+KPERF case=15 logn=8 op=repeat backend=fixed count=100 min=130653 max=130653 sum=13065300 sumsq=1707020640900
+KPERF case=15 logn=8 op=repeat backend=q32_trial count=100 min=2567835 max=2567835 sum=256783500 sumsq=659377658722500
+KPERF case=15 logn=8 op=pipeline backend=fixed count=100 min=641130 max=641130 sum=64113000 sumsq=41104767690000
+KPERF case=15 logn=8 op=pipeline backend=q32_trial count=100 min=3778994 max=3778994 sum=377899400 sumsq=1428079565203600
+PERF_K case=15 logn=8 differences=0 fixed_fixture_errors=0
+KPERF case=16 logn=9 op=FFT backend=fixed count=100 min=126039 max=126039 sum=12603900 sumsq=1588582952100
+KPERF case=16 logn=9 op=FFT backend=q32_trial count=100 min=2141800 max=2141800 sum=214180000 sumsq=458730724000000
+KPERF case=16 logn=9 op=iFFT backend=fixed count=100 min=143334 max=143334 sum=14333400 sumsq=2054463555600
+KPERF case=16 logn=9 op=iFFT backend=q32_trial count=100 min=3220731 max=3220731 sum=322073100 sumsq=1037310817436100
+KPERF case=16 logn=9 op=pointwise backend=fixed count=100 min=17460 max=17460 sum=1746000 sumsq=30485160000
+KPERF case=16 logn=9 op=pointwise backend=q32_trial count=100 min=403810 max=403810 sum=40381000 sumsq=16306251610000
+KPERF case=16 logn=9 op=inverse backend=fixed count=100 min=909102 max=909102 sum=90910200 sumsq=82646644640400
+KPERF case=16 logn=9 op=inverse backend=q32_trial count=100 min=541588 max=541588 sum=54158800 sumsq=29331756174400
+KPERF case=16 logn=9 op=prepare backend=fixed count=100 min=1035132 max=1035132 sum=103513200 sumsq=107149825742400
+KPERF case=16 logn=9 op=prepare backend=q32_trial count=100 min=2683379 max=2683379 sum=268337900 sumsq=720052285764100
+KPERF case=16 logn=9 op=repeat backend=fixed count=100 min=291293 max=291293 sum=29129300 sumsq=8485161184900
+KPERF case=16 logn=9 op=repeat backend=q32_trial count=100 min=5792984 max=5792984 sum=579298400 sumsq=3355866362425600
+KPERF case=16 logn=9 op=pipeline backend=fixed count=100 min=1326412 max=1326412 sum=132641200 sumsq=175936879374400
+KPERF case=16 logn=9 op=pipeline backend=q32_trial count=100 min=8476350 max=8476350 sum=847635000 sumsq=7184850932250000
+PERF_K case=16 logn=9 differences=0 fixed_fixture_errors=0
+KPERF case=17 logn=9 op=FFT backend=fixed count=100 min=126039 max=126039 sum=12603900 sumsq=1588582952100
+KPERF case=17 logn=9 op=FFT backend=q32_trial count=100 min=2141800 max=2141800 sum=214180000 sumsq=458730724000000
+KPERF case=17 logn=9 op=iFFT backend=fixed count=100 min=143334 max=143334 sum=14333400 sumsq=2054463555600
+KPERF case=17 logn=9 op=iFFT backend=q32_trial count=100 min=3220731 max=3220731 sum=322073100 sumsq=1037310817436100
+KPERF case=17 logn=9 op=pointwise backend=fixed count=100 min=17460 max=17460 sum=1746000 sumsq=30485160000
+KPERF case=17 logn=9 op=pointwise backend=q32_trial count=100 min=403810 max=403810 sum=40381000 sumsq=16306251610000
+KPERF case=17 logn=9 op=inverse backend=fixed count=100 min=909102 max=909102 sum=90910200 sumsq=82646644640400
+KPERF case=17 logn=9 op=inverse backend=q32_trial count=100 min=541588 max=541588 sum=54158800 sumsq=29331756174400
+KPERF case=17 logn=9 op=prepare backend=fixed count=100 min=1035132 max=1035132 sum=103513200 sumsq=107149825742400
+KPERF case=17 logn=9 op=prepare backend=q32_trial count=100 min=2683379 max=2683379 sum=268337900 sumsq=720052285764100
+KPERF case=17 logn=9 op=repeat backend=fixed count=100 min=291293 max=291293 sum=29129300 sumsq=8485161184900
+KPERF case=17 logn=9 op=repeat backend=q32_trial count=100 min=5792984 max=5792984 sum=579298400 sumsq=3355866362425600
+KPERF case=17 logn=9 op=pipeline backend=fixed count=100 min=1326412 max=1326412 sum=132641200 sumsq=175936879374400
+KPERF case=17 logn=9 op=pipeline backend=q32_trial count=100 min=8476350 max=8476350 sum=847635000 sumsq=7184850932250000
+PERF_K case=17 logn=9 differences=0 fixed_fixture_errors=0
+KPERF case=18 logn=2 op=FFT backend=fixed count=100 min=236 max=236 sum=23600 sumsq=5569600
+KPERF case=18 logn=2 op=FFT backend=q32_trial count=100 min=2363 max=2363 sum=236300 sumsq=558376900
+KPERF case=18 logn=2 op=iFFT backend=fixed count=100 min=263 max=263 sum=26300 sumsq=6916900
+KPERF case=18 logn=2 op=iFFT backend=q32_trial count=100 min=3395 max=3395 sum=339500 sumsq=1152602500
+KPERF case=18 logn=2 op=pointwise backend=fixed count=100 min=188 max=188 sum=18800 sumsq=3534400
+KPERF case=18 logn=2 op=pointwise backend=q32_trial count=100 min=3252 max=3252 sum=325200 sumsq=1057550400
+KPERF case=18 logn=2 op=inverse backend=fixed count=100 min=7148 max=7148 sum=714800 sumsq=5109390400
+KPERF case=18 logn=2 op=inverse backend=q32_trial count=100 min=4288 max=4288 sum=428800 sumsq=1838694400
+KPERF case=18 logn=2 op=prepare backend=fixed count=100 min=7375 max=7375 sum=737500 sumsq=5439062500
+KPERF case=18 logn=2 op=prepare backend=q32_trial count=100 min=6642 max=6642 sum=664200 sumsq=4411616400
+KPERF case=18 logn=2 op=repeat backend=fixed count=100 min=702 max=702 sum=70200 sumsq=49280400
+KPERF case=18 logn=2 op=repeat backend=q32_trial count=100 min=9213 max=9213 sum=921300 sumsq=8487936900
+KPERF case=18 logn=2 op=pipeline backend=fixed count=100 min=8064 max=8064 sum=806400 sumsq=6502809600
+KPERF case=18 logn=2 op=pipeline backend=q32_trial count=100 min=15842 max=15842 sum=1584200 sumsq=25096896400
+PERF_K case=18 logn=2 differences=0 fixed_fixture_errors=0
+CT_PRIMITIVE op=floor class=zero batch=128 count=50 min=16400 max=16400 sum=820000 sumsq=13448000000
+CT_PRIMITIVE op=floor class=unit batch=128 count=50 min=17168 max=17168 sum=858400 sumsq=14737011200
+CT_PRIMITIVE op=floor class=negative batch=128 count=50 min=17168 max=17168 sum=858400 sumsq=14737011200
+CT_PRIMITIVE op=floor class=quarter batch=128 count=50 min=16400 max=16400 sum=820000 sumsq=13448000000
+CT_PRIMITIVE op=floor class=negquarter batch=128 count=50 min=16400 max=16400 sum=820000 sumsq=13448000000
+CT_PRIMITIVE op=floor class=tiny batch=128 count=50 min=16400 max=16400 sum=820000 sumsq=13448000000
+CT_PRIMITIVE op=floor class=negtiny batch=128 count=50 min=16400 max=16400 sum=820000 sumsq=13448000000
+CT_PRIMITIVE op=floor class=thirdish batch=128 count=50 min=16400 max=16400 sum=820000 sumsq=13448000000
+CT_PRIMITIVE op=floor class=nearone batch=128 count=50 min=17168 max=17168 sum=858400 sumsq=14737011200
+CT_PRIMITIVE op=floor class=large batch=128 count=50 min=17168 max=17168 sum=858400 sumsq=14737011200
+CT_PRIMITIVE op=floor class=negative_large batch=128 count=50 min=17168 max=17168 sum=858400 sumsq=14737011200
+CT_PRIMITIVE op=floor class=zero_denominator batch=128 count=50 min=17168 max=17168 sum=858400 sumsq=14737011200
+CT_PRIMITIVE op=wrap class=zero batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=unit batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=negative batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=quarter batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=negquarter batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=tiny batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=negtiny batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=thirdish batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=nearone batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=large batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=negative_large batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=wrap class=zero_denominator batch=128 count=50 min=26256 max=26256 sum=1312800 sumsq=34468876800
+CT_PRIMITIVE op=add class=zero batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=unit batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=negative batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=quarter batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=negquarter batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=tiny batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=negtiny batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=thirdish batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=nearone batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=large batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=negative_large batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=add class=zero_denominator batch=128 count=50 min=28048 max=28048 sum=1402400 sumsq=39334515200
+CT_PRIMITIVE op=mul class=zero batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=mul class=unit batch=128 count=50 min=43408 max=43408 sum=2170400 sumsq=94212723200
+CT_PRIMITIVE op=mul class=negative batch=128 count=50 min=43408 max=43408 sum=2170400 sumsq=94212723200
+CT_PRIMITIVE op=mul class=quarter batch=128 count=50 min=43408 max=43408 sum=2170400 sumsq=94212723200
+CT_PRIMITIVE op=mul class=negquarter batch=128 count=50 min=43408 max=43408 sum=2170400 sumsq=94212723200
+CT_PRIMITIVE op=mul class=tiny batch=128 count=50 min=43408 max=43408 sum=2170400 sumsq=94212723200
+CT_PRIMITIVE op=mul class=negtiny batch=128 count=50 min=43408 max=43408 sum=2170400 sumsq=94212723200
+CT_PRIMITIVE op=mul class=thirdish batch=128 count=50 min=43408 max=43408 sum=2170400 sumsq=94212723200
+CT_PRIMITIVE op=mul class=nearone batch=128 count=50 min=43408 max=43408 sum=2170400 sumsq=94212723200
+CT_PRIMITIVE op=mul class=large batch=128 count=50 min=41488 max=41488 sum=2074400 sumsq=86062707200
+CT_PRIMITIVE op=mul class=negative_large batch=128 count=50 min=41488 max=41488 sum=2074400 sumsq=86062707200
+CT_PRIMITIVE op=mul class=zero_denominator batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=zero batch=128 count=50 min=41360 max=41360 sum=2068000 sumsq=85532480000
+CT_PRIMITIVE op=half class=unit batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=negative batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=quarter batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=negquarter batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=tiny batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=negtiny batch=128 count=50 min=41360 max=41360 sum=2068000 sumsq=85532480000
+CT_PRIMITIVE op=half class=thirdish batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=nearone batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=large batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=negative_large batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=half class=zero_denominator batch=128 count=50 min=42000 max=42000 sum=2100000 sumsq=88200000000
+CT_PRIMITIVE op=div class=zero batch=128 count=50 min=75280 max=75280 sum=3764000 sumsq=283353920000
+CT_PRIMITIVE op=div class=unit batch=128 count=50 min=78736 max=78736 sum=3936800 sumsq=309967884800
+CT_PRIMITIVE op=div class=negative batch=128 count=50 min=78736 max=78736 sum=3936800 sumsq=309967884800
+CT_PRIMITIVE op=div class=quarter batch=128 count=50 min=78736 max=78736 sum=3936800 sumsq=309967884800
+CT_PRIMITIVE op=div class=negquarter batch=128 count=50 min=78736 max=78736 sum=3936800 sumsq=309967884800
+CT_PRIMITIVE op=div class=tiny batch=128 count=50 min=76048 max=76048 sum=3802400 sumsq=289164915200
+CT_PRIMITIVE op=div class=negtiny batch=128 count=50 min=76048 max=76048 sum=3802400 sumsq=289164915200
+CT_PRIMITIVE op=div class=thirdish batch=128 count=50 min=78736 max=78736 sum=3936800 sumsq=309967884800
+CT_PRIMITIVE op=div class=nearone batch=128 count=50 min=78736 max=78737 sum=3936801 sumsq=309968042273
+CT_PRIMITIVE op=div class=large batch=128 count=50 min=78736 max=78736 sum=3936800 sumsq=309967884800
+CT_PRIMITIVE op=div class=negative_large batch=128 count=50 min=78736 max=78736 sum=3936800 sumsq=309967884800
+CT_PRIMITIVE op=div class=zero_denominator batch=128 count=50 min=78096 max=78096 sum=3904800 sumsq=304949260800
+CT_PRIMITIVE op=round class=zero batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=unit batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=negative batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=quarter batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=negquarter batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=tiny batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=negtiny batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=thirdish batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=nearone batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=large batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=negative_large batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=round class=zero_denominator batch=128 count=50 min=15248 max=15248 sum=762400 sumsq=11625075200
+CT_PRIMITIVE op=complex class=zero batch=128 count=50 min=150288 max=150288 sum=7514400 sumsq=1129324147200
+CT_PRIMITIVE op=complex class=unit batch=128 count=50 min=151440 max=151440 sum=7572000 sumsq=1146703680000
+CT_PRIMITIVE op=complex class=negative batch=128 count=50 min=151440 max=151440 sum=7572000 sumsq=1146703680000
+CT_PRIMITIVE op=complex class=quarter batch=128 count=50 min=151440 max=151440 sum=7572000 sumsq=1146703680000
+CT_PRIMITIVE op=complex class=negquarter batch=128 count=50 min=151440 max=151440 sum=7572000 sumsq=1146703680000
+CT_PRIMITIVE op=complex class=tiny batch=128 count=50 min=151440 max=151440 sum=7572000 sumsq=1146703680000
+CT_PRIMITIVE op=complex class=negtiny batch=128 count=50 min=151440 max=151440 sum=7572000 sumsq=1146703680000
+CT_PRIMITIVE op=complex class=thirdish batch=128 count=50 min=151440 max=151440 sum=7572000 sumsq=1146703680000
+CT_PRIMITIVE op=complex class=nearone batch=128 count=50 min=151440 max=151440 sum=7572000 sumsq=1146703680000
+CT_PRIMITIVE op=complex class=large batch=128 count=50 min=150928 max=150929 sum=7546401 sumsq=1138963361057
+CT_PRIMITIVE op=complex class=negative_large batch=128 count=50 min=150928 max=150928 sum=7546400 sumsq=1138963059200
+CT_PRIMITIVE op=complex class=zero_denominator batch=128 count=50 min=150288 max=150288 sum=7514400 sumsq=1129324147200
+CT_FFT logn=4 op=FFT backend=fixed class=zero count=50 min=1788 max=1788 sum=89400 sumsq=159847200
+CT_FFT logn=4 op=FFT backend=fixed class=unit count=50 min=1788 max=1788 sum=89400 sumsq=159847200
+CT_FFT logn=4 op=FFT backend=fixed class=alternating count=50 min=1788 max=1788 sum=89400 sumsq=159847200
+CT_FFT logn=4 op=FFT backend=fixed class=fractions count=50 min=1788 max=1788 sum=89400 sumsq=159847200
+CT_FFT logn=4 op=FFT backend=fixed class=tiny count=50 min=1788 max=1788 sum=89400 sumsq=159847200
+CT_FFT logn=4 op=FFT backend=fixed class=nearone count=50 min=1788 max=1788 sum=89400 sumsq=159847200
+CT_FFT logn=4 op=FFT backend=q32_trial class=zero count=50 min=25288 max=25288 sum=1264400 sumsq=31974147200
+CT_FFT logn=4 op=FFT backend=q32_trial class=unit count=50 min=26104 max=26104 sum=1305200 sumsq=34070940800
+CT_FFT logn=4 op=FFT backend=q32_trial class=alternating count=50 min=26104 max=26104 sum=1305200 sumsq=34070940800
+CT_FFT logn=4 op=FFT backend=q32_trial class=fractions count=50 min=26104 max=26104 sum=1305200 sumsq=34070940800
+CT_FFT logn=4 op=FFT backend=q32_trial class=tiny count=50 min=25486 max=25486 sum=1274300 sumsq=32476809800
+CT_FFT logn=4 op=FFT backend=q32_trial class=nearone count=50 min=26104 max=26104 sum=1305200 sumsq=34070940800
+CT_FFT logn=4 op=iFFT backend=fixed class=zero count=50 min=2055 max=2055 sum=102750 sumsq=211151250
+CT_FFT logn=4 op=iFFT backend=fixed class=unit count=50 min=2055 max=2055 sum=102750 sumsq=211151250
+CT_FFT logn=4 op=iFFT backend=fixed class=alternating count=50 min=2055 max=2055 sum=102750 sumsq=211151250
+CT_FFT logn=4 op=iFFT backend=fixed class=fractions count=50 min=2055 max=2055 sum=102750 sumsq=211151250
+CT_FFT logn=4 op=iFFT backend=fixed class=tiny count=50 min=2055 max=2055 sum=102750 sumsq=211151250
+CT_FFT logn=4 op=iFFT backend=fixed class=nearone count=50 min=2055 max=2055 sum=102750 sumsq=211151250
+CT_FFT logn=4 op=iFFT backend=q32_trial class=zero count=50 min=37000 max=37000 sum=1850000 sumsq=68450000000
+CT_FFT logn=4 op=iFFT backend=q32_trial class=unit count=50 min=37301 max=37301 sum=1865050 sumsq=69568230050
+CT_FFT logn=4 op=iFFT backend=q32_trial class=alternating count=50 min=37962 max=37962 sum=1898100 sumsq=72055672200
+CT_FFT logn=4 op=iFFT backend=q32_trial class=fractions count=50 min=38680 max=38680 sum=1934000 sumsq=74807120000
+CT_FFT logn=4 op=iFFT backend=q32_trial class=tiny count=50 min=37583 max=37583 sum=1879150 sumsq=70624094450
+CT_FFT logn=4 op=iFFT backend=q32_trial class=nearone count=50 min=37450 max=37450 sum=1872500 sumsq=70125125000
+CT_FFT logn=8 op=FFT backend=fixed class=zero count=50 min=55864 max=55864 sum=2793200 sumsq=156039324800
+CT_FFT logn=8 op=FFT backend=fixed class=unit count=50 min=55864 max=55864 sum=2793200 sumsq=156039324800
+CT_FFT logn=8 op=FFT backend=fixed class=alternating count=50 min=55864 max=55864 sum=2793200 sumsq=156039324800
+CT_FFT logn=8 op=FFT backend=fixed class=fractions count=50 min=55864 max=55864 sum=2793200 sumsq=156039324800
+CT_FFT logn=8 op=FFT backend=fixed class=tiny count=50 min=55864 max=55864 sum=2793200 sumsq=156039324800
+CT_FFT logn=8 op=FFT backend=fixed class=nearone count=50 min=55864 max=55864 sum=2793200 sumsq=156039324800
+CT_FFT logn=8 op=FFT backend=q32_trial class=zero count=50 min=909924 max=909924 sum=45496200 sumsq=41398084288800
+CT_FFT logn=8 op=FFT backend=q32_trial class=unit count=50 min=940388 max=940388 sum=47019400 sumsq=44216479527200
+CT_FFT logn=8 op=FFT backend=q32_trial class=alternating count=50 min=940388 max=940388 sum=47019400 sumsq=44216479527200
+CT_FFT logn=8 op=FFT backend=q32_trial class=fractions count=50 min=940388 max=940388 sum=47019400 sumsq=44216479527200
+CT_FFT logn=8 op=FFT backend=q32_trial class=tiny count=50 min=918652 max=918652 sum=45932600 sumsq=42196074855200
+CT_FFT logn=8 op=FFT backend=q32_trial class=nearone count=50 min=940388 max=940388 sum=47019400 sumsq=44216479527200
+CT_FFT logn=8 op=iFFT backend=fixed class=zero count=50 min=63755 max=63755 sum=3187750 sumsq=203235001250
+CT_FFT logn=8 op=iFFT backend=fixed class=unit count=50 min=63755 max=63755 sum=3187750 sumsq=203235001250
+CT_FFT logn=8 op=iFFT backend=fixed class=alternating count=50 min=63755 max=63755 sum=3187750 sumsq=203235001250
+CT_FFT logn=8 op=iFFT backend=fixed class=fractions count=50 min=63755 max=63755 sum=3187750 sumsq=203235001250
+CT_FFT logn=8 op=iFFT backend=fixed class=tiny count=50 min=63755 max=63755 sum=3187750 sumsq=203235001250
+CT_FFT logn=8 op=iFFT backend=fixed class=nearone count=50 min=63755 max=63755 sum=3187750 sumsq=203235001250
+CT_FFT logn=8 op=iFFT backend=q32_trial class=zero count=50 min=1347680 max=1347680 sum=67384000 sumsq=90812069120000
+CT_FFT logn=8 op=iFFT backend=q32_trial class=unit count=50 min=1353141 max=1353141 sum=67657050 sumsq=91549528294050
+CT_FFT logn=8 op=iFFT backend=q32_trial class=alternating count=50 min=1381888 max=1381888 sum=69094400 sumsq=95480722227200
+CT_FFT logn=8 op=iFFT backend=q32_trial class=fractions count=50 min=1412192 max=1412192 sum=70609600 sumsq=99714312243200
+CT_FFT logn=8 op=iFFT backend=q32_trial class=tiny count=50 min=1363092 max=1363092 sum=68154600 sumsq=92900990023200
+CT_FFT logn=8 op=iFFT backend=q32_trial class=nearone count=50 min=1355736 max=1355736 sum=67786800 sumsq=91901005084800
+CT_FFT logn=9 op=FFT backend=fixed class=zero count=50 min=125914 max=125914 sum=6295700 sumsq=792716769800
+CT_FFT logn=9 op=FFT backend=fixed class=unit count=50 min=125914 max=125914 sum=6295700 sumsq=792716769800
+CT_FFT logn=9 op=FFT backend=fixed class=alternating count=50 min=125914 max=125914 sum=6295700 sumsq=792716769800
+CT_FFT logn=9 op=FFT backend=fixed class=fractions count=50 min=125914 max=125914 sum=6295700 sumsq=792716769800
+CT_FFT logn=9 op=FFT backend=fixed class=tiny count=50 min=125914 max=125914 sum=6295700 sumsq=792716769800
+CT_FFT logn=9 op=FFT backend=fixed class=nearone count=50 min=125914 max=125914 sum=6295700 sumsq=792716769800
+CT_FFT logn=9 op=FFT backend=q32_trial class=zero count=50 min=2072195 max=2072195 sum=103609750 sumsq=214699605901250
+CT_FFT logn=9 op=FFT backend=q32_trial class=unit count=50 min=2141827 max=2141827 sum=107091350 sumsq=229371144896450
+CT_FFT logn=9 op=FFT backend=q32_trial class=alternating count=50 min=2141827 max=2141827 sum=107091350 sumsq=229371144896450
+CT_FFT logn=9 op=FFT backend=q32_trial class=fractions count=50 min=2141827 max=2141827 sum=107091350 sumsq=229371144896450
+CT_FFT logn=9 op=FFT backend=q32_trial class=tiny count=50 min=2092871 max=2092871 sum=104643550 sumsq=219005451132050
+CT_FFT logn=9 op=FFT backend=q32_trial class=nearone count=50 min=2141827 max=2141827 sum=107091350 sumsq=229371144896450
+CT_FFT logn=9 op=iFFT backend=fixed class=zero count=50 min=143337 max=143337 sum=7166850 sumsq=1027274778450
+CT_FFT logn=9 op=iFFT backend=fixed class=unit count=50 min=143337 max=143337 sum=7166850 sumsq=1027274778450
+CT_FFT logn=9 op=iFFT backend=fixed class=alternating count=50 min=143337 max=143337 sum=7166850 sumsq=1027274778450
+CT_FFT logn=9 op=iFFT backend=fixed class=fractions count=50 min=143337 max=143337 sum=7166850 sumsq=1027274778450
+CT_FFT logn=9 op=iFFT backend=fixed class=tiny count=50 min=143337 max=143337 sum=7166850 sumsq=1027274778450
+CT_FFT logn=9 op=iFFT backend=fixed class=nearone count=50 min=143337 max=143337 sum=7166850 sumsq=1027274778450
+CT_FFT logn=9 op=iFFT backend=q32_trial class=zero count=50 min=3072894 max=3072894 sum=153644700 sumsq=472133876761800
+CT_FFT logn=9 op=iFFT backend=q32_trial class=unit count=50 min=3083859 max=3083859 sum=154192950 sumsq=475509316594050
+CT_FFT logn=9 op=iFFT backend=q32_trial class=alternating count=50 min=3150718 max=3150718 sum=157535900 sumsq=496351195776200
+CT_FFT logn=9 op=iFFT backend=q32_trial class=fractions count=50 min=3220734 max=3220734 sum=161036700 sumsq=518656374937800
+CT_FFT logn=9 op=iFFT backend=q32_trial class=tiny count=50 min=3105681 max=3105681 sum=155284050 sumsq=482262723688050
+CT_FFT logn=9 op=iFFT backend=q32_trial class=nearone count=50 min=3089092 max=3089092 sum=154454600 sumsq=477124469223200
+PERFCT_DONE cases=19
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003518 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xfacc lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x15040 lma 0x30000980
+Loading section datas, size 0x4c lma 0x300159c0
+Loading section device_states, size 0x2c lma 0x30015a0c
+Loading section k_mutex_area, size 0x14 lma 0x30015a38
+Loading section .last_section, size 0x4 lma 0x30015a4c
+Start address 0x1000afcc, load size 153664
+Transfer rate: 541 KB/sec, 6402 bytes/write.
+Temporary breakpoint 1 at 0x10007d4c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x1000afb8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmph5qzcsq4/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10007cfc: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x1000afb8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x9846af            9979567
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30023690          805451408
+r8             0x300000d0          805306576
+r9             0x300337d0          805517264
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30033780          0x30033780 <z_main_stack+65456>
+lr             0x10007d43          268467523
+pc             0x10007cfc          0x10007cfc <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x20040010          537133072
+msp            0x30023690          0x30023690 <z_idle_stacks>
+psp            0x30033780          0x30033780 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30023690          0x30023690 <z_idle_stacks>
+psp_s          0x30033780          0x30033780 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30022e90          0x30022e90 <z_interrupt_stacks>
+psplim_s       0x300237d0          0x300237d0 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x30033780 <z_main_stack+65456>:	0x00000000	0x10007d5f	0x00000000	0x1000e6bf
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0xf30379ad
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30023690
+PSP=0x30033780
+LR=0x10007d43
+PC=0x10007cfc
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30023690 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x300236a0 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0xf30379ad
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

@@ -1,0 +1,49 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 20/38
+
+20 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 19 4 layers of interleaved 32-bit CT butterflies over 32 SIMD registers.
+Inputs: (v0,...,v15) = (a0,...,a15)
+Outputs: (v0,...,v15) = NTT(a0,...,a15)
+Auxiliary registers: v16,...,v19, v28,...,v31
+Twiddle factors:
+      
+v20= h0 || l0 || 0 || Q, v21= h2 || l2 || h1 || l1
+v22= h4 || l4 || h3 || l3, v23= h6 || l6 || h5 || l5
+v24= h8 || l8 || h7 || l7, v25= h10 || l10 || h9 || l9
+v26= h12 || l12 || h11 || l11, v27= h14 || l14 || h13 || l13
+Symbols:
+L0_0= v0, v2, v4, v6, v8, v10, v12, v14
+L0_1= v1, v3, v5, v7, v9, v11, v13, v15
+L1_0= v0, v2, v8, v10, v4, v6, v12, v14
+L1_1= v1, v3, v9, v11, v5, v7, v13, v15
+L2_0= v0, v4, v8, v12, v2, v6, v10, v14
+L2_1= v1, v5, v9, v13, v3, v7, v11, v15
+L3_0= v0, v2, v4, v6, v1, v3, v5, v7
+L3_1= v8, v10, v12, v14, v9, v11, v13, v15
+T0= v16, v17, v18, v19
+T1= v28, v29, v30, v31
+mod= v20
+W0= v20, 2, 3, v20, 2, 3, v20, 2, 3, v20, 2, 3
+W1= v21, 0, 1, v21, 0, 1, v21, 2, 3, v21, 2, 3
+W2= v22, 0, 1, v22, 2, 3, v23, 0, 1, v23, 2, 3
+W3_0= v24, 0, 1, v24, 2, 3, v25, 0, 1, v25, 2, 3
+W3_1= v26, 0, 1, v26, 2, 3, v27, 0, 1, v27, 2, 3
+1: qq_butterfly_top L0_1, T0, mod, W0
+2: qq_butterfly_mixed L0_1, T0, L0_0, T1, mod, W0, W0
+3: qq_butterfly_mixed L0_0, T1, L1_1, T0, mod, W0, W1
+4: qq_butterfly_mixed L1_1, T0, L1_0, T1, mod, W1, W1
+5: qq_butterfly_mixed L1_0, T1, L2_1, T0, mod, W1, W2
+6: qq_butterfly_mixed L2_1, T0, L2_0, T1, mod, W2, W2
+7: qq_butterfly_mixed L2_0, T1, L3_0, T0, mod, W2, W3_0
+8: qq_butterfly_mixed L3_0, T0, L3_1, T1, mod, W3_0, W3_1
+9: qq_butterfly_bot L3_1, T1, mod, W3_1
+5 Result
+We provide benchmarking results on the Arm Cortex-A72 processor and the Apple M1.
+Arm Cortex-A72. The Arm Cortex-A72 CPU implements the Armv8-A architecture and
+has a triple-issue out-of-order pipeline. Specifically, we use the Raspberry Pi 4 Model B
+featuring the quad-core Broadcom BCM2711 chipset. It comes with a 32 kB L1 data cache,
+a 48 kB L1 instruction cache, and a 1 MB L2 cache and runs at 1.5 GHz. For hashing, we
+use the SHA-3/SHAKE Neon implementation by Nguyen et al. [NG21]. For benchmarking
+individual functions we make use of the cycle counter of the PMU. For benchmarking the
+full cryptographic schemes, we use SUPERCOP.5 We use gcc version 10.3.0 with -O3.
+5https://bench.cr.yp.to/supercop.html, Version 20210604

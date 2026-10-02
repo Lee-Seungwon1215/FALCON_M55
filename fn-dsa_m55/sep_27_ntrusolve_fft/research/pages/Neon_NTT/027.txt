@@ -1,0 +1,47 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 27/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 27
+ExpandMask are used; for details about the rounding functions Power2Round, HighBits,
+and Decompose and the hint functions MakeHint and UseHint please see [ABD+20a].
+Algorithm 26 Dilithium key generation
+Output: sk= (r,K,tr,s1,s2,t0)
+Output: pk= (r,t1)
+1: r←{0,1}256
+2: K ←{0,1}256
+3: (s1,s2) ←Sℓ
+η ×Sk
+η
+4: ntt(A) ∈Rk×ℓ
+q ←ExpandA(r)
+5: t←As1 + s2
+6: (t1,t0) ←Power2Round(t)
+7: tr∈{0,1}256 ←H(r||t1)
+Algorithm 27 Dilithium signature generation
+Input: sk= (r,K,tr,s1,s2,t0)
+Input: Message M ∈{0,1}∗
+Output: Signature σ= (z,h,˜
+c)
+1: ntt(A) ∈Rk×ℓ
+q := ExpandA(r)
+2: µ∈{0,1}512 ←H(tr||M)
+3: κ←0; (z,h) ←⊥
+4: r′∈{0,1}512 ←H(K||µ)
+5: while (z,h) = ⊥do
+6: y∈Sℓ
+γ1−1 ←ExpandMask(r′,κ)
+7: w←Ay; w1 ←HighBits(w)
+8:˜
+c∈{0,1}256 ←H(µ||w1)
+9: ntt(c) ←ntt (HB(˜ c))
+10: z←y+ cs1
+11: r0 ←LowBits(w−cs2)
+12: if ||z||∞≥γ1−β or ||r0||∞≥γ2−β then
+13: (z,h) = ⊥
+14: else
+15: h←MakeHint(−ct0,w−cs2 + ct0))
+16: if ∥ct0∥∞≥γ2 or # 1’s in h>ω then
+17: (z,h) = ⊥
+18: end if
+19: end if
+20: κ←κ+ 1
+21: end while

@@ -1,0 +1,55 @@
+DOCUMENT: plantard.pdf PAGE: 15/24
+
+Junhao Huang et al. 15
+factors in the Montgomery domain when using Montgomery arithmetic. Similar to
+Montgomery arithmetic, Plantard arithmetic also produces a result in a special domain,
+namely c(−2−2l) mod±q. Therefore, to integrate Plantard arithmetic into the butterfly
+unit, we also store the twiddle factors in the “Plantard” domain by multiplying each
+twiddle factor with a constant−22lmod q. Besides, to utilize the improved Plantard
+multiplication by a constant (Algorithm 11) in the butterfly unit, one also needs to
+multiply q−1 mod±22l by the twiddle factor ζ in the “Plantard” domain modulo 22l
+,
+namely ζ = (ζ·(−22l) mod q)·q−1 mod±22l. Note that this precomputation would result
+in a 2l-bit twiddle factor. Although it would introduce extra cycles for data loading, this
+overhead can be offset by the improvements brought by the improved Plantard arithmetic.
+Algorithm 14 illustrates the detailed instruction sequence of the double CT butterfly,
+whichcomputesa= (atop+btopζ)||(abottom+bbottomζ),b= (atop−btopζ)||(abottom−bbottomζ)
+over packed arguments a,b. Thanks to the SIMD instruction smulw{b,t}, one can pack
+two 16-bit coefficients into one 32-bit register b. Then, one can perform the Plantard
+multiplication (Algorithm 11) by a proper twiddle factor ζ over the top and bottom half
+of b using the smulwt and smulwb instructions, respectively. The follow-up instruction
+sequenceisthesameasthepreviouswork[ABCG20]. Insummary, weobtaina7-instruction
+double CT butterfly for packed arguments, which reduces 2 instructions compared with
+the one that uses Montgomery multiplication. Similarly, we can also obtain a 7-instruction
+double GS butterfly for INTT.
+4.2.2 Layer Merging
+As stated in Subsubsection 4.2.1, using the improved Plantard arithmetic will double
+the size of the twiddle factors. It would bring extra load instructions to load the 32-bit
+twiddle factors compared with the original 16-bit version. However, the improvements
+brought by the improved Plantard arithmetic can easily bury this overhead thanks to
+the layer merging techniques. There are two efficient layer merging strategies for Kyber
+on Cortex-M4, which are presented in [ABCG20] and [AHKS22], respectively. The layer
+merging strategy in [ABCG20] is the 3-layer merging strategy (3-3-1), while [AHKS22]
+adopts the 4-layer merging strategy (4-3). Since the first 4-layer NTT re-uses the same 15
+twiddle factors multiple times, [AHKS22] proposes to cache the 15 16-bit twiddle factors
+into 8 FP registers and replace the memory access instruction with the cheaper vmov
+instruction. Apart from using the FP registers and the vmov instruction, the 4-layer
+merging strategy is actually built upon the 3-layer merging strategy in [ABCG20].
+The 3-layer merging strategy in [ABCG20] allows us to compute 8 butterflies at the cost
+of loading 1, 2, or 4 32-bit twiddle factor(s) in each layer. Note that loading 2 consecutive
+32-bit twiddle factors can be achieved by a 3-cycle ldrd instruction on Cortex-M4, which is
+merely 1-cycle slower than the original ldr instruction to load 2 consecutive 16-bit twiddle
+factors. We rearrange the twiddle factors in the same order as they are used so that one
+can use ldrd to load 2 consecutive 32-bit twiddle factors. Overall, by integrating the
+Plantard arithmetic into the 3-layer merging strategy, one could reduce 8 cycles (reduce 1
+cycle for each butterfly) with 0, 1, or 2 extra cycle(s) to load the 32-bit twiddle factors
+in each layer. For the 8 butterflies that only require 1 twiddle factor, one could reduce 8
+cycles at no extra cost since ldr has the same cost as ldrh.
+As for the 4-layer merging strategy, due to the double size of the twiddle factors, one
+needs to load 15 twiddle factors into 15 FP registers with the vldm instruction. Compared
+with 8 FP registers in the original design, our design consumes 7 extra cycles. Besides,
+during each iteration of the first 4 layers, one needs 7 extra vmov instructions to retrieve
+the twiddle factors from the FP registers to general registers. This extra cycle consumption
+can be totally covered by the cycle reduction brought by the improved Plantard arithmetic.
+In order to reveal the actual effect brought by the improved modular arithmetic in our
+implementation, both 3-layer and 4-layer merging strategies are used in Kyber, while the

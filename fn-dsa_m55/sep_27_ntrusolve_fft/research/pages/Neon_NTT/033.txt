@@ -1,0 +1,49 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 33/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 33
+Algorithm 33 4 parallel 32-bit better accumulations for asymmetric multiplications (for
+saber).
+Inputs:
+Source registers: x0 for a0, x1 for b0, x2 for b′
+0 = ωb0, x4 for a1, x5 for b1, x6 for b′
+1 = ωb1,
+x8 for a2, x9 for b2, x10 for b′
+2 = ωb2
+Accumulators: v16, v20, v17, v21, v18, v22, v19, v23
+Output registers: v24, v25, v26, v27
+Symbols:
+mul_long= smull, smull2
+mla_long= smlal, smlal2
+acc_long= v16, v20, v17, v21, v18, v22, v19, v23
+acc_long_T= v16, v17, v18, v19, v20, v21, v22, v23
+T0= v0, v1, v2, v3
+T1= v4, v5, v6, v7
+T2= v8, v9, v10, v11
+T3= v12, v13, v14, v15
+C= v24, v25, v26, v27
+Outputs:
+v24+ v25x+ v26x2 + v27x3 = (a0 ∗b0 + a1 ∗b1 + a2 ∗b2)32−1 mod (x4
+−ω)
+1: ld4 { T0}, [ x0]
+2: ld4 { T1}, [ x1]
+3: ld4 { T2}, [ x2]
+4: _4x4_asymmetric mul_long, v3, v9, v10, v11, v4, acc_long
+5: _4x4_asymmetric mla_long, v2, v10, v11, v4, v5, acc_long
+6: _4x4_asymmetric mla_long, v1, v11, v4, v5, v6, acc_long
+7: _4x4_asymmetric mla_long, v0, v4, v5, v6, v7, acc_long
+8: ld4 { T3}, [ x4]
+9: ld4 { C}, [ x5]
+10: ld4 { T2}, [ x6]
+11: _4x4_asymmetric mla_long, v15, v9, v10, v11, v24, acc_long
+12: _4x4_asymmetric mla_long, v14, v10, v11, v24, v25, acc_long
+13: _4x4_asymmetric mla_long, v13, v11, v24, v25, v26, acc_long
+14: _4x4_asymmetric mla_long, v12, v24, v25, v26, v27, acc_long
+15: ld4 { T0}, [ x8]
+16: ld4 { T1}, [ x9]
+17: ld4 { T2}, [x10]
+18: _4x4_asymmetric mla_long, v3, v9, v10, v11, v4, acc_long
+19: _4x4_asymmetric mla_long, v2, v10, v11, v4, v5, acc_long
+20: _4x4_asymmetric mla_long, v1, v11, v4, v5, v6, acc_long
+21: _4x4_asymmetric mla_long, v0, v4, v5, v6, v7, acc_long
+22: qq_montgomery C, acc_long_T, v0, v1, v2, v3, Qprime, Q
+23: st4 { C}, [x11]

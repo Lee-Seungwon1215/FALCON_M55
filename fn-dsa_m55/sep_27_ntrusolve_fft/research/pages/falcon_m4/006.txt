@@ -1,0 +1,44 @@
+DOCUMENT: falcon_m4.pdf PAGE: 6/18
+
+SHAKE is used in key pair generation for producing candidate pairs of small polynomials
+(f, g). In signature generation, SHAKE is mostly used as a source of pseudorandom bytes for
+the Gaussian sampling, which is performed 2n times (with n being the degree, 512 or 1024).
+We see in figures 1 and 2 that for signature generation, the time spent in performing SHAKE
+computations is slightly over 10% of the total, and less than 7% for key pair generation. There-
+fore, optimizing SHAKE will not matter much for the overall costs of these two operations.
+However, it is the dominant cost in signature verification.
+2.2 Memory Accesses
+Efficiency of RAM accesses on the M4 depends on a number of parameters; we list here some
+useful remarks.
+Alignment. The M4 can in general be considered to tolerate unaligned memory accesses.
+If an unaligned 32-bit value must be read from RAM or written to RAM, the CPU will break
+it down into two or three accesses, but the overall overhead will be lower than if the same ac-
+cess split was performed in software. It should be noted that the opcodes that can read or write
+several 32-bit words in a single instruction (ldrd, strd, ldm, stm) do not tolerate unaligned
+accesses, and trigger a CPU exception if the address is not a multiple of 4. In our implemen-
+tation, we ensure that all temporary values are suitably aligned (in fact, 256-bit alignment of
+the temporary buffer is enforced); unaligned accesses may happen mostly when serializing or
+deserializing data from bytes (e.g. hashing the message, or decoding the public key).
+Store Buffer and Pipelining. Memory store operations in the M4 (str) use an inter-
+mediate store buffer which is used to perform the actual store operation asynchronously. This
+means that a lone store can usually be considered to execute in one cycle, but that stalling can
+happen if the instructions immediately before or after the store also access memory. Succes-
+sive str operations pipeline, e.g. a sequence of three stores will execute in three cycles. Note
+that, in the absence of stalls, two successive str opcodes use two cycles while a combined
+strd opcode uses three cycles; a consequence is that in tight loops, strd should be avoided
+(but its use should otherwise be recommended in that it promotes code compacity).
+The M4 can pipeline memory accesses more generally, between loads and stores, pro-
+vided that they don’t have extra dependencies (specifically, pipelining is prevented if a load
+operation modifies a register which is used to compute the address of the next load or store
+instruction). A sequence of n ldr opcodes (with no dependencies) will execute in n +1 cy-
+cles. The double-load instruction (ldrd) executes in three cycles but does not pipeline; thus,
+a sequence of two ldrd uses 6 cycles while an equivalent sequence of four ldr will use only
+5 cycles.
+This leads to the following guidelines for optimizing memory accesses:
+– In general, memory loads should be grouped together in sequences of ldr instructions
+(to leverage pipelining). A “load multiple” opcode (ldm) can offer the same performance
+as a pipelined sequence of loads with a more compact code, but only if the target addresses
+are successive. ldrd should be used only when exactly two values must be read from two
+successive memory slots, and there is no immediately preceding or following memory
+access with which these loads could be pipelined.
+6

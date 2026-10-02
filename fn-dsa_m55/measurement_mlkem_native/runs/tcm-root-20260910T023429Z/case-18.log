@@ -1,0 +1,104 @@
+0x18000f6e in ?? ()
+Loading section .text, size 0x208 lma 0x34080000
+Start address 0x34080040, load size 520
+Transfer rate: 4160 bits in <1 sec, 520 bytes/write.
+warning: Invalid state, unable to determine msp alias, assuming msp_s.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine msp alias, assuming msp_s.
+warning: Invalid state, unable to determine psp alias, assuming psp_s.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine msp alias, assuming msp_s.
+warning: Invalid state, unable to determine psp alias, assuming psp_s.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine msp alias, assuming msp_s.
+warning: Invalid state, unable to determine psp alias, assuming psp_s.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine msp alias, assuming msp_s.
+warning: Invalid state, unable to determine psp alias, assuming psp_s.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+SYSCFG_TCMCR_RESETCR:
+0x56008008:	0x00800099
+0x56008018:	0x00000000
+RAMCFG_FLEX:
+0x52023500:	0x00000000	0x00000000	0x00000000	0x00000000
+0x52023510:	0x00000000	0x00000000	0x00000000	0x00000000
+CLOCK_CACHE_BOOT:
+0x56028020:	0x00000000	0x00100000
+0x56028048:	0x8c800000
+0xe000ed14:	0x00000201
+TEBR_PRE:
+0xe001e120:	0x00000000	0x4f78fdf9	0x00000000	0x4a58e7f5
+warning: Invalid state, unable to determine msp alias, assuming msp_s.
+warning: Invalid state, unable to determine psp alias, assuming psp_s.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+warning: Invalid state, unable to determine msp alias, assuming msp_s.
+warning: Invalid state, unable to determine psp alias, assuming psp_s.
+warning: Invalid state, unable to determine sp alias, assuming msp.
+Hardware assisted breakpoint 1 at 0x340800ce
+Hardware assisted breakpoint 2 at 0x3408018c
+Hardware assisted breakpoint 3 at 0x340800f4
+Hardware assisted breakpoint 4 at 0x340800e8
+
+Breakpoint 1, 0x340800ce in probe_ready ()
+
+Breakpoint 2, 0x3408018c in root_ready ()
+READ_PHASE_TCMCR:
+0x56008008:	0x00000099
+PRE_RUN_ECC:
+0xe001e000:	0x0001300a	0x00000165	0x00000000	0x00000000
+0xe001e010:	0x00000049	0x00000049
+0xe001e120:	0x00000000	0x4f78fdf9	0x00000000	0x4a58e7f5
+
+Breakpoint 3, 0x340800f4 in probe_fault ()
+CASE id=18 pc=0x340800f4 r0=0x0 cfsr=0x8200 hfsr=0x40000000 afsr=0x20000 bfar=0x1002400c
+r0             0x0                 0
+r1             0x0                 0
+r2             0x0                 0
+r3             0x0                 0
+r4             0x4a58e5a5          1247339941
+r5             0x4a58e5a1          1247339937
+r6             0x340801b4          872939956
+r7             0x0                 0
+r8             0x10024000          268582912
+r9             0x400               1024
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0x0                 0
+sp             0x340befd0          0x340befd0
+lr             0xfffffff9          -7
+pc             0x340800f4          0x340800f4 <probe_fault>
+xpsr           0x1000003           16777219
+fpscr          0x40000             262144
+msp            0x340befd0          0x340befd0
+psp            0x340be000          0x340be000
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x340befd0          0x340befd0
+psp_s          0x340be000          0x340be000
+primask        0x1                 1
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x0                 0
+msplim_s       0x0                 0x0
+psplim_s       0x0                 0x0
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x1                 1
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x0                 0
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x0                 0
+p0             0x0                 0
+0x340befd0:	0x34082000	0x10024000	0x00000080	0x34082000
+0x340befe0:	0x00000000	0x3408019d	0x10013030	0x61000000
+0xe001e120:	0x00000000	0x4f78fdf9	0x1c02400d	0x4f78fdf9
+RESTORED_TCMCR:
+0x56008008:	0x00000099
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!
+[Inferior 1 (Remote target) detached]

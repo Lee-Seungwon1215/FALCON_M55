@@ -1,0 +1,70 @@
+{
+  "candidate": "s3b",
+  "baseline": "ntt_opt",
+  "source_scope": {
+    "changed_files": ["mq_cm55.s"],
+    "late_store_hot_loops": 10,
+    "early_input_load_regions": 1,
+    "twiddle_preloads": 0,
+    "cross_iteration_preloads": 0,
+    "new_secret_dependent_branches": 0,
+    "new_memory_accesses": 0,
+    "stack_spills_added": 0
+  },
+  "mq_object": {
+    "baseline_text_bytes": 10500,
+    "candidate_text_bytes": 10500,
+    "baseline_instruction_count": 2725,
+    "candidate_instruction_count": 2725,
+    "mnemonic_multiset_equal": true,
+    "memory_instruction_count": 377,
+    "control_instruction_count": 86,
+    "memory_access_count_equal": true,
+    "control_flow_count_equal": true
+  },
+  "performance": {
+    "paired_batches_per_degree_operation": 10,
+    "candidate_faster_samples": 60,
+    "equal_samples": 0,
+    "candidate_slower_samples": 0,
+    "upper_median_cycles": {
+      "512_keygen": 51722311,
+      "512_sign": 17150545,
+      "512_verify": 323674,
+      "1024_keygen": 260391042,
+      "1024_sign": 36748282,
+      "1024_verify": 626482
+    },
+    "baseline_minus_candidate_cycles": {
+      "512_keygen": 384,
+      "512_sign": 385,
+      "512_verify": 64,
+      "1024_keygen": 703,
+      "1024_sign": 384,
+      "1024_verify": 64
+    }
+  },
+  "hashes": {
+    "baseline_mq_cm55_sha256": "b4f5834ac4cb72c6d51f62bf4c9746b58350e668ebcb193bf1e51272ae9fbbc3",
+    "candidate_mq_cm55_sha256": "354c0318f0c882c2685ee2546afda67f661f57b41c3193b8eb4cbde7df07f2be",
+    "candidate_source_tree_sha256": "3766c45984367e7bd75125ec4adae5a8313b0da6187be7abf3c6cb2c557a2e1c",
+    "candidate_elf_sha256": "ea9ac9d3e6bf2fca57233a8f776e84d1b0b99f1da9fe5e3398a845952e6ddb27",
+    "candidate_raw_log_sha256": "a95aea13b7d0d526945b3d2ea42d1ada73980ce91d04b698d83dc0927deb6751"
+  },
+  "validation": {
+    "barrett_pair_mismatches": 0,
+    "forward_ntt_mismatches": 0,
+    "inverse_roundtrip_mismatches": 0,
+    "oracle_roundtrip_mismatches": 0,
+    "max_modular_error": 0,
+    "host_kat_digests_match": true,
+    "sign_verify": "PASS",
+    "tamper_rejection": "PASS",
+    "fault_registers_zero": true,
+    "tcm_ecc_start": "0x1300a",
+    "tcm_ecc_end": "0x1300a",
+    "stack_used_upper_bound_bytes": 9624
+  },
+  "verdict": "Small but repeatable improvement in all 60 paired API batches; slower than S3-A, so retain as a control/combination candidate.",
+  "limitations": "Static constant-time structure audit only; power/EM TVLA was not performed."
+}

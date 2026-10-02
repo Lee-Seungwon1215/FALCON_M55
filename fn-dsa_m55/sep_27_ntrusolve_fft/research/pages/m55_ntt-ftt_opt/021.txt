@@ -1,0 +1,66 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 21/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 21
+Table 3 Comparing diﬀerent stages of NTT multiplication for Saber. “Expand” is the
+NTT-variant discussed in Section 6.4.4.
+NTT-based polynomial multiplication
+NTT inv-NTT Base multiplication Poly-Mul
+Full Partial Expand Full Partial Point deg-4 Full Partial
+Cortex-M4
+[CHK+21]† – 5794 – – 7791 – 3886 – –
+Cortex-M55
+[This work] 2027 1473 1835 2559 1940 569 1151 7194 6411
+†[CHK+ 21] provides batched implementations; numbers reported here are averaged.
+Table 4 Performance of polynomial multiplication based on Toom-Cook/Karatsuba. Sum-
+decompositions refer to shares of Toom-Cook/Karatsuba during interpolation/evaluation.
+Toom-Cook/Karatsuba based polynomial multiplication
+Evaluation
+256 →32
+Interpolation
+32 →256
+Schoolbook
+(32x32) Poly-Mul
+Cortex-M55
+[This work]
+289+330
+= 619
+370+531
+= 901 267 7790
+Evaluation
+256 →16
+Interpolation
+16 →256
+Schoolbook
+(16x16) Poly-Mul
+Cortex-M4
+[This work]
+2188+7x(3x128+260)
+= 6696
+7x(3x91+179)+3187
+= 6351 302 34884
+loading contiguous or scattered buﬀers. While the final assembly can possibly be written
+by hand, we found the tool useful for quick experimentation with diﬀerent approaches. For
+very simple code-sequences, such as the Karatsuba algorithm or NTT base multiplication,
+we have written the assembly by hand.
+There are alternatives to handwritten assembly, e.g. auto-vectorization and intrinsics.
+The benefit is that the programmer operates at the level of C, while giving up assembly-
+level control potentially unlocking the final bit of performance. We explore handwritten
+assembly in this work to understand the capabilities of the Cortex-M55 processor and the
+Helium instruction set, without wondering how much penalty we pay from using C.
+7.2 Polynomial and matrix-vector multiplication
+Table 5 and Table 4 show the performance of our matrix-vector multiplication routines,
+running on the Cortex-M55 CPU, compared to prior implementations on the Cortex-M4
+CPU. We found that the incomplete NTT with expansion (see Section 6.4.4) outperforms
+a full NTT, and is about 3.4×faster than the incomplete NTT implementation from
+[CHK+21]. For Toom-Cook, we obtain a ≈5×speedup compared to [MKV20]. The results
+are in line with the expectations established in Section 6.1. Overall, we confirm the finding
+of [CHK+21] that NTT-based polynomial multiplication outperforms Toom-Cook-based
+multiplication, but we note that the diﬀerence is smaller than on the Cortex-M4 CPU.
+Table 3 and Table 4 provide a more detailed breakdown of the performance of various
+components of NTT and Toom-Cook/Karatsuba based polynomial multiplication.
+7.3 Saber
+We have integrated our polynomial and matrix-vector multiplication routines into a top-
+level implementation of the NIST PQC finalist Saber. Table 2 shows the results for both
+Toom-Cook/Karatsuba and NTT-based implementations in comparison with prior art.
+As observed and explained above, the diﬀerence between Toom-Cook/Karatsuba and
+NTT on the Cortex-M55 processor is smaller than on the Cortex-M4 processor. We also

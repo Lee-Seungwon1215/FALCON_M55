@@ -1,0 +1,124 @@
+{
+  "runs": {
+    "ref": "/Users/seungwon/FALCON/keccak_single_api_compare/results/ref/20260930T070122Z",
+    "batch4": "/Users/seungwon/FALCON/keccak_single_api_compare/results/batch4/20260930T065920Z",
+    "single_mve": "/Users/seungwon/FALCON/keccak_single_api_compare/results/single_mve/20260930T070142Z"
+  },
+  "aggregation": "mean of 8 per-input medians; 3 timed repeats/input",
+  "rows": [
+    {
+      "n": 512,
+      "operation": "keygen",
+      "ref_cycles": 55669853.75,
+      "batch4": {
+        "cycles": 55669853.125,
+        "speedup": 1.0000000112269023,
+        "reduction_percent": 1.1226902185690335e-06,
+        "per_input_speedup_min": 0.999999970165598,
+        "per_input_speedup_max": 1.0000000625072014
+      },
+      "single_mve": {
+        "cycles": 56699052,
+        "speedup": 0.9818480518862996,
+        "reduction_percent": -1.848753285075766,
+        "per_input_speedup_min": 0.9648282651475593,
+        "per_input_speedup_max": 0.995912440289826
+      }
+    },
+    {
+      "n": 512,
+      "operation": "sign",
+      "ref_cycles": 11130101.5,
+      "batch4": {
+        "cycles": 11130052.125,
+        "speedup": 1.0000044361876697,
+        "reduction_percent": 0.0004436167990062856,
+        "per_input_speedup_min": 0.9999785087632078,
+        "per_input_speedup_max": 1.0000365149845083
+      },
+      "single_mve": {
+        "cycles": 11930712.75,
+        "speedup": 0.9328949353843089,
+        "reduction_percent": -7.193207088003639,
+        "per_input_speedup_min": 0.9321406130467892,
+        "per_input_speedup_max": 0.9337922694094536
+      }
+    },
+    {
+      "n": 512,
+      "operation": "verify",
+      "ref_cycles": 324704.453125,
+      "batch4": {
+        "cycles": 324710.453125,
+        "speedup": 0.9999815219992388,
+        "reduction_percent": -0.0018478342203920306,
+        "per_input_speedup_min": 0.9999814256604405,
+        "per_input_speedup_max": 0.9999816140602575
+      },
+      "single_mve": {
+        "cycles": 409451.5234375,
+        "speedup": 0.79302294542461,
+        "reduction_percent": -26.099756100319116,
+        "per_input_speedup_min": 0.7929744793362437,
+        "per_input_speedup_max": 0.7931396779414198
+      }
+    },
+    {
+      "n": 1024,
+      "operation": "keygen",
+      "ref_cycles": 291846725.875,
+      "batch4": {
+        "cycles": 291846722.375,
+        "speedup": 1.0000000119925965,
+        "reduction_percent": 1.1992596471444017e-06,
+        "per_input_speedup_min": 0.9999999657618951,
+        "per_input_speedup_max": 1.0000000718326914
+      },
+      "single_mve": {
+        "cycles": 299508616.375,
+        "speedup": 0.9744184638400956,
+        "reduction_percent": -2.6253131595115553,
+        "per_input_speedup_min": 0.9606037805590568,
+        "per_input_speedup_max": 0.9859232432492966
+      }
+    },
+    {
+      "n": 1024,
+      "operation": "sign",
+      "ref_cycles": 23516226.125,
+      "batch4": {
+        "cycles": 23516293.875,
+        "speedup": 0.9999971190188233,
+        "reduction_percent": -0.00028809894767611866,
+        "per_input_speedup_min": 0.9999669736484346,
+        "per_input_speedup_max": 1.0000294743788607
+      },
+      "single_mve": {
+        "cycles": 25092988.125,
+        "speedup": 0.9371632428889933,
+        "reduction_percent": -6.704995910563016,
+        "per_input_speedup_min": 0.936559809714119,
+        "per_input_speedup_max": 0.9379169784786922
+      }
+    },
+    {
+      "n": 1024,
+      "operation": "verify",
+      "ref_cycles": 624341.59765625,
+      "batch4": {
+        "cycles": 624347.58984375,
+        "speedup": 0.9999904024815705,
+        "reduction_percent": -0.0009597610542755319,
+        "per_input_speedup_min": 0.9999902156745607,
+        "per_input_speedup_max": 0.9999905474701324
+      },
+      "single_mve": {
+        "cycles": 782648.39453125,
+        "speedup": 0.7977293533326489,
+        "reduction_percent": -25.35579840735849,
+        "per_input_speedup_min": 0.7973380061134958,
+        "per_input_speedup_max": 0.7986802555045791
+      }
+    }
+  ]
+}

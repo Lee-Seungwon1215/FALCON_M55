@@ -1,0 +1,43 @@
+DOCUMENT: falcon_m4.pdf PAGE: 4/18
+
+requirements on r9 and routines may use the register as a simple callee-saved register (e.g. like
+r8). Neverthelss, to avoid the improbable but scary failure scenario described above, we shun
+any use of r9.
+Loop Unrolling and Code Size. Loop unrolling is a classic tool to decrease runtime
+cost, since it lowers the cost of loop management, both directly (no need to update a loop
+counter, no jump back to the loop start) and indirectly (without a loop counter, an extra
+register is free, and some memory access offsets might be hardcodable). However, it also in-
+creases the code footprint, which can be an issue on small embedded systems where code space
+(ROM/Flash) may be of limited size. There thus are trade-offs between speed and code size.
+In our implementation, we voluntarily avoided some unrolling, especially in the NTT and
+SHAKE implementations. For instance, if using only signature verification, then the code
+footprint totals to 11840 bytes. This includes 4096 bytes for the NTT tables (that could be
+truncated to 2048 bytes if restricting the implementation to Falcon-512) and 4184 bytes for
+the SHAKE core. The well-known XKCP implementation of SHA3/SHAKE[16] is faster
+than our code, but also partially unrolled (four rounds), and its code footprint is 10632 bytes.
+The speed we report here appears to be “the record” for signature verification, among
+other reported numbers. It is faster than a recently published result from Choi, Yoon and
+Seo[3]. However, our gains are mostly in the “auxiliary” parts (e.g. public key and signature
+decoding), while our NTT and inverse NTT are slower than theirs, because our code is not
+unrolled (but a lot more compact). It would be fairly easy to reduce the cost of our Falcon-
+512 signature verification by about 50k cycles, by simply replacing the SHAKE implementa-
+tion with the XKCP one1, and the NTT and inverse NTT with the code from [3]. The result
+would be formally faster, though possibly less usable in practice due to the inflated code size.
+Baseline. To estimate how fast (or slow) our implementation is, it may be relevant to com-
+pare its performance with that of the other lattice-based signature scheme selected by NIST,
+the Dilithium scheme (standardized as ML-DSA[9]). An assembly-optimized implementa-
+tion is reported in [1]; for the lowest security level (“Dilithium2”), key pair generation, signa-
+ture generation and signature verification cost 1.596, 4.093 and 1.572 million cycles, respec-
+tively. On the same hardware, with our implementation, Falcon-512 has a much more ex-
+pensive key pair generation (about 45 times), more expensive signature generation (5.4 times),
+but faster verification (4 to 6 times faster, depending on whether the BUFF or original variant
+is used). This highlights that Falcon is challenging but not impossible to use for generating
+keys and signatures on microcontrollers, but is also substantially more efficient for signature
+verification (and with a lower RAM usage). Since Falcon keys and signatures are also much
+shorter than ML-DSA’s, we envision that Falcon, once standardized (under the name FN-
+DSA), will be a preferred choice for the common scenario of an embedded device verifying a
+signature on its upgradable firmware at boot time.
+1This would require some slight changes in the caller sites, because we access output SHAKE
+bytes directly from the SHAKE context, which relies on that context using little-endian without the
+even/odd-indexed split which is commonly used in 32-bit SHAKE implementations such as XKCP.
+4

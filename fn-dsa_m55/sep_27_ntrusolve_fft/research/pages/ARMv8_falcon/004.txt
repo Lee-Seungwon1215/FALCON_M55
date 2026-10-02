@@ -1,0 +1,86 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 4/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+Algorithm 2: Signing Sign(m,sk,⌊β2⌋)
+1
+ˆ
+◃ t =(FFT(c),FFT(0))·
+B−1
+q
+Require: A message m, a secret key sk, a bound ⌊β2⌋
+Ensure : A signature sig of m
+1 r ←{0,1}320 uniformly
+2 c ←HashToPoint(r||m)
+3 t ←(−
+1
+FFT(c) ⊙FFT(F ),
+FFT(c) ⊙FFT(f )) q
+4 do
+5 do
+6 z ←ffSamplingn(t,T)
+7 s =(t−z)ˆ
+B
+8 while ||s||2 >β2
+9 (s1,s2) ←invFFT(s)
+10 s ←Compress(s2,8·sbytelen−328)
+11 while (s =⊥)
+12 return sig=(r,s)
+Algorithm 3: Verification Verify(m,sig,pk,⌊β2⌋)
+Require: A message m, a signature sig = (r,s), a public key, pk= h ∈Zq[x]/(φ), a bound ⌊β2⌋
+Ensure : Accept or Reject
+1 c ←HashToPoint(r||m,q,n)
+2 s2 ←Decompress(s,8·sbytelen−328)
+3 if (s2 =⊥) then
+4 return reject 5 s1 ←c−s2h mod q 6 if ||(s1,s2)||2 ≤⌊β2⌋then
+7 return accept
+8 else
+9 return reject long
+◃ Reject invalid encodings
+◃ s1 should be normalized between ⌈−q
+2 ⌉and ⌈q
+2 ⌉
+◃ Reject signatures that are too
+F , G. ffSampling process is a randomized rounding process
+that generates s1 and s2. The main idea of ffSampling process
+is to calculate the Closest Vector Problem (CVP) in a lower
+dimension and lift it to a higher dimension. In ffSampling
+process, vector representation in low dimension is simi-
+lar to bit-reversed representation of FFT; therefore, it can
+be easily calculated using the Butterfly Method based on
+Cooley-Tukey and Gentleman-Sande algorithm [7]–[9]. This
+mechanism is also applied in LDL∗operations called from
+ffSampling process; thus, there are different versions of FFT
+in Falcon, including splitfft. Finally, Sign process outputs the
+random seed r and the compressed value s of s2 as a signature.
+Verify process of Falcon, as shown in Algorithm 3, has
+a quite simple structure compared to other PQC-DSAs
+such as Crystals-Dilithum and Rainbow. In Verify process,
+s1ands2 are recalculated and checked if ||(s1,s2)||2 ≤⌊β2⌋
+is satisfied. If that bound ⌊β2⌋holds for the s1 and s2, then
+the signature (r,s) is accepted.
+B. FFT/NTT-BASED POLYNOMIAL MULTIPLICATION
+Fast Fourier Transform (FFT) is an algorithm proposed to
+fast compute discrete convolutions. FFT-based multiplication
+is known as the fastest polynomial multiplication algorithm
+which processes polynomial multiplication with only O(n·
+logn) complexity via the Divide and conquer algorithm. FFT
+divides the polynomial into its smallest unit by n-th of unity
+and uses the Divide and conquer algorithm to perform point-
+by-point multiplication at complexity O(n). Since FFT-based
+multiplication in Falcon performs multiplication on the ele-
+ments of a polynomial ring of rational coefficients, unlike
+NTT, Montgomery-reduction is not required.
+Number Theoretic Transform (NTT) is a variant of FFT
+and is the polynomial multiplication algorithm used by many
+lattice-based PKE/KEM and DSA schemes that have entered
+the NIST PQC-competition Round 3 [10]. In general poly-
+nomial rings using Zq[x]/ < 2n +1 > the condition for
+using NTT is that n must be a power of 2 and q must be
+congruent with 1 modulo 2n. Based on the NTT, the formula
+for polynomial multiplication is:
+f (x) ×g(x)=NTT−1(NTT (f ) ⊙NTT (g)), where ⊙is the
+point-wise multiplication of the coefficients.
+The logn depth of FFT/NTT of Falcon depends on the poly-
+nomial ring used. In the case of Falcon, it has a polynomial
+of order 512/1024 according to the security level, and since
+VOLUME 10, 2022 44449

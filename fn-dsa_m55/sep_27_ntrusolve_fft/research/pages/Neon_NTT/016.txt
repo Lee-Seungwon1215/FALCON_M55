@@ -1,0 +1,58 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 16/38
+
+16 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+when the distance between the inputs of a butterfly is less than the size of a SIMD register.
+First, we notice that since each SIMD register in Neon is holding 16 bytes, any butterfly
+taking inputs at distance larger than 16 bytes doesn’t require any permutation. Now we
+carefully look at the NTTs at each layer and number the layers from 0. After each layer,
+the distance for the butterfly inputs is halved. For Dilithium and Saber, we compute 32-bit
+NTTs for degree-255 polynomials. At the kth layer, we are computing butterflies with
+inputs distancing by 4·27−k =
+512
+2k bytes. Therefore, after the 5th layer, any follow-up
+NTTs require permutations. As for Kyber with 16-bit NTTs for degree-255 polynomials, it
+is after the 4th layer that one needs permutations for the follow-up NTTs.
+{ld, st}{1, 2, 3, 4} and trn{1, 2}. ld{2, 3, 4} are loading with the indicated
+degree of interleaving. An array of structures with 2 (3, 4) elements are loaded to 2 (3, 4)
+SIMD registers where the first lane of each register is holding the first structure and so on.
+On the other hand, ld1 is simply loading consecutively to 1 to 4 SIMD registers. st{1,
+2, 3, 4} are their counterparts for storing structures. Besides shuﬄing with memory
+operations, we have trn{1, 2} for permuting the elements of SIMD registers. trn1 (trn2)
+moves the even (odd) indices of the first source to the even indices of the destination and
+the even (odd) indices of the second source to the odd indices of the destination.
+Saber. First of all, since Armv8-A provides instructions for both 16-bit and 32-bit
+arithmetic, we find no reasons to employ 16-bit NTTs as in [NG21]. We decide to im-
+plement 32-bit NTT as implemented for Cortex-M4 in [CHK+21]. For NTT, we compute
+for F[x]/x256 + 1 with 6 layers of CT butterflies. On the other hand, we compute
+NTT−1 for F[x]/x256
+−1 with 6 layers of CT butterflies and then map F[x]/x256
+−1
+to F[x]/x256 + 1 . Recall that at the end of NTT−1, we have to multiply each coeﬃ-
+cient with 2−k, so we can multiply each chunk of 4 coeﬃcients with the precomputed
+(2−k
+,2−kζ−1
+,2−k
+,...,2−kζ−63).
+Dilithium. We implement NTT with CT butterflies and NTT−1 with GS butterflies. For
+NTT, after 4 radix-2 splits, the distance of the butterfly inputs for the next layer is 32 bytes.
+For the next 4 layers of NTTs, we first load with ld1 and apply two layers of radix-2 splits
+on four SIMD registers as usual. Next, we transpose the four registers with Algorithm 29.
+At the end of butterflies, we can store with st4 to cancel out the transpose. For the NTT−1
+,
+we invert the entire process: for the initial 4 layers of NTT−1, we load with ld4, compute
+two layers with GS, invert Algorithm 29, compute two layers with GS, and store with st1.
+For the last 4 layers, we invert CT butterflies with GS butterflies and merge half of the
+multiplications by 2−8 with ζ−128
+.
+Kyber. We also implement NTT with CT butterflies and NTT−1 with GS butterflies for
+Kyber. For the NTT, after 4 radix-2 splits, the distance of the butterfly inputs for the next
+layer is 16 bytes. Now we proceed for the bottom 3 layers with a diﬀerent permutation.
+First, we ld4 each 4-byte to 8 SIMD registers. Next, we use trn1 and trn2 to separate
+the upper 4-bytes from the lower 4-bytes for butterflies as shown in Algorithm 30. In this
+way, we can then apply 3 layers of butterflies without intermediate permutations, which
+prohibits an aggressive interleaving of instructions. We will discuss the interleaving in
+Section 4.3. For NTT−1, we invert the entire NTT and also merge half of the multiplications
+by 2−7 with ζ−64
+.
+Table 3 is the summary of butterflies for NTT and NTT−1
+.

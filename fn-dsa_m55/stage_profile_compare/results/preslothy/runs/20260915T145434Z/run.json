@@ -1,0 +1,667 @@
+{
+  "candidate": "preslothy",
+  "started_utc": "2026-09-15T14:54:34.594173+00:00",
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_slothy/measurement/exec_board.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/zephyr/zephyr.elf"
+  ],
+  "source_tree_sha256": "1bee63df84452c426acc1b045a25d771a456d76ead95b3ee9cc2c39fe354daae",
+  "elf_sha256": "dfdf3e00e52e0adc8e61849f22494a9794f25d5fe68b7dde3b7cb90dd8e90364",
+  "mq_assembly": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy/mq_cm55.s",
+  "probe": "003C00223335510735383531",
+  "build_provenance": {
+    "ready": true,
+    "inputs": {
+      "source_dir": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy",
+      "source_tree_sha256": "1bee63df84452c426acc1b045a25d771a456d76ead95b3ee9cc2c39fe354daae",
+      "source_files": {
+        "codec.c": "d72b5b03b6b74aec02de60cc69bbe232c6f13e0ff94cbd096f157ea178bb6cc7",
+        "codec_cm4.s": "53a380bcb500ed2d665405fa6ef5f3eb39bbeb9def4f86b29a9be532bbd7cd94",
+        "fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+        "inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+        "kgen.c": "a034de222847ef5a5532d404df3bfd422bea2deffe0e54f25361dc6cb149f5cd",
+        "kgen_fxp.c": "cf93446862da0ba3429326bddb6633595cb2b2cb310b0e8489cb1b7f9c100edd",
+        "kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+        "kgen_inner.h": "0e124f2cbfee404b9e51c1723ef21544f0849a14e5b61ffa76c32f083fa0ec11",
+        "kgen_mp31.c": "fd586b85ba6b8b6f72c7068dab8de10c7ffaac91b4ec9bae9215163923bffedb",
+        "kgen_mp31_cm55.s": "463137bc8fba5d660e39dcf05e839b81971864d00545e888d73363598eb086c6",
+        "kgen_ntru.c": "35696b1619bbaaa14046ab85a66f384670e9f8c8d44e523a0dcf8cd402fb8abf",
+        "kgen_poly.c": "4508e2feeb7a19a5616243d205e395c6709b8c90dbcc19d1feb05421a8f71f7f",
+        "kgen_zint31.c": "ba655aabdfb7c36cf8d723c8a69521915c07f5d023cbbf96a05a35f6e759f81e",
+        "mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+        "mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+        "sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+        "sha3_cm4.s": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+        "sign.c": "e23b7a63ea92e535cf16cfeef4a1500ad0984047adfe15696b7642b795f2a732",
+        "sign_core.c": "d64678400179f60ecbcc53624c2aa93fde3539cf8dc064a53e8778fa79c29861",
+        "sign_fpoly.c": "d6187c282576f8f1b534f9e48da8dedcca8f6f4f2a4ab6aa73bfd5412492b1e6",
+        "sign_fpr.c": "995ad5b954913cd1d63a5d14d3cffdeb48e7fa2ccb9afacc3f8bda129ea1aa95",
+        "sign_fpr_cm4.s": "ba5b3cdff48f7302d3229bdd00db9fca8a6bf8b420ee0eb0c1ff167079a51789",
+        "sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+        "sign_sampler.c": "9f91e55b8d7f9a48c730affe05bffc3c9c304121df5d2ce5542b99854c53c69b",
+        "sign_sampler_cm4.s": "546ff1ad3ce37778a55ad3aa5c20ce73e83e4f97920351609e1a1d16e3af7fde",
+        "speed_fndsa.c": "621f9069bbafd6b2422656f69a1143a778cb9a7f5e0f5ec7f02ed24ae55ab096",
+        "sysrng.c": "663d943595102660f0c98ec3fef37d3b7825f162cd8a9218cf9df8317cb38bd1",
+        "test_fndsa.c": "893ef158f2c55110c157293184cb4d87dbc294d16b08e531af4ee07d64927bdd",
+        "test_sign.c": "761db5680f06c72bd1bf2a4a4bad5d5de8d81ee2aa6e47ab21316d8d405073fc",
+        "util.c": "eeaaa063aa1e5987ba81d6cb13941300d9e55d0c428aa33ef6127693d8eca80f",
+        "vrfy.c": "d6db7c9a50ef36c30ef951127bdee0ed90774b4a5811817beb19850c265db58f"
+      },
+      "baseline": {
+        "candidate": "before",
+        "source_tree_sha256": "7dac07f89dacd72e431036e30704ea249890e9bb7a887fe65d631e7efe86d41c",
+        "elf_sha256": "ac55fc050c548542b801ed6d378f5bd04565eda8622b2415313cac97831728c4",
+        "mq_assembly": "/Users/seungwon/FALCON/fn-dsa_m55/ref/mq_cm4.s",
+        "fingerprints": {
+          "512": "9895079d",
+          "1024": "a020dd02"
+        },
+        "raw_log_sha256": "f2a48129fd2d0a830ded198fbd437eae6813cd92d8b606ffac08ddcffd79bd7e",
+        "ended_utc": "2026-09-14T03:17:11.589152+00:00",
+        "valid": true,
+        "run_directory": "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/results/before/runs/20260914T031656Z"
+      },
+      "baseline_current_source_dir": "/Users/seungwon/FALCON/fn-dsa_m55/M55_ref",
+      "profiler": {
+        "profile.c": "ccb112a01f68ea9f6c2c2edf5ddb41071e1ffad02099fd7a5ffb7df16819e488",
+        "profile.h": "2a82731917bdc4e87311a3d29018ef1ee1024821edac3f73b5aa14bac46156f4",
+        "instrument.py": "3967e60bb79af6a5e91c77219e87b65bf8d9bf6df72d7b3b985e852c69f9e3d9",
+        "CMakeLists.txt": "54ed02f97275ca2856e8235c702d7c2a48ed84605582db5710c9874aa7b50b61",
+        "build.sh": "6b9b992f63c9886b5b1c1134556ac47ec6b0c6c71570c3308250979e1ca464bd"
+      },
+      "benchmark_sha256": "f19e19a0bbaa61002dfeee51b3a7c135841fea44f531de223e543d57ec6f1535",
+      "generated": {
+        "codec.c": "70d3fb1a64f68a0e4096d2830fd8e5d10fe56757d4fa7452597bc558421656df",
+        "mq.c": "9355b78f985786564db78491e935384d64e8ecabac870abbc3ab3681725e2164",
+        "sha3.c": "1f36a6c14ec9a66b1c378df42ca8b8777a7b4b591b8d7794fe5c00332189f581",
+        "sysrng.c": "de77683932f8d8dd0a0d487e8c8d8628f9556ccfbc2ef7a63f93a52d4da1134d",
+        "util.c": "98928f23fd47e88839a17e3429d439886b26204968010af15b2e6e506fc671da",
+        "kgen.c": "18917339e65dd0cf77cfc278c7021f0244874b2f9484361e2b69da45e9f5bd3b",
+        "kgen_fxp.c": "bc0c4117c42e5f240b98c7a528d54d9486658a3c0cdc5155ed4d6c0594d83f8d",
+        "kgen_gauss.c": "504200347c3dbfd19f0b2b9a1a8a2eb8da80c1222c541509667b9f5b6890bf4b",
+        "kgen_mp31.c": "724a82ff8b21bf8d2466fc2eb056d08e177ff028845b80872dd361251522d688",
+        "kgen_ntru.c": "a90db1c89cd4cd83e92fb9ec2d1846f6fce4cf946f2a7c8e53c1dbe578a0367b",
+        "kgen_poly.c": "be8ed5d3c3602ccdf22cf9417d03a4f3f7aa75c61feee73bfbd3820dff2dcf8b",
+        "kgen_zint31.c": "63926d2b4bee0e1ec8e39a0fa457173cab7feb3c27fb32f480ff602e8eeedeb7",
+        "sign.c": "70a693a438e1057dbe3a7c1e51dabf4e6efb54ce5fb479521316e432fd3e205d",
+        "sign_core.c": "1406cb12c94e03ba69733861ac12a672d0589d7e87621f3a9ffe7c03ea7ffc2d",
+        "sign_fpoly.c": "7b259d26c1dfc6a69bebb0cb850493d70128e0e0999e025b5afdcc1250c5face",
+        "sign_fpr.c": "e8231bcdfd5c041633d56f93452bd51dc9f5f094c05f9bc44cb897b8ead659e7",
+        "sign_sampler.c": "9af32c403d49d5dfadcfdd791e09843147dfe6b9baec3098e277f682340ad1df",
+        "vrfy.c": "b02e551a88c267d70395ad868d3662b9cfa9ff4824413afc6c91aeb4bb50e28a"
+      }
+    },
+    "build": {
+      "artifacts": {
+        "zephyr/zephyr.elf": "dfdf3e00e52e0adc8e61849f22494a9794f25d5fe68b7dde3b7cb90dd8e90364",
+        "zephyr/zephyr.map": "fd243bccbdaf1f1fcf0d4d5e0507fff898263115406dff39ebc06aa65b8c5d29",
+        "zephyr/.config": "29add21e434a3054715e66a9711d44653b8362c0370b249dfbfd5744d14eb0ca",
+        "compile_commands.json": "6174c3445f021845fe940d584bd668f56226e409a27724edf1626254dd90e52c",
+        "CMakeCache.txt": "4463c22ebd9a4131f688f27b01619d7fab5a4564e483104bf9785c6cff9fd454",
+        "fndsa_dtcm_linker.ld": "4de97733aab7bc8680c0aa9caef321c6743a916092bf20dce05051ad77de58e8"
+      },
+      "compiled_crypto": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy/codec_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy/kgen_mp31_cm55.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy/mq_cm55.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy/sha3_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy/sign_fpr_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy/sign_sampler_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/codec.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/kgen.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/kgen_fxp.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/kgen_gauss.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/kgen_mp31.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/kgen_ntru.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/kgen_poly.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/kgen_zint31.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/mq.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/sha3.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/sign.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/sign_core.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/sign_fpoly.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/sign_fpr.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/sign_sampler.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/sysrng.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/util.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/preslothy/generated/vrfy.c"
+      ],
+      "same_kconfig": true,
+      "same_c_options_except_backend_and_label": true,
+      "same_linker_policy": true,
+      "same_workload": true,
+      "instrumentation_recipe_matches_historical_generated_sources": true
+    }
+  },
+  "ended_utc": "2026-09-15T14:54:49.695651+00:00",
+  "returncode": 0,
+  "valid": true,
+  "validation_errors": [],
+  "totals": {
+    "512_keygen": {
+      "calls": 10,
+      "total": 518437584,
+      "minimum": 42689266,
+      "maximum": 68433130
+    },
+    "512_sign": {
+      "calls": 100,
+      "total": 1778121646,
+      "minimum": 17619638,
+      "maximum": 17934799
+    },
+    "512_verify": {
+      "calls": 100,
+      "total": 32434100,
+      "minimum": 324341,
+      "maximum": 324341
+    },
+    "1024_keygen": {
+      "calls": 10,
+      "total": 2620852139,
+      "minimum": 160867370,
+      "maximum": 435205908
+    },
+    "1024_sign": {
+      "calls": 100,
+      "total": 3810273002,
+      "minimum": 37744266,
+      "maximum": 38402048
+    },
+    "1024_verify": {
+      "calls": 100,
+      "total": 62588800,
+      "minimum": 625888,
+      "maximum": 625888
+    }
+  },
+  "categories": {
+    "512_keygen_other": {
+      "cycles": 6670,
+      "entries": 10
+    },
+    "512_keygen_kg_generate": {
+      "cycles": 42332101,
+      "entries": 247
+    },
+    "512_keygen_kg_check": {
+      "cycles": 60986833,
+      "entries": 247
+    },
+    "512_keygen_kg_ntru": {
+      "cycles": 413388260,
+      "entries": 11
+    },
+    "512_keygen_kg_sk_complete": {
+      "cycles": 145120,
+      "entries": 10
+    },
+    "512_keygen_kg_pk_compute": {
+      "cycles": 1578600,
+      "entries": 10
+    },
+    "512_keygen_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_other": {
+      "cycles": 14900,
+      "entries": 0
+    },
+    "512_sign_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_sg_message_hash": {
+      "cycles": 1566600,
+      "entries": 100
+    },
+    "512_sign_sg_key_prep": {
+      "cycles": 24872500,
+      "entries": 100
+    },
+    "512_sign_sg_hash_to_point": {
+      "cycles": 15702178,
+      "entries": 100
+    },
+    "512_sign_sg_fft_basis": {
+      "cycles": 381662900,
+      "entries": 100
+    },
+    "512_sign_sg_ldl_ffsampling": {
+      "cycles": 786907300,
+      "entries": 100
+    },
+    "512_sign_sg_gaussian_berexp": {
+      "cycles": 417515507,
+      "entries": 102400
+    },
+    "512_sign_sg_recon_norm": {
+      "cycles": 148103100,
+      "entries": 100
+    },
+    "512_sign_sg_encode": {
+      "cycles": 1776661,
+      "entries": 100
+    },
+    "512_sign_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_other": {
+      "cycles": 17700,
+      "entries": 0
+    },
+    "512_verify_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_vr_message_hash": {
+      "cycles": 11970200,
+      "entries": 100
+    },
+    "512_verify_vr_decode": {
+      "cycles": 1810100,
+      "entries": 100
+    },
+    "512_verify_vr_ntt": {
+      "cycles": 3126700,
+      "entries": 100
+    },
+    "512_verify_vr_hash_to_point": {
+      "cycles": 14755400,
+      "entries": 100
+    },
+    "512_verify_vr_poly": {
+      "cycles": 361600,
+      "entries": 100
+    },
+    "512_verify_vr_norm": {
+      "cycles": 392400,
+      "entries": 200
+    },
+    "1024_keygen_other": {
+      "cycles": 6670,
+      "entries": 10
+    },
+    "1024_keygen_kg_generate": {
+      "cycles": 282786042,
+      "entries": 877
+    },
+    "1024_keygen_kg_check": {
+      "cycles": 489666871,
+      "entries": 877
+    },
+    "1024_keygen_kg_ntru": {
+      "cycles": 1844866166,
+      "entries": 17
+    },
+    "1024_keygen_kg_sk_complete": {
+      "cycles": 282560,
+      "entries": 10
+    },
+    "1024_keygen_kg_pk_compute": {
+      "cycles": 3243830,
+      "entries": 10
+    },
+    "1024_keygen_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_other": {
+      "cycles": 14700,
+      "entries": 0
+    },
+    "1024_sign_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_sg_message_hash": {
+      "cycles": 1566600,
+      "entries": 100
+    },
+    "1024_sign_sg_key_prep": {
+      "cycles": 45221100,
+      "entries": 100
+    },
+    "1024_sign_sg_hash_to_point": {
+      "cycles": 28893331,
+      "entries": 100
+    },
+    "1024_sign_sg_fft_basis": {
+      "cycles": 836714000,
+      "entries": 100
+    },
+    "1024_sign_sg_ldl_ffsampling": {
+      "cycles": 1741454500,
+      "entries": 100
+    },
+    "1024_sign_sg_gaussian_berexp": {
+      "cycles": 823058436,
+      "entries": 204800
+    },
+    "1024_sign_sg_recon_norm": {
+      "cycles": 329833100,
+      "entries": 100
+    },
+    "1024_sign_sg_encode": {
+      "cycles": 3517235,
+      "entries": 100
+    },
+    "1024_sign_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_other": {
+      "cycles": 17700,
+      "entries": 0
+    },
+    "1024_verify_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_vr_message_hash": {
+      "cycles": 22329500,
+      "entries": 100
+    },
+    "1024_verify_vr_decode": {
+      "cycles": 3591900,
+      "entries": 100
+    },
+    "1024_verify_vr_ntt": {
+      "cycles": 7246100,
+      "entries": 100
+    },
+    "1024_verify_vr_hash_to_point": {
+      "cycles": 27945600,
+      "entries": 100
+    },
+    "1024_verify_vr_poly": {
+      "cycles": 707200,
+      "entries": 100
+    },
+    "1024_verify_vr_norm": {
+      "cycles": 750800,
+      "entries": 200
+    }
+  },
+  "fingerprints": {
+    "512": "9895079d",
+    "1024": "a020dd02"
+  },
+  "raw_log_sha256": "b603aab2df958d61e89f9da5ba364f6bcdff1b4e9896e8e84565d3010c0d98d9"
+}

@@ -1,0 +1,92 @@
+DOCUMENT: m55_slothy.pdf PAGE: 32/46
+
+32 Fast and Clean: Auditable high-performance assembly via constraint solving
+1 // Barrett multiplication
+2 .macro mulmod dst, src, c, c_twist
+3 vmul.s32 \dst, \src, \c
+4 vqrdmulh.s32 \src, \src, \c_twist
+5 vmla.s32 \dst, \src, q
+6 .endm
+7 // Cooley-Tukey butterfly
+8 .macro ct_butterfly a, b, r, r_twist
+9 mulmod tmp, \b, \r, \r_twist
+10 vsub.u32 \b, \a, tmp
+11 vadd.u32 \a, \a, tmp
+12 .endm
+13...
+14 15 16 ldrd r0, r0_twist, [r_ptr], #+8
+ldrd r1, r1_twist, [r_ptr], #+8
+ldrd r2, r2_twist, [r_ptr], #+8
+1 layer12_loop:
+2 vldrw.u32 d0, [in_lo]
+3 vldrw.u32 d1, [in_lo, #256]
+4 vldrw.u32 d2, [in_hi]
+5 vldrw.u32 d3, [in_hi, #256]
+6 ct_butterfly d0,d2,r0,r0_twist
+7 ct_butterfly d1,d3,r0,r0_twist
+8 ct_butterfly d0,d1,r1,r1_twist
+9 ct_butterfly d2,d3,r2,r2_twist
+10 vstrw.u32 d0, [in_lo],#16
+11 vstrw.u32 d1, [in_lo, #-240]
+12 vstrw.u32 d2, [in_hi],#16
+13 vstrw.u32 d3, [in_hi, #-240]
+14 le lr, layer12_loop
+15 layer12_loop_end:
+Listing 9: Naïve implementation of two merged layers of a 32-bit, radix-2 Number Theoretic
+Transform, using macros for readability.
+1 layer45_loop:
+2 load_next_roots
+3 vldrw.u32 d0, [in]
+4 vldrw.u32 d1, [in, #16]
+5 vldrw.u32 d2, [in, #32]
+6 vldrw.u32 d3, [in, #48]
+7 ct_butterfly d0, d2, r0, r0_tw
+8 ct_butterfly d1, d3, r0, r0_tw
+9 ct_butterfly d0, d1, r1, r1_tw
+10 ct_butterfly d2, d3, r2, r2_tw
+11 vst40.u32 {d0, d1, d2, d3}, [in]
+12 vst41.u32 {d0, d1, d2, d3}, [in]
+13 vst42.u32 {d0, d1, d2, d3}, [in]
+14 vst43.u32 {d0, d1, d2, d3}, [in]!
+15 // ALTERNATIVE:
+16 // vstrw.u32 di, [in, #...] i=0,1,2,3
+17 le lr, layer45_loop
+18 layer45_loop_end:
+1 layer67_loop:
+2 vldrw.u32 data0, [in]
+3 vldrw.u32 data1, [in, #16]
+4 vldrw.u32 data2, [in, #32]
+5 vldrw.u32 data3, [in, #48]
+6 // ALTERNATIVE:
+7 // vld4i.u32 {d0,d1,d2,d3}, [in] i=0,1,2,3
+8 vldrh.u16 r0, [r_ptr] ,#96
+9 vldrh.u16 r0_tw, [r_ptr, #-80]
+10 ct_butterfly d0, d2, r0, r0_tw
+11 ct_butterfly d1, d3, r0, r0_tw
+12 vldrh.u16 r1, [r_ptr, #-64]
+13 vldrh.u16 r1_tw, [r_ptr, #-48]
+14 ct_butterfly d0, d1, r1, r1_tw
+15 vldrh.u16 r2, [r_ptr, #-32]
+16 vldrh.u16 r2_tw, [r_ptr, #-16]
+17 ct_butterfly d2, d3, r2, r2_tw
+18 vstrw.u32 d0, [in], #64
+19 vstrw.u32 d1, [in, #-48]
+20 vstrw.u32 d2, [in, #-32]
+21 vstrw.u32 d3, [in, #-16]
+22 // CANONICAL:
+23 // vst4i.u32 {d0,d1,d2,d3}, [in] i=0,1,2,3
+24 le lr, layer67_loop
+25 layer67_loop_end:
+Listing 10: Naïve implementation of the last four layers of a Kyber NTT.
+8.2.2 Readable base implementations
+We provide readable base implementations for the complete Kyber and Dilithium NTTs.
+Here, we comment on some selected aspects only.
+Modular multiplication strategy. For the underlying modular multiplication, one has
+the choice between “rounding Montgomery multiplication”, introduced in [BHK+21] and
+used in [BBMK+21], or “Barrett multiplication”, also introduced in [BHK+21] and used
+in [BHK+22]. We use Barrett multiplication throughout as it leads to smaller coefficient
+growth than rounding Montgomery multiplication.
+Initial layers. Listing 9 shows a naïve implementation of the first two layers of the
+forward NTT for Dilithium, using macros to keep the implementation readable. While
+readable, however, it performs very poorly: The back-to-back instances of load/store and
+multiplication instructions mean that only little use is made of instruction overlapping.

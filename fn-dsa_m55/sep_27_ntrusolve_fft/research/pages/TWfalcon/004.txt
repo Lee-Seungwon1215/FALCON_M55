@@ -1,0 +1,55 @@
+DOCUMENT: TWfalcon.pdf PAGE: 4/25
+
+4 TWFalcon: Triple-Word Arithmetic for Falcon
+Table 1: Average number of invocations of floating-point operations in one Falcon-512
+signature generation [Por25a].
+Operation fpr_of add add_sub mul div sqrt
+Invocations 11,992 62,680 32,768 106,685 2,304 512
+To sign a message x, one first computes a preimage c0 ∈Zm
+q such that c0AT = H(x)
+for some hash function H : {0,1}∗ →Zn
+q. Using B, a nearby lattice vector v ∈Λ⊥
+q is
+sampled from a discrete Gaussian over Λ⊥
+q , and the signature is s = c0−v. Verification
+checks that sAT = H(x) and that s is “short”. The security relies on the hardness of
+finding such short solutions without the trapdoor basis. The GPV framework suggests
+using Klein’s sampler to sample from a discrete Gaussian. This is a randomized version of
+Babai’s nearest plane algorithm [Kle00, Bab86].
+Falcon is based on the NTRU lattice structure and the signature generation mostly
+operates in the Fast Fourier Transform (FFT) domain to accelerate polynomial arithmetic.
+Discrete Gaussian sampling is performed using the ffSampling algorithm based on [DP16].
+This algorithm constructs a tree structure by recursively splitting polynomials into smaller
+subgroups, similar to how the FFT decomposes polynomials for multiplication. At each
+node of the tree, an LDL∗decomposition ([GVL13, Chapter 4.1.2]) is applied, which is
+later used to combine the results from the child nodes into the final sampled lattice point.
+This process produces a Falcon tree, where the polynomials at the leaves are reduced to
+constants. At the leaves, these constants serve as the mean and standard deviation for
+sampling values from a discrete Gaussian distribution. The sampled values from the leaves
+are then propagated up the tree by merging them, together with the LDL∗decomposition
+results, toreconstructthelatticepointintheoriginal, higher-dimensionalspace. Essentially,
+this algorithm is a fast Fourier variant of Babai’s nearest plane algorithm.
+Arithmetic with real numbers is required throughout this process. Splitting and merging
+in the Falcon tree requires floating-point multiplication and addition operations. The
+LDL∗decomposition and Gaussian sampling require division of floating-point numbers.
+Additionally, each leaf node is normalized, which involves both a square root and a division
+operation. Of these, the square root is used least frequently (once per leaf), division is used
+once per node and twice per leaf, while addition and multiplication are used extensively
+at every node and leaf, and thus dominate the computational workload. In Table 1, the
+average number of operation invocations is shown for Falcon-512, showing that addition
+and multiplication are used a lot more than division and square root. The operation
+fpr_of converts an integer to a floating-point value, and the operation add_sub computes
+an addition and subtraction of the same inputs, an operation frequently used in the FFT.
+The floating-point operations can be emulated with integer representations [Por19,
+Por25a], using a 64-bit integer that emulates a 64-bit floating-point value, but this slows
+down the performance significantly. As this is not the focus of this paper, we will omit
+those technical details here.
+2.2 Floating-Point Numbers
+Falcon relies on real numbers in its signature generation algorithm. The dominant format
+used to represent real numbers in computing systems today is the IEEE 754 Floating-point
+standard [IEE19]. Herein numbers are represented as:
+±d0.d1d2...dp−1 ×βe
+,
+where β is the base, di is a digit in base β, pis the precision, and the exponent eis within
+the range [emin,emax]. In this paper we will assume the base β = 2. The binary layout of
+a floating-point numbers follows a structured format, as shown in Figure 1. The first bit

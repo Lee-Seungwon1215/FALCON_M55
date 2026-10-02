@@ -1,0 +1,43 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 10/18
+
+10 Hwang
+4.1 Modeling with CryptoLine Instructions
+We first model our own strings of CryptoLine instructions and start annotating
+CryptoLine programs with assertions and assumptions to transfer predicates
+between backend tools. The main dificulties are as follows:
+– When to declare statements that should be proved by the backend proof
+systems?
+– Which statements should be transferred between proof systems at a given
+point?
+We do not know of any systematic approaches resolving the two difficulties.
+Nevertheless, we find the following constructions of intermediate symbols and
+annotations sufficient for verifying the range:
+1. Construct the 128-bit product r of mantissas with the long multiplication.
+2. Split the input into radix-25 representation with bitfield arithmetic, verify
+the correctness of the spliting with the SMT solver, and add the correspond-
+ing algebraic identities to the computer algebra system.
+3. Compute the multi-limb product, verify its algebraic correctness with r in
+the computer algebra system, and add the corresponding boolean identities
+to the SMT solver.
+4. Verify the remaining operations (zeroization, rounding, assembling) entirely
+with the SMT solver.
+If we remove Steps 2. and 3., the SMT solver doesn’t return a result (it doesn’t
+find an instance disproving the properties, but it doesn’t finish verifying over all
+the possible inputs).
+4.2 Range-Checking
+We develop our own range arithmetic in C++ computing the pre- and post-
+conditions to be verified. Once the pre- and post-conditions are computed for all
+the possible floating-point additions/subtractions/multiplications, we verify the
+correctness with CryptoLine. Typically, range-checking of floating-point arith-
+metic focus on upper-bounding the floating-point errors3. However, we need to
+derive non-trivial lower bounds of floating-point numbers for proving the non-
+smallness of the absolute values of non-zero floating-point numbers.
+For two non-negative floating-point numbers a.l ≤ a.u, we represent the
+subset {0}∪[a.l, a.u]∪[−a.u,−a.l] as a structure with lower bound a.l and upper
+bound a.u. Since the definition is symmetric for the positive and negative sides,
+we only store the positive bounds, and update the positive bounds throughput
+the entire computation. The zero values are included implicitly and we do not
+3 For example, Frama-C [CKKPSY12] only shows that the floating-point number is
+upper-bounded by a floating-point number and lower-bounded by 0, which is use-
+less for proving the non-smallness of the absolute values of non-zero floating-point
+numbers.

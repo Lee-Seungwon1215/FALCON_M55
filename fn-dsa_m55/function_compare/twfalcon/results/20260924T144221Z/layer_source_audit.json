@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "method": "Exact function-body comparison; remove only PROFILE_ timestamp lines",
+  "checked_functions": [
+    "q32_tw",
+    "ds_splat4",
+    "ds_load_tail",
+    "ds_store_tail",
+    "ds_final_scale",
+    "ds32_fft_mve",
+    "ds32_ifft_mve",
+    "tw32_init_twiddles"
+  ],
+  "sha256": {
+    "tw32_mve/fft_tw32_mve.c": "22616da14238785ff9178d318f91ee82daacd41462c14bce86087b84a55d5479",
+    "tests/ds32_layer_profile.c": "ce2503a74817fc4fc167b86f8b5d8b3e0bf416a41ad6a3f717f9fe8b7a54a1fb",
+    "tw32_mve/tw32_primitives_cm55.s": "eadee8e862097c728238c12e3a371fa1a2ecf881627a638355f36552b8200b3e"
+  },
+  "scope": "No algorithm changes; does not claim identical compiler allocation or timing"
+}

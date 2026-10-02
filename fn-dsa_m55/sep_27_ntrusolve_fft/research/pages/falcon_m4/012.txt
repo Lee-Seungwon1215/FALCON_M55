@@ -1,0 +1,44 @@
+DOCUMENT: falcon_m4.pdf PAGE: 12/18
+
+Floating-Point Format and Assumptions. splits into three elements:
+A “binary64” value is a 64-bit word which
+– a sign bit s of value 0 (positive) or 1 (negative);
+– an exponent e in the [0, 2047]range;
+– a mantissa m in the [0, 252
+−1]range.
+In general, this represents the value (−1)s2e−1075 (252+m). There are some special cases, which
+use the extreme values of the encoded exponent range:
+– If e = 0 then the value is either zero (if m = 0) or a denormalized value (if m ≠ 0).
+Denormalized values are also often called “subnormals”. In such cases, the represented
+value is (−1)s2−1074m (i.e. +1 for the exponent, but no +252 for the mantissa).
+– If e = 2047 then the value is either an infinite (if m = 0) or a special Not-a-Number
+(NaN) (if m ≠ 0). NaNs are generated from “impossible” operations such as taking the
+square root of a negative value.
+When an operation yields a result with too large an exponent, such that instead an infinite is
+obtained, then this is an overflow. If the exponent is too low and a denormalized value is pro-
+duced (or an even lower value that is rounded to zero), then this is an underflow. For more
+information on floating-point format, refer to the IEEE standard[8] and the very useful tu-
+torial from Goldberg[10].
+In Falcon, we can assume that NaNs, overflows and underflows do not happen. No
+operation in signature generation leads to any of these conditions. Divisors in fpr_div are
+never zero; fpr_sqrt is always invoked on positive values. These assumptions were heuris-
+tically assumed (and corroborated with measurements) in the original Falcon submission,
+and more recently formally proven true[7], with encoded exponents always in the [547, 1102]
+range3. The only special case that must be handled by the code is zeros. Note that there are two
+zeros, a positive and a negative one (depending on the sign bit s); in our context they are in-
+terchangeable, since floating-point values are ultimately rounded to integers when producing
+the final signature, and the sign of any zero will be ignored. We still prefer to follow the strict
+IEEE 754 rules so that unit tests can validate that internal values are correct. In particular:
+– For any x, x−x (and x +(−x)) yields a positive zero, not a negative one.
+– For any x and y, the sign of xy is the XOR of the signs of x and y, including if either or
+both is a zero. The same holds for x/y.
+– √x is well-defined when x is a negative zero, and yields a positive zero.
+Floating-Point Additions. It can be seen in table 2 that floating-point additions are
+more expensive than floating-point multiplications. This is due to the fact that additions in-
+volve two shifts of 64-bit values by secret amounts, and these operations are expensive:
+– The two mantissas must be aligned together; that is, if the exponent of x is e and its man-
+tissa is m, and y has exponent e′and mantissa m′with e′ ≤e, then m′, as an integer,
+3That paper also detected that the previous implementation was trying to handle underflows by
+rounding them to zero, but mishandling an edge sub-case; since underflows cannot happen in Falcon,
+we can simply ignore that case and not even try to handle underflows in any way.
+12

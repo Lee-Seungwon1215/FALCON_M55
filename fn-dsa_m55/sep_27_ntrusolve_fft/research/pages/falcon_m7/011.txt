@@ -1,0 +1,38 @@
+DOCUMENT: falcon_m7.pdf PAGE: 11/22
+
+Dilithium and Falcon on the ARM Cortex M7 11
+As expected, a significant amount of time is spent on the generation of uni-
+form randomness in both scheme’s key generation and signing procedures. In
+Dilithium, we see this in the expand matrix and in sample vector type oper-
+ations, slightly increasing, as expected, as the parameter sets increase.
+For Falcon, the poly small mkgauss and ffsampling similarly consume
+significant amounts of clock cycles for generating randomness. However, for
+ffsampling we see significant improvements using the FPU as this operation
+intensively uses floating-points for Gaussian sampling [HPR+20] used for ran-
+domization. The FPU also enables significant speedups in the FFT multiplier
+used in key generation and signing.
+We discuss these results in more detail in Section 6.
+Table 7: Profiling Dilithium on the ARM Cortex M7 using the STM32F767ZI
+NUCLEO-144 development board. All values reported are in KCycles.
+Key Generation param2 param3 param5
+get randomness 13 (0.9%) 13 (0.5%) 13 (0.30%)
+expand matrix 971 (68%) 1,826 (71%) 3,417 (78%)
+sample vector 182 (13%) 317 (12%) 343 (8%)
+matrix/vector mult 124 (9%) 190 (7%) 300 (7%)
+add error 45 (0.34%) 7 (0.28%) 10 (0.23%)
+expand/write pub key 16 (1%) 25 (1%) 33 (0.76%)
+get h/comp priv key 125 (9%) 188 (7%) 247 (6%)
+Signing param2 param3 param5
+compute crh 13 (0.39%) 13 (0.24%) 14 (0.17%)
+exp mat/transf vecs 1,092 (32%) 1,993 (35%) 3,656 (47%)
+sample y vector 1,001 (29%) 1,538 (27%) 1,688 (22%)
+matrix/vector mult 516 (15%) 946 (17%) 1,178 (15%)
+decomp w/ call RO 547 (16%) 710 (13%) 693 (9%)
+compute z 137 (4%) 233 (4%) 269 (3%)
+check cs2 62 (2%) 91 (2%) 123 (2%)
+compute hint 70 (2%) 110 (2%) 149 (2%)
+Verifying param2 param3 param5
+compute crh 124 (9%) 181 (8%) 235 (6%)
+matrix/vector mult 1,174 (84%) 2,119 (88%) 3,859 (91%)
+reconstruct w1 24 (2%) 28 (1%) 38 (0.90%)
+call ro verify chall 78 (6%) 78 (3%) 100 (2%)

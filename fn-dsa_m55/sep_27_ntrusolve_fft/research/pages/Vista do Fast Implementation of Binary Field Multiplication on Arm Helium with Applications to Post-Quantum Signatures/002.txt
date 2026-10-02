@@ -1,0 +1,50 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 2/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+bottleneck. Constant-time execution is also required, as data-dependent control flow ex-
+poses implementations to side-channel attacks. Recent Arm Cortex-M processors, such as
+the Cortex-M85, include the M-Profile Vector Extension (MVE), also referred to as Helium,
+which provides eight 128-bit SIMD registers and carry-less polynomial multiplication
+instructions (VMULLB and VMULLT). These features make the Cortex-M85 a suitable
+platform for vectorized and constant-time binary field arithmetic on embedded devices,
+and motivate the work presented here.
+In this work, we present fully vectorized and constant-time algorithms for multipli-
+cation and squaring in GF(2128), GF(212), and GF(2256), targeting the Helium instruction
+set on the Arm Cortex-M85. The proposed multiplication algorithm exploits the even/odd
+lane decomposition of the VMULLB and VMULLT instructions through a sliding-window
+accumulation scheme. We further show that squaring can be performed using register
+rearrangement (permutation) and carry-less multiplication instructions, making it faster
+than general multiplication. The proposed primitives are integrated into FAEST and
+AIMer, and their performance is evaluated on a Renesas EK-RA8M1 board equipped with
+a Cortex-M85 processor.
+Related Work. Efficient implementations of multiplication in binary fields have been
+extensively studied in the literature. [López and Dahab 2000] introduced an efficient al-
+gorithm for multiplication in GF(2") using polynomial basis representation, employ-
+ing look-up tables to achieve speedups of up to 5.5x over the standard shift-and-add
+method. Subsequent works explored optimizations at the implementation level. In particu-
+lar, [Oliveira et al. 2014] proposed a multiplier for 64-bit binary polynomials using SIMD
+instructions from the Arm architecture, combined with Karatsuba decomposition to scale
+to larger operands, demonstrating significant performance gains.
+Furthermore, efficient techniques for arithmetic in GF(2™), including decompo-
+sition and operation reorganization strategies that reduce the complexity of polynomial
+multiplication, have been investigated in works such as [Weimerskirch et al. 2003]. Al-
+though the focus of these works remains at the algorithmic level, the proposed approaches
+are relevant for efficient implementations because they directly influence how operations
+are mapped to low-level instructions. More recently, [Becker et al. 2021] investigated
+high-degree polynomial multiplication for post-quantum schemes on the Cortex-M4 and
+Cortex-M55, exploring strategies based on decompositions such as Toom-Cook and Karat-
+suba, as well as optimizations related to efficient register usage and memory access. Their
+work targets multiplication of polynomials with integer coefficients modulo 16- or 32-bit
+moduli, rather than binary polynomial multiplication over F2[x]. Although their focus is
+on lattice-based schemes, their analysis is relevant for efficient implementations on Arm
+architectures.
+Regarding signature schemes, [Kannwischer et al. 2019] provided a comprehen-
+sive evaluation of additional NIST candidates on the Cortex-M4, including an initial
+benchmark for AIMer on that platform. For FAEST, [Aranha et al. 2025] presented a
+compact, constant-time implementation based on a VOLE abstraction, reducing memory
+usage and reporting latencies. Our work targets the Cortex-M85, exploring the Helium
+Extension (MVE), and focuses on optimizing multiplications and squarings in binary fields,
+which constitute the dominant arithmetic cost in schemes such as AIMer and FAEST.
+2

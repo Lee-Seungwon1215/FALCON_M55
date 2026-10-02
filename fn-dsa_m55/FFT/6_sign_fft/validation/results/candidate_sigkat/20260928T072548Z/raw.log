@@ -1,0 +1,505 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 59624
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :59624 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+compare-sections
+tbreak *0x10016dd0
+hbreak *0x1001a060
+set $early_fault_bp = $bpnum
+jump *0x1001a075
+if $pc != 0x10016dd0
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpyupun9jo/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10016d80
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x1001a060
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+if *(unsigned int*)0xe000ed28 != 0
+echo [[EXTENDED-FAULT-DIAGNOSTIC]]\n
+echo VTOR_FPCCR_FPCAR:\n
+x/wx 0xe000ed08
+x/3wx 0xe000ef34
+echo VECTOR_WORDS:\n
+x/16wx 0x10000000
+echo MEMSYSCTL:\n
+x/24wx 0xe001e000
+echo PSP_EXTENDED:\n
+x/96wx $psp
+echo MSP_EXTENDED:\n
+x/48wx $msp
+bt
+end
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 59624
+Info : Listening on port 59624 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/59624
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+BOARD_SIGNKAT degree=4 index=0 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=1 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=2 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=3 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=4 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=5 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=6 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=7 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=8 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=4 index=9 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=0 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=1 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=2 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=3 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=4 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=5 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=6 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=7 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=8 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=8 index=9 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=0 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=1 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=2 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=3 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=4 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=5 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=6 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=7 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=8 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=16 index=9 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=0 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=1 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=2 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=3 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=4 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=5 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=6 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=7 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=8 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=32 index=9 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=0 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=1 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=2 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=3 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=4 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=5 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=6 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=7 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=8 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=64 index=9 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=0 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=1 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=2 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=3 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=4 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=5 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=6 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=7 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=8 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=128 index=9 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=0 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=1 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=2 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=3 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=4 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=5 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=6 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=7 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=8 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=256 index=9 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=0 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=1 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=2 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=3 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=4 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=5 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=6 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=7 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=8 match=1 verify=PASS tamper=PASS
+BOARD_SIGNKAT degree=512 index=9 match=1 verify=PASS tamper=PASS
+Error: Failed to read memory at 0x1001217c
+Error: Failed to read memory at 0x62a5653f
+Error: Failed to read memory at 0x62a5653f
+Error: Failed to read memory at 0x62a5653f
+Error: Failed to read memory at 0x62a5653f
+Error: Failed to read memory at 0x62a5653f
+Error: Failed to read memory at 0x62a5653f
+Error: Failed to read memory at 0x62a5653f
+Error: Failed to read memory at 0x62a5653f
+Error: Failed to read memory at 0x62a5653f
+Error: [stm32n6x.cpu] Polling failed, trying to reexamine
+Error: Failed to read memory at 0x62a5653f
+Error: [stm32n6x.cpu] Examination failed
+Error: [stm32n6x.cpu] Examination failed, GDB will be halted. Polling again in 100ms
+Error: [stm32n6x.cpu] Polling failed, trying to reexamine
+Error: Failed to read memory at 0x62a5653f
+Error: [stm32n6x.cpu] Examination failed
+Error: [stm32n6x.cpu] Examination failed, GDB will be halted. Polling again in 300ms
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Error: Failed to read memory at 0x62a5653f
+Error: [stm32n6x.cpu] Execution of event examine-end failed:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/mem_helper.tcl:7: Error: failed to read memory
+Traceback (most recent call last):
+  File "embedded:startup.tcl", line 1471, in ocd_process_reset
+    ocd_process_reset_inner run
+  File "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/target/stm32n6x.cfg", line 151, in ocd_process_reset_inner
+    stm32n6x_enter_debug
+  File "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/target/stm32n6x.cfg", line 104, in stm32n6x_enter_debug
+    stm32n6x_is_secure
+  File "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/target/stm32n6x.cfg", line 67, in stm32n6x_is_secure
+    mrw 0xE000EE08
+  File "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/mem_helper.tcl", line 7, in mrw
+    read_memory 0xE000EE08 32 1
+Error: unknown/unexpected STLINK status code 0x11
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1ebb8 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x15d78 lma 0x30000980
+Loading section datas, size 0x4c lma 0x30016700
+Loading section device_states, size 0x2c lma 0x3001674c
+Loading section k_mutex_area, size 0x14 lma 0x30016778
+Loading section .last_section, size 0x4 lma 0x3001678c
+Start address 0x1001a074, load size 218724
+Transfer rate: 550 KB/sec, 7811 bytes/write.
+Section rom_start, range 0x10000000 -- 0x1000032c: matched.
+Section text, range 0x10000330 -- 0x1001eee8: matched.
+Section .ARM.exidx, range 0x30000000 -- 0x30000008: matched.
+Section initlevel, range 0x30000008 -- 0x300000d0: matched.
+Section device_area, range 0x300000d0 -- 0x30000338: matched.
+Section sw_isr_table, range 0x30000338 -- 0x30000910: matched.
+Section gpio_driver_api_area, range 0x30000910 -- 0x30000934: matched.
+Section reset_driver_api_area, range 0x30000934 -- 0x30000944: matched.
+Section clock_control_driver_api_area, range 0x30000944 -- 0x30000960: matched.
+Section otp_driver_api_area, range 0x30000960 -- 0x30000964: matched.
+Section uart_driver_api_area, range 0x30000964 -- 0x30000978: matched.
+Section rodata, range 0x30000980 -- 0x300166f8: matched.
+Section datas, range 0x30016700 -- 0x3001674c: matched.
+Section device_states, range 0x3001674c -- 0x30016778: matched.
+Section k_mutex_area, range 0x30016778 -- 0x3001678c: matched.
+Section .last_section, range 0x3001678c -- 0x30016790: matched.
+Temporary breakpoint 1 at 0x10016dd0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x1001a060: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpyupun9jo/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10016d80: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x1001a060: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 4, z_arm_usage_fault () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S:80
+80		mrs r0, MSP
+[[NUCLEO-HARDFAULT]]
+r0             0x0                 0
+r1             0x0                 0
+r2             0x0                 0
+r3             0x0                 0
+r4             0x0                 0
+r5             0x0                 0
+r6             0x0                 0
+r7             0x0                 0
+r8             0x0                 0
+r9             0x0                 0
+r10            0x0                 0
+r11            0x0                 0
+r12            0x0                 0
+sp             0x3002d528          0x3002d528 <z_idle_stacks>
+lr             0xffffffcd          -51
+pc             0x1001a060          0x1001a060 <z_arm_usage_fault>
+xpsr           0x1000003           16777219
+fpscr          0x20040010          537133072
+msp            0x3002d528          0x3002d528 <z_idle_stacks>
+psp            0x3003cfa8          0x3003cfa8 <z_main_stack+63808>
+vpr            0xffcf              [ P0=65487 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x3002d528          0x3002d528 <z_idle_stacks>
+psp_s          0x3003cfa8          0x3003cfa8 <z_main_stack+63808>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x0                 0
+msplim_s       0x3002cd28          0x3002cd28 <z_interrupt_stacks>
+psplim_s       0x3002d668          0x3002d668 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x0                 0
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x0                 0
+p0             0xffcf              -49
+0x3002d528 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+CFSR=0x100
+HFSR=0x2
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x10000000
+SHCSR=0xf4004
+CCR=0x611
+MSP=0x3002d528
+PSP=0x3003cfa8
+LR=0xffffffcd
+PC=0x1001a060
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3003cfa8 <z_main_stack+63808>:	0xfefa125a	0x52c070e7	0x00000000	0x40420000
+0x3003cfb8 <z_main_stack+63824>:	0x733bbc8e	0x30020fa0	0x00000000	0xc0380000
+0xe000ed28:	0x00000100	0x00000002	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+[[EXTENDED-FAULT-DIAGNOSTIC]]
+VTOR_FPCCR_FPCAR:
+0xe000ed08:	0x10000000
+0xe000ef34:	0xc00004fd	0x3003cff0	0x00040000
+VECTOR_WORDS:
+0x10000000 <_vector_table>:	0x3003d668	0x1001a075	0x10019abd	0x1001a061
+0x10000010 <_vector_table+16>:	0x1001a061	0x1001a061	0x1001a061	0x1001a061
+0x10000020 <_vector_table+32>:	0x00000000	0x00000000	0x00000000	0x1001a1a1
+0x10000030 <_vector_table+48>:	0x1001a061	0x00000000	0x1001a3f5	0x1001c941
+MEMSYSCTL:
+0xe001e000:	0x0001300a	0x00000165	0x00000000	0x00000000
+0xe001e010:	0x00000049	0x00000049	0x00000007	0x00000000
+0xe001e020:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe001e030:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe001e040:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe001e050:	0x00000000	0x00000000	0x00000000	0x00000000
+PSP_EXTENDED:
+0x3003cfa8 <z_main_stack+63808>:	0xfefa125a	0x52c070e7	0x00000000	0x40420000
+0x3003cfb8 <z_main_stack+63824>:	0x733bbc8e	0x30020fa0	0x00000000	0xc0380000
+0x3003cfc8 <z_main_stack+63840>:	0x00000000	0x40310000	0x00001000	0x00000300
+0x3003cfd8 <z_main_stack+63856>:	0x00000800	0x300207a0	0x30021fa0	0x00000100
+0x3003cfe8 <z_main_stack+63872>:	0x1001217c	0x01160000	0x2a95afbf	0xa831679d
+0x3003cff8 <z_main_stack+63888>:	0x50b28fad	0x64beb014	0xd95de7ca	0x089d4ddf
+0x3003d008 <z_main_stack+63904>:	0xe12235b8	0x6baf82bf	0xf0ba4d91	0x1d81dbce
+0x3003d018 <z_main_stack+63920>:	0x97633f09	0x1bf23cef	0x8153cf12	0xa9722015
+0x3003d028 <z_main_stack+63936>:	0xcd3b28aa	0xe93a5ee7	0xe0b3acd8	0xe8e4d0e3
+0x3003d038 <z_main_stack+63952>:	0x00000000	0x40180000	0x300217a0	0x30020fa0
+0x3003d048 <z_main_stack+63968>:	0x30010030	0x00000200	0x30010040	0x00000100
+0x3003d058 <z_main_stack+63984>:	0x00000001	0x0000000a	0x00000200	0x300207a0
+0x3003d068 <z_main_stack+64000>:	0xfbe9e6a9	0x3001e7a0	0x3001c7a0	0x30016798
+0x3003d078 <z_main_stack+64016>:	0x30025fc9	0x0000000a	0x3001bfa0	0x3001b7a0
+0x3003d088 <z_main_stack+64032>:	0x3001a7a0	0x10011d07	0xb51b3284	0x377bed10
+0x3003d098 <z_main_stack+64048>:	0xb7b716c9	0xb75d44d8	0x386da2c4	0xb7a470b4
+0x3003d0a8 <z_main_stack+64064>:	0x00000001	0x00000000	0x00000000	0x00000000
+0x3003d0b8 <z_main_stack+64080>:	0x0000000a	0x00000008	0x00000000	0x7ff80000
+0x3003d0c8 <z_main_stack+64096>:	0x300207a0	0x300187a0	0x3001e7a0	0x00001000
+0x3003d0d8 <z_main_stack+64112>:	0x300247a0	0x30025fc9	0x00000005	0x300264c9
+0x3003d0e8 <z_main_stack+64128>:	0x30026249	0x00002000	0x300227a0	0x3001c7a0
+0x3003d0f8 <z_main_stack+64144>:	0x30024fa0	0x7ff80000	0x300177a0	0x0000000a
+0x3003d108 <z_main_stack+64160>:	0x7fffd801	0x3001afa0	0x30016798	0x30018798
+0x3003d118 <z_main_stack+64176>:	0x00000800	0x30016ba0	0x3001d7a0	0x3001cba0
+MSP_EXTENDED:
+0x3002d528 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d538 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d548 <z_idle_stacks+32>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d558 <z_idle_stacks+48>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d568 <z_idle_stacks+64>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d578 <z_idle_stacks+80>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d588 <z_idle_stacks+96>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d598 <z_idle_stacks+112>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d5a8 <z_idle_stacks+128>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d5b8 <z_idle_stacks+144>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d5c8 <z_idle_stacks+160>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002d5d8 <z_idle_stacks+176>:	0x00000000	0x00000000	0x00000000	0x00000000
+#0  z_arm_usage_fault () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S:80
+#1  <signal handler called>
+#2  0x1001217c in fft_store_f64 (dst=<optimized out>, x=<optimized out>) at /Users/seungwon/FALCON/fn-dsa_m55/FFT/6_sign_fft/sign_fpoly.c:28
+#3  fndsa_fpoly_FFT (logn=logn@entry=10, f=f@entry=0x300207a0 <tmp+40960>) at /Users/seungwon/FALCON/fn-dsa_m55/FFT/6_sign_fft/sign_fpoly.c:1286
+#4  0x10011d06 in basis_to_FFT (logn=10, f=0x300167a0 <tmp> "\001", <incomplete sequence \375\001\001>, g=<optimized out>, F=0x300264c9 <sk+1281> "\350\334\316\n\367\024\021\333\375\365\017\030\003\373\357\r\r\376\342\361\022\332 :\336\362\335\024\003\350\351\327\342\t\030\016\356\020\024\366\020\024\325\365\373\363\361.\355\362\b\354\036\371\3702\030\377\017\t\364\032\005\031\t\022\357\376\033\022\352\"\335\025\023\343\372\t\331\n\351\001\352\376\027\016.\v\001", <incomplete sequence \342>, G=0x30024fa0 <tmp+59392> "\033\346\336\025\t\v\002\356) \364\350\030\n\373\006\353\363\310\005\021(\353%\t\031\342\017\025\356\005\350\001\001\347\031\346\b\033\b\365\022\364\371\027\371\025S0\365\024\350A\v\377\333\373\364\343\347\031\364#\365\031\033A!\030\334\362-\346\313\351 \3678\351\326\367\343\031\005\366\036\037\357\032\352.\f\371\362\376\327\341\340&\t\350\f\345\021\3463\3652\f\037\337\377\336\341\376\325\f\325\f\0312\367\323\362\335\362\035\334\350\f\330\342\366\003\363\357\366\004\004\031\347\376\a\001*\001\311!\3757\372\365\335=\330\031=\365\362\326\v0\002 \352\317\373\001\006\257\344\341\376\350\020\005\021\370\326\372\r\027\r\016\345\006\267\374\331\344\a\021\376", dst=0x3001a7a0 <tmp+16384>) at /Users/seungwon/FALCON/fn-dsa_m55/FFT/6_sign_fft/sign_core.c:26
+#5  fndsa_sign_core (logn=<optimized out>, sign_key_fgF=sign_key_fgF@entry=0x30025fc9 <sk+1> "A\364\020\300\037\301w\322C/\003\204", <incomplete sequence \375\071\351>, G=G@entry=0x30024fa0 <tmp+59392> "\033\346\336\025\t\v\002\356) \364\350\030\n\373\006\353\363\310\005\021(\353%\t\031\342\017\025\356\005\350\001\001\347\031\346\b\033\b\365\022\364\371\027\371\025S0\365\024\350A\v\377\333\373\364\343\347\031\364#\365\031\033A!\030\334\362-\346\313\351 \3678\351\326\367\343\031\005\366\036\037\357\032\352.\f\371\362\376\327\341\340&\t\350\f\345\021\3463\3652\f\037\337\377\336\341\376\325\f\325\f\0312\367\323\362\335\362\035\334\350\f\330\342\366\003\363\357\366\004\004\031\347\376\a\001*\001\311!\3757\372\365\335=\330\031=\365\362\326\v0\002 \352\317\373\001\006\257\344\341\376\350\020\005\021\370\326\372\r\027\r\016\345\006\267\374\331\344\a\021\376", mu=mu@entry=0x3003d2f8 <z_main_stack+64656> "\002`eL]\a\276\220\302B\307\364 !Ճ\374\302\213\276r\244\220\240\366潗\263g6\245\370\270G\231\226=\035\305w\026m\225\245\241\272CϾwxS\330u\251@\262;\023\212\205\253k", seed=seed@entry=0x3003d298 <z_main_stack+64560> "\270\244\253\343\210DUY~p\306m\254{\353S\035E\":J*\260\036r^\247\272r\354\303\366{\302잏p\317", <incomplete sequence \375\100>, seed_len=seed_len@entry=40, sig=sig@entry=0x300253c0 <sig> "9{vCb;\t\224\353\371h\026l\032\n24\305\355/\214\262\243}\224z=\031|\327\213\255\001C\037\254\031ml\353\346T^\r\036\261\360\312Vy\177\017\274\377 A\300?\356\316\333\343\356!=D\360ea4_\017\216:\027\301\354=g\264t\004E\207qq\207;\252\235MS︹\214\277\2066\ah6š(ms\331S\217\rc\357\266/\304\327G\341\217\346\321:l4Z\320'\251\250;\372n\260\365.\217[\232\206s\213K\252<\212\341\026\247\270U<\211\3513\344\272j\337Ȅ\253>w\256\323\177\341\f\232\330\367\"i\267\222\023&8c\004Ϙ\204j;%j2Q\207$\354\2148(\243\016\2661"..., tmp=tmp@entry=0x300167a0 <tmp>) at /Users/seungwon/FALCON/fn-dsa_m55/FFT/6_sign_fft/sign_core.c:134
+#6  0x10010fe2 in sign_step1 (logn=<optimized out>, sign_key=0x30025fc8 <sk> "ZA\364\020\300\037\301w\322C/\003\204", <incomplete sequence \375\071\351>, mu=0x3003d2f8 <z_main_stack+64656> "\002`eL]\a\276\220\302B\307\364 !Ճ\374\302\213\276r\244\220\240\366潗\263g6\245\370\270G\231\226=\035\305w\026m\225\245\241\272CϾwxS\330u\251@\262;\023\212\205\253k", seed=0x3003d430 <z_main_stack+64968> "f\n\3614\327\334y߲iG\276w&\216\211\030\361\212\351\357J\342\300i:]\243\037AͶv\345{\231\337˙\264\212q=\217*\371T\031?e\245bHC\256 Z)\021\270\377\323", <incomplete sequence \343\366>, seed_len=40, sig=0x300253c0 <sig> "9{vCb;\t\224\353\371h\026l\032\n24\305\355/\214\262\243}\224z=\031|\327\213\255\001C\037\254\031ml\353\346T^\r\036\261\360\312Vy\177\017\274\377 A\300?\356\316\333\343\356!=D\360ea4_\017\216:\027\301\354=g\264t\004E\207qq\207;\252\235MS︹\214\277\2066\ah6š(ms\331S\217\rc\357\266/\304\327G\341\217\346\321:l4Z\320'\251\250;\372n\260\365.\217[\232\206s\213K\252<\212\341\026\247\270U<\211\3513\344\272j\337Ȅ\253>w\256\323\177\341\f\232\330\367\"i\267\222\023&8c\004Ϙ\204j;%j2Q\207$\354\2148(\243\016\2661"..., tmp=0x300167a0 <tmp>) at /Users/seungwon/FALCON/fn-dsa_m55/FFT/6_sign_fft/sign.c:128
+#7  0x100119d6 in sign_wrapper (weak=0, sign_key=0x30025fc8 <sk> "ZA\364\020\300\037\301w\322C/\003\204", <incomplete sequence \375\071\351>, sign_key_len=<optimized out>, ctx=<optimized out>, ctx_len=<optimized out>, id=0x62a5653f "", hv=0x20ae4348 "", hv_len=0, seed=0x0, seed_len=0, sig=0x0, max_sig_len=0, tmp=0x0, tmp_len=0) at /Users/seungwon/FALCON/fn-dsa_m55/FFT/6_sign_fft/sign.c:240
+#8  fndsa_sign_seeded_temp (sign_key=0x30025fc8 <sk>, sign_key_len=<optimized out>, ctx=<optimized out>, ctx_len=<optimized out>, id=0x300161c0 "", hv=0x30014318, hv_len=7, seed=0x3003d430 <z_main_stack+64968>, seed_len=40, sig=0x300253c0 <sig>, max_sig_len=1280, tmp=0x300167a0 <tmp>, tmp_len=60447) at /Users/seungwon/FALCON/fn-dsa_m55/FFT/6_sign_fft/sign.c:292
+#9  0x10016ade in mlk_test_main (argc=<optimized out>, argv=<optimized out>) at /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/board_signkat.c:28
+#10 0x10016dde in main (argc=<optimized out>, argv=<optimized out>) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:259
+TCM_CONTROL_END=0x0
+TCM_MSCR_END=0x0
+[Inferior 1 (Remote target) detached]
+[stm32n6x.cpu] Polling failed, trying to reexamine
+Failed to read memory at 0x62a5653f
+[stm32n6x.cpu] Examination failed
+[stm32n6x.cpu] Examination failed, GDB will be halted. Polling again in 100ms
+none separate
+[stm32n6x.cpu] Polling failed, trying to reexamine
+Failed to read memory at 0x62a5653f
+[stm32n6x.cpu] Examination failed
+[stm32n6x.cpu] Examination failed, GDB will be halted. Polling again in 300ms
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!
+Failed to read memory at 0x62a5653f
+[stm32n6x.cpu] Execution of event examine-end failed:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/mem_helper.tcl:7: Error: failed to read memory
+Traceback (most recent call last):
+  File "embedded:startup.tcl", line 1471, in ocd_process_reset
+    ocd_process_reset_inner run
+  File "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/target/stm32n6x.cfg", line 151, in ocd_process_reset_inner
+    stm32n6x_enter_debug
+  File "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/target/stm32n6x.cfg", line 104, in stm32n6x_enter_debug
+    stm32n6x_is_secure
+  File "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/target/stm32n6x.cfg", line 67, in stm32n6x_is_secure
+    mrw 0xE000EE08
+  File "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts/mem_helper.tcl", line 7, in mrw
+    read_memory 0xE000EE08 32 1
+unknown/unexpected STLINK status code 0x11
+/var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpxn84y94a.gdb:114: Error in sourced command file:
+Protocol error with Rcmd: 01.
+FAIL!
+Target entered HardFault_Handler
+Fault registers:
+  CFSR=0x00000100
+  HFSR=0x00000002
+  DFSR=0x00000000
+  MMFAR=0x00000000
+  BFAR=0x30040000
+  AFSR=0x10000000
+  SHCSR=0x000f4004
+  CCR=0x00000611
+  MSP=0x3002d528
+  PSP=0x3003cfa8
+  LR=0xffffffcd
+  PC=0x1001a060
+  CFSR bits: IBUSERR
+  HFSR bits: VECTTBL

@@ -1,0 +1,54 @@
+DOCUMENT: m55_slothy.pdf PAGE: 19/46
+
+Abdulrahman, Becker, Kannwischer, Klein 19
+are introduced, and memory access patterns as well as the specific use of instructions are
+unaltered. Even if an implementation carefully used a generally variable-time instruction
+on inputs for which it is known to be constant-time, such as the multiplier on Cortex-M3,
+then SLOTHY would not lead to insecure use of this instruction (generally, however, it
+is advisable to stick to instructions architecturally guaranteed to have data-independent
+timing, e.g. via PSTATE.DIT=1 on Arm architectures).
+Next, consider SLOTHY’s compatibility with stronger side-channel countermeasures: To
+begin, fixed-instruction superoptimization does not undo masking techniques. Pipeline leak-
+age, in turn, is very sensitive to ordering of instructions and the use of registers [MPW21],
+the very aspects that SLOTHY can, by default, freely modify. While a detailed study is out
+of scope for this work, we believe that SLOTHY can overcome even this hurdle: Namely,
+once developers understand the leakage model and derived implementation principles
+well enough, they can distill them into SLOTHY constraints and thereby automate their
+application. As a toy example, [MPW21, Table 6, row ARMN0] shows that a specific
+instance of NXP LPC812M101JDH16 suffers leakage of the Hamming weight of results
+of neighbouring EOR+LDR and EOR+STR instructions. This can be encoded in SLOTHY
+with little effort via additional constraints J.pos != I.pos + 1, one per pair (I,J)
+with (I.type,J.type) ∈{(EOR,LDR),(EOR,STR)}(similar to the modelling ofST-LD-
+hazards in Section 6.2). This way, SLOTHY will avoid the leaky pattern. Further, if not all
+such pairs require protection, one can add (functionally transparent) instruction wrappers
+distinguishing instructions operating on private vs. public data, and limit constraints
+accordingly. Finally, we similarly expect SLOTHY to be compatible with Spectre/Meltdown
+countermeasures like [SBG+23]: By modelling speculation-stopping instructions such as
+fences as reordering barriers in the constraint model of SLOTHY (that is, in the language
+of Section 4, constraining that I.pos <J.pos if either I or J is a speculation barrier
+and I comes before J in the program input), the mitigations would be upheld.
+Overall, we believe that constraint-based fixed-instruction superoptimization is well-
+placed to act on cryptographic code of various security levels. We see this as an advantage
+oversynthesizingsuperoptimization, forwhichthecompatibilitywithsecureimplementation
+techniques appears less clear.
+5.2 Soundness
+Soundness means that SLOTHY emits code which is functionally equivalent to the original
+code. Considering the complexity of the components involved — SLOTHY itself, its
+implementation, and the underlying constraint solver — it is important to have an approach
+to establishing soundness that does not require trust in either of those components. In this
+section, we sketch such an approach, similar to the “verified transformers” of [BGL+20] —
+full elaboration and mechanization, however, is left for future work.
+The essential idea is that for fixed-instruction optimizations, correctness should be a
+consequence of the produced code having a computational flow graph (CFG) isomorphic to
+that of the input code. Moreover, such an isomorphism can be checked for efficiently once
+provided with the underlying permutation of the optimization, which is part of the solver’s
+output. In other words, a CFG-preserving optimization step can be verified independently
+of the constraint modelling approach, the implementation, and the underlying solver. Our
+SLOTHY implementation performs such a CFG-isomorphism check before emitting the
+optimized code, but independent verification tooling should be implemented.
+There are some non-trivial details to be considered in the above blueprint, which we
+briefly outline. First, the approach assumes that the semantics of some code is a function
+of the code’s CFG, which requires the CFG to e.g. at least include reads/writes to memory.
+However, as explained in Section 4.12, SLOTHY does not consider dependencies through
+memory and elides it from the CFG. This is a valid transformation under the assumption
+that the code under consideration does indeed not have dependencies through memory,

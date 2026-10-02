@@ -1,0 +1,606 @@
+
+/Users/seungwon/FALCON/keccak_test_batch4/dispatch_compare/validation/build/A_four_only_keygen_control/CMakeFiles/app.dir/profile.c.obj:     file format elf32-littlearm
+
+
+Disassembly of section .text.profile_end.part.0:
+
+00000000 <profile_end.part.0>:
+   0:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+   4:	f7ff fffe 	bl	0 <sys_clock_cycle_get_64>
+   8:	460f      	mov	r7, r1
+   a:	4a46      	ldr	r2, [pc, #280]	@ (124 <profile_end.part.0+0x124>)
+   c:	4d46      	ldr	r5, [pc, #280]	@ (128 <profile_end.part.0+0x128>)
+   e:	e9d2 3100 	ldrd	r3, r1, [r2]
+  12:	4a46      	ldr	r2, [pc, #280]	@ (12c <profile_end.part.0+0x12c>)
+  14:	ebb0 0c03 	subs.w	ip, r0, r3
+  18:	6812      	ldr	r2, [r2, #0]
+  1a:	682e      	ldr	r6, [r5, #0]
+  1c:	eb67 0e01 	sbc.w	lr, r7, r1
+  20:	4943      	ldr	r1, [pc, #268]	@ (130 <profile_end.part.0+0x130>)
+  22:	f852 3036 	ldr.w	r3, [r2, r6, lsl #3]
+  26:	680d      	ldr	r5, [r1, #0]
+  28:	2400      	movs	r4, #0
+  2a:	1b5b      	subs	r3, r3, r5
+  2c:	684d      	ldr	r5, [r1, #4]
+  2e:	eb02 01c6 	add.w	r1, r2, r6, lsl #3
+  32:	f8d1 8004 	ldr.w	r8, [r1, #4]
+  36:	eb68 0505 	sbc.w	r5, r8, r5
+  3a:	181b      	adds	r3, r3, r0
+  3c:	eb45 0507 	adc.w	r5, r5, r7
+  40:	f842 3036 	str.w	r3, [r2, r6, lsl #3]
+  44:	604d      	str	r5, [r1, #4]
+  46:	f8d2 0100 	ldr.w	r0, [r2, #256]	@ 0x100
+  4a:	f8d2 1104 	ldr.w	r1, [r2, #260]	@ 0x104
+  4e:	6895      	ldr	r5, [r2, #8]
+  50:	6813      	ldr	r3, [r2, #0]
+  52:	eb1c 0000 	adds.w	r0, ip, r0
+  56:	68d6      	ldr	r6, [r2, #12]
+  58:	eb4e 0101 	adc.w	r1, lr, r1
+  5c:	195b      	adds	r3, r3, r5
+  5e:	6855      	ldr	r5, [r2, #4]
+  60:	f8c2 0100 	str.w	r0, [r2, #256]	@ 0x100
+  64:	eb45 0606 	adc.w	r6, r5, r6
+  68:	6915      	ldr	r5, [r2, #16]
+  6a:	f8c2 1104 	str.w	r1, [r2, #260]	@ 0x104
+  6e:	195b      	adds	r3, r3, r5
+  70:	6955      	ldr	r5, [r2, #20]
+  72:	eb46 0605 	adc.w	r6, r6, r5
+  76:	6995      	ldr	r5, [r2, #24]
+  78:	195b      	adds	r3, r3, r5
+  7a:	69d5      	ldr	r5, [r2, #28]
+  7c:	eb46 0605 	adc.w	r6, r6, r5
+  80:	6a15      	ldr	r5, [r2, #32]
+  82:	195b      	adds	r3, r3, r5
+  84:	f8d2 5188 	ldr.w	r5, [r2, #392]	@ 0x188
+  88:	f105 0501 	add.w	r5, r5, #1
+  8c:	f8c2 5188 	str.w	r5, [r2, #392]	@ 0x188
+  90:	6a55      	ldr	r5, [r2, #36]	@ 0x24
+  92:	eb46 0605 	adc.w	r6, r6, r5
+  96:	6a95      	ldr	r5, [r2, #40]	@ 0x28
+  98:	195b      	adds	r3, r3, r5
+  9a:	6ad5      	ldr	r5, [r2, #44]	@ 0x2c
+  9c:	eb46 0605 	adc.w	r6, r6, r5
+  a0:	6b15      	ldr	r5, [r2, #48]	@ 0x30
+  a2:	195b      	adds	r3, r3, r5
+  a4:	4d23      	ldr	r5, [pc, #140]	@ (134 <profile_end.part.0+0x134>)
+  a6:	602c      	str	r4, [r5, #0]
+  a8:	6b54      	ldr	r4, [r2, #52]	@ 0x34
+  aa:	6b95      	ldr	r5, [r2, #56]	@ 0x38
+  ac:	eb46 0404 	adc.w	r4, r6, r4
+  b0:	195b      	adds	r3, r3, r5
+  b2:	6bd5      	ldr	r5, [r2, #60]	@ 0x3c
+  b4:	eb44 0405 	adc.w	r4, r4, r5
+  b8:	6c15      	ldr	r5, [r2, #64]	@ 0x40
+  ba:	195b      	adds	r3, r3, r5
+  bc:	6c55      	ldr	r5, [r2, #68]	@ 0x44
+  be:	eb44 0405 	adc.w	r4, r4, r5
+  c2:	6c95      	ldr	r5, [r2, #72]	@ 0x48
+  c4:	195b      	adds	r3, r3, r5
+  c6:	6cd5      	ldr	r5, [r2, #76]	@ 0x4c
+  c8:	eb44 0405 	adc.w	r4, r4, r5
+  cc:	6d15      	ldr	r5, [r2, #80]	@ 0x50
+  ce:	195b      	adds	r3, r3, r5
+  d0:	6d55      	ldr	r5, [r2, #84]	@ 0x54
+  d2:	eb44 0405 	adc.w	r4, r4, r5
+  d6:	6d95      	ldr	r5, [r2, #88]	@ 0x58
+  d8:	195b      	adds	r3, r3, r5
+  da:	6dd5      	ldr	r5, [r2, #92]	@ 0x5c
+  dc:	eb44 0405 	adc.w	r4, r4, r5
+  e0:	6e15      	ldr	r5, [r2, #96]	@ 0x60
+  e2:	195b      	adds	r3, r3, r5
+  e4:	6e55      	ldr	r5, [r2, #100]	@ 0x64
+  e6:	eb44 0405 	adc.w	r4, r4, r5
+  ea:	6e95      	ldr	r5, [r2, #104]	@ 0x68
+  ec:	195b      	adds	r3, r3, r5
+  ee:	6ed5      	ldr	r5, [r2, #108]	@ 0x6c
+  f0:	eb44 0405 	adc.w	r4, r4, r5
+  f4:	6f15      	ldr	r5, [r2, #112]	@ 0x70
+  f6:	195b      	adds	r3, r3, r5
+  f8:	6f55      	ldr	r5, [r2, #116]	@ 0x74
+  fa:	eb44 0405 	adc.w	r4, r4, r5
+  fe:	6f95      	ldr	r5, [r2, #120]	@ 0x78
+ 100:	6fd2      	ldr	r2, [r2, #124]	@ 0x7c
+ 102:	195b      	adds	r3, r3, r5
+ 104:	eb44 0202 	adc.w	r2, r4, r2
+ 108:	4291      	cmp	r1, r2
+ 10a:	bf08      	it	eq
+ 10c:	4298      	cmpeq	r0, r3
+ 10e:	d004      	beq.n	11a <profile_end.part.0+0x11a>
+ 110:	4a09      	ldr	r2, [pc, #36]	@ (138 <profile_end.part.0+0x138>)
+ 112:	6813      	ldr	r3, [r2, #0]
+ 114:	f043 0310 	orr.w	r3, r3, #16
+ 118:	6013      	str	r3, [r2, #0]
+ 11a:	4660      	mov	r0, ip
+ 11c:	4671      	mov	r1, lr
+ 11e:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+ 122:	bf00      	nop
+	...
+
+Disassembly of section .text.profile_mask:
+
+00000000 <profile_mask>:
+   0:	4b0c      	ldr	r3, [pc, #48]	@ (34 <profile_mask+0x34>)
+   2:	681b      	ldr	r3, [r3, #0]
+   4:	b1a3      	cbz	r3, 30 <profile_mask+0x30>
+   6:	b198      	cbz	r0, 30 <profile_mask+0x30>
+   8:	f3c0 0180 	ubfx	r1, r0, #2, #1
+   c:	f3c0 0340 	ubfx	r3, r0, #1, #1
+  10:	4a09      	ldr	r2, [pc, #36]	@ (38 <profile_mask+0x38>)
+  12:	440b      	add	r3, r1
+  14:	f000 0101 	and.w	r1, r0, #1
+  18:	6812      	ldr	r2, [r2, #0]
+  1a:	440b      	add	r3, r1
+  1c:	f3c0 00c0 	ubfx	r0, r0, #3, #1
+  20:	4418      	add	r0, r3
+  22:	eb02 0380 	add.w	r3, r2, r0, lsl #2
+  26:	f8d3 218c 	ldr.w	r2, [r3, #396]	@ 0x18c
+  2a:	3201      	adds	r2, #1
+  2c:	f8c3 218c 	str.w	r2, [r3, #396]	@ 0x18c
+  30:	4770      	bx	lr
+  32:	bf00      	nop
+	...
+
+Disassembly of section .text.profile_reset:
+
+00000000 <profile_reset>:
+   0:	f44f 62d0 	mov.w	r2, #1664	@ 0x680
+   4:	2100      	movs	r1, #0
+   6:	b510      	push	{r4, lr}
+   8:	4806      	ldr	r0, [pc, #24]	@ (24 <profile_reset+0x24>)
+   a:	f7ff fffe 	bl	0 <memset>
+   e:	2300      	movs	r3, #0
+  10:	4c05      	ldr	r4, [pc, #20]	@ (28 <profile_reset+0x28>)
+  12:	4806      	ldr	r0, [pc, #24]	@ (2c <profile_reset+0x2c>)
+  14:	4906      	ldr	r1, [pc, #24]	@ (30 <profile_reset+0x30>)
+  16:	4a07      	ldr	r2, [pc, #28]	@ (34 <profile_reset+0x34>)
+  18:	6023      	str	r3, [r4, #0]
+  1a:	6003      	str	r3, [r0, #0]
+  1c:	600b      	str	r3, [r1, #0]
+  1e:	6013      	str	r3, [r2, #0]
+  20:	bd10      	pop	{r4, pc}
+  22:	bf00      	nop
+	...
+
+Disassembly of section .text.profile_begin:
+
+00000000 <profile_begin>:
+   0:	b510      	push	{r4, lr}
+   2:	f8df e05c 	ldr.w	lr, [pc, #92]	@ 60 <profile_begin+0x60>
+   6:	f8de c000 	ldr.w	ip, [lr]
+   a:	f1bc 0f00 	cmp.w	ip, #0
+   e:	d121      	bne.n	54 <profile_begin+0x54>
+  10:	4311      	orrs	r1, r2
+  12:	4301      	orrs	r1, r0
+  14:	2901      	cmp	r1, #1
+  16:	d81d      	bhi.n	54 <profile_begin+0x54>
+  18:	f44f 7350 	mov.w	r3, #832	@ 0x340
+  1c:	fb00 f303 	mul.w	r3, r0, r3
+  20:	f44f 70d0 	mov.w	r0, #416	@ 0x1a0
+  24:	2401      	movs	r4, #1
+  26:	fb00 3302 	mla	r3, r0, r2, r3
+  2a:	480e      	ldr	r0, [pc, #56]	@ (64 <profile_begin+0x64>)
+  2c:	490e      	ldr	r1, [pc, #56]	@ (68 <profile_begin+0x68>)
+  2e:	4403      	add	r3, r0
+  30:	4a0e      	ldr	r2, [pc, #56]	@ (6c <profile_begin+0x6c>)
+  32:	600b      	str	r3, [r1, #0]
+  34:	4b0e      	ldr	r3, [pc, #56]	@ (70 <profile_begin+0x70>)
+  36:	f8c2 c000 	str.w	ip, [r2]
+  3a:	f8c3 c000 	str.w	ip, [r3]
+  3e:	f8ce 4000 	str.w	r4, [lr]
+  42:	f7ff fffe 	bl	0 <sys_clock_cycle_get_64>
+  46:	4a0b      	ldr	r2, [pc, #44]	@ (74 <profile_begin+0x74>)
+  48:	4b0b      	ldr	r3, [pc, #44]	@ (78 <profile_begin+0x78>)
+  4a:	e9c2 0100 	strd	r0, r1, [r2]
+  4e:	e9c3 0100 	strd	r0, r1, [r3]
+  52:	bd10      	pop	{r4, pc}
+  54:	4a09      	ldr	r2, [pc, #36]	@ (7c <profile_begin+0x7c>)
+  56:	6813      	ldr	r3, [r2, #0]
+  58:	f043 0301 	orr.w	r3, r3, #1
+  5c:	6013      	str	r3, [r2, #0]
+  5e:	bd10      	pop	{r4, pc}
+	...
+
+Disassembly of section .text.profile_enter:
+
+00000000 <profile_enter>:
+   0:	e92d 43f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, lr}
+   4:	4b35      	ldr	r3, [pc, #212]	@ (dc <profile_enter+0xdc>)
+   6:	4a36      	ldr	r2, [pc, #216]	@ (e0 <profile_enter+0xe0>)
+   8:	6819      	ldr	r1, [r3, #0]
+   a:	6812      	ldr	r2, [r2, #0]
+   c:	4603      	mov	r3, r0
+   e:	b083      	sub	sp, #12
+  10:	b109      	cbz	r1, 16 <profile_enter+0x16>
+  12:	2801      	cmp	r0, #1
+  14:	d055      	beq.n	c2 <profile_enter+0xc2>
+  16:	b912      	cbnz	r2, 1e <profile_enter+0x1e>
+  18:	b003      	add	sp, #12
+  1a:	e8bd 83f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+  1e:	9301      	str	r3, [sp, #4]
+  20:	f7ff fffe 	bl	0 <sys_clock_cycle_get_64>
+  24:	9b01      	ldr	r3, [sp, #4]
+  26:	4607      	mov	r7, r0
+  28:	1e5a      	subs	r2, r3, #1
+  2a:	2a0e      	cmp	r2, #14
+  2c:	4689      	mov	r9, r1
+  2e:	d840      	bhi.n	b2 <profile_enter+0xb2>
+  30:	4e2c      	ldr	r6, [pc, #176]	@ (e4 <profile_enter+0xe4>)
+  32:	f8d6 e000 	ldr.w	lr, [r6]
+  36:	f1be 0f10 	cmp.w	lr, #16
+  3a:	d03a      	beq.n	b2 <profile_enter+0xb2>
+  3c:	492a      	ldr	r1, [pc, #168]	@ (e8 <profile_enter+0xe8>)
+  3e:	4a2b      	ldr	r2, [pc, #172]	@ (ec <profile_enter+0xec>)
+  40:	6808      	ldr	r0, [r1, #0]
+  42:	6812      	ldr	r2, [r2, #0]
+  44:	600b      	str	r3, [r1, #0]
+  46:	492a      	ldr	r1, [pc, #168]	@ (f0 <profile_enter+0xf0>)
+  48:	f852 4030 	ldr.w	r4, [r2, r0, lsl #3]
+  4c:	680d      	ldr	r5, [r1, #0]
+  4e:	600f      	str	r7, [r1, #0]
+  50:	1b65      	subs	r5, r4, r5
+  52:	463c      	mov	r4, r7
+  54:	464f      	mov	r7, r9
+  56:	eb02 0cc0 	add.w	ip, r2, r0, lsl #3
+  5a:	f8d1 8004 	ldr.w	r8, [r1, #4]
+  5e:	f8c1 9004 	str.w	r9, [r1, #4]
+  62:	f8dc 1004 	ldr.w	r1, [ip, #4]
+  66:	eb61 0108 	sbc.w	r1, r1, r8
+  6a:	192d      	adds	r5, r5, r4
+  6c:	eb41 0107 	adc.w	r1, r1, r7
+  70:	f842 5030 	str.w	r5, [r2, r0, lsl #3]
+  74:	f8cc 1004 	str.w	r1, [ip, #4]
+  78:	eb02 0c80 	add.w	ip, r2, r0, lsl #2
+  7c:	f8dc 1148 	ldr.w	r1, [ip, #328]	@ 0x148
+  80:	eb02 0283 	add.w	r2, r2, r3, lsl #2
+  84:	3101      	adds	r1, #1
+  86:	f8cc 1148 	str.w	r1, [ip, #328]	@ 0x148
+  8a:	f8d2 1108 	ldr.w	r1, [r2, #264]	@ 0x108
+  8e:	3101      	adds	r1, #1
+  90:	f8c2 1108 	str.w	r1, [r2, #264]	@ 0x108
+  94:	4a17      	ldr	r2, [pc, #92]	@ (f4 <profile_enter+0xf4>)
+  96:	ea4f 110e 	mov.w	r1, lr, lsl #4
+  9a:	5050      	str	r0, [r2, r1]
+  9c:	eb02 120e 	add.w	r2, r2, lr, lsl #4
+  a0:	6053      	str	r3, [r2, #4]
+  a2:	f10e 0301 	add.w	r3, lr, #1
+  a6:	e9c2 4902 	strd	r4, r9, [r2, #8]
+  aa:	6033      	str	r3, [r6, #0]
+  ac:	b003      	add	sp, #12
+  ae:	e8bd 83f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+  b2:	4a11      	ldr	r2, [pc, #68]	@ (f8 <profile_enter+0xf8>)
+  b4:	6813      	ldr	r3, [r2, #0]
+  b6:	f043 0302 	orr.w	r3, r3, #2
+  ba:	6013      	str	r3, [r2, #0]
+  bc:	b003      	add	sp, #12
+  be:	e8bd 83f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+  c2:	480e      	ldr	r0, [pc, #56]	@ (fc <profile_enter+0xfc>)
+  c4:	6801      	ldr	r1, [r0, #0]
+  c6:	3101      	adds	r1, #1
+  c8:	6001      	str	r1, [r0, #0]
+  ca:	2a00      	cmp	r2, #0
+  cc:	d0a4      	beq.n	18 <profile_enter+0x18>
+  ce:	9301      	str	r3, [sp, #4]
+  d0:	f7ff fffe 	bl	0 <sys_clock_cycle_get_64>
+  d4:	9b01      	ldr	r3, [sp, #4]
+  d6:	4607      	mov	r7, r0
+  d8:	4689      	mov	r9, r1
+  da:	e7a9      	b.n	30 <profile_enter+0x30>
+	...
+
+Disassembly of section .text.profile_watch_begin:
+
+00000000 <profile_watch_begin>:
+   0:	2001      	movs	r0, #1
+   2:	2200      	movs	r2, #0
+   4:	4902      	ldr	r1, [pc, #8]	@ (10 <profile_watch_begin+0x10>)
+   6:	4b03      	ldr	r3, [pc, #12]	@ (14 <profile_watch_begin+0x14>)
+   8:	6008      	str	r0, [r1, #0]
+   a:	601a      	str	r2, [r3, #0]
+   c:	4770      	bx	lr
+   e:	bf00      	nop
+	...
+
+Disassembly of section .text.profile_watch_end:
+
+00000000 <profile_watch_end>:
+   0:	2200      	movs	r2, #0
+   2:	4b02      	ldr	r3, [pc, #8]	@ (c <profile_watch_end+0xc>)
+   4:	4902      	ldr	r1, [pc, #8]	@ (10 <profile_watch_end+0x10>)
+   6:	601a      	str	r2, [r3, #0]
+   8:	6808      	ldr	r0, [r1, #0]
+   a:	4770      	bx	lr
+	...
+
+Disassembly of section .text.profile_leave:
+
+00000000 <profile_leave>:
+   0:	4b27      	ldr	r3, [pc, #156]	@ (a0 <profile_leave+0xa0>)
+   2:	681b      	ldr	r3, [r3, #0]
+   4:	b903      	cbnz	r3, 8 <profile_leave+0x8>
+   6:	4770      	bx	lr
+   8:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+   c:	4605      	mov	r5, r0
+   e:	f7ff fffe 	bl	0 <sys_clock_cycle_get_64>
+  12:	4a24      	ldr	r2, [pc, #144]	@ (a4 <profile_leave+0xa4>)
+  14:	6813      	ldr	r3, [r2, #0]
+  16:	b13b      	cbz	r3, 28 <profile_leave+0x28>
+  18:	4c23      	ldr	r4, [pc, #140]	@ (a8 <profile_leave+0xa8>)
+  1a:	3b01      	subs	r3, #1
+  1c:	eb04 1c03 	add.w	ip, r4, r3, lsl #4
+  20:	f8dc e004 	ldr.w	lr, [ip, #4]
+  24:	45ae      	cmp	lr, r5
+  26:	d006      	beq.n	36 <profile_leave+0x36>
+  28:	4a20      	ldr	r2, [pc, #128]	@ (ac <profile_leave+0xac>)
+  2a:	6813      	ldr	r3, [r2, #0]
+  2c:	f043 0304 	orr.w	r3, r3, #4
+  30:	6013      	str	r3, [r2, #0]
+  32:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+  36:	6013      	str	r3, [r2, #0]
+  38:	011a      	lsls	r2, r3, #4
+  3a:	4b1b      	ldr	r3, [pc, #108]	@ (a8 <profile_leave+0xa8>)
+  3c:	589c      	ldr	r4, [r3, r2]
+  3e:	4b1c      	ldr	r3, [pc, #112]	@ (b0 <profile_leave+0xb0>)
+  40:	4a1c      	ldr	r2, [pc, #112]	@ (b4 <profile_leave+0xb4>)
+  42:	681d      	ldr	r5, [r3, #0]
+  44:	6816      	ldr	r6, [r2, #0]
+  46:	eb05 03ce 	add.w	r3, r5, lr, lsl #3
+  4a:	f8df e06c 	ldr.w	lr, [pc, #108]	@ b8 <profile_leave+0xb8>
+  4e:	6014      	str	r4, [r2, #0]
+  50:	f855 2036 	ldr.w	r2, [r5, r6, lsl #3]
+  54:	f8de 4000 	ldr.w	r4, [lr]
+  58:	eb05 07c6 	add.w	r7, r5, r6, lsl #3
+  5c:	1b12      	subs	r2, r2, r4
+  5e:	f8de 8004 	ldr.w	r8, [lr, #4]
+  62:	687c      	ldr	r4, [r7, #4]
+  64:	f8ce 1004 	str.w	r1, [lr, #4]
+  68:	f8ce 0000 	str.w	r0, [lr]
+  6c:	eb64 0e08 	sbc.w	lr, r4, r8
+  70:	1812      	adds	r2, r2, r0
+  72:	f845 2036 	str.w	r2, [r5, r6, lsl #3]
+  76:	eb4e 0201 	adc.w	r2, lr, r1
+  7a:	607a      	str	r2, [r7, #4]
+  7c:	f8dc 4008 	ldr.w	r4, [ip, #8]
+  80:	f8d3 2080 	ldr.w	r2, [r3, #128]	@ 0x80
+  84:	f8dc c00c 	ldr.w	ip, [ip, #12]
+  88:	1b12      	subs	r2, r2, r4
+  8a:	f8d3 4084 	ldr.w	r4, [r3, #132]	@ 0x84
+  8e:	eb64 0c0c 	sbc.w	ip, r4, ip
+  92:	1812      	adds	r2, r2, r0
+  94:	eb4c 0101 	adc.w	r1, ip, r1
+  98:	e9c3 2120 	strd	r2, r1, [r3, #128]	@ 0x80
+  9c:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+	...
+
+Disassembly of section .text.profile_end:
+
+00000000 <profile_end>:
+   0:	4b07      	ldr	r3, [pc, #28]	@ (20 <profile_end+0x20>)
+   2:	681b      	ldr	r3, [r3, #0]
+   4:	b113      	cbz	r3, c <profile_end+0xc>
+   6:	4b07      	ldr	r3, [pc, #28]	@ (24 <profile_end+0x24>)
+   8:	681b      	ldr	r3, [r3, #0]
+   a:	b13b      	cbz	r3, 1c <profile_end+0x1c>
+   c:	4a06      	ldr	r2, [pc, #24]	@ (28 <profile_end+0x28>)
+   e:	2000      	movs	r0, #0
+  10:	6813      	ldr	r3, [r2, #0]
+  12:	2100      	movs	r1, #0
+  14:	f043 0308 	orr.w	r3, r3, #8
+  18:	6013      	str	r3, [r2, #0]
+  1a:	4770      	bx	lr
+  1c:	f7ff bffe 	b.w	0 <profile_end>
+	...
+
+Disassembly of section .text.profile_calibrate:
+
+00000000 <profile_calibrate>:
+   0:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+   4:	f44f 62d0 	mov.w	r2, #1664	@ 0x680
+   8:	2100      	movs	r1, #0
+   a:	4859      	ldr	r0, [pc, #356]	@ (170 <profile_calibrate+0x170>)
+   c:	b089      	sub	sp, #36	@ 0x24
+   e:	f7ff fffe 	bl	0 <memset>
+  12:	2300      	movs	r3, #0
+  14:	f8df 815c 	ldr.w	r8, [pc, #348]	@ 174 <profile_calibrate+0x174>
+  18:	f8df a15c 	ldr.w	sl, [pc, #348]	@ 178 <profile_calibrate+0x178>
+  1c:	f8df 915c 	ldr.w	r9, [pc, #348]	@ 17c <profile_calibrate+0x17c>
+  20:	4c57      	ldr	r4, [pc, #348]	@ (180 <profile_calibrate+0x180>)
+  22:	f44f 657a 	mov.w	r5, #4000	@ 0xfa0
+  26:	f8df b148 	ldr.w	fp, [pc, #328]	@ 170 <profile_calibrate+0x170>
+  2a:	4f56      	ldr	r7, [pc, #344]	@ (184 <profile_calibrate+0x184>)
+  2c:	4e56      	ldr	r6, [pc, #344]	@ (188 <profile_calibrate+0x188>)
+  2e:	f8c8 3000 	str.w	r3, [r8]
+  32:	f8ca 3000 	str.w	r3, [sl]
+  36:	f8c9 3000 	str.w	r3, [r9]
+  3a:	6023      	str	r3, [r4, #0]
+  3c:	b9e3      	cbnz	r3, 78 <profile_calibrate+0x78>
+  3e:	2201      	movs	r2, #1
+  40:	f8ca 3000 	str.w	r3, [sl]
+  44:	f8c9 3000 	str.w	r3, [r9]
+  48:	6022      	str	r2, [r4, #0]
+  4a:	f8c7 b000 	str.w	fp, [r7]
+  4e:	f7ff fffe 	bl	0 <sys_clock_cycle_get_64>
+  52:	4b4e      	ldr	r3, [pc, #312]	@ (18c <profile_calibrate+0x18c>)
+  54:	e9c6 0100 	strd	r0, r1, [r6]
+  58:	e9c3 0100 	strd	r0, r1, [r3]
+  5c:	f7ff fffe 	bl	0 <profile_empty>
+  60:	6823      	ldr	r3, [r4, #0]
+  62:	b1a3      	cbz	r3, 8e <profile_calibrate+0x8e>
+  64:	f8d9 3000 	ldr.w	r3, [r9]
+  68:	b98b      	cbnz	r3, 8e <profile_calibrate+0x8e>
+  6a:	f7ff fffe 	bl	0 <profile_calibrate>
+  6e:	3d01      	subs	r5, #1
+  70:	d015      	beq.n	9e <profile_calibrate+0x9e>
+  72:	6823      	ldr	r3, [r4, #0]
+  74:	2b00      	cmp	r3, #0
+  76:	d0e2      	beq.n	3e <profile_calibrate+0x3e>
+  78:	f8d8 3000 	ldr.w	r3, [r8]
+  7c:	f043 0301 	orr.w	r3, r3, #1
+  80:	f8c8 3000 	str.w	r3, [r8]
+  84:	f7ff fffe 	bl	0 <profile_empty>
+  88:	6823      	ldr	r3, [r4, #0]
+  8a:	2b00      	cmp	r3, #0
+  8c:	d1ea      	bne.n	64 <profile_calibrate+0x64>
+  8e:	f8d8 3000 	ldr.w	r3, [r8]
+  92:	3d01      	subs	r5, #1
+  94:	f043 0308 	orr.w	r3, r3, #8
+  98:	f8c8 3000 	str.w	r3, [r8]
+  9c:	d1e9      	bne.n	72 <profile_calibrate+0x72>
+  9e:	f44f 62d0 	mov.w	r2, #1664	@ 0x680
+  a2:	e9db 6740 	ldrd	r6, r7, [fp, #256]	@ 0x100
+  a6:	4629      	mov	r1, r5
+  a8:	4831      	ldr	r0, [pc, #196]	@ (170 <profile_calibrate+0x170>)
+  aa:	e9cd 6704 	strd	r6, r7, [sp, #16]
+  ae:	e9db 6702 	ldrd	r6, r7, [fp, #8]
+  b2:	e9cd 6706 	strd	r6, r7, [sp, #24]
+  b6:	f7ff fffe 	bl	0 <memset>
+  ba:	f44f 677a 	mov.w	r7, #4000	@ 0xfa0
+  be:	4e32      	ldr	r6, [pc, #200]	@ (188 <profile_calibrate+0x188>)
+  c0:	f8c8 5000 	str.w	r5, [r8]
+  c4:	f8ca 5000 	str.w	r5, [sl]
+  c8:	f8c9 5000 	str.w	r5, [r9]
+  cc:	6025      	str	r5, [r4, #0]
+  ce:	b9ed      	cbnz	r5, 10c <profile_calibrate+0x10c>
+  d0:	2301      	movs	r3, #1
+  d2:	4a2c      	ldr	r2, [pc, #176]	@ (184 <profile_calibrate+0x184>)
+  d4:	6023      	str	r3, [r4, #0]
+  d6:	f8c2 b000 	str.w	fp, [r2]
+  da:	f8ca 5000 	str.w	r5, [sl]
+  de:	f8c9 5000 	str.w	r5, [r9]
+  e2:	f7ff fffe 	bl	0 <sys_clock_cycle_get_64>
+  e6:	4b29      	ldr	r3, [pc, #164]	@ (18c <profile_calibrate+0x18c>)
+  e8:	e9c6 0100 	strd	r0, r1, [r6]
+  ec:	e9c3 0100 	strd	r0, r1, [r3]
+  f0:	f7ff fffe 	bl	0 <profile_raw_empty>
+  f4:	6823      	ldr	r3, [r4, #0]
+  f6:	b1a3      	cbz	r3, 122 <profile_calibrate+0x122>
+  f8:	f8d9 3000 	ldr.w	r3, [r9]
+  fc:	b98b      	cbnz	r3, 122 <profile_calibrate+0x122>
+  fe:	f7ff fffe 	bl	0 <profile_calibrate>
+ 102:	3f01      	subs	r7, #1
+ 104:	d015      	beq.n	132 <profile_calibrate+0x132>
+ 106:	6825      	ldr	r5, [r4, #0]
+ 108:	2d00      	cmp	r5, #0
+ 10a:	d0e1      	beq.n	d0 <profile_calibrate+0xd0>
+ 10c:	f8d8 3000 	ldr.w	r3, [r8]
+ 110:	f043 0301 	orr.w	r3, r3, #1
+ 114:	f8c8 3000 	str.w	r3, [r8]
+ 118:	f7ff fffe 	bl	0 <profile_raw_empty>
+ 11c:	6823      	ldr	r3, [r4, #0]
+ 11e:	2b00      	cmp	r3, #0
+ 120:	d1ea      	bne.n	f8 <profile_calibrate+0xf8>
+ 122:	f8d8 3000 	ldr.w	r3, [r8]
+ 126:	3f01      	subs	r7, #1
+ 128:	f043 0308 	orr.w	r3, r3, #8
+ 12c:	f8c8 3000 	str.w	r3, [r8]
+ 130:	d1e9      	bne.n	106 <profile_calibrate+0x106>
+ 132:	e9dd 2306 	ldrd	r2, r3, [sp, #24]
+ 136:	e9cd 2300 	strd	r2, r3, [sp]
+ 13a:	e9dd 2304 	ldrd	r2, r3, [sp, #16]
+ 13e:	e9db 0140 	ldrd	r0, r1, [fp, #256]	@ 0x100
+ 142:	e9cd 0102 	strd	r0, r1, [sp, #8]
+ 146:	f44f 617a 	mov.w	r1, #4000	@ 0xfa0
+ 14a:	4811      	ldr	r0, [pc, #68]	@ (190 <profile_calibrate+0x190>)
+ 14c:	f7ff fffe 	bl	0 <__wrap_printf>
+ 150:	f44f 62d0 	mov.w	r2, #1664	@ 0x680
+ 154:	4639      	mov	r1, r7
+ 156:	4806      	ldr	r0, [pc, #24]	@ (170 <profile_calibrate+0x170>)
+ 158:	f7ff fffe 	bl	0 <memset>
+ 15c:	f8c8 7000 	str.w	r7, [r8]
+ 160:	f8ca 7000 	str.w	r7, [sl]
+ 164:	f8c9 7000 	str.w	r7, [r9]
+ 168:	6027      	str	r7, [r4, #0]
+ 16a:	b009      	add	sp, #36	@ 0x24
+ 16c:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
+	...
+
+Disassembly of section .text.profile_report:
+
+00000000 <profile_report>:
+   0:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+   4:	2700      	movs	r7, #0
+   6:	4d38      	ldr	r5, [pc, #224]	@ (e8 <profile_report+0xe8>)
+   8:	f8df 90e0 	ldr.w	r9, [pc, #224]	@ ec <profile_report+0xec>
+   c:	b08b      	sub	sp, #44	@ 0x2c
+   e:	f44f 7800 	mov.w	r8, #512	@ 0x200
+  12:	46aa      	mov	sl, r5
+  14:	2600      	movs	r6, #0
+  16:	46ab      	mov	fp, r5
+  18:	fa08 f807 	lsl.w	r8, r8, r7
+  1c:	9709      	str	r7, [sp, #36]	@ 0x24
+  1e:	f8da 3190 	ldr.w	r3, [sl, #400]	@ 0x190
+  22:	e9da 0142 	ldrd	r0, r1, [sl, #264]	@ 0x108
+  26:	2200      	movs	r2, #0
+  28:	e9cd 0102 	strd	r0, r1, [sp, #8]
+  2c:	9300      	str	r3, [sp, #0]
+  2e:	4641      	mov	r1, r8
+  30:	4633      	mov	r3, r6
+  32:	482f      	ldr	r0, [pc, #188]	@ (f0 <profile_report+0xf0>)
+  34:	f7ff fffe 	bl	0 <__wrap_printf>
+  38:	4657      	mov	r7, sl
+  3a:	4d2e      	ldr	r5, [pc, #184]	@ (f4 <profile_report+0xf4>)
+  3c:	f50a 7486 	add.w	r4, sl, #268	@ 0x10c
+  40:	e9d7 2322 	ldrd	r2, r3, [r7, #136]	@ 0x88
+  44:	e9cd 2306 	strd	r2, r3, [sp, #24]
+  48:	6c62      	ldr	r2, [r4, #68]	@ 0x44
+  4a:	6863      	ldr	r3, [r4, #4]
+  4c:	4641      	mov	r1, r8
+  4e:	e9cd 3204 	strd	r3, r2, [sp, #16]
+  52:	e9d7 2302 	ldrd	r2, r3, [r7, #8]
+  56:	e9cd 2302 	strd	r2, r3, [sp, #8]
+  5a:	f855 2f04 	ldr.w	r2, [r5, #4]!
+  5e:	4633      	mov	r3, r6
+  60:	9200      	str	r2, [sp, #0]
+  62:	4825      	ldr	r0, [pc, #148]	@ (f8 <profile_report+0xf8>)
+  64:	2200      	movs	r2, #0
+  66:	f7ff fffe 	bl	0 <__wrap_printf>
+  6a:	45a9      	cmp	r9, r5
+  6c:	f107 0708 	add.w	r7, r7, #8
+  70:	f104 0404 	add.w	r4, r4, #4
+  74:	d1e4      	bne.n	40 <profile_report+0x40>
+  76:	e9da 3268 	ldrd	r3, r2, [sl, #416]	@ 0x1a0
+  7a:	f8da 119c 	ldr.w	r1, [sl, #412]	@ 0x19c
+  7e:	e9cd 3202 	strd	r3, r2, [sp, #8]
+  82:	f8da 2198 	ldr.w	r2, [sl, #408]	@ 0x198
+  86:	4633      	mov	r3, r6
+  88:	e9cd 2100 	strd	r2, r1, [sp]
+  8c:	481b      	ldr	r0, [pc, #108]	@ (fc <profile_report+0xfc>)
+  8e:	2200      	movs	r2, #0
+  90:	4641      	mov	r1, r8
+  92:	f7ff fffe 	bl	0 <__wrap_printf>
+  96:	b91e      	cbnz	r6, a0 <profile_report+0xa0>
+  98:	2601      	movs	r6, #1
+  9a:	f50a 7ad0 	add.w	sl, sl, #416	@ 0x1a0
+  9e:	e7be      	b.n	1e <profile_report+0x1e>
+  a0:	e9db 23cf 	ldrd	r2, r3, [fp, #828]	@ 0x33c
+  a4:	eb03 0343 	add.w	r3, r3, r3, lsl #1
+  a8:	eb03 0342 	add.w	r3, r3, r2, lsl #1
+  ac:	f8db 2338 	ldr.w	r2, [fp, #824]	@ 0x338
+  b0:	9f09      	ldr	r7, [sp, #36]	@ 0x24
+  b2:	4413      	add	r3, r2
+  b4:	f8db 22b4 	ldr.w	r2, [fp, #692]	@ 0x2b4
+  b8:	429a      	cmp	r2, r3
+  ba:	d00d      	beq.n	d8 <profile_report+0xd8>
+  bc:	4a10      	ldr	r2, [pc, #64]	@ (100 <profile_report+0x100>)
+  be:	6813      	ldr	r3, [r2, #0]
+  c0:	f043 0320 	orr.w	r3, r3, #32
+  c4:	6013      	str	r3, [r2, #0]
+  c6:	2f01      	cmp	r7, #1
+  c8:	f50b 7550 	add.w	r5, fp, #832	@ 0x340
+  cc:	d102      	bne.n	d4 <profile_report+0xd4>
+  ce:	b00b      	add	sp, #44	@ 0x2c
+  d0:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
+  d4:	4637      	mov	r7, r6
+  d6:	e79a      	b.n	e <profile_report+0xe>
+  d8:	f8db 22cc 	ldr.w	r2, [fp, #716]	@ 0x2cc
+  dc:	f8db 3344 	ldr.w	r3, [fp, #836]	@ 0x344
+  e0:	429a      	cmp	r2, r3
+  e2:	d1eb      	bne.n	bc <profile_report+0xbc>
+  e4:	e7ef      	b.n	c6 <profile_report+0xc6>
+  e6:	bf00      	nop
+  e8:	fffffff8 	.word	0xfffffff8
+  ec:	0000003c 	.word	0x0000003c
+  f0:	00000000 	.word	0x00000000
+  f4:	fffffffc 	.word	0xfffffffc
+  f8:	00000034 	.word	0x00000034
+  fc:	0000008c 	.word	0x0000008c
+ 100:	00000000 	.word	0x00000000

@@ -1,0 +1,46 @@
+DOCUMENT: falcon_m4.pdf PAGE: 2/18
+
+(the board can be used at up to 168 MHz), caches can be disabled because RAM and ROM
+(Flash) accesses normally complete with minimal latency.
+Most of the code is written in C, with some assembly routines. The compiler is GCC,
+version 13.2.1. Relevant code generation and optimization flags are:
+-O2 -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
+Note that the used M4 CPU includes the optional DSP and floating-point units; the latter is
+not directly usable for Falcon signature generation, since it supports only 32-bit precision
+(IEEE 754 type “binary32”); however, the floating-point registers are a convenient fast-access
+storage area, which the C compiler uses, and which we also leverage in our assembly routines.
+Key pair generation, signature generation and signature verification in Falcon all have
+varying execution times (in signature generation and verification, this is due to the use of
+rejection sampling, both for converting the message to sign into a pseudorandom polynomial,
+and for the Gaussian sampling). The reported values are averages over 15000 key pairs and
+signatures for each degree.
+Scheme. The implemented scheme is the “padded” variant of Falcon, in which signa-
+tures are padded to a fixed size (of 666 or 1280 bytes, respectively) and the signing process is
+restarted (with a random nonce) if the signature cannot be encoded within that target size.
+In the original scheme (tagged “orig” in table 1), a random 40-byte nonce and the mes-
+sage are hashed together (with SHAKE256) in order to produce a random polynomial; we
+also implemented a modified scheme (tagged “BUFF”) in which an arbitrary context string
+and the hash of the public key are also injected in the SHAKE256 input, in the same way as
+is done in ML-DSA[9]. Including this hash provides some extra security properties beyond
+strict signature unforgeability[4] and helps with proving security in multi-user settings; this
+may be part of what NIST will standardize into the upcoming FN-DSA standard. The BUFF
+variant implies hashing the public key (with SHAKE256); the performance difference ob-
+served in table 1 is exactly the cost of this extra hashing operation. The cost technically applies
+to signature generation as well, but it does not make much of a difference in practice, since
+signature generation is a lot more expensive (the costs listed for signature generation in ta-
+ble 1 are for the BUFF variant). The “BUFF” variant also regenerates the 40-byte nonce when
+the signature process fails and restarts, as suggested in [6]; this helps with provability, and
+has no detectable impact on performance, especially since signature restarts are rare (about
+1/230000 probability with Falcon-512).
+Signature generation uses an internal PRNG. In the submitted Falcon implementation,
+this PRNG was using a ChaCha20 variant; in this new implementation, SHAKE256 is used.
+As will be explained in section 2, for this platform, the cost of the PRNG is only a small part
+of the overall signature generation code.
+Security Stance. Our implementation should be always correct and safe. In particular,
+all operations should be constant-time, a traditional name that really means that it should not
+be feasible to infer information on secret data from timing-based measurements. This should
+hold not only on the ARM Cortex-M4 CPU, but also on most other CPUs compatible with
+the ARMv7M architecture (i.e. roughly speaking, larger ARM CPUs in 32-bit mode). Such
+a property can only be achieved on a best-effort basis, because it relies on individual instruc-
+tions to be constant-time by themselves, and on any compilation layer not to turn apparently
+2

@@ -1,0 +1,77 @@
+DOCUMENT: TWfalcon.pdf PAGE: 8/25
+
+8 TWFalcon: Triple-Word Arithmetic for Falcon
+once more (line 8). After these steps, we have five partially ordered pieces that together
+approximate the full product within the desired accuracy, z+
+00, b0, b1, c, and z3. To form a
+correct TW result, they have to be put in a P-nonoverlapping sequence, similar to the sum
+algorithm. First VecSum is used, from which the first output is seen as r0, and the others
+are put through VSEB, giving r1 and r2, resulting in the TW valueˆ
+ˆ
+ˆ
+r=
+x·
+y= (r0,r1,r2).
+Algorithm 2 3Prodacc
+3,3 (x0,x1,x2,y0,y1,y2)
+Require:¯
+x and¯
+y TW; p≥6
+Ensure:¯
+r TW and¯
+¯
+r−
+x¯
+y
+¯
+x¯
+y ≤28u3 + 107u4
+1: z+
+00,z−
+00 ←2Prod(x0,y0)
+2: z+
+01,z−
+01 ←2Prod(x0,y1)
+3: z+
+10,z−
+10 ←2Prod(x1,y0)
+4: b0,b1,b2 ←VecSum(z−
+00,z+
+01,z+
+10)
+5: c←RN(b2 + x1y1) (FMA)
+6: z3,1 ←RN(z−
+10 + x0y2) (FMA)
+7: z3,2 ←RN(z−
+01 + x2y0) (FMA)
+8: z3 ←RN(z3,1 + z3,2)
+9: e0,e1,e2,e3,e4 ←VecSum(z+
+00,b0,b1,c,z3)
+10: r0 ←e0
+11: r1,r2 ←VSEB(2)(e1,e2,e3,e4)
+12: return (r0,r1,r2)
+Note that [FMP19] has a “fast” version of Algorithm 2, which computes intermediate
+values with less precision resulting in a lower proven error bound. Because of some pre-
+knowledge of input orders/values, the fast version of 2Sum can be used at some places
+in the TW algorithms. The details of this, the algorithms of other operations, as well as
+when the fast version of 2Sum can be used, can be found in [FMP19].
+3 Falcon Precision Proof
+Falcon relies on Gaussian sampling for its signature generation. In practice, sampling
+from an exact Gaussian distribution Dis not feasible due to the reliance on floating-point
+arithmetic. As discussed in Section 2.2, floating-point numbers have limited precision,
+which introduces rounding errors. Consequently, the practical distribution Dδ will be
+different from the exact distribution D, where Dδ is close to Dparameterized by δ.
+The extent of the difference depends on the precision of the floating-point arithmetic
+used. [Pre17] shows a method to use the Rényi divergence to get a tighter bound (compared
+to previous work) for the difference between the real and estimated distributions for Klein’s
+sampler. This results in an estimated precision of 61 bits for λ= 256. Falcon uses a fast
+Fourier variant of Klein’s sampler, thus they use a similar approach to the analysis of
+Klein’s sampler done in [Pre17]. In this section the idea behind the analysis in Falcon is
+explained. Then, a closer look at the precision analysis results is taken to figure out what
+the result of the precision experiments done in Falcon mean for security. These experiments
+are recreated on the latest Falcon reference code, and show a different result than stated
+in the Falcon specification [Por25a, PFH+22]. From these experiments, a conclusion is
+drawn for how many precision bits the Gaussian sampler is provably secure. Lastly, to
+get enough precision to abide by the proven upper bound, the use of TW is given as an
+alternative to the IEEE 754 double-precision floating-point values, which is investigated
+more in Section 4.

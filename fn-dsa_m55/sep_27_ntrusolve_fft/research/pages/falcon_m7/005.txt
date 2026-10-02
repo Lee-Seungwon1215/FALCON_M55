@@ -1,0 +1,30 @@
+DOCUMENT: falcon_m7.pdf PAGE: 5/22
+
+Dilithium and Falcon on the ARM Cortex M7 5
+scheme’s operation (e.g., verify) and for all parameter sets. Below each bench-
+marking row is a metric comparing the results on the Cortex M4 via pqm4 (where
+available). Specific in the Falcon benchmarking however is another comparison
+metric to illustrate the performance gains of its operations using the Cortex M7’s
+native 64-bit FPU.
+We summarize clock cycle benchmarks of Dilithium and Falcon on the ARM
+Cortex M4 in Figure 1 and on the ARM Cortex M7 in Figure 2. The former
+figure copies Figure 7 in the NIST third round report, showing that signing and
+verifying times for Dilithium require significantly less clock cycles than Falcon’s
+tree signing and verify. When we replicate this figure for the ARM Cortex M7
+we see a different story; Falcon requires less clock cycles than Dilithium where
+floating points are run natively, although emulated floats are still much slower.
+The remaining details provide stack usage (Tables 3 and 5) and RAM usage
+(Tables 4 and 6) of the two signature schemes.
+20,000
+Sign
+Verify
+15,000
+Clock Cycles (x1000)
+10,000
+5,000
+0
+Falcon-512-EMU
+Dilithium2
+Dilithium3
+Fig. 1: Signature benchmarks of Dilithium and Falcon (tree) on ARM Cortex
+M4, results taken from Figure 7 in [AAC+22].

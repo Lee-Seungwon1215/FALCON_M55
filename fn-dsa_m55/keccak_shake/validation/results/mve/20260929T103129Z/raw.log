@@ -1,0 +1,347 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 51119
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :51119 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10002f1c
+hbreak *0x100061ac
+set $early_fault_bp = $bpnum
+jump *0x100061c1
+if $pc != 0x10002f1c
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp55_5e5lk/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10002ecc
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x100061ac
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.279255
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 51119
+Info : Listening on port 51119 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/51119
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+BENCH_BEGIN samples=100 batch=64 warmups=5 rate_words=17
+BENCH_HW cpu=800000000 ccr=00000611 itcmcr=00000049 dtcmcr=00000049 control=00000099
+CHECK helpers=PASS cases=5120 split_merge_roundtrip=PASS
+CHECK permutation=PASS cases=1024 canonical_oracle=PASS
+CHECK shake256=PASS vectors=7 output_bytes=256 oracle=python_hashlib
+CHECK ABI=PASS cases=16 GPR=R4_R11 FP=D8_D15
+BENCH_SAMPLE i=0 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=1 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=2 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=3 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=4 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=5 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=6 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=7 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=8 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=9 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=10 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=11 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=12 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=13 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=14 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=15 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=16 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=17 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=18 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=19 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=20 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=21 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=22 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=23 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=24 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=25 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=26 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=27 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=28 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=29 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=30 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=31 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=32 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=33 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=34 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=35 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=36 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=37 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=38 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=39 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=40 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=41 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=42 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=43 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=44 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=45 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=46 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=47 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=48 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=49 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=50 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=51 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=52 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=53 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=54 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=55 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=56 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=57 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=58 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=59 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=60 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=61 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=62 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=63 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=64 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=65 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=66 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=67 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=68 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59330 helper_empty=193
+BENCH_SAMPLE i=69 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=70 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=71 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=72 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=73 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=74 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=75 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=76 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=77 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=78 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=79 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=80 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=81 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=82 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=83 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=84 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=85 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=86 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=87 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=88 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=89 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=90 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=91 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=92 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=93 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=94 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=95 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=96 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=97 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=98 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+BENCH_SAMPLE i=99 process=804671 process_empty=255 split1=3265 split5=14209 merge1=3265 merge5=14209 split_group=59329 merge_group=59329 helper_empty=193
+TIMING_CLASS class=0 n=1000 sum=12572000 sumsq=158055184000 min=12572 max=12572
+TIMING_CLASS class=1 n=1000 sum=12572000 sumsq=158055184000 min=12572 max=12572
+BENCH_DONE correctness=PASS guards=PASS result=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xacf4 lma 0x10000340
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x151c lma 0x30000978
+Loading section datas, size 0x50 lma 0x30001ea0
+Loading section device_states, size 0x2c lma 0x30001ef0
+Loading section k_mutex_area, size 0x14 lma 0x30001f1c
+Loading section .last_section, size 0x4 lma 0x30001f30
+Start address 0x100061c0, load size 53064
+Transfer rate: 539 KB/sec, 2948 bytes/write.
+Temporary breakpoint 1 at 0x10002f1c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x100061ac: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp55_5e5lk/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10002ecc: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x100061ac: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x98462e            9979438
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30009a70          805345904
+r8             0x300000d0          805306576
+r9             0x30019bb0          805411760
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30019b60          0x30019b60 <z_main_stack+65456>
+lr             0x10002f13          268447507
+pc             0x10002ecc          0x10002ecc <nucleo_test_breakpoint>
+xpsr           0x1060000           17170432
+fpscr          0x40000             262144
+msp            0x30009a70          0x30009a70 <z_idle_stacks>
+psp            0x30019b60          0x30019b60 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30009a70          0x30009a70 <z_idle_stacks>
+psp_s          0x30019b60          0x30019b60 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30009270          0x30009270 <z_interrupt_stacks>
+psplim_s       0x30009bb0          0x30009bb0 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x30019b60 <z_main_stack+65456>:	0x00000000	0x10002f2f	0x00000000	0x100098f7
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30009a70
+PSP=0x30019b60
+LR=0x10002f13
+PC=0x10002ecc
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30009a70 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30009a80 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

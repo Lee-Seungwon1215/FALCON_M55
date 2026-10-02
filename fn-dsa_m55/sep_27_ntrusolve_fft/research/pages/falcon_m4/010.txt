@@ -1,0 +1,46 @@
+DOCUMENT: falcon_m4.pdf PAGE: 10/18
+
+This is in fact a general pattern: the DSP extension provides several opcodes that per-
+form a large multiplication, then followed by one or two additions (in particular umlal and
+umaal), which execute in one cycle, i.e. as fast as a mere 32-bit addition. These opcodes are
+quite versatile and can be used to implement some operations such as shifts faster than the
+“normal” opcodes, mostly because they can write to two distinct registers in the same cycle.
+2.4 Signature Generation
+As illustrated in figure 2, more than 2/3 of the cost of signature generation is in the floating-
+point operations, hence optimization efforts should focus on these operations.
+Floating-Point Operations. Floating-point values and operations in Falcon follow
+IEEE 754[8], with the type “binary64” and the rounding policy “roundTiesToEven”. The
+C language standard allows the C compiler to temporarily extend the precision, and (under
+some conditions) to contract expressions to leverage extra opcodes such as fused-multiply-
+add (i.e. computing xy +z in one opcode without intermediate rounding). In order to strictly
+follow the same computations inside Falcon as on any other architecture, we cannot let the
+compiler perform such optimizations. Moreover, we also want all operations to be performed
+in a constant-time way, not leaking any information on the individual values through vari-
+ations in the execution time; this is typically not ensured by compiler-provided emulation
+routines on FPU-less hardware. For these reasons, on platforms where there is no suitable
+hardware for IEEE 754 operations, the Falcon code must store floating-point values in an
+integer type (uint64_t) and emulate the operations with custom routines that take care to
+operate in a constant-time way.
+We optimize six such operations, each with a specific assembly routine:
+– fpr_scaled: given a 63-bit integer m (signed) and an exponent e (small integer, usually
+zero in practice), convert 2em into a floating-point number.
+– fpr_add: given floating-point numbers x and y, compute x +y or x−y. Negation in
+floating-point values is only flipping the sign bit, hence in our situation we can consider
+it to be basically free, and thus addition and subtraction have the same cost (and use the
+same routine).
+– fpr_add_sub: given floating-point numbers x and y, compute x +y and x−y. This hap-
+pens notably in FFT and inverse FFT transforms, and some work can be shared between
+the two operations2
+.
+– fpr_mul: given floating-point numbers x and y, compute xy.
+– fpr_div: given floating-point numbers x and y, compute x/y.
+– fpr_sqrt: given floating-point number x, compute √x.
+In table 2, we list how many of each operation occur on average in a Falcon-512 signature
+generation, and the cost (in clock cycles) of each corresponding routine. The number of invo-
+cations for fpr_scaled, fpr_add and fpr_mul may vary (due to the use of the rejection
+method in the Gaussian sampling), but experimentally the standard deviation is low, and the
+actual number is almost always within 1% of the average.
+2I think that I did not come up with that optimization concept myself; I saw this done somewhere.
+However, I do not remember where. If you have more information please tell me, so that I can properly
+credit the original inventor.
+10

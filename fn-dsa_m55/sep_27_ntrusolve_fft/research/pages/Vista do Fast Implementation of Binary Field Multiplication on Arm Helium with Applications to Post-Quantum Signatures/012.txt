@@ -1,0 +1,48 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 12/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+were carried out following the full-cache methodology adopted by [Aranha et al. 2025]:
+the structure responsible for managing VOLE correlations operates in full-cache mode,
+with the complete matrix computed and kept in memory in a single pass and no partial
+recomputation, both during signing and verification, making the results directly comparable
+to those reported in the reference literature. To avoid measurement bias from cache or
+branch-predictor effects, a new message was generated on every iteration prior to measuring
+signing and verification. The arithmetic microbenchmarks report the median cycle count
+over 10 000 iterations for AIMer and 100 iterations for FAEST.
+6.1. Field Arithmetic
+Table 2 shows the cycle count for the individual field arithmetic primitives on the Cortex-
+M85. For modular reduction the fully vectorized implementation achieves 9-11 cycles
+for GF(2128), 32-34 cycles for GF(2192), and 27-36 cycles for GF (2256). As discussed in
+Section 4.4, a mixed vector-scalar variant of the reduction was also evaluated but did not
+outperform the fully vectorized implementation on any field size.
+For squaring, the proposed approach in Section 4.3 reduces the operation to a
+register rearrangement followed by two carry-less multiplication instructions, achieving
+10-12 cycles for GF(2128), 14-15 cycles for GF(2192), and 24-25 cycles for GF(2256)
+without reduction. Including reduction, the total cost reaches 23-25 cycles for GF(2128),
+51-53 cycles for GF(2192), and 45-46 cycles for GF(2256). Compared to the AIMer scalar
+reference implementation, the optimized squaring is up to 3.30x faster for GF(2128),
+2.08x faster for GF(2192), and 3.13x faster for GF (2256).
+For multiplication, two approaches were implemented and compared: the direct
+algorithm (Algorithm 2) and the hierarchical algorithm (Algorithm 6). For GF(2128),
+the direct algorithm achieves 77-110 cycles including reduction, while the hierarchical
+algorithm requires 98-123 cycles. The direct algorithm is consistently faster across all
+field sizes, achieving speedups of up to 1.36x for GF(2192) and 1.53x for GF(2256) over
+the hierarchical approach.
+These results confirm that the direct algorithm is the best choice for all three field
+sizes and, therefore, has been adopted in the implementations of the signature schemes.
+Compared to scalar reference implementations, the Helium-optimized direct multiplica-
+tion is up to 10.8x faster than FAEST [Aranha et al. 2025] and up to 8.4x faster than
+AIMer [Kwon et al. 2025] for GF(2128), with similar gains at the 192-bit and 256-bit
+security levels.
+6.2. Signature Scheme Performance
+Table 3 shows the performance of AIMer at the three security levels and in both parameter
+variants (fast and short), and Table 4 shows the performance of FAEST and FAEST-EM at
+the same security levels. In both Tables 3 and 4, the "Reference" column corresponds to
+the best result obtained by the original implementation targeting M85 in both compilers,
+and the "This work" column corresponds to the best result of the optimized implementation
+for Helium, to date.
+AIMer. The Helium implementation achieves speedups in all operations and security
+levels, as shown in Table 3. Key generation is up to 1.33x faster. For the fast variant,
+12

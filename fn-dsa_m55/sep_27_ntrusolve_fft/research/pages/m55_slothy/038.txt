@@ -1,0 +1,67 @@
+DOCUMENT: m55_slothy.pdf PAGE: 38/46
+
+38 Fast and Clean: Auditable high-performance assembly via constraint solving
+Algorithm 1 High-level description of inner loop of X25519 hybrid implementation from [Len19].
+Operations executing in parallel have the executing unit in parentheses. On Neon, multiplications
+and squarings are vectorized across two separate operations shown on the same line.
+In: In point represented by X1
+In: Current and previous bit of the scalar: bit and lastbit
+(processed from most to least significant)
+In/Out: Temporary point X2/Z2; initially X2 = 1, Z2 = 0
+In/Out: Temporary point X3/Z3; initially X3 = X1, Z3 = 1
+1: B= X2− Z2; D= X3− Z3
+2: A= X2 + Z2; C= X3 + Z3
+3: if bit = lastbit then
+4: F,G= C,D
+5: else
+6: F,G= A,B
+7: AA= F2 (Scalar)
+8: BB= G2 (Scalar)
+9: E= AA− BB (Scalar)
+10: Z4 = E(BB+ 121666· E) (Scalar)
+11: DA= D· A; CB= C· B (Neon)
+12: T1 = DA+ CB (Neon)
+13: T2 = DA− CB (Neon)
+14: X5 = T12
+; T3 = T22 (Neon)
+15: X4 = AA· BB; Z5 = X1· T3 (Neon)
+16: Z2 = Z4; X2 = X4
+17: Z3 = Z5; X3 = X5
+Introduction. X25519 (originally: Curve25519) is the name of a Diffie-Hellman key-
+exchange protocol proposed by Bernstein in [Ber06]. The protocol is based on the elliptic
+curve E : y2 = x3 + 486662x2 + x defined over the finite field F2255 −19. The most compu-
+tationally expensive operation for X25519 is the variable-base-point scalar multiplication
+required for the calculation of the shared secret.
+Target and Previous Work. Our implementation targets the Cortex-A55 in-order CPU.
+To the best of our knowledge, the fastest implementation of X25519 on this processor is
+presented in [Len19], a highly sophisticated handwritten hybrid implementation making use
+of both scalar and Neon instructions and taking into account the details of the processor’s
+microarchitectural capabilities (we refer to [BK22, Section 4.4] for a general introduction
+to hybrid implementations). Originally, this implementation was developed for the Cortex-
+A53 processor, but as noted and leveraged by [Len19], the performance is very close to
+that on the Cortex-A55. [Len19] uses the popular radix 225.5 (alternating between 25-bit
+and 26-bit limbs) as proposed by Bernstein [Ber06].
+[Len19] is a “coarse” scalar/Neon hybrid in the sense that the top-level description of the
+X25519 scalar multiplication is partitioned into components some of which are implemented
+entirely in scalar and others entirely in Neon code; this is shown in Algorithm 1. The
+scalar/Neon components are then manually “zipped” together to achieve a high rate of
+dual-issuing. However, as a result of the high degree of optimization and especially the
+manual interleaving, the code is not intuitively readable.
+Since [Len19] already achieves a high IPC of 1.92 in the main loop (the 958 instructions
+take 498 cycles), our goal here is to merely match its performance, but on the basis of a
+readable, non-interleaved base implementation, with slothy taking care of the interleaving.
+This simplifies code audit as well as the transfer to other microarchitectures.
+Readable Base Implementation. We focus on the main loop of the scalar multiplication
+as it vastly dominates the performance. In a nutshell, to obtain our base implementation,
+we take the implementation from [Len19] and transform it into a simplified and readable
+base implementation by using macros and by de-interleaving the instructions. The only
+semantic change we apply is aligning X1, A, and B stored on the stack to 16-byte boundaries.
+We apply this change as our experiments suggest that stp xA, xB, [sp, #<imm>]
+has a longer latency when imm is not a multiple of 16. Besides that, we do not semantically
+change the implementation — that is, we use exactly the same instructions and only alter
+their order and (sometimes) their use of registers.
+We introduce macros for performing base field multiplication and squaring using either
+scalar instructions (scalar_mul, scalar_sqr) or Neon instructions (vector_mul,
+vector_sqr). Additionally, we introduce macros for subtraction (scalar_sub) and
+addition with multiplication by a constant (scalar_addm) using scalar instructions. Each
+of these macros operates on a large number of registers, but we use register “group aliases”

@@ -1,0 +1,57 @@
+DOCUMENT: TWfalcon.pdf PAGE: 17/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 17
+4.2.4 Floor
+This operation is only invoked on the input value µ. Therefore, from the analysis in
+Section 4.2.1 it can be concluded that the input range remains within [−223
+,223] with
+sufficient probability. This allows the use of the simpler and more efficient form of the
+algorithm.
+First, the floating-point computation x0 + x1 must be computed, but with the rounding
+mode of the FPU set to “round toward minus infinity”. After this computation, the
+rounding mode is restored to the default (“round towards nearest, ties to even”) and the
+floor of the resulting sum can be computed. As described in Section 4.2.3, this can be
+done using a single-precision adaptation of the double-precision integer-emulated code.
+4.2.5 Truncate
+The truncate algorithm is the only case where, in two out of three function calls, the
+input value can be outside the range [−223
+,223], however they are always non-negative.
+The one instance where the input does fall within the valid range comes from the variable
+s in the BerExp algorithm [PFH+22, Algorithm 14], which, as previously explained in
+Section 4.2.2, remains within bounds. In the other two cases, the input value is the result of
+a multiplication by 263. These computations occur in the algorithm ApproxExp [PFH+22,
+Algorithm 13]. One involves the variable x∈[0,ln(2)], and the other involves css∈[0,1].
+When either of these values is multiplied by 263, the resulting input clearly can exceed the
+[−223
+,223] range.
+To achieve optimal performance, for both cases a separate algorithm is used. The
+version accurate on the reduced range operates similarly to the floor implementation
+described in Section 4.2.4. First, the sum x0 + x1 is computed with the rounding mode set
+to “round toward zero”. Then, the result is truncated, which can be done on the Cortex-M4
+with the instruction VCVT.f32.s32 <Sd>, <Sd>, as in Section 4.2.3.
+The version accurate on the full range of the truncate algorithm is significantly more
+complex and less efficient, especially when implemented in a constant-time manner. To
+truncate a TW value with full precision, all three components of the TW representation
+must be combined into a high-precision bit string. Based on the exponent of the leading
+component, a cut-off point is determined in this bit string to extract the truncated integer
+value of the full TW value (x0,x1,x2). The most challenging part of this process is
+constructing the bit string with sufficient precision. A key complication arises from the
+implicit leading 1 in the IEEE 754 floating-point representation. Due to this, the exponent
+of x1 is at least 24 higher than that of x0, depending on where the next 1-bit appears in
+the precision bits. This introduces intermediate zero bits between x0 and x1, and similarly
+between x1 and x2. Subnormals in the floating-point representation would occur if x0 were
+−127. Because the input values are multiplied by 263, subnormal representations do not
+occur in x0. Subnormals may occur in x1 or x2, but if these components are that small,
+they do not affect the final integer result, and any inaccuracies in handling them therefore
+are irrelevant. Therefore, the truncate algorithm does not have to take subnormals into
+account.
+Another complexity arises from the possibility that the signs of x0, x1, and x2 may
+differ. As a result, the bits cannot simply be concatenated with intermediate zeros. Instead,
+they must be added or subtracted at the correct positions based on their signs. To construct
+the high-precision bit string, three 32-bit integers are used, with only the lower 31 bits of
+each being utilized. The 32nd bit is reserved for carry handling. This setup allows for a
+total of 93 precision bits to be represented. Despite the TW format potentially offering
+more than 72 bits of precision (plus intermediate zeros), the final result of the algorithm
+always remains below 263 due to the input range. Therefore, any additional precision
+beyond this point does not influence the truncated result.

@@ -1,0 +1,69 @@
+{
+  "run": "results/keygen_verify_batch4/20260930T075813Z",
+  "aggregation": "mean of two input-batch medians, three repeats each",
+  "unit": "four independent jobs, including all preparation",
+  "rows": [
+    {
+      "op": "keygen",
+      "n": 512,
+      "blocks": 32,
+      "single": 192689333.5,
+      "batch": 192255805.5,
+      "speedup": 1.002254954012299,
+      "cycle_reduction_percent": 0.22498806349340555
+    },
+    {
+      "op": "keygen",
+      "n": 512,
+      "blocks": 64,
+      "single": 192689333.5,
+      "batch": 192132773.5,
+      "speedup": 1.0028967468165966,
+      "cycle_reduction_percent": 0.2888379911283465
+    },
+    {
+      "op": "keygen",
+      "n": 1024,
+      "blocks": 32,
+      "single": 1010371419.5,
+      "batch": 1009678981.0,
+      "speedup": 1.0006858006485528,
+      "cycle_reduction_percent": 0.06853306483497577
+    },
+    {
+      "op": "keygen",
+      "n": 1024,
+      "blocks": 64,
+      "single": 1010371419.5,
+      "batch": 1009187222.0,
+      "speedup": 1.0011734170569988,
+      "cycle_reduction_percent": 0.11720417632023092
+    },
+    {
+      "op": "verify",
+      "n": 512,
+      "blocks": 0,
+      "single": 1296610.9375,
+      "batch": 972697.5625,
+      "speedup": 1.3330052294646313,
+      "cycle_reduction_percent": 24.98153961469263
+    },
+    {
+      "op": "verify",
+      "n": 1024,
+      "blocks": 0,
+      "single": 2493010.5625,
+      "batch": 1894730.1875,
+      "speedup": 1.3157601958036043,
+      "cycle_reduction_percent": 23.998308871986577
+    }
+  ],
+  "checks": [
+    "BENCH_HW cpu=800000000 ccr=00000611 control=00000099 fpscr=00040000 primask=0",
+    "CHECK streams=9216 unequal_lengths=PASS continuation=PASS",
+    "CHECK degree=512 keys=80 verify=32 tamper=24 guards=PASS",
+    "CHECK degree=1024 keys=160 verify=64 tamper=48 guards=PASS",
+    "CHECK mixed_degrees=PASS raw_prehash_extmu=PASS wipe=PASS",
+    "BENCH_DONE result=0 streams=9216 keys=164 verify=72 tamper=50"
+  ]
+}

@@ -1,0 +1,72 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 14/29
+
+14 Polynomial multiplication on embedded vector architectures
+with every sub-matrix-vector multiplication R7×4 ×R4 →R7 corresponding to one evalua-
+tion transformation. We vectorize this by computing one sub-matrix-matrix multiplication
+R7×4 ×R4×ℓ →R7×ℓ a time, storing the four rows of the input R4×ℓ and the 7 rows of
+the output R7×ℓ in one vector register each. We find that by overwriting input registers
+as soon as they are no longer needed, the 8 vector registers available are suﬃcient for the
+transformation. With 128-bit vectors, we compute ℓ=
+128
+16 = 8 evaluations at once.
+The above vectorization approach works for both classical and striding Toom-Cook.
+However, in the case of striding Toom-Cook, we need to de-interleave the input at stride 4
+first, for which we leverage the de-interleaving load instruction VLD4{0-3}.
+The interleaving of memory operations and arithmetic is crucial to leverage instruction
+overlapping. We achieve this by optimizing the evaluation across loops, using preloading
+and late storing of input and results. The preloading becomes more challenging for striding
+Toom-Cook, where we can use VLD4{0-3} only once we have four free vector registers
+available. Listing 2 shows one loop of our vectorized Toom-Cook evaluation.
+1 vld43 . u16 { Q0 , Q1 , Q2 , Q3 } , 2 vadd . u16 Q7 , Q0 , Q2
+3 vstrw . u32 Q6 , [ r14 ,#( -32) ]
+4 vadd . u16 Q6 , Q1 , Q3
+5 vstrw . u32 Q5 , [ r0 ,#( -32) ]
+6 vsub . u16 Q5 , Q7 , Q6
+7 vstrw . u32 Q4 , [ r0 ,#( -48) ]
+8 vmla . u16 Q7 , Q0 , r10
+9 vstrw . u32 Q5 , [ r0 ,#(48) ]
+10 vmla . u16 Q5 , Q6 , r11
+11 vstrw . u32 Q0 , [ r0 ] , #64
+12 vmla . u16 Q6 , Q1 , r10
+13 vstrw . u32 Q3 , [ r14 ,#(32) ]
+14 vadd . u16 Q4 , Q5 , Q1
+15 vstrw . u32 Q5 , [ r14 ] , #48
+16 vmla . u16 Q4 , Q2 , r10
+17 vmla . u16 Q4 , Q3 , r9
+[ r0 ]
+Listing 2 Striding Toom-Cook evaluation
+1 ldrd r9 , r7 , [ r1 , #48]
+2 vmla . u16 Q3 , Q6 , r10
+3 vshlc Q2 , r12 , #16
+4 vmla . u16 Q2 , Q4 , r5
+5 vshlc Q3 , r12 , #16
+6 vmla . u16 Q3 , Q4 , r7
+7 vshlc Q5 , r12 , #16
+8 vmla . u16 Q2 , Q7 , r7
+9 ldrd r10 , r8 , [ r1 , #8]
+10 vmla . u16 Q3 , Q6 , r5
+11 vshlc Q2 , r12 , #16
+12 vmla . u16 Q2 , Q4 , r6
+13 vshlc Q3 , r12 , #16
+14 vmla . u16 Q3 , Q4 , r9
+15 vshlc Q5 , r12 , #16
+16 vmla . u16 Q2 , Q7 , r9
+Listing 3 Schoolbook multiplication
+We turn to the implementation of Toom-Cook interpolation: As for evaluation, we
+vectorize interpolation by computing 8 interpolations at once, keeping the 7 input/output
+rows in one vector each and leveraging the interleaving-store VST4{0-3} for the striding.
+We’re using the interpolation sequence from [KMRV18].
+At the end of the interpolation, we have f0,...f6 ∈Z213 [X4]/(Xn + 1) such that
+ifiXi = (f0 + X4f4) + (f1 + X4f5)X+ (f2 + X4f5)X2 + (f3 + X4f6)X3
+is the polynomial we’re looking for. Each X4
+·f4+k amounts to a negacyclic rotation of
+f4+k, which we compute gradually within the interpolation loop, using VSHLC to shift one
+128-bit block after each iteration, and remembering the carry-out as the carry-in for the
+next iteration. This requires the use of three more general purpose registers for carries.
+The interpolation sequence from [KMRV18] is very add/sub-heavy, leading to inevitable
+stalls on a dual-beat system when implemented as written. We experimented with replacing
+VADD,VSUB by VMLA with constants ±1, but were limited by the pressure on the GPR file.
+It is left for future work to optimize this further.
+6.3 Schoolbook multiplication
+We consider multiplication in Z216 [X]/(Xk+1). While previous vectorized implementations
+use batch-multiplication, our algorithm vectorizes a single schoolbook multiplication. To

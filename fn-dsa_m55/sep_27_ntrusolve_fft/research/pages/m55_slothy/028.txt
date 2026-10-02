@@ -1,0 +1,49 @@
+DOCUMENT: m55_slothy.pdf PAGE: 28/46
+
+28 Fast and Clean: Auditable high-performance assembly via constraint solving
+Starting from about 150 instructions, optimizing some kernels with our AArch64+Neon
+model tends to be infeasible through the vanilla SLOTHY constraint modelling approach,
+while for our Armv8.1-M+Helium models, the threshold is at about 80 instructions. To
+still handle those — the X25519 example discussed below features a loop kernel of nearly
+1000 instructions — we implement a series of heuristics, as discussed next.
+7.5 Heuristics
+In order to deal with code too large to be optimized via the vanilla SLOTHY approach,
+we implement a few simple heuristics. Those will mainly be used for X25519 discussed in
+Section 8.4, which involves a loop body of 958 instructions. We note, however, then when
+heuristics are used, (global) optimality of the optimized code is no longer guaranteed.
+Splitting heuristic. A straightforward way to handle large code is to split it into multiple
+segments and optimize them individually. We added this functionality to SLOTHY and call
+it the splitting heuristic. It can be enabled using the split_heuristic=True argument
+and the number of segments configured via split_heuristic_factor=N.
+To prevent instructions being trapped inside their segments, a sliding window can be
+used, with segment overlapping controlled by split_heuristic_stepsize=frac. For
+example, a factor of 5 and a stepsize of 0.1 results in separate optimizations for the segments
+[i/10,
+i+2 /10],i= 0,...,8. This allows for some movement of instructions between segments,
+which can be amplified through repetition, controlled via split_heuristic_repeat=N.
+Migration of instructions between segments can be further “encouraged” using the
+options move_stalls_to_top/bottom: Once the minimum number of stalls is found,
+this re-optimizes the code with the objective of moving the stalls to the top or bottom.
+The option split_heuristic_region can be used to limit the optimization to a
+certain region inside the code.
+Preprocessing. While functional in principle, the splitting heuristic is inefficient in sit-
+uations where code-paths to be interleaved are very far — multiple segments — apart
+from each other. In such cases, simple CFG-based preprocessing can be used to estab-
+lish coarse-grained interleaving prior to more refined optimization: For example, the
+option split_heuristic_preprocess_naive_interleaving interleaves instruc-
+tions based on their depths, with instructions of lowest depths receiving highest priority.
+While the interleaving capabilities of this trivial approach are limited by the lack of register
+renaming (recall Listing 1), it proved effective in some examples.
+(Periodic) Halving heuristic. For instances in which optimizing a loop kernel with
+sw_pipelining.enabled is computationally too complex, but some interleaving be-
+tween iterations is still desired, we use the “halving heuristic”: This heuristic first optimizes
+the body of the loop with no software pipelining enabled. It then splits the optimized
+body into two halves [a; b] and optimizes [b; a], where b is the late half of one iteration
+and a the early half of the succeeding iteration. The final code contains a as its preamble,
+opt([b; a]) as the loop body, and b as the postamble. If we want SLOTHY to consider the
+seam between iterations, halving_heuristic_periodic can be set, which will enable
+software pipelining for opt([b; a]) but without allowing for early or late instructions.
+8 Real world examples
+In this section, we demonstrate the power of slothy by optimizing various real-world
+workloads: The FFT, the NTT, and the X25519 key exchange. First, however, we
+summarize some lessons learned from working through the examples to follow.

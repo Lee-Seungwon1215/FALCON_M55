@@ -1,0 +1,512 @@
+{
+  "detail_run": "Final_code/validation/results/sign_detail/20260928T063851Z",
+  "control_run": "Final_code/validation/results/sign_control/20260928T063907Z",
+  "degrees": {
+    "512": {
+      "mean_sign_cycles": 19118537.76,
+      "mean_control_cycles": 18015448.91,
+      "profile_delta_percent": 6.123016170791606,
+      "selected_percent": 68.21228256945943,
+      "other_percent": 31.787717430540567,
+      "deepest_inclusive_percent": 27.055418750811413,
+      "fingerprint": "9895079d",
+      "rows": [
+        {
+          "function": "fpoly_FFT",
+          "cycles_per_sign": 3220460.0,
+          "calls_per_sign": 5.0,
+          "cycles_per_call": 644092.0,
+          "percent_sign": 16.844698273619436,
+          "percent_selected": 24.69452368269125
+        },
+        {
+          "function": "fpoly_iFFT",
+          "cycles_per_sign": 1328476.0,
+          "calls_per_sign": 2.0,
+          "cycles_per_call": 664238.0,
+          "percent_sign": 6.948627644418765,
+          "percent_selected": 10.186768984519896
+        },
+        {
+          "function": "fpoly_LDL_fft",
+          "cycles_per_sign": 2015845.0,
+          "calls_per_sign": 255.0,
+          "cycles_per_call": 7905.274509803921,
+          "percent_sign": 10.543928752844119,
+          "percent_selected": 15.457522246242693
+        },
+        {
+          "function": "fpoly_split_fft",
+          "cycles_per_sign": 1530022.0,
+          "calls_per_sign": 510.0,
+          "cycles_per_call": 3000.043137254902,
+          "percent_sign": 8.002819144469969,
+          "percent_selected": 11.732225990708978
+        },
+        {
+          "function": "fpoly_split_selfadj_fft",
+          "cycles_per_sign": 642736.0,
+          "calls_per_sign": 510.0,
+          "cycles_per_call": 1260.2666666666667,
+          "percent_sign": 3.3618470620945646,
+          "percent_selected": 4.928506913210611
+        },
+        {
+          "function": "fpoly_merge_fft",
+          "cycles_per_sign": 1423016.0,
+          "calls_per_sign": 510.0,
+          "cycles_per_call": 2790.227450980392,
+          "percent_sign": 7.443121528766957,
+          "percent_selected": 10.911702773159291
+        },
+        {
+          "function": "fpoly_mul_fft",
+          "cycles_per_sign": 1048732.0,
+          "calls_per_sign": 257.0,
+          "cycles_per_call": 4080.6692607003893,
+          "percent_sign": 5.485419508358886,
+          "percent_selected": 8.041688830414339
+        },
+        {
+          "function": "fpoly_add",
+          "cycles_per_sign": 405360.0,
+          "calls_per_sign": 255.0,
+          "cycles_per_call": 1589.6470588235295,
+          "percent_sign": 2.12024583202225,
+          "percent_selected": 3.108305062014658
+        },
+        {
+          "function": "fpoly_sub",
+          "cycles_per_sign": 429936.0,
+          "calls_per_sign": 255.0,
+          "cycles_per_call": 1686.0235294117647,
+          "percent_sign": 2.2487912276404134,
+          "percent_selected": 3.2967541078111653
+        },
+        {
+          "function": "ffsamp_fft_deepest",
+          "cycles_per_sign": 996608.0,
+          "calls_per_sign": 256.0,
+          "cycles_per_call": 3893.0,
+          "percent_sign": 5.2127835952240735,
+          "percent_selected": 7.642001409227118
+        }
+      ],
+      "categories": {
+        "other": {
+          "cycles": 18600,
+          "calls": 0,
+          "percent_sign": 0.0009728777500398126
+        },
+        "kg_generate": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "kg_check": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "kg_ntru": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "kg_sk_complete": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "kg_pk_compute": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "sg_message_hash": {
+          "cycles": 1570900,
+          "calls": 100,
+          "percent_sign": 0.08216632567406139
+        },
+        "sg_key_prep": {
+          "cycles": 25025100,
+          "calls": 100,
+          "percent_sign": 1.3089442463721137
+        },
+        "sg_hash_to_point": {
+          "cycles": 15703578,
+          "calls": 100,
+          "percent_sign": 0.8213796576459517
+        },
+        "sg_fft_basis": {
+          "cycles": 11007900,
+          "calls": 100,
+          "percent_sign": 0.5757710206808201
+        },
+        "sg_ldl_ffsampling": {
+          "cycles": 56149600,
+          "calls": 100,
+          "percent_sign": 2.9369191673997563
+        },
+        "sg_gaussian_berexp": {
+          "cycles": 417599245,
+          "calls": 102400,
+          "percent_sign": 21.842635155587338
+        },
+        "sg_recon_norm": {
+          "cycles": 25628000,
+          "calls": 100,
+          "percent_sign": 1.340479084839802
+        },
+        "sg_encode": {
+          "cycles": 1779453,
+          "calls": 100,
+          "percent_sign": 0.09307474359901047
+        },
+        "vr_message_hash": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_decode": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_ntt": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_hash_to_point": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_poly": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_norm": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "sg_fft": {
+          "cycles": 322046000,
+          "calls": 500,
+          "percent_sign": 16.844698273619436
+        },
+        "sg_ifft": {
+          "cycles": 132847600,
+          "calls": 200,
+          "percent_sign": 6.948627644418765
+        },
+        "sg_gram": {
+          "cycles": 45456000,
+          "calls": 100,
+          "percent_sign": 2.3775876884843936
+        },
+        "sg_target": {
+          "cycles": 7796300,
+          "calls": 100,
+          "percent_sign": 0.4077874625072791
+        },
+        "sg_ldl": {
+          "cycles": 201584500,
+          "calls": 25500,
+          "percent_sign": 10.543928752844119
+        },
+        "sg_split": {
+          "cycles": 153002200,
+          "calls": 51000,
+          "percent_sign": 8.002819144469969
+        },
+        "sg_split_selfadj": {
+          "cycles": 64273600,
+          "calls": 51000,
+          "percent_sign": 3.3618470620945646
+        },
+        "sg_merge": {
+          "cycles": 142301600,
+          "calls": 51000,
+          "percent_sign": 7.443121528766957
+        },
+        "sg_mul": {
+          "cycles": 104873200,
+          "calls": 25700,
+          "percent_sign": 5.485419508358886
+        },
+        "sg_add": {
+          "cycles": 40536000,
+          "calls": 25500,
+          "percent_sign": 2.12024583202225
+        },
+        "sg_sub": {
+          "cycles": 42993600,
+          "calls": 25500,
+          "percent_sign": 2.2487912276404134
+        },
+        "sg_deepest": {
+          "cycles": 99660800,
+          "calls": 25600,
+          "percent_sign": 5.2127835952240735
+        }
+      }
+    },
+    "1024": {
+      "mean_sign_cycles": 40966019.12,
+      "mean_control_cycles": 38736052.37,
+      "profile_delta_percent": 5.756825008133881,
+      "selected_percent": 70.67563952257414,
+      "other_percent": 29.324360477425856,
+      "deepest_inclusive_percent": 24.963303073320443,
+      "fingerprint": "a020dd02",
+      "rows": [
+        {
+          "function": "fpoly_FFT",
+          "cycles_per_sign": 7231273.0,
+          "calls_per_sign": 5.0,
+          "cycles_per_call": 1446254.6,
+          "percent_sign": 17.651881133037953,
+          "percent_selected": 24.97590577500166
+        },
+        {
+          "function": "fpoly_iFFT",
+          "cycles_per_sign": 2975144.0,
+          "calls_per_sign": 2.0,
+          "cycles_per_call": 1487572.0,
+          "percent_sign": 7.262467928077265,
+          "percent_selected": 10.275772496911891
+        },
+        {
+          "function": "fpoly_LDL_fft",
+          "cycles_per_sign": 4529001.0,
+          "calls_per_sign": 511.0,
+          "cycles_per_call": 8863.0156555773,
+          "percent_sign": 11.0555067279869,
+          "percent_selected": 15.642598783214007
+        },
+        {
+          "function": "fpoly_split_fft",
+          "cycles_per_sign": 3424166.0,
+          "calls_per_sign": 1022.0,
+          "cycles_per_call": 3350.4559686888456,
+          "percent_sign": 8.35855197442968,
+          "percent_selected": 11.826637906488157
+        },
+        {
+          "function": "fpoly_split_selfadj_fft",
+          "cycles_per_sign": 1432336.0,
+          "calls_per_sign": 1022.0,
+          "cycles_per_call": 1401.5029354207436,
+          "percent_sign": 3.4964002623840984,
+          "percent_selected": 4.947108064395132
+        },
+        {
+          "function": "fpoly_merge_fft",
+          "cycles_per_sign": 3202408.0,
+          "calls_per_sign": 1022.0,
+          "cycles_per_call": 3133.4716242661448,
+          "percent_sign": 7.817230155117889,
+          "percent_selected": 11.060713716811897
+        },
+        {
+          "function": "fpoly_mul_fft",
+          "cycles_per_sign": 2302620.0,
+          "calls_per_sign": 513.0,
+          "cycles_per_call": 4488.538011695907,
+          "percent_sign": 5.620804875511663,
+          "percent_selected": 7.95295934140978
+        },
+        {
+          "function": "fpoly_add",
+          "cycles_per_sign": 903024.0,
+          "calls_per_sign": 511.0,
+          "cycles_per_call": 1767.1702544031311,
+          "percent_sign": 2.2043245094301462,
+          "percent_selected": 3.1189311116542138
+        },
+        {
+          "function": "fpoly_sub",
+          "cycles_per_sign": 958784.0,
+          "calls_per_sign": 511.0,
+          "cycles_per_call": 1876.2896281800392,
+          "percent_sign": 2.340437319993127,
+          "percent_selected": 3.3115191256890997
+        },
+        {
+          "function": "ffsamp_fft_deepest",
+          "cycles_per_sign": 1994240.0,
+          "calls_per_sign": 512.0,
+          "cycles_per_call": 3895.0,
+          "percent_sign": 4.868034636605422,
+          "percent_selected": 6.88785367842416
+        }
+      ],
+      "categories": {
+        "other": {
+          "cycles": 18400,
+          "calls": 0,
+          "percent_sign": 0.0004491527464775543
+        },
+        "kg_generate": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "kg_check": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "kg_ntru": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "kg_sk_complete": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "kg_pk_compute": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "sg_message_hash": {
+          "cycles": 1570900,
+          "calls": 100,
+          "percent_sign": 0.038346415730521194
+        },
+        "sg_key_prep": {
+          "cycles": 45525100,
+          "calls": 100,
+          "percent_sign": 1.1112893314492014
+        },
+        "sg_hash_to_point": {
+          "cycles": 28894831,
+          "calls": 100,
+          "percent_sign": 0.7053365599268899
+        },
+        "sg_fft_basis": {
+          "cycles": 21431900,
+          "calls": 100,
+          "percent_sign": 0.5231628666974073
+        },
+        "sg_ldl_ffsampling": {
+          "cycles": 115700000,
+          "calls": 100,
+          "percent_sign": 2.8242919982311427
+        },
+        "sg_gaussian_berexp": {
+          "cycles": 823223151,
+          "calls": 204800,
+          "percent_sign": 20.09526843671502
+        },
+        "sg_recon_norm": {
+          "cycles": 54784800,
+          "calls": 100,
+          "percent_sign": 1.3373230100664952
+        },
+        "sg_encode": {
+          "cycles": 3520130,
+          "calls": 100,
+          "percent_sign": 0.08592804660098005
+        },
+        "vr_message_hash": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_decode": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_ntt": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_hash_to_point": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_poly": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "vr_norm": {
+          "cycles": 0,
+          "calls": 0,
+          "percent_sign": 0.0
+        },
+        "sg_fft": {
+          "cycles": 723127300,
+          "calls": 500,
+          "percent_sign": 17.651881133037953
+        },
+        "sg_ifft": {
+          "cycles": 297514400,
+          "calls": 200,
+          "percent_sign": 7.262467928077265
+        },
+        "sg_gram": {
+          "cycles": 91003200,
+          "calls": 100,
+          "percent_sign": 2.2214313705568567
+        },
+        "sg_target": {
+          "cycles": 15629900,
+          "calls": 100,
+          "percent_sign": 0.38153328870486547
+        },
+        "sg_ldl": {
+          "cycles": 452900100,
+          "calls": 51100,
+          "percent_sign": 11.0555067279869
+        },
+        "sg_split": {
+          "cycles": 342416600,
+          "calls": 102200,
+          "percent_sign": 8.35855197442968
+        },
+        "sg_split_selfadj": {
+          "cycles": 143233600,
+          "calls": 102200,
+          "percent_sign": 3.4964002623840984
+        },
+        "sg_merge": {
+          "cycles": 320240800,
+          "calls": 102200,
+          "percent_sign": 7.817230155117889
+        },
+        "sg_mul": {
+          "cycles": 230262000,
+          "calls": 51300,
+          "percent_sign": 5.620804875511663
+        },
+        "sg_add": {
+          "cycles": 90302400,
+          "calls": 51100,
+          "percent_sign": 2.2043245094301462
+        },
+        "sg_sub": {
+          "cycles": 95878400,
+          "calls": 51100,
+          "percent_sign": 2.340437319993127
+        },
+        "sg_deepest": {
+          "cycles": 199424000,
+          "calls": 51200,
+          "percent_sign": 4.868034636605422
+        }
+      }
+    }
+  }
+}

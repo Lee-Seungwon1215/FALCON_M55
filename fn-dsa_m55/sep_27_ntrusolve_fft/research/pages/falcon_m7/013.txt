@@ -1,0 +1,44 @@
+DOCUMENT: falcon_m7.pdf PAGE: 13/22
+
+Dilithium and Falcon on the ARM Cortex M7 13
+5 Constant-Time Validation of Falcon’s Floating-
+Point Operations
+This section presents the constant runtime analysis of Falcon on the ARM Cortex
+M7. Technical manuals for ARM development boards often report cycle counts
+for FPU instructions7, however ARM does not appear to make this information
+public for the Cortex M7 core.
+We are specifically interested in Falcon’s use of double precision floating
+points and how it exploits the devices’ 64-bit floating point unit (FPU). This
+has not been investigated before since the primary evaluation target used for
+post-quantum schemes, the ARM Cortex M4, only has a 32-bit FPU, which is
+not suﬀicient for the 53-bit floating-point precision required by Falcon.
+The double precision FPU on the ARM Cortex M7 is compliant with the
+IEEE-754 standard as thus supports the binary64 type. The IEEE-754 standard
+defines all aspects of floating-point numbers (i.e., their sign, exponent, and man-
+tissa) so that hardware/software interoperability can be ensured. Thus, most if
+not all modern CPUs offer compliance with this standard within their dedicated
+FPUs used to speed-up floating-point operations.
+We investigate the timings on the device used in the previous sections, the
+STM32F767ZI NUCLEO-144 development board, and due to the issues found
+we extended this to three other STM32 development boards (the STM32H743ZI,
+STM32H723ZG, and STM32F769I-DISCO) in order to see if this issue affected
+other development boards. We found the same issues occurred in all four de-
+velopment boards. We are aware of a similar experiment being run on the
+STM32H7308. We also further investigate timing issues on the Raspberry Pi
+3, due to its use in evaluating the constant-time code of Falcon [Por19].
+5.1 STM32 Development Boards
+The issue discovered with the STM32 development boards was that the FPU
+operations were not fully constant time. We did not pursue ways to exploit this
+into an attack, but we felt this was worth reporting nonetheless. The code for
+testing this constant run-time is available on repository already provided.
+For each floating-point instruction (e.g., vmul.f64), we wrote inline assem-
+bly of ten consecutive operations, given two random inputs, which we then aver-
+aged to find the required clock cycles. We used inline assembly to minimize the
+unwanted optimizations from the compiler, and clobbered registers where nec-
+essary. Using this approach minimizes the effect of surrounding instructions on
+the operations of interest, which for example would occur using C, and ensures
+that all execution is from cache. An example of this is shown in Listing 1.1 for
+the 64-bit floating point multiplication operation vmul.f64.
+7 For example, see the ARM Cortex-M4 Technical Reference Manual https://
+developer.arm.com/documentation/ddi0439/b/BEHJADED
+8 https://www.quinapalus.com/cm7cycles.html

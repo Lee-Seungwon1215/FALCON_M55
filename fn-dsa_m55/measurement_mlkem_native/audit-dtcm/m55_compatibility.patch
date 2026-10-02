@@ -1,0 +1,36 @@
+diff --git a/inner.h b/inner.h
+index add9690..5f6bad4 100644
+--- a/inner.h
++++ b/inner.h
+@@ -174,11 +174,28 @@
+ #define FNDSA_ASM_CORTEXM4   0
+ #endif
+ 
+-/* Failsafe check: if ARMv7M assembly code is detected, the compiler should
+-   know about it too. */
++/* Explicit opt-in for reusing the M4 integer/DSP routines on Cortex-M55.
++   This does not enable native FP64 or MVE arithmetic. Keep the original
++   assembly selector enabled so C fallbacks cannot silently replace it. */
++#ifndef FNDSA_ASM_CORTEXM55
++#define FNDSA_ASM_CORTEXM55   0
++#endif
++#if FNDSA_ASM_CORTEXM55 && !FNDSA_ASM_CORTEXM4
++#error Cortex-M55 compatibility mode requires the M4 assembly implementation.
++#endif
++
++/* Failsafe check: an M55 build needs explicit opt-in, DSP and FP registers.
++   Do not fake compiler-provided architecture macros to bypass this check. */
+ #if FNDSA_ASM_CORTEXM4
++#if FNDSA_ASM_CORTEXM55
++#if !(defined __ARM_ARCH_8M_MAIN__ && defined __ARM_FEATURE_DSP \
++    && defined __ARM_FP && ((__ARM_FP & 4) != 0))
++#error Cortex-M55 compatibility mode requires Armv8-M Mainline, DSP and FPU.
++#endif
++#else
+ #if !(defined __ARM_ARCH_7EM__ && defined __ARM_FEATURE_DSP)
+-#error ARMv7M+DSP assembly code selected but supported.
++#error ARMv7M+DSP assembly code selected but not supported.
++#endif
+ #endif
+ #endif
+ 

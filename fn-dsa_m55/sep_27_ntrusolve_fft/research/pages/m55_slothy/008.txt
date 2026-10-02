@@ -1,0 +1,49 @@
+DOCUMENT: m55_slothy.pdf PAGE: 8/46
+
+8 Fast and Clean: Auditable high-performance assembly via constraint solving
+the availability of an instruction’s arguments, and when ready, issues it to an execution
+unit: For example, arithmetic operations are typically sent to an arithmetic logical unit
+(ALU). When the instruction’s results are ready, they are written back to the register file
+or forwarded to instructions waiting for them.
+Execution order. While the journey of an individual instruction through the pipeline is
+sequential, the above does not imply an ordering between different instructions with respect
+to their time of issuing and execution. Instead, in the language of computational flow
+graphs (CFG), we can (conceptually) think of the processor as conducting an ad-hoc lifting
+of the instruction stream into a CFG and then dynamically lowering it. The distinction of
+in-order vs. out-of-order execution is about how this lowering is determined.
+In-order execution. Recall that lowering a CFG requires assigning output registers and
+an order to instructions. In-order execution is the simplest possible approach here: The
+issue order is the program order, and the physical registers used by an instruction directly
+correspond to the architectural registers used in the assembly.
+Out-of-order execution. Out-of-order execution lowers the instruction stream’s CFG by
+availability: An instruction is issued when arguments and execution unit(s) are available. If
+multiple instructions are ready in this sense, typically the earliest instruction with respect
+to the original program order is issued. Instructions “waiting” in the CFG are typically
+realized via multiple issue queues connecting instructions to the units that will execute
+them. An instruction entering an issue queue is called its dispatch stage, and the part of
+the pipeline prior to dispatch is called the frontend; it is typically in-order, and in our
+mental model corresponds to the dynamic construction of the CFG.
+Register renaming. In out-of-order execution, the physical registers used by instructions
+are decoupled from the architectural registers used in the original assembly — the latter
+are merely dependency labels. Instead, an instruction is assigned “fresh” physical registers
+for their outputs at the register renaming stage prior to dispatch. In particular, in an
+out-of-order CPU, the left and middle snippets from Listing 1 are identical after register
+renaming, enabling an out-of-order execution as in the right snippet. Without register
+renaming, out-of-order execution would be severely limited by the resulting register hazards.
+3.2.2 M-Profile Vector Extension / Helium
+The M-Profile Vector Extension (MVE) is a Single Instruction Multiple Data (SIMD)
+extension that was introduced as part of the Armv8.1-M architecture [Armf]. Its primary
+goal is to enable higher performance for signal processing and machine learning applications.
+MVE is also referred to as Arm® Helium™ technology, in alignment with the Arm®
+Neon™ technology architecture extension for A-profile processors [Arma, Section C.3.5],
+or Neon for short. However, despite the similarity in name, Helium is a new ground-up
+architecture designed specifically for the tight area/power constraints of the embedded
+market. We refer to [BBMK+21, Armg, Arms, Armt] for introductions to Armv8.1-
+M+Helium and to the reference manual [Armf] for the details.
+What is most important about Helium for the sake of this work is how it carefully
+introduces software constraints to lower hardware complexity and thereby retain suitability
+for embedded microcontrollers: Most notably, instruction overlapping and the compact
+vector register file of 8 ×128-bit vector registers.
+First, instruction overlapping allows to achieve up to 2×performance with the same
+execution resources compared to non-overlapping, single-issued execution. However, it
+requires instructions to be scheduled in such a way that they run on different functional

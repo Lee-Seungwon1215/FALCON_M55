@@ -1,0 +1,48 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 3/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Our Contributions. The main contributions of this work are summarized as follows:
+• We present constant-time implementations of multiplication and squaring in
+GF(2128), GF(2192), and GF(2256) for the Arm Cortex-M85. By leveraging the
+carry-less polynomial multiplication instructions, we accelerate the FAEST and
+AIMer signature schemes.
+• We evaluate the proposed field arithmetic in the context of AIMer and FAEST on a
+Renesas EK-RA8M1 (Cortex-M85) board, reporting competitive performance over
+the reference implementations.
+Paper Structure. The remainder of this paper is organized as follows. Section 2 intro-
+duces binary field arithmetic and the polynomial basis representation used throughout this
+work. Section 3 describes the Arm Helium MVE instruction set, with emphasis on the
+carry-less multiplication instructions VMULLB and VMULLT. Section 4 presents the pro-
+posed multiplication, squaring, and modular reduction algorithms for GF(2128), GF(2192),
+and GF(2256). Section 5 describes the integration of the proposed implementations into
+the AIMer and FAEST signature schemes. Section 6 reports the experimental results on
+the Renesas EK-RA8M1 board.
+2. Binary Field Arithmetic
+Let GF (2') be a binary extension field. In a polynomial-basis representation, each element
+a є GF(2m) is written as a polynomial a(x) = ao + ayx + ... + Am-1xm-1 over GF(2)
+and stored as the binary vector (ao, a1,..., am-1) of length m, packed intot = |m/W|
+words of width W. Multiplication of two elements a, b € GF(2") proceeds in two
+stages. The first computes the carry-less polynomial product c(x) = a(x) b(x), which
+has degree at most 2m - 2. A straightforward approach iterates through the bits of one
+operand and, for each bit, conditionally XORs a shifted copy of the other operand into
+an accumulator, requiring m shift and XOR operations per multiplication. The second
+stage reduces c(x) modulo a degree-m irreducible polynomial f (x) = x™ + r(x) to obtain
+an element of GF (2"). In the applications discussed here, the polynomial r(x) has low
+degree, specifically degr(x) < 8, which allows the modular reduction to be carried out
+efficiently with a small number of carry-less multiplications.
+3. ARM Helium MVE
+Helium is the SIMD extension introduced in the Armv8.1-M architecture, implemented on
+the Cortex-M55 and Cortex-M85 processors [Marsh 2020, Arm Ltd. 2023]. It is formally
+known as the M-Profile Vector Extension (MVE), though throughout this work we use
+the commercial name Helium. It adds eight 128-bit vector registers (Q0-Q7) processed
+by a dedicated Extended Processing Unit (EPU) that operates independently from the
+scalar integer pipeline. Each register can be viewed as 16 lanes of 8-bit elements, 8
+lanes of 16 bits, 4 lanes of 32 bits, or 2 lanes of 64 bits. Vector instructions execute in a
+beat-based microarchitecture where each 128-bit operation is divided into two beats, each
+processing half of the register per clock cycle; consecutive instructions can overlap in the
+EPU pipeline, with one instruction executing its second beat while the next is in its first.
+For binary field arithmetic, the relevant instructions are the carry-less polynomial
+multiply instructions VMULLB.P8, VMULLT. P8, VMULLB.P16, and VMULLI.P16.
+3

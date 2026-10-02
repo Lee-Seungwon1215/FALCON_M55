@@ -1,0 +1,57 @@
+DOCUMENT: TWfalcon.pdf PAGE: 13/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 13
+that the range of floating-point values used in both Falcon parameter sets exceeds that of
+64-bit integers.
+As shown in Table 4, the wide range of exponent values primarily arises in addition
+and multiplication operations. In contrast, the exponent ranges for division and square
+root are significantly narrower and entirely positive.
+Formal Exponent Range Analysis A formal analysis of the exponent range was conducted
+by [Hwa23], using the CryptoLine modeling tool [cry, LLS+24]. [Hwa23] analyzed the
+floating-point computations in the FFT for polynomials appearing in Falcon. Relying on
+the assumption that all input coefficients of polynomials lie within the range [−215
+, 215),
+they show that all non-zero intermediate floating-point values have absolute values within
+the interval [2−476
+, 227(252 + 605,182,448,294,568)]. This corresponds to an approximate
+exponent range of [−476, 79].
+Single-Precision Exponent Range Analysis The exponent range of the single-precision
+floating-point format used by TW is [−126, 127]. While the positive exponent range
+fits within the bounds proven by [Hwa23], the negative range is much smaller than the
+required−476. In contrast, the double-precision format, with a range of [−1026, 1027],
+fully accommodates the formal exponent range.
+However, we’veshownthelowestexponentobservedinpracticeisfarfromthetheoretical
+lower bound. The theoretical range assumes the full input domain of [−215
+, 215) for
+polynomial coefficients entering the FFT. However, because of the distributions of the
+private key coefficients, the practical range is smaller. After running 100 million Falcon-
+1024 instances, the lowest exponent encountered was only -105. This is well above the
+theoretical minimum. The polynomial range of Falcon is discussed in more detail in
+subsection 4.2.1.
+While−105 is still within the single-precision representable range, TW represents
+values using three components, where the second component has an exponent at least
+24 less than that of the first. As a result, the second and third components may fall
+outside the representable range of single-precision floats. Additionally, there can be rarely
+occurring outliers that have even lower exponents.
+To understand how to overcome this challenge, it is important to understand what
+happens when a floating-point exponent becomes too small. At an exponent of−126,
+the implicit leading 1 in the mantissa disappears, and the number is represented in a
+subnormal format. This allows for smaller values to be represented by shifting the leading
+1 further into the mantissa, at the cost of reduced precision. This continues until the
+smallest representable subnormal value, 2−149, which has only a single bit of precision. If
+the value drops even further, the value underflows and is rounded down to zero.
+In the case of division, it could pose a problem if the underflowed value ends up
+as the denominator. However, based on the observed exponent values for division, this
+scenario does not occur in practice. It is also important to note that the formal exponent
+range evaluation was limited to the FFT computation, which involves only addition and
+multiplication operations. Division and square root operations were not included in that
+analysis. As such, the formal bounds do not fully capture the behavior of the entire Falcon
+computation pipeline, and just focuses on the parts where the range is largest.
+For allotheroperations, underflowintroduces averysmallabsoluteerror, ontheorderof
+2−149. Such errors are negligible and do not significantly affect the results of multiplication
+or addition, where the absolute error is typically dominated by the largest values involved
+in the computation. This phenomenon can also occur with normal floating-point addition
+within the single-precision exponent range. For instance, a single-precision floating-point
+addition of 2−100 and 2−76 results in 2−76, with an absolute error of 2−100 due to limited
+precision (24-bit). When floating-point values with significantly different exponents are

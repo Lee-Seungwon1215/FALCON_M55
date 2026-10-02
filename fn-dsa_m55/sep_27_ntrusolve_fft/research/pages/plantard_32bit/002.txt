@@ -1,0 +1,118 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 2/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 2
+upcoming years.
+Kyber [3] is a lattice-based cryptographic (LBC) scheme
+that relies on the theoretical security of the Module Learning-
+with-Error (MLWE) problem. Previous software implemen-
+tations [9], [10], [11], [12], [13], [14] mainly focus on the
+improvement of LBC’s core operations such as polynomial
+multiplication, vector inner product, and matrix-vector prod-
+uct. Kyber’s parameters enable efficient polynomial multi-
+plication by using the Number Theoretic Transform (NTT),
+which reduces the time complexity of multiplying two degree-
+n polynomials from O(n2) (using the schoolbook method)
+down to O(nlog n). NTT’s primary component is the butterfly
+unit, including two commonly-used algorithms: the Cooley-
+Turkey (CT) algorithm [15] and the Gentleman-Sande (GS)
+algorithm [16]. A key operation in butterfly unit is the modular
+multiplication by a twiddle factor, where one operand is
+an arbitrary value, while the other one is a twiddle factor.
+Commonly, in software implementations, the twiddle factor
+is normally precomputed and stored in memory, hence the
+modular multiplication by the twiddle factor is treated as the
+modular multiplication by a constant.
+Previous implementations [9], [10], [11], [12], [13], [14]
+utilized the Montgomery [17] or Barrett [18] arithmetic to
+compute the modular multiplication by the twiddle factor.
+However, neither of these methods fully utilized the fact that
+the twiddle factor is a precomputed constant to further speed
+up the operation. In 2021, Thomas Plantard [19] proposed a
+word size modular arithmetic (Plantard arithmetic) that enables
+efficient computation of modular multiplication by a constant.
+Initially, the Plantard arithmetic only supported unsigned in-
+tegers, which limited its feasibility in LBC schemes. Later
+in 2022, Huang et al. [20] presented an improved Plantard
+arithmetic tailored for the moduli in LBC schemes, which sup-
+ports signed integers and has superior performance compared
+to the Montgomery and Barrett arithmetic. They achieved
+new speed records for Kyber and NTTRU by replacing the
+Montgomery and Barrett arithmetic with their signed-version
+Plantard arithmetic on Cortex-M4. However, their method is
+mainly benefited from utilizing the Cortex-M4’s SIMD in-
+struction smulw{b,t} to perform the 16×32-bit multiplication
+and obtain the middle 16-bit effective product. The actual
+performance of the Plantard arithmetic remains unexplored
+on low-end 32-bit platforms without such a powerful SIMD
+extension. Moreover, the Plantard multiplication by a constant
+in [20, Algorithm 11] supports inputs that are larger than a
+16-bit signed integer, but the NTT/INTT implementation on
+Cortex-M4 limits the coefficients to 16-bit signed integers
+due to SIMD extension. Therefore, further investigation is
+necessary to determine whether the Plantard arithmetic can
+also replace the Montgomery and Barrett arithmetic on low-
+end 32-bit platforms without SIMD extension and whether
+the large input range can be fully utilized in NTT/INTT
+implementations.
+Contributions. This paper aims to improve the signed-
+version Plantard arithmetic introduced in TCHES2022 [20]
+and explore its applicability in Kyber on three low-end 32-
+bit platforms: Cortex-M3 and two RISC-V platforms (SiFive
+Freedom E310 and PQRISCV). The contributions of this paper
+are as follows:
+1) We further enlarge the input range of the Plantard arith-
+metic without modifying its computation steps, and give
+the proof. After tailoring the Plantard arithmetic for
+Kyber’s modulus, we show that the input range of the
+Plantard multiplication by a constant can be at least
+2.14×larger than the work in TCHES2022 [20].
+2) We propose two optimization techniques to implement
+the Plantard arithmetic utilizing the specific Instruction
+Set Architecture (ISA) characteristics of Cortex-M3 and
+RISC-V. The optimized implementation shows that the
+Plantard arithmetic can indeed supersede the state-of-the-
+art Montgomery and Barrett arithmetic on these low-end
+32-bit microprocessors.
+3) Based on the optimized Plantard arithmetic, we propose
+an efficient CT algorithm that consumes one instruc-
+tion fewer than the GS algorithm on Cortex-M3. The
+optimized CT algorithm is then used to speed up the
+INTT implementation on this platform. We apply 3-
+layer and 4-layer merging strategies to the NTT/INTT
+implementation on Cortex-M3 and RISC-V, respectively.
+We show that the Plantard arithmetic with an enlarged
+input range enables a better lazy reduction strategy,
+minimizing or entirely eliminating the modular reduc-
+tion of coefficients in NTT/INTT. Our NTT and INTT
+implementations achieve significant speedups compared
+with state-of-the-art, with NTT/INTT achieving speedups
+of 26.19%/32.57%, 34.76%/55.53%, and 22.67%/43.37%
+on Cortex-M3, SiFive RISC-V board, and PQRISCV,
+respectively.
+4) We provide two versions of Kyber implementations,
+namely the stack-friendly (stack-version) and high-speed
+(speed-version) implementations on both Cortex-M3 and
+RISC-V, in line with [14]. For the speed-version imple-
+mentation, we propose two memory optimization strate-
+gies that result in a significant reduction in stack usage,
+ranging between 23.50%∼28.31% compared to that of
+[14], making it more feasible on memory-constrained IoT
+devices. Overall, our optimized Kyber implementations
+achieve new speed records on both Cortex-M3 and RISC-
+V. Specifically, the speed-version outperforms PQM3
+by a margin of 3.69%∼5.63%, 3.51%∼5.15%, and
+3.37%∼4.67% for Kyber512, Kyber768, and Kyber1024,
+respectively, on Cortex-M3. On PQRISCV, it outperforms
+previous work by 13.59%∼27.03%, 25.49%∼31.15%,
+and 26.96%∼31.43% using only 26.86%∼52.44% of
+their stack usage for the three Kyber variants, respec-
+tively.
+The remainder of this paper is organized as follows. In
+Section II, we review Kyber and its most time-consuming op-
+erations. In Section III, we show how to enlarge the input range
+of the Plantard arithmetic and tailor it for Kyber’s modulus.
+The optimized implementations of the Plantard arithmetic as
+well as Kyber on Cortex-M3 and RISC-V are presented in
+Section IV and V. We present and compare the experimental
+results in Section VI. Finally, we conclude this paper in
+Section VII.

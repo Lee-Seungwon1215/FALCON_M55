@@ -1,0 +1,110 @@
+{
+  "prepared_date_local": "2026-09-09",
+  "timezone": "Asia/Seoul",
+  "scope": "isolated build environment and upstream build-only verification; no board access",
+  "environment_script": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/environment.sh",
+  "nixpkgs_revision": "6b316287bae2ee04c9b93c8c858d930fd07d7338",
+  "nix_store_closure_reproduced": false,
+  "sources": {
+    "mlkem_native": {
+      "repository": "https://github.com/pq-code-package/mlkem-native.git",
+      "revision": "637d076aa113d8faaec2277ed4a46b657acaf35f",
+      "archive": "downloads/mlkem-native-637d076.tar.gz",
+      "archive_sha256": "3159ffd1218805c20628945d716fb8754e4e4b9ed1af1d05260132847fc65940"
+    },
+    "zephyr": {
+      "repository": "https://github.com/zephyrproject-rtos/zephyr.git",
+      "revision": "v4.4.1",
+      "archive": "downloads/zephyr-v4.4.1.tar.gz",
+      "archive_sha256": "b0eba09762905e71aab3de9bcc862d1f99a8b1df75b59cbc6cd806d0f9ff59f6",
+      "verified_nar_sha256": "sha256-8bzykJs6fFGiofCxRKh8M9jdXr5R8FM0lAbA28yanGk=",
+      "post_build_generated_paths": [".cache/ToolchainCapabilityDatabase"],
+      "post_build_source_nar_verified_excluding": [".cache"]
+    },
+    "cmsis_6": {
+      "repository": "https://github.com/zephyrproject-rtos/CMSIS_6.git",
+      "revision": "30a859f44ef8ab4dc8f84b03ed586fd16ccf9d74",
+      "archive": "downloads/CMSIS_6-zephyr-30a859f.tar.gz",
+      "archive_sha256": "2abdac3b892f0c9786bd15fc18728aa05463d919df726f9a837ed51457975bd3",
+      "verified_nar_sha256": "sha256-nTehISN0pu9gnOZMpGaBQ3DFmNxAqAZPGpvbKfEM35o="
+    },
+    "hal_stm32": {
+      "repository": "https://github.com/zephyrproject-rtos/hal_stm32.git",
+      "revision": "fc11896dd39cfca37bf9b4aeaaa2df8861b81875",
+      "archive": "downloads/hal_stm32-fc11896.tar.gz",
+      "archive_sha256": "4ace7bcaf71b9fcec779e2c1af9ac250295e59d14c67ff98a7370228d4d3b504",
+      "verified_nar_sha256": "sha256-AtNq2yTZsTFMTlWn/Ns0wuEiN4Wv/OTV2vWPRu0SnOE="
+    }
+  },
+  "toolchain": {
+    "distribution": "Arm GNU Toolchain 15.2.Rel1",
+    "build": "arm-15.86",
+    "host_platform": "darwin-arm64",
+    "target": "arm-none-eabi",
+    "gcc_version": "15.2.1 20251203",
+    "gdb_version": "16.3.90.20250906-git",
+    "url": "https://developer.arm.com/-/media/Files/downloads/gnu/15.2.rel1/binrel/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi.tar.xz",
+    "archive_sha256": "1938a84b7105c192e3fb4fa5e893ba25f425f7ddab40515ae608cd40f68669a8",
+    "archive_hash_matches_pinned_nixpkgs": true,
+    "directory": "arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi"
+  },
+  "host_tools": {
+    "python": "3.12.14",
+    "python_distribution": "uv managed cpython-3.12.14-macos-aarch64-none",
+    "uv_bootstrap": "0.12.11",
+    "cmake": "3.31.6",
+    "ninja_package": "1.13.2",
+    "ninja_executable_version": "1.13.2.git.kitware.jobserver-pipe-1",
+    "python_dependencies": "python-requirements.lock",
+    "global_installations": false
+  },
+  "upstream_openocd_reference": {
+    "repository": "https://github.com/openocd-org/openocd.git",
+    "revision": "4e9b167e1ae5ccb437eb0538440988b3f0ec53cb",
+    "version_label": "unstable-2026-05-01",
+    "fetch_submodules": true,
+    "verified_nar_sha256_before_bootstrap": "sha256-8aYl7JzulPxH6vgSeTKTMIZVH6d55JJlXTBkfgAPTbU=",
+    "nar_excluded_git_metadata": [".git", "jimtcl/.git", "src/jtag/drivers/libjaylink/.git"],
+    "jimtcl_revision": "f160866171457474f7c4d6ccda70f9b77524407e",
+    "libjaylink_revision": "0d23921a05d5d427332a142d154c213d0c306eb1",
+    "target_script_download": "downloads/openocd-stm32n6x-4e9b167.cfg",
+    "target_script_sha256": "f631821be34948a5ac5c5dc4cd627465df257402af28029ea8d5e4b25ceb0a0b",
+    "installed_target_script": "/private/tmp/falcon-openocd/share/openocd/scripts/target/stm32n6x.cfg",
+    "installed_target_script_sha256": "05af5991750a126a61560bcd162eabef1fa029dbd78173719172653245e35be2",
+    "only_target_script_difference": "dap create uses -chain-position upstream, -tap in the currently installed copy",
+    "binary_built_or_installed_by_this_agent": true,
+    "pinned_binary": "openocd-4e9b167/bin/openocd",
+    "pinned_binary_sha256": "f6c974ee4284f138d28423fe2e68d1bc7e1953f0229c5cf0ab00cd2d0f2a4d13",
+    "pinned_binary_version": "0.12.0+dev-g4e9b167 (2026-09-09-11:52)",
+    "pinned_scripts_directory": "openocd-4e9b167/share/openocd/scripts",
+    "pinned_target_script_matches_download": true,
+    "build_script": "build_openocd_pinned.sh",
+    "build_log": "openocd-pinned-build.log",
+    "libusb_dependency": "/private/tmp/falcon-tools/lib/libusb-1.0.0.dylib",
+    "tracked_source_modifications_after_build": false,
+    "hardware_access_during_preparation": false
+  },
+  "upstream_builds": {
+    "board": "nucleo_n657x0_q/stm32n657xx",
+    "target": "bench_512",
+    "AUTO": 0,
+    "CYCLES": "NO",
+    "hardware_executed": false,
+    "opt0": {
+      "success": true,
+      "build_dir": "upstream-build-opt0/zephyr/nucleo-n657x0-q/bench_mlkem512",
+      "elf_sha256": "616771b78c9635ffa6cb6e0d4d1639284cfd535435008177dea8fc4a25908f21"
+    },
+    "opt1": {
+      "success": true,
+      "build_dir": "upstream-build-opt1/zephyr/nucleo-n657x0-q/bench_mlkem512",
+      "elf_sha256": "24e7aa33056b21797af7f8875060e0cebe49472f016fb144a50b114ff9dba802"
+    },
+    "fndsa_build_config_comparison": {
+      "compared_file": "../build/zephyr/.config",
+      "reference": "upstream OPT=1 .config",
+      "only_difference": "CONFIG_FIPS202_MVE_BACKEND=y is absent in FN-DSA",
+      "all_other_config_lines_identical": true
+    }
+  }
+}

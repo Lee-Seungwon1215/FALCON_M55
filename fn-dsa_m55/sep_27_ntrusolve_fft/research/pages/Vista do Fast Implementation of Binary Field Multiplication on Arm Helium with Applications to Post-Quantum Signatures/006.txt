@@ -1,0 +1,99 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 6/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Algorithm 1 128-bit
+polynomial multiplica-
+Enguire: 1,hsueh chala23 6(2) =1- 2128 gl
+Insure
+2: untioa(1) -523-128(0b)
+Let a (x) = Z
+3:
+Let b(z)=E]=00;2161
+4:
+c+0
+5:
+for j = 0to 7 do
+for i = 0 to 7 do
+c+CĐ (ai-bj)•x16(itj)
+1+ c(0:8), h+ c8:16
+return l,h
+Algorithm 2 Helium MVE implementation
+Rnsuie:1ahsucchat (28) 6(2) =1-412801
+: function
+STEP(i, v1|], vo|], ro, r1.
+2: inctioar o8124 (6): L,b))
+declare vo [8], v1[16] : uint16_t
+2:
+r2 + VDUP(vo [j])
+3:
+declarero,.,r8: uint32x4_t
+3:
+3 + VMULLB(ro, r2)
+4:
+ro + a
+4:
+r4 + VMULLT(ro, r1)
+5:
+16+6
+5:
+т3 + VEOR(т3, r4)
+6:
+6:
+55LD1)
+7:
+VST1(v0, 16)
+r1 + VDUP(vo[O])
+7:
+5 < VEOR (15, r3)
+8:
+72 + VDUP(vo[7])
+8:
+VST1 (v1 [j], r5)
+9:
+тз + VMULLB(ro, r1)
+9:
+calreturnrz p new ry fornext 10:
+14 + VMULLT(r0,r2)
+VST1(010,73
+12:
+/ST1(018.TA
+13:
+for j = 1 to 7 do
+14:
+r1 + STEP(j, 01, v0, r0, r1)
+r7+ VLD1(u10))
+r8 + VLD1(v1 (8])
+17:
+return | + r7, h+ r8
+expands as
+a￾b=aнbнхЗ2Ф(анbzФaıbн)х@aıbı.
+(3)
+The cross term is obtained via b = VREV32(b) = bıx'©bн, giving to = VMULLT(a, b)*
+VMULLB(a, b) = анbı Дадbн, so that the output halves are 1 = VMULLB(a, b) O (to «
+16) and h = VMULLT(a, b) * (to » 16); this computation runs in parallel across all
+four 32-bit lanes of the vector register (Algorithm 3). At the 64-bit level, writing a =
+aHx32 @ aL and b = bHx32 @ bI, the product follows the same three-term expansion
+а•b=анbнхФ(анbıФаıbн)x@a_bı. The terms azbı and анbн are obtained
+from a call to MULT32x32 with (a, b), while the cross term anbL Dazbн is obtained from
+a call to MULT32x32 with (a, VREV64(b)). The partial results are then assembled via
+VEOR and VPSEL with mask po = 0xFOF0 (Algorithm 5). Finally, the top layer applies
+the same decomposition to a, b € GF(2128), with two calls to MULT64X64 producing the
+four 64-bit limbs ro, r1, r2, r3 assembled as 1 = (ro, r1) and h = (r2, r3) (Algorithm 6).
+Binary field multiplication of 192-bit and 256-bit. The multipliers for 192-bit and
+256-bit follow the same hierarchical structure as the 128-bit case, but apply an additional
+level of Karatsuba decomposition on the 128-bit building blocks. Both were implemented
+independently of the direct 128-bit Algorithm 2 and the hierarchical 128-bit Algorithm 6.
+For MULT192×192, the operands a, b e GF(2192) are divided into a = анx128 •
+az and b = bHx!28 @ bL, where aL, b1, € GF(2128) and an, bH € GF(261). The three
+Karatsuba subproducts po = azbL, p2 = анbн, and pı = (адФан)(brФbн) are computed
+via MULT128x128 and MULT64X64, respectively, and combined to produce the 384-bit
+result:a.b=p2x2560(p2@po@p1)x128Dpo.
+For MULT256x256, both operands belong to GF(2256) and are similarly divided
+as a = анx!Daz and b = bнxl2©b, where az, bz, ан, bu € GF(2128). The carry-less
+product expands a b = нbн х6 Ф (ıı Фıbı)х @ıı =хzх6Ф z∞
+po ĐPI)x128 DPo, where po = azbL, pz = aнbн, and pı = (an DaL) (bн ©bL) are the
+three Karatsuba subproducts, all evaluated by MULT128x128. Settingm = p1 @po@p2,
+the 512-bit result (co, c1, C2, C3) is assembled as co=po, a= ph @m'°,c2 = pb emti
+6

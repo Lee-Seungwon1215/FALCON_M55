@@ -1,0 +1,6 @@
+mkdir -p build
+clang -O3 -std=c99 -ffp-contract=off -DBENCH_HOST -DFNDSA_PROFILE=0 -DFNDSA_ASM_CORTEXM4=0 \
+ -DFNDSA_AVX2=0 -DFNDSA_SSE2=0 -DFNDSA_NEON=0 -DFNDSA_NEON_SHA3=0 -DFNDSA_RV64D=0 -DFNDSA_64=0 \
+ -I. -I../fn-dsa_m4/ref -I../fn-dsa_ref/profiling benchmark.c \
+ ../fn-dsa_ref/profiling/build/host-0/generated/codec.c ../fn-dsa_ref/profiling/build/host-0/generated/mq.c ../fn-dsa_ref/profiling/build/host-0/generated/sha3.c ../fn-dsa_ref/profiling/build/host-0/generated/sysrng.c ../fn-dsa_ref/profiling/build/host-0/generated/util.c ../fn-dsa_ref/profiling/build/host-0/generated/kgen.c ../fn-dsa_ref/profiling/build/host-0/generated/kgen_fxp.c ../fn-dsa_ref/profiling/build/host-0/generated/kgen_gauss.c ../fn-dsa_ref/profiling/build/host-0/generated/kgen_mp31.c ../fn-dsa_ref/profiling/build/host-0/generated/kgen_ntru.c ../fn-dsa_ref/profiling/build/host-0/generated/kgen_poly.c ../fn-dsa_ref/profiling/build/host-0/generated/kgen_zint31.c ../fn-dsa_ref/profiling/build/host-0/generated/sign.c ../fn-dsa_ref/profiling/build/host-0/generated/sign_core.c ../fn-dsa_ref/profiling/build/host-0/generated/sign_fpoly.c ../fn-dsa_ref/profiling/build/host-0/generated/sign_fpr.c ../fn-dsa_ref/profiling/build/host-0/generated/sign_sampler.c ../fn-dsa_ref/profiling/build/host-0/generated/vrfy.c -lm -o build/host_oracle
+build/host_oracle > build/host_oracle.json

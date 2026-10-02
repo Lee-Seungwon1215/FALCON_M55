@@ -1,0 +1,47 @@
+DOCUMENT: plantard.pdf PAGE: 1/24
+
+Improved Plantard Arithmetic for Lattice-based
+Cryptography
+Junhao Huang1, Jipeng Zhang2, Haosong Zhao1, Zhe Liu2,3
+,
+Ray C. C. Cheung4, Çetin Kaya Koç5,2, Donglong Chen1∗
+1 Guangdong Provincial Key Laboratory of Interdisciplinary Research and Application for Data
+Science, BNU-HKBU United International College, Zhuhai, China
+huangjunhao@uic.edu.cn,zhaohaosonguic@gmail.com,donglongchen@uic.edu.cn
+2 Nanjing University of Aeronautics and Astronautics, Nanjing, China jp-zhang@outlook.com
+3 Zhejiang Lab, Hangzhou, China zhe.liu@nuaa.edu.cn
+4 City University of Hong Kong, Hong Kong, China r.cheung@cityu.edu.hk
+5 University of California Santa Barbara, Santa Barbara, USA cetinkoc@ucsb.edu
+∗ Corresponding Author.
+Abstract. This paper presents an improved Plantard’s modular arithmetic (Plantard
+arithmetic) tailored for Lattice-Based Cryptography (LBC). Based on the improved
+Plantard arithmetic, we present faster implementations of two LBC schemes, Kyber
+and NTTRU, running on Cortex-M4. The intrinsic advantage of Plantard arithmetic
+is that one multiplication can be saved from the modular multiplication of a constant.
+However, theoriginalPlantardarithmeticisnotverypracticalinLBCschemesbecause
+of the limitation on the unsigned input range. In this paper, we improve the Plantard
+arithmetic and customize it for the existing LBC schemes with theoretical proof.
+The improved Plantard arithmetic not only inherits its aforementioned advantage
+but also accepts signed inputs, produces signed output, and enlarges its input range
+compared with the original design. Moreover, compared with the state-of-the-art
+Montgomery arithmetic, the improved Plantard arithmetic has a larger input range
+and smaller output range, which allows better lazy reduction strategies during the
+NTT/INTTimplementationincurrentLBCschemes. Allthesemeritsmakeitpossible
+to replace the Montgomery arithmetic with the improved Plantard arithmetic in LBC
+schemes on some platforms. After applying this novel method to Kyber and NTTRU
+schemes using 16-bit NTT on Cortex-M4 devices, we show that the proposed design
+outperforms the known fastest implementation that uses Montgomery and Barrett
+arithmetic. Specifically, compared with the state-of-the-art Kyber implementation,
+applyingtheimprovedPlantardarithmeticinKyberresultsinaspeedupof25.02%and
+18.56%forNTTandINTT,respectively. Comparedwiththereferenceimplementation
+of NTTRU, our NTT and INTT achieve speedup by 83.21% and 78.64%, respectively.
+As for the LBC KEM schemes, we set new speed records for Kyber and NTTRU
+running on Cortex-M4.
+Keywords: Kyber, NTTRU, NTT, Cortex-M4, modular arithmetic, lattice-based
+cryptography
+1 Introduction
+Quantum computers are being developed rapidly. Google [AAB+19] reported their 53-
+qubit processor in 2019. Two years later, a Chinese research team [WBC+21] announced
+a 66-qubit processor named Zuchongzhi. As is known, Shor’s algorithm can break the
+conventional public-key cryptosystems such as RSA and ECC on a sufficiently large
+quantum computer. Theoretically, a quantum computer with a few thousand qubits should

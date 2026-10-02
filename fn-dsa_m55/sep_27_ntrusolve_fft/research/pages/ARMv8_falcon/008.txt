@@ -1,0 +1,113 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 8/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+and conditions. A recent study was conducted that NTT could
+be used through parameter modification for SABER [25].
+In addition, by extending this, studies on the efficiency of
+incomplete NTT in equipment such as RISC-V have been
+conducted. In the case of Crystals-Kyber/Dilithium, it is
+assumed that NTT transformation has been performed for
+the public matrix, but in the case of SABER, NTT must be
+applied to the public matrix in order to apply the NTT. There-
+fore, during actual multiplication, the NTT is performed
+three times, so the reduction of one layer has a great gain.
+By using this, [26] proved and implemented that incomplete
+NTT using 6 layers is the fastest in the RISC-V environment.
+In RISC-V, no parallelization strategy has been applied,
+as no SIMD-based implementation is yet available as a
+basic-instructions.
+IV. PROPOSED OPTIMIZATION STRATEGIES
+In this section, we present various software-based optimiza-
+tion techniques for FFT and NTT-based polynomial mul-
+tiplication, which are the core operations of Falcon, using
+NEON engine in ARMv8-A environment. From the perspec-
+tive of FFT-based polynomial multiplication, since various
+FFT multiplications based on FPC operations are utilized in
+the Falcon algorithm, we basically present parallel imple-
+mentations for FPC-based operations (FPC-MUL, FPC-DIV,
+FPC-ADD, FPC-SUB), which are core operations of FFT,
+using NEON engine. From the perspective of NTT-based
+polynomial multiplication, we propose a CT Butterfly opera-
+tion of NTT that maximizes the characteristics of paralleliza-
+tion of NEON engine. In addition, since the Falcon digital
+signature has a different polynomial degree for each security
+level, the depth of the NTT and FFT for each security level is
+different, so a memory optimization strategy considering this
+is required.
+A. FFT-BASED MULTIPLICATION
+Some complex number operations are used in signature
+generation and key pair generation. This complex number
+operation can be approximated by IEEE 754 floating-point
+operation. Therefore, it is encoded as a 64-bit Double type
+and the operation is performed. A Falcon digital signature
+provides FPC-MUL, FPC-DIV, FPC-ADD, and FPC-SUB,
+which are the lowest level operations to efficiently process
+these complex number operations. These FPC-MUL, FPC-
+DIV, FPC-ADD, and FPC-SUB operations are mixed to form
+many FFT multiplication (Standard FFT, Merging FFT, Split
+FFT, LDL FFT, etc.) operations. Therefore, these functions
+should be optimized to maximize the performance of FFT-
+based multiplication. However, in an environment where
+some floating point instructions are not supported, more com-
+plex operations must be performed to process the floating
+point operation, but the target device supports the floating
+point operation as well as NEON engine capable of parallel
+processing. Thus, we present parallel implementation tech-
+nique for FPC-MUL, FPC-DIV, FPC-ADD, and FPC-SUB
+operations, which are core operations of FFT multiplication
+by utilizing FP instruction and NEON engine. Thus, we pro-
+pose parallel implementations that simultaneously processes
+two coefficient for FPC functions, which are core operations,
+by utilizing FP instructions and NEON engine.
+Unlike integer arithmetic, complex number arithmetic is
+divided into real part and image part to perform operations.
+In order words, (a+bi)+(c+di) operation becomes (a+c)+
+(b+d)i by dividing into real part and image part. Algorithm 4
+shows the parallel implementation of the proposed FPC func-
+tions. In Algorithm 4, Input data are vector registers storing
+two complex numbers, and Output data are vector registers
+storing operation results for two complex numbers. First, the
+FPC-MUL function is a function that multiplies two complex
+numbers, and is the lowest-level function that is used as a core
+in KeyGen and Sign of Falcon. Step 1-2 is the part where
+the Real Part is calculated, and Step 3-4 is the part where
+the Image Part is calculated. Through steps 1-4, the result
+of complex multiplication of two coefficients in the 128-bit
+vector register is returned. We designed the FPC-MUL func-
+tion compactly by eliminating arithmetic instructions such
+as SUB and ADD that may additionally occur by using the
+computational characteristics of the FPC-MUL function and
+fused MUL (FMLA, FMLS).
+FPC-DIV is a division operation on two complex num-
+bers and has the largest performance overheads among FPC
+functions. In addition, the FPC-DIV function is frequently
+used in LDL sampling of signature generation, and needs
+optimization to improve performance in signature genera-
+tion. We present a parallel implementation of the FPC-DIV
+function for two coefficients utilizing the NEON engine.
+Steps 5-14 show a parallel implementation of the division
+process on two complex numbers. By utilizing FMLS and
+FMLA instructions as much as possible, ADD and SUB instruc-
+tions that may occur similar to FPC-MUL functions are
+minimized to improve performance. Finally, Step 15-16 and
+Step 17-18 are parallel implementations of the proposed
+FPC-ADD and FPC-SUB, and addition and subtraction of
+two complex numbers can be easily performed in parallel
+with only FADD and FSUB instructions.
+B. NTT-BASED MULTIPLICATION
+In general, implementations of cryptographic algorithms
+can be done sequentially or in parallel. Although sequen-
+tial execution compute one operation at a time, the paral-
+lel implementation uses a parallel module supporting the
+SIMD instruction set to perform multiple operations at a
+time. A parallel implementation ideally yields an X% perfor-
+mance improvement over sequential execution, where X is the
+number of simultaneous operations. For this reason, parallel
+implementations typically achieve more accelerated compu-
+tational processing than serial implementations. Therefore,
+we present a parallel implementation technique of CT But-
+terfly that performs 8 coefficients simultaneously considering
+the size of NEON vector register and modulus of Falcon.
+Several NTT algorithms are used in KeyGen, Sign, and
+Verify of Falcon. Compared to other PQC digital signature
+VOLUME 10, 2022 44453

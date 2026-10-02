@@ -1,0 +1,113 @@
+
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/runs/tcm-scalar-matrix-20260910T012739Z/tcm_probe.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+34080000 <probe_vectors>:
+34080000:	340bf000 	.word	0x340bf000
+34080004:	34080041 	.word	0x34080041
+34080008:	340800dd 	.word	0x340800dd
+3408000c:	340800dd 	.word	0x340800dd
+34080010:	340800dd 	.word	0x340800dd
+34080014:	340800dd 	.word	0x340800dd
+34080018:	340800dd 	.word	0x340800dd
+3408001c:	340800dd 	.word	0x340800dd
+34080020:	340800dd 	.word	0x340800dd
+34080024:	340800dd 	.word	0x340800dd
+34080028:	340800dd 	.word	0x340800dd
+3408002c:	340800dd 	.word	0x340800dd
+34080030:	340800dd 	.word	0x340800dd
+34080034:	340800dd 	.word	0x340800dd
+34080038:	340800dd 	.word	0x340800dd
+3408003c:	340800dd 	.word	0x340800dd
+
+34080040 <probe_init>:
+34080040:	b672      	cpsid	i
+34080042:	482b      	ldr	r0, [pc, #172]	@ (340800f0 <probe_body+0x8>)
+34080044:	492b      	ldr	r1, [pc, #172]	@ (340800f4 <probe_body+0xc>)
+34080046:	6008      	str	r0, [r1, #0]
+34080048:	f3bf 8f4f 	dsb	sy
+3408004c:	f3bf 8f6f 	isb	sy
+34080050:	2200      	movs	r2, #0
+34080052:	2300      	movs	r3, #0
+34080054:	f04f 5080 	mov.w	r0, #268435456	@ 0x10000000
+34080058:	4927      	ldr	r1, [pc, #156]	@ (340800f8 <probe_body+0x10>)
+3408005a:	e8e0 2302 	strd	r2, r3, [r0], #8
+3408005e:	4288      	cmp	r0, r1
+34080060:	d3fb      	bcc.n	3408005a <probe_init+0x1a>
+34080062:	f04f 5040 	mov.w	r0, #805306368	@ 0x30000000
+34080066:	4925      	ldr	r1, [pc, #148]	@ (340800fc <probe_body+0x14>)
+34080068:	e8e0 2302 	strd	r2, r3, [r0], #8
+3408006c:	4288      	cmp	r0, r1
+3408006e:	d3fb      	bcc.n	34080068 <probe_init+0x28>
+34080070:	f04f 2410 	mov.w	r4, #268439552	@ 0x10001000
+34080074:	4d22      	ldr	r5, [pc, #136]	@ (34080100 <probe_body+0x18>)
+34080076:	f20f 0071 	addw	r0, pc, #113	@ 0x71
+3408007a:	e9d0 2300 	ldrd	r2, r3, [r0]
+3408007e:	e9c4 2300 	strd	r2, r3, [r4]
+34080082:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+34080086:	42ac      	cmp	r4, r5
+34080088:	d3f9      	bcc.n	3408007e <probe_init+0x3e>
+3408008a:	4a1e      	ldr	r2, [pc, #120]	@ (34080104 <probe_body+0x1c>)
+3408008c:	4b1e      	ldr	r3, [pc, #120]	@ (34080108 <probe_body+0x20>)
+3408008e:	4c1f      	ldr	r4, [pc, #124]	@ (3408010c <probe_body+0x24>)
+34080090:	4d1f      	ldr	r5, [pc, #124]	@ (34080110 <probe_body+0x28>)
+34080092:	e9c4 2300 	strd	r2, r3, [r4]
+34080096:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+3408009a:	42ac      	cmp	r4, r5
+3408009c:	d3f9      	bcc.n	34080092 <probe_init+0x52>
+3408009e:	4c1d      	ldr	r4, [pc, #116]	@ (34080114 <probe_body+0x2c>)
+340800a0:	4d1d      	ldr	r5, [pc, #116]	@ (34080118 <probe_body+0x30>)
+340800a2:	e9c4 2300 	strd	r2, r3, [r4]
+340800a6:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+340800aa:	42ac      	cmp	r4, r5
+340800ac:	d3f9      	bcc.n	340800a2 <probe_init+0x62>
+340800ae:	4c1b      	ldr	r4, [pc, #108]	@ (3408011c <probe_body+0x34>)
+340800b0:	e9c4 2300 	strd	r2, r3, [r4]
+340800b4:	f3bf 8f4f 	dsb	sy
+340800b8:	f3bf 8f6f 	isb	sy
+
+340800bc <probe_ready>:
+340800bc:	be00      	bkpt	0x0000
+340800be:	f7ff bffd 	b.w	340800bc <probe_ready>
+
+340800c2 <probe_call>:
+340800c2:	4e10      	ldr	r6, [pc, #64]	@ (34080104 <probe_body+0x1c>)
+340800c4:	47a0      	blx	r4
+340800c6:	42b0      	cmp	r0, r6
+340800c8:	f040 8005 	bne.w	340800d6 <probe_mismatch>
+340800cc:	3d01      	subs	r5, #1
+340800ce:	d1f9      	bne.n	340800c4 <probe_call+0x2>
+
+340800d0 <probe_done>:
+340800d0:	be00      	bkpt	0x0000
+340800d2:	f7ff bffd 	b.w	340800d0 <probe_done>
+
+340800d6 <probe_mismatch>:
+340800d6:	be00      	bkpt	0x0000
+340800d8:	f7ff bffd 	b.w	340800d6 <probe_mismatch>
+
+340800dc <probe_fault>:
+340800dc:	be00      	bkpt	0x0000
+340800de:	f7ff bffd 	b.w	340800dc <probe_fault>
+340800e2:	bf00      	nop
+340800e4:	f3af 8000 	nop.w
+
+340800e8 <probe_body>:
+340800e8:	6808      	ldr	r0, [r1, #0]
+340800ea:	4770      	bx	lr
+340800ec:	bf00      	nop
+340800ee:	bf00      	nop
+340800f0:	34080000 	.word	0x34080000
+340800f4:	e000ed08 	.word	0xe000ed08
+340800f8:	10040000 	.word	0x10040000
+340800fc:	30040000 	.word	0x30040000
+34080100:	10041000 	.word	0x10041000
+34080104:	13579bdf 	.word	0x13579bdf
+34080108:	2468ace0 	.word	0x2468ace0
+3408010c:	10000800 	.word	0x10000800
+34080110:	10040800 	.word	0x10040800
+34080114:	30000800 	.word	0x30000800
+34080118:	30040800 	.word	0x30040800
+3408011c:	34080800 	.word	0x34080800

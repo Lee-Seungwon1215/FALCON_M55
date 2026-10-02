@@ -1,0 +1,242 @@
+{
+  "valid": true,
+  "candidate": "S1B_S2B_S3B",
+  "source_sha256": "3258408c5e22a43014cbdf611194018722ac595ea7a115d728b0eaaa436ea700",
+  "elf_sha256": "65f50673d6e9d64eb950bf62d0b9cddcae2018a679f700046fb7a37293de865f",
+  "changed_source_files_vs_baseline": [
+    "mq_cm55.s"
+  ],
+  "changed_object_functions_vs_v1": [
+    "fndsa_mqpoly_int_to_ntt"
+  ],
+  "changed_object_functions_vs_baseline": [
+    "fndsa_mqpoly_int_to_ntt",
+    "fndsa_mqpoly_ntt_to_int"
+  ],
+  "control_sequence_equal_v1": true,
+  "stack_sequence_equal_v1": true,
+  "direct_source_no_includes": true,
+  "compiler_options_equal_baseline": true,
+  "zephyr_config_equal_baseline": true,
+  "zephyr_config_sha256": "29add21e434a3054715e66a9711d44653b8362c0370b249dfbfd5744d14eb0ca",
+  "static_instructions_before": 2715,
+  "static_instructions_after": 2695,
+  "static_control_count": 86,
+  "source_instruction_histogram": {
+    "push": 3,
+    "movs": 38,
+    "lsls": 10,
+    "movw": 40,
+    "movt": 13,
+    "mov": 10,
+    "ldr": 28,
+    "sxtb16": 2,
+    "sadd16": 22,
+    "ssub16": 32,
+    "sel": 26,
+    "pkhtb": 3,
+    "pkhbt": 12,
+    "strd": 3,
+    "subs": 34,
+    "bne": 38,
+    "pop": 9,
+    "bx": 5,
+    "ldrd": 5,
+    "push.w": 8,
+    "ldr.w": 11,
+    "smulbb": 7,
+    "smultt": 4,
+    "mul": 20,
+    "umaal": 20,
+    "muls": 4,
+    "str.w": 14,
+    "smlad": 6,
+    "msr": 2,
+    "usat16": 4,
+    "mrs": 2,
+    "sbfx": 2,
+    "orrs": 2,
+    "str": 16,
+    "vpush": 2,
+    "vmov": 102,
+    "orr": 57,
+    "cmp": 26,
+    "blo": 5,
+    "adr": 7,
+    "ldmia.w": 2,
+    "sub.w": 6,
+    "add.w": 204,
+    "b": 21,
+    "bne.w": 3,
+    "ldrh": 80,
+    "lsr.w": 12,
+    "vldrh.u16": 50,
+    "vdup.16": 137,
+    "asr.w": 53,
+    "vqrdmulh.s16": 57,
+    "vmul.i16": 87,
+    "vmla.i16": 57,
+    "vcmp.s16": 189,
+    "vpst": 232,
+    "vaddt.i16": 222,
+    "vadd.i16": 96,
+    "vsub.i16": 132,
+    "vstrh.16": 44,
+    "lsl.w": 6,
+    "beq": 13,
+    "lsl": 2,
+    "lsr": 3,
+    "vmov.i32": 10,
+    "vcmp.i16": 43,
+    "vmulh.u16": 30,
+    "vsubt.i16": 10,
+    "smultb": 5,
+    "sub": 3,
+    "add": 4,
+    "vldr": 24,
+    "uxth": 16,
+    "vstr": 24,
+    "vld40.16": 4,
+    "vld41.16": 4,
+    "vld42.16": 4,
+    "vld43.16": 4,
+    "vld20.16": 9,
+    "vld21.16": 9,
+    "vst40.16": 4,
+    "vst41.16": 4,
+    "vst42.16": 4,
+    "vst43.16": 4,
+    "vpop": 2,
+    "pop.w": 2,
+    "vmov.i16": 33,
+    "vand": 33,
+    "vshr.u16": 33,
+    "and": 3,
+    "umlal": 3,
+    "rsbs": 1,
+    "asrs": 1,
+    "bgt": 1,
+    "adds": 2
+  },
+  "itcm_code_bytes": 106236,
+  "itcm_active_code_limit_bytes": 131072,
+  "dtcm_reserved_bytes": 225728,
+  "dtcm_capacity_bytes": 262144,
+  "sections": [
+    {
+      "name": "rom_start",
+      "flags": 6,
+      "address": 268435456,
+      "size": 812
+    },
+    {
+      "name": "text",
+      "flags": 6,
+      "address": 268436272,
+      "size": 105420
+    },
+    {
+      "name": ".ARM.exidx",
+      "flags": 130,
+      "address": 805306368,
+      "size": 8
+    },
+    {
+      "name": "initlevel",
+      "flags": 2,
+      "address": 805306376,
+      "size": 200
+    },
+    {
+      "name": "device_area",
+      "flags": 2,
+      "address": 805306576,
+      "size": 616
+    },
+    {
+      "name": "sw_isr_table",
+      "flags": 2,
+      "address": 805307192,
+      "size": 1496
+    },
+    {
+      "name": "gpio_driver_api_area",
+      "flags": 2,
+      "address": 805308688,
+      "size": 36
+    },
+    {
+      "name": "reset_driver_api_area",
+      "flags": 2,
+      "address": 805308724,
+      "size": 16
+    },
+    {
+      "name": "clock_control_driver_api_area",
+      "flags": 2,
+      "address": 805308740,
+      "size": 28
+    },
+    {
+      "name": "otp_driver_api_area",
+      "flags": 2,
+      "address": 805308768,
+      "size": 4
+    },
+    {
+      "name": "uart_driver_api_area",
+      "flags": 2,
+      "address": 805308772,
+      "size": 20
+    },
+    {
+      "name": "rodata",
+      "flags": 2,
+      "address": 805308800,
+      "size": 58972
+    },
+    {
+      "name": ".ramfunc",
+      "flags": 3,
+      "address": 805367772,
+      "size": 4
+    },
+    {
+      "name": "datas",
+      "flags": 3,
+      "address": 805367776,
+      "size": 76
+    },
+    {
+      "name": "device_states",
+      "flags": 3,
+      "address": 805367852,
+      "size": 44
+    },
+    {
+      "name": "k_mutex_area",
+      "flags": 3,
+      "address": 805367896,
+      "size": 20
+    },
+    {
+      "name": ".last_section",
+      "flags": 3,
+      "address": 805367916,
+      "size": 4
+    },
+    {
+      "name": "bss",
+      "flags": 3,
+      "address": 805367936,
+      "size": 96251
+    },
+    {
+      "name": "noinit",
+      "flags": 3,
+      "address": 805464192,
+      "size": 67904
+    }
+  ],
+  "limitations": "Scope and unchanged branch/stack checks plus separate instruction-model regression; not formal CT proof, dynamic leakage test or power/EM TVLA."
+}

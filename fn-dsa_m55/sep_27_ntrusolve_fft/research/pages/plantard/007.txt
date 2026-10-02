@@ -1,0 +1,67 @@
+DOCUMENT: plantard.pdf PAGE: 7/24
+
+Junhao Huang et al. 7
+c−⌊c/q⌋q, wherethedivisionoperationisnon-constant-timeinmoderncomputers. Thenon-
+constant-time characteristic of division prevents it from being used in the implementation
+of cryptographic algorithms due to security concerns. The commonly used constant time
+modular reduction algorithms are Montgomery reduction [Mon85] and Barrett reduction
+[Bar86]. Their basic idea is to replace the non-constant-time division with constant-time
+multiplications and shifts.
+In current LBC schemes, the known fastest modular arithmetic is the signed version
+of Montgomery multiplication [Sei18], which is given in Algorithm 7. The constant β is
+often set to word size 2l so that the modulus q fits in one word. For instance, β = 216
+when q <216 and β = 232 when 216 ≤q <232. The algorithm replaces the division by
+multiplications and shifts operations. It requires 3 multiplications.
+Algorithm 7 Signed Montgomery multiplication [Sei18]
+Input: Operand a,b such that−
+β
+2 q≤ab< β
+2 q, where β = 2l with the machine word size
+l, the odd modulus q∈(0,
+β
+2 )
+Output: r≡abβ−1 mod q,r∈(−q,q)
+1: c= c1β+ c0 = a·b
+2: m= c0·q−1 mod±β▷ mod±obtains a signed product, q−1 is a precomputed constant
+3: t1 = ⌊m·q/β⌋ ▷ shift right operation
+4: r= c1−t1
+5: return r
+The Barrett reduction [Bar86] approximately computes ⌊c/q⌋using ⌊c·v/(2log(q)−1
+·β)⌋,
+where v is a precomputed constant (v = 2log(q)−1
+·β/q ) and β satisfies q <β/2. The
+algorithm of the signed Barrett reduction for a single-word integer c is given in [Sei18], as
+shown in Algorithm 8. The Barrett reduction requires 2 multiplications, which is the same
+as the Montgomery reduction.
+Algorithm 8 Signed Barrett reduction [Sei18]
+Input: Operand c in (−
+β
+2 ,
+constant v=
+2log(q)−1
+·β
+q
+Output: r≡cmod q,r∈[0,q]
+1: t= ⌊cv
+2log(q)−1 ·β⌋ 2: t= tqmod β
+3: t= c−t
+4: return r
+β
+2 ), an odd modulus q satisfying q< β
+2 , and the precomputed
+▷ signed high product and arithmetic right shift by log(q)−1
+Plantard [Pla21] proposed a new modular multiplication (Plantard multiplication)
+tailored for the word size moduli and claimed that the proposed algorithm outperforms
+other existing solutions, including Montgomery and Barrett multiplication, in some appli-
+cation scenarios. The original Plantard multiplication is given in Algorithm 9. Here, we
+denote Xmod 2l′
+as [X]l′, X >>l′as [X]l′, where l′is a positive integer. The Plantard
+multiplication also needs 3 multiplications, which is the same as Montgomery and Barrett
+multiplication. But the key advantage of Plantard multiplication is that one could pre-
+compute the product of b and q−1 mod 22l when operand b is a constant. This introduces
+an l×2l-bit multiplication a·(bq′). If the target platform can compute the l×2l-bit
+multiplication in one multiplication instruction, then one multiplication could be saved for
+the overall modular multiplication. This advantage mainly comes from the fact that the
+product of two operands c= a·b is only used once in Plantard multiplication, while its
+Montgomery and Barrett counterparts use it twice (see step 2,4 in Algorithm 7 and step
+2,3 in Algorithm 8).

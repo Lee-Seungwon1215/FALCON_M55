@@ -1,0 +1,506 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 58366
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :58366 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10001e24
+hbreak *0x100050b4
+set $early_fault_bp = $bpnum
+jump *0x100050c9
+if $pc != 0x10001e24
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp5y5vf9wu/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10001dd4
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x100050b4
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.274468
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 58366
+Info : Listening on port 58366 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/58366
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+PRED_INPUT_CT class=0 scale=0 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=0 scale=0 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=0 scale=0 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=1 scale=1 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=1 scale=1 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=1 scale=1 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=2 scale=2 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=2 scale=2 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=2 scale=2 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=3 scale=3 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=3 scale=3 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=3 scale=3 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=4 scale=4 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=4 scale=4 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=4 scale=4 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=5 scale=5 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=5 scale=5 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=5 scale=5 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=6 scale=6 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=6 scale=6 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=6 scale=6 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=7 scale=7 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=7 scale=7 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=7 scale=7 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=8 scale=8 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=8 scale=8 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=8 scale=8 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=9 scale=9 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=9 scale=9 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=9 scale=9 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=10 scale=10 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=10 scale=10 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=10 scale=10 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=11 scale=11 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=11 scale=11 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=11 scale=11 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=12 scale=12 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=12 scale=12 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=12 scale=12 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=13 scale=13 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=13 scale=13 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=13 scale=13 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=14 scale=14 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=14 scale=14 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=14 scale=14 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=15 scale=15 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=15 scale=15 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=15 scale=15 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=16 scale=31 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=16 scale=31 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=16 scale=31 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=17 scale=62 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=17 scale=62 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=17 scale=62 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=18 scale=93 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=18 scale=93 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=18 scale=93 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=19 scale=124 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=19 scale=124 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=19 scale=124 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=20 scale=155 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=20 scale=155 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=20 scale=155 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=21 scale=186 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=21 scale=186 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=21 scale=186 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=22 scale=217 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=22 scale=217 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=22 scale=217 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=23 scale=248 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=23 scale=248 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=23 scale=248 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=24 scale=279 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=24 scale=279 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=24 scale=279 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=25 scale=310 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=25 scale=310 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=25 scale=310 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=26 scale=341 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=26 scale=341 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=26 scale=341 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=27 scale=372 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=27 scale=372 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=27 scale=372 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=28 scale=403 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=28 scale=403 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=28 scale=403 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=29 scale=434 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=29 scale=434 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=29 scale=434 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=30 scale=465 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=30 scale=465 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=30 scale=465 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=31 scale=63487 kind=0 calls=32 logn=2 len=32 min=175924 max=175924
+PRED_INPUT_CT class=31 scale=63487 kind=1 calls=32 logn=2 len=32 min=19382 max=19382
+PRED_INPUT_CT class=31 scale=63487 kind=2 calls=32 logn=2 len=32 min=19987 max=19987
+PRED_INPUT_CT class=0 scale=0 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=0 scale=0 kind=1 calls=32 logn=9 len=8 min=740918 max=740919
+PRED_INPUT_CT class=0 scale=0 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=1 scale=1 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=1 scale=1 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=1 scale=1 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=2 scale=2 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=2 scale=2 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=2 scale=2 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=3 scale=3 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=3 scale=3 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=3 scale=3 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=4 scale=4 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=4 scale=4 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=4 scale=4 kind=2 calls=32 logn=9 len=8 min=740755 max=740756
+PRED_INPUT_CT class=5 scale=5 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=5 scale=5 kind=1 calls=32 logn=9 len=8 min=740918 max=740919
+PRED_INPUT_CT class=5 scale=5 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=6 scale=6 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=6 scale=6 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=6 scale=6 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=7 scale=7 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=7 scale=7 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=7 scale=7 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=8 scale=8 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=8 scale=8 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=8 scale=8 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=9 scale=9 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=9 scale=9 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=9 scale=9 kind=2 calls=32 logn=9 len=8 min=740755 max=740756
+PRED_INPUT_CT class=10 scale=10 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=10 scale=10 kind=1 calls=32 logn=9 len=8 min=740918 max=740919
+PRED_INPUT_CT class=10 scale=10 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=11 scale=11 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=11 scale=11 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=11 scale=11 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=12 scale=12 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=12 scale=12 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=12 scale=12 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=13 scale=13 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=13 scale=13 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=13 scale=13 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=14 scale=14 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=14 scale=14 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=14 scale=14 kind=2 calls=32 logn=9 len=8 min=740755 max=740756
+PRED_INPUT_CT class=15 scale=15 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=15 scale=15 kind=1 calls=32 logn=9 len=8 min=740918 max=740919
+PRED_INPUT_CT class=15 scale=15 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=16 scale=31 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=16 scale=31 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=16 scale=31 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=17 scale=62 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=17 scale=62 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=17 scale=62 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=18 scale=93 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=18 scale=93 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=18 scale=93 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=19 scale=124 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=19 scale=124 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=19 scale=124 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=20 scale=155 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=20 scale=155 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=20 scale=155 kind=2 calls=32 logn=9 len=8 min=740755 max=740756
+PRED_INPUT_CT class=21 scale=186 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=21 scale=186 kind=1 calls=32 logn=9 len=8 min=740918 max=740919
+PRED_INPUT_CT class=21 scale=186 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=22 scale=217 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=22 scale=217 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=22 scale=217 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=23 scale=248 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=23 scale=248 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=23 scale=248 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=24 scale=279 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=24 scale=279 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=24 scale=279 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=25 scale=310 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=25 scale=310 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=25 scale=310 kind=2 calls=32 logn=9 len=8 min=740755 max=740756
+PRED_INPUT_CT class=26 scale=341 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=26 scale=341 kind=1 calls=32 logn=9 len=8 min=740918 max=740919
+PRED_INPUT_CT class=26 scale=341 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=27 scale=372 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=27 scale=372 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=27 scale=372 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=28 scale=403 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=28 scale=403 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=28 scale=403 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=29 scale=434 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=29 scale=434 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=29 scale=434 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_CT class=30 scale=465 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=30 scale=465 kind=1 calls=32 logn=9 len=8 min=740918 max=740918
+PRED_INPUT_CT class=30 scale=465 kind=2 calls=32 logn=9 len=8 min=740755 max=740756
+PRED_INPUT_CT class=31 scale=63487 kind=0 calls=32 logn=9 len=8 min=7147956 max=7147957
+PRED_INPUT_CT class=31 scale=63487 kind=1 calls=32 logn=9 len=8 min=740918 max=740919
+PRED_INPUT_CT class=31 scale=63487 kind=2 calls=32 logn=9 len=8 min=740755 max=740755
+PRED_INPUT_TIMING logn=2 len=1 kind=0 calls=32 total=15648 min=489 max=489
+PRED_INPUT_TIMING logn=2 len=1 kind=1 calls=32 total=7168 min=224 max=224
+PRED_INPUT_TIMING logn=2 len=1 kind=2 calls=32 total=6688 min=209 max=209
+PRED_INPUT_TIMING logn=2 len=4 kind=0 calls=32 total=23712 min=741 max=741
+PRED_INPUT_TIMING logn=2 len=4 kind=1 calls=32 total=8416 min=263 max=263
+PRED_INPUT_TIMING logn=2 len=4 kind=2 calls=32 total=8032 min=251 max=251
+PRED_INPUT_TIMING logn=2 len=8 kind=0 calls=32 total=60960 min=1905 max=1905
+PRED_INPUT_TIMING logn=2 len=8 kind=1 calls=32 total=10080 min=315 max=315
+PRED_INPUT_TIMING logn=2 len=8 kind=2 calls=32 total=9824 min=307 max=307
+PRED_INPUT_TIMING logn=2 len=32 kind=0 calls=32 total=176544 min=5517 max=5517
+PRED_INPUT_TIMING logn=2 len=32 kind=1 calls=32 total=20064 min=627 max=627
+PRED_INPUT_TIMING logn=2 len=32 kind=2 calls=32 total=20576 min=643 max=643
+PRED_INPUT_TIMING logn=2 len=128 kind=0 calls=32 total=638880 min=19965 max=19965
+PRED_INPUT_TIMING logn=2 len=128 kind=1 calls=32 total=60000 min=1875 max=1875
+PRED_INPUT_TIMING logn=2 len=128 kind=2 calls=32 total=63584 min=1987 max=1987
+PRED_INPUT_TIMING logn=2 len=512 kind=0 calls=32 total=2488224 min=77757 max=77757
+PRED_INPUT_TIMING logn=2 len=512 kind=1 calls=32 total=219744 min=6867 max=6867
+PRED_INPUT_TIMING logn=2 len=512 kind=2 calls=32 total=235616 min=7363 max=7363
+PRED_INPUT_TIMING logn=2 len=2047 kind=0 calls=32 total=9875040 min=308595 max=308595
+PRED_INPUT_TIMING logn=2 len=2047 kind=1 calls=32 total=858304 min=26822 max=26822
+PRED_INPUT_TIMING logn=2 len=2047 kind=2 calls=32 total=923296 min=28853 max=28853
+PRED_INPUT_TIMING logn=3 len=1 kind=0 calls=32 total=26144 min=817 max=817
+PRED_INPUT_TIMING logn=3 len=1 kind=1 calls=32 total=10016 min=313 max=313
+PRED_INPUT_TIMING logn=3 len=1 kind=2 calls=32 total=9312 min=291 max=291
+PRED_INPUT_TIMING logn=3 len=4 kind=0 calls=32 total=42272 min=1321 max=1321
+PRED_INPUT_TIMING logn=3 len=4 kind=1 calls=32 total=12512 min=391 max=391
+PRED_INPUT_TIMING logn=3 len=4 kind=2 calls=32 total=12000 min=375 max=375
+PRED_INPUT_TIMING logn=3 len=8 kind=0 calls=32 total=116768 min=3649 max=3649
+PRED_INPUT_TIMING logn=3 len=8 kind=1 calls=32 total=15840 min=495 max=495
+PRED_INPUT_TIMING logn=3 len=8 kind=2 calls=32 total=15584 min=487 max=487
+PRED_INPUT_TIMING logn=3 len=32 kind=0 calls=32 total=347936 min=10873 max=10873
+PRED_INPUT_TIMING logn=3 len=32 kind=1 calls=32 total=35808 min=1119 max=1119
+PRED_INPUT_TIMING logn=3 len=32 kind=2 calls=32 total=37088 min=1159 max=1159
+PRED_INPUT_TIMING logn=3 len=128 kind=0 calls=32 total=1272608 min=39769 max=39769
+PRED_INPUT_TIMING logn=3 len=128 kind=1 calls=32 total=115680 min=3615 max=3615
+PRED_INPUT_TIMING logn=3 len=128 kind=2 calls=32 total=123104 min=3847 max=3847
+PRED_INPUT_TIMING logn=3 len=512 kind=0 calls=32 total=4971296 min=155353 max=155353
+PRED_INPUT_TIMING logn=3 len=512 kind=1 calls=32 total=435168 min=13599 max=13599
+PRED_INPUT_TIMING logn=3 len=512 kind=2 calls=32 total=467168 min=14599 max=14599
+PRED_INPUT_TIMING logn=4 len=1 kind=0 calls=32 total=47136 min=1473 max=1473
+PRED_INPUT_TIMING logn=4 len=1 kind=1 calls=32 total=15712 min=491 max=491
+PRED_INPUT_TIMING logn=4 len=1 kind=2 calls=32 total=14560 min=455 max=455
+PRED_INPUT_TIMING logn=4 len=4 kind=0 calls=32 total=79392 min=2481 max=2481
+PRED_INPUT_TIMING logn=4 len=4 kind=1 calls=32 total=20704 min=647 max=647
+PRED_INPUT_TIMING logn=4 len=4 kind=2 calls=32 total=19936 min=623 max=623
+PRED_INPUT_TIMING logn=4 len=8 kind=0 calls=32 total=228384 min=7137 max=7137
+PRED_INPUT_TIMING logn=4 len=8 kind=1 calls=32 total=27360 min=855 max=855
+PRED_INPUT_TIMING logn=4 len=8 kind=2 calls=32 total=27104 min=847 max=847
+PRED_INPUT_TIMING logn=4 len=32 kind=0 calls=32 total=690720 min=21585 max=21585
+PRED_INPUT_TIMING logn=4 len=32 kind=1 calls=32 total=67296 min=2103 max=2103
+PRED_INPUT_TIMING logn=4 len=32 kind=2 calls=32 total=70112 min=2191 max=2191
+PRED_INPUT_TIMING logn=4 len=128 kind=0 calls=32 total=2540064 min=79377 max=79377
+PRED_INPUT_TIMING logn=4 len=128 kind=1 calls=32 total=227040 min=7095 max=7095
+PRED_INPUT_TIMING logn=4 len=128 kind=2 calls=32 total=242144 min=7567 max=7567
+PRED_INPUT_TIMING logn=4 len=512 kind=0 calls=32 total=9937440 min=310545 max=310545
+PRED_INPUT_TIMING logn=4 len=512 kind=1 calls=32 total=866016 min=27063 max=27063
+PRED_INPUT_TIMING logn=4 len=512 kind=2 calls=32 total=930272 min=29071 max=29071
+PRED_INPUT_TIMING logn=9 len=1 kind=0 calls=32 total=1348640 min=42145 max=42145
+PRED_INPUT_TIMING logn=9 len=1 kind=1 calls=32 total=368864 min=11527 max=11527
+PRED_INPUT_TIMING logn=9 len=1 kind=2 calls=32 total=339936 min=10623 max=10623
+PRED_INPUT_TIMING logn=9 len=4 kind=0 calls=32 total=2380832 min=74401 max=74401
+PRED_INPUT_TIMING logn=9 len=4 kind=1 calls=32 total=528608 min=16519 max=16519
+PRED_INPUT_TIMING logn=9 len=4 kind=2 calls=32 total=511968 min=15999 max=15999
+PRED_INPUT_TIMING logn=9 len=8 kind=0 calls=32 total=7148576 min=223393 max=223393
+PRED_INPUT_TIMING logn=9 len=8 kind=1 calls=32 total=741600 min=23175 max=23175
+PRED_INPUT_TIMING logn=9 len=8 kind=2 calls=32 total=741344 min=23167 max=23167
+PRED_INPUT_TIMING logn=10 len=1 kind=0 calls=32 total=2692128 min=84129 max=84129
+PRED_INPUT_TIMING logn=10 len=1 kind=1 calls=32 total=733408 min=22919 max=22919
+PRED_INPUT_TIMING logn=10 len=1 kind=2 calls=32 total=675808 min=21119 max=21119
+PRED_INPUT_TIMING logn=10 len=4 kind=0 calls=32 total=4756512 min=148641 max=148641
+PRED_INPUT_TIMING logn=10 len=4 kind=1 calls=32 total=1052896 min=32903 max=32903
+PRED_INPUT_TIMING logn=10 len=4 kind=2 calls=32 total=1019872 min=31871 max=31871
+PRED_INPUT_TIMING logn=10 len=8 kind=0 calls=32 total=14292000 min=446625 max=446625
+PRED_INPUT_TIMING logn=10 len=8 kind=1 calls=32 total=1478880 min=46215 max=46215
+PRED_INPUT_TIMING logn=10 len=8 kind=2 calls=32 total=1478624 min=46207 max=46207
+PRED_INPUT_DONE cases=220672 failures=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x9c0c lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xb94 lma 0x30000978
+Loading section datas, size 0x54 lma 0x30001520
+Loading section device_states, size 0x2c lma 0x30001574
+Loading section k_mutex_area, size 0x14 lma 0x300015a0
+Loading section .last_section, size 0x4 lma 0x300015b4
+Start address 0x100050c8, load size 46300
+Transfer rate: 538 KB/sec, 2572 bytes/write.
+Temporary breakpoint 1 at 0x10001e24: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x100050b4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp5y5vf9wu/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10001dd4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x100050b4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984632            9979442
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30016248          805397064
+r8             0x300000d0          805306576
+r9             0x30026388          805462920
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30026338          0x30026338 <z_main_stack+65456>
+lr             0x10001e1b          268443163
+pc             0x10001dd4          0x10001dd4 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x40000             262144
+msp            0x30016248          0x30016248 <z_idle_stacks>
+psp            0x30026338          0x30026338 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30016248          0x30016248 <z_idle_stacks>
+psp_s          0x30026338          0x30026338 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30015a48          0x30015a48 <z_interrupt_stacks>
+psplim_s       0x30016388          0x30016388 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x30026338 <z_main_stack+65456>:	0x00000000	0x10001e37	0x00000000	0x100087ff
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30016248
+PSP=0x30026338
+LR=0x10001e1b
+PC=0x10001dd4
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30016248 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30016258 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

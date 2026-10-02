@@ -1,0 +1,428 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 61158
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :61158 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+compare-sections
+tbreak *0x10002dac
+hbreak *0x1000603c
+set $early_fault_bp = $bpnum
+jump *0x10006051
+if $pc != 0x10002dac
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpe7hyr1jj/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10002d5c
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x1000603c
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+if *(unsigned int*)0xe000ed28 != 0
+echo [[EXTENDED-FAULT-DIAGNOSTIC]]\n
+echo VTOR_FPCCR_FPCAR:\n
+x/wx 0xe000ed08
+x/3wx 0xe000ef34
+echo VECTOR_WORDS:\n
+x/16wx 0x10000000
+echo MEMSYSCTL:\n
+x/24wx 0xe001e000
+echo PSP_EXTENDED:\n
+x/96wx $psp
+echo MSP_EXTENDED:\n
+x/48wx $msp
+end
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 61158
+Info : Listening on port 61158 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/61158
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+LDL_HW cpu=800000000 fpscr=00040000 ccr=00000611 tcm=00000099
+LDL_EXACT logn=1 trials=128 failures=0 guards=0
+LDL_PERF degree=2 implementation=emulated calls=100 total=97500 median_lo=975 median_hi=975 min=975 max=975
+LDL_PERF degree=2 implementation=native_c calls=100 total=19300 median_lo=193 median_hi=193 min=193 max=193
+LDL_PERF degree=2 implementation=current calls=100 total=18900 median_lo=189 median_hi=189 min=189 max=189
+LDL_CT degree=2 class=0 calls=100 total=17500 min=175 max=175
+LDL_CT degree=2 class=1 calls=100 total=17500 min=175 max=175
+LDL_CT degree=2 class=2 calls=100 total=17500 min=175 max=175
+LDL_CT degree=2 class=3 calls=100 total=17500 min=175 max=175
+LDL_CT degree=2 class=4 calls=100 total=17500 min=175 max=175
+LDL_CT degree=2 class=5 calls=100 total=17500 min=175 max=175
+LDL_CT degree=2 class=6 calls=100 total=17500 min=175 max=175
+LDL_CT degree=2 class=7 calls=100 total=17500 min=175 max=175
+LDL_EXACT logn=2 trials=128 failures=0 guards=0
+LDL_PERF degree=4 implementation=emulated calls=100 total=189800 median_lo=1898 median_hi=1898 min=1898 max=1898
+LDL_PERF degree=4 implementation=native_c calls=100 total=34900 median_lo=349 median_hi=349 min=349 max=349
+LDL_PERF degree=4 implementation=current calls=100 total=34400 median_lo=344 median_hi=344 min=344 max=344
+LDL_CT degree=4 class=0 calls=100 total=33000 min=330 max=330
+LDL_CT degree=4 class=1 calls=100 total=33000 min=330 max=330
+LDL_CT degree=4 class=2 calls=100 total=33000 min=330 max=330
+LDL_CT degree=4 class=3 calls=100 total=33000 min=330 max=330
+LDL_CT degree=4 class=4 calls=100 total=33000 min=330 max=330
+LDL_CT degree=4 class=5 calls=100 total=33000 min=330 max=330
+LDL_CT degree=4 class=6 calls=100 total=33000 min=330 max=330
+LDL_CT degree=4 class=7 calls=100 total=33000 min=330 max=330
+LDL_EXACT logn=3 trials=128 failures=0 guards=0
+LDL_PERF degree=8 implementation=emulated calls=100 total=374200 median_lo=3742 median_hi=3742 min=3742 max=3742
+LDL_PERF degree=8 implementation=native_c calls=100 total=66100 median_lo=661 median_hi=661 min=661 max=661
+LDL_PERF degree=8 implementation=current calls=100 total=65400 median_lo=654 median_hi=654 min=654 max=654
+LDL_CT degree=8 class=0 calls=100 total=64000 min=640 max=640
+LDL_CT degree=8 class=1 calls=100 total=64000 min=640 max=640
+LDL_CT degree=8 class=2 calls=100 total=64000 min=640 max=640
+LDL_CT degree=8 class=3 calls=100 total=64000 min=640 max=640
+LDL_CT degree=8 class=4 calls=100 total=64000 min=640 max=640
+LDL_CT degree=8 class=5 calls=100 total=64000 min=640 max=640
+LDL_CT degree=8 class=6 calls=100 total=64000 min=640 max=640
+LDL_CT degree=8 class=7 calls=100 total=64000 min=640 max=640
+LDL_EXACT logn=4 trials=128 failures=0 guards=0
+LDL_PERF degree=16 implementation=emulated calls=100 total=743000 median_lo=7430 median_hi=7430 min=7430 max=7430
+LDL_PERF degree=16 implementation=native_c calls=100 total=128500 median_lo=1285 median_hi=1285 min=1285 max=1285
+LDL_PERF degree=16 implementation=current calls=100 total=127400 median_lo=1274 median_hi=1274 min=1274 max=1274
+LDL_CT degree=16 class=0 calls=100 total=126000 min=1260 max=1260
+LDL_CT degree=16 class=1 calls=100 total=126000 min=1260 max=1260
+LDL_CT degree=16 class=2 calls=100 total=126000 min=1260 max=1260
+LDL_CT degree=16 class=3 calls=100 total=126000 min=1260 max=1260
+LDL_CT degree=16 class=4 calls=100 total=126000 min=1260 max=1260
+LDL_CT degree=16 class=5 calls=100 total=126000 min=1260 max=1260
+LDL_CT degree=16 class=6 calls=100 total=126000 min=1260 max=1260
+LDL_CT degree=16 class=7 calls=100 total=126000 min=1260 max=1260
+LDL_EXACT logn=5 trials=128 failures=0 guards=0
+LDL_PERF degree=32 implementation=emulated calls=100 total=1480600 median_lo=14806 median_hi=14806 min=14806 max=14806
+LDL_PERF degree=32 implementation=native_c calls=100 total=253300 median_lo=2533 median_hi=2533 min=2533 max=2533
+LDL_PERF degree=32 implementation=current calls=100 total=251400 median_lo=2514 median_hi=2514 min=2514 max=2514
+LDL_CT degree=32 class=0 calls=100 total=250000 min=2500 max=2500
+LDL_CT degree=32 class=1 calls=100 total=250000 min=2500 max=2500
+LDL_CT degree=32 class=2 calls=100 total=250000 min=2500 max=2500
+LDL_CT degree=32 class=3 calls=100 total=250000 min=2500 max=2500
+LDL_CT degree=32 class=4 calls=100 total=250000 min=2500 max=2500
+LDL_CT degree=32 class=5 calls=100 total=250000 min=2500 max=2500
+LDL_CT degree=32 class=6 calls=100 total=250000 min=2500 max=2500
+LDL_CT degree=32 class=7 calls=100 total=250000 min=2500 max=2500
+LDL_EXACT logn=6 trials=128 failures=0 guards=0
+LDL_PERF degree=64 implementation=emulated calls=100 total=2955800 median_lo=29558 median_hi=29558 min=29558 max=29558
+LDL_PERF degree=64 implementation=native_c calls=100 total=502900 median_lo=5029 median_hi=5029 min=5029 max=5029
+LDL_PERF degree=64 implementation=current calls=100 total=499400 median_lo=4994 median_hi=4994 min=4994 max=4994
+LDL_CT degree=64 class=0 calls=100 total=498000 min=4980 max=4980
+LDL_CT degree=64 class=1 calls=100 total=498000 min=4980 max=4980
+LDL_CT degree=64 class=2 calls=100 total=498000 min=4980 max=4980
+LDL_CT degree=64 class=3 calls=100 total=498000 min=4980 max=4980
+LDL_CT degree=64 class=4 calls=100 total=498000 min=4980 max=4980
+LDL_CT degree=64 class=5 calls=100 total=498000 min=4980 max=4980
+LDL_CT degree=64 class=6 calls=100 total=498000 min=4980 max=4980
+LDL_CT degree=64 class=7 calls=100 total=497999 min=4979 max=4980
+LDL_EXACT logn=7 trials=128 failures=0 guards=0
+LDL_PERF degree=128 implementation=emulated calls=100 total=5906200 median_lo=59062 median_hi=59062 min=59062 max=59062
+LDL_PERF degree=128 implementation=native_c calls=100 total=1002100 median_lo=10021 median_hi=10021 min=10021 max=10021
+LDL_PERF degree=128 implementation=current calls=100 total=995400 median_lo=9954 median_hi=9954 min=9954 max=9954
+LDL_CT degree=128 class=0 calls=100 total=994000 min=9940 max=9940
+LDL_CT degree=128 class=1 calls=100 total=994000 min=9940 max=9940
+LDL_CT degree=128 class=2 calls=100 total=994000 min=9940 max=9940
+LDL_CT degree=128 class=3 calls=100 total=994000 min=9940 max=9940
+LDL_CT degree=128 class=4 calls=100 total=994000 min=9940 max=9940
+LDL_CT degree=128 class=5 calls=100 total=993999 min=9939 max=9940
+LDL_CT degree=128 class=6 calls=100 total=994000 min=9940 max=9940
+LDL_CT degree=128 class=7 calls=100 total=994000 min=9940 max=9940
+LDL_EXACT logn=8 trials=128 failures=0 guards=0
+LDL_PERF degree=256 implementation=emulated calls=100 total=11807000 median_lo=118070 median_hi=118070 min=118070 max=118070
+LDL_PERF degree=256 implementation=native_c calls=100 total=2000500 median_lo=20005 median_hi=20005 min=20005 max=20005
+LDL_PERF degree=256 implementation=current calls=100 total=1987400 median_lo=19874 median_hi=19874 min=19874 max=19874
+LDL_CT degree=256 class=0 calls=100 total=1985999 min=19859 max=19860
+LDL_CT degree=256 class=1 calls=100 total=1986000 min=19860 max=19860
+LDL_CT degree=256 class=2 calls=100 total=1986000 min=19860 max=19860
+LDL_CT degree=256 class=3 calls=100 total=1986000 min=19860 max=19860
+LDL_CT degree=256 class=4 calls=100 total=1986000 min=19860 max=19860
+LDL_CT degree=256 class=5 calls=100 total=1985999 min=19859 max=19860
+LDL_CT degree=256 class=6 calls=100 total=1986000 min=19860 max=19860
+LDL_CT degree=256 class=7 calls=100 total=1986000 min=19860 max=19860
+LDL_EXACT logn=9 trials=128 failures=0 guards=0
+LDL_PERF degree=512 implementation=emulated calls=100 total=23608600 median_lo=236086 median_hi=236086 min=236086 max=236086
+LDL_PERF degree=512 implementation=native_c calls=100 total=3997300 median_lo=39973 median_hi=39973 min=39973 max=39973
+LDL_PERF degree=512 implementation=current calls=100 total=3971400 median_lo=39714 median_hi=39714 min=39714 max=39714
+LDL_CT degree=512 class=0 calls=100 total=3969999 min=39699 max=39700
+LDL_CT degree=512 class=1 calls=100 total=3970000 min=39700 max=39700
+LDL_CT degree=512 class=2 calls=100 total=3970000 min=39700 max=39700
+LDL_CT degree=512 class=3 calls=100 total=3970001 min=39700 max=39701
+LDL_CT degree=512 class=4 calls=100 total=3970000 min=39700 max=39700
+LDL_CT degree=512 class=5 calls=100 total=3969999 min=39699 max=39700
+LDL_CT degree=512 class=6 calls=100 total=3970000 min=39700 max=39700
+LDL_CT degree=512 class=7 calls=100 total=3970000 min=39700 max=39700
+LDL_EXACT logn=10 trials=128 failures=0 guards=0
+LDL_PERF degree=1024 implementation=emulated calls=100 total=47211800 median_lo=472118 median_hi=472118 min=472118 max=472118
+LDL_PERF degree=1024 implementation=native_c calls=100 total=7990900 median_lo=79909 median_hi=79909 min=79909 max=79909
+LDL_PERF degree=1024 implementation=current calls=100 total=7939400 median_lo=79394 median_hi=79394 min=79394 max=79394
+LDL_CT degree=1024 class=0 calls=100 total=7937999 min=79379 max=79380
+LDL_CT degree=1024 class=1 calls=100 total=7938000 min=79380 max=79380
+LDL_CT degree=1024 class=2 calls=100 total=7937999 min=79379 max=79380
+LDL_CT degree=1024 class=3 calls=100 total=7937999 min=79379 max=79380
+LDL_CT degree=1024 class=4 calls=100 total=7937999 min=79379 max=79380
+LDL_CT degree=1024 class=5 calls=100 total=7938000 min=79380 max=79380
+LDL_CT degree=1024 class=6 calls=100 total=7937999 min=79379 max=79380
+LDL_CT degree=1024 class=7 calls=100 total=7937999 min=79379 max=79380
+RECIP_CT class=0 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=1 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=2 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=3 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=4 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=5 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=6 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=7 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=8 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=9 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=10 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=11 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=12 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=13 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=14 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=15 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=16 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=17 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=18 calls=100 repetitions=32 total=115800 min=1158 max=1158
+RECIP_CT class=19 calls=100 repetitions=32 total=115800 min=1158 max=1158
+LDL_ABI calls=10 failures=0
+LDL_DONE comparisons=1280 failures=0 guards=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xab50 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xc14 lma 0x30000978
+Loading section datas, size 0x50 lma 0x300015a0
+Loading section device_states, size 0x2c lma 0x300015f0
+Loading section k_mutex_area, size 0x14 lma 0x3000161c
+Loading section .last_section, size 0x4 lma 0x30001630
+Start address 0x10006050, load size 50332
+Transfer rate: 540 KB/sec, 2796 bytes/write.
+Section rom_start, range 0x10000000 -- 0x1000032c: matched.
+Section text, range 0x10000330 -- 0x1000ae80: matched.
+Section .ARM.exidx, range 0x30000000 -- 0x30000008: matched.
+Section initlevel, range 0x30000008 -- 0x300000d0: matched.
+Section device_area, range 0x300000d0 -- 0x30000338: matched.
+Section sw_isr_table, range 0x30000338 -- 0x30000910: matched.
+Section gpio_driver_api_area, range 0x30000910 -- 0x30000934: matched.
+Section reset_driver_api_area, range 0x30000934 -- 0x30000944: matched.
+Section clock_control_driver_api_area, range 0x30000944 -- 0x30000960: matched.
+Section otp_driver_api_area, range 0x30000960 -- 0x30000964: matched.
+Section uart_driver_api_area, range 0x30000964 -- 0x30000978: matched.
+Section rodata, range 0x30000978 -- 0x3000158c: matched.
+Section datas, range 0x300015a0 -- 0x300015f0: matched.
+Section device_states, range 0x300015f0 -- 0x3000161c: matched.
+Section k_mutex_area, range 0x3000161c -- 0x30001630: matched.
+Section .last_section, range 0x30001630 -- 0x30001634: matched.
+Temporary breakpoint 1 at 0x10002dac: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x1000603c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpe7hyr1jj/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10002d5c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x1000603c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984632            9979442
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30014728          805390120
+r8             0x300000d0          805306576
+r9             0x30024868          805455976
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30024818          0x30024818 <z_main_stack+65456>
+lr             0x10002da3          268447139
+pc             0x10002d5c          0x10002d5c <nucleo_test_breakpoint>
+xpsr           0x9000000           150994944
+fpscr          0x40010             262160
+msp            0x30014728          0x30014728 <z_idle_stacks>
+psp            0x30024818          0x30024818 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30014728          0x30014728 <z_idle_stacks>
+psp_s          0x30024818          0x30024818 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30013f28          0x30013f28 <z_interrupt_stacks>
+psplim_s       0x30014868          0x30014868 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x30024818 <z_main_stack+65456>:	0x00000000	0x10002dbf	0x00000000	0x10009743
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30014728
+PSP=0x30024818
+LR=0x10002da3
+PC=0x10002d5c
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30014728 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30014738 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

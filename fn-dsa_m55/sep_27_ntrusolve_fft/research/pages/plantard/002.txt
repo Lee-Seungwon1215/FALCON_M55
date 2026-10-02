@@ -1,0 +1,54 @@
+DOCUMENT: plantard.pdf PAGE: 2/24
+
+2 Improved Plantard Arithmetic for Lattice-based Cryptography
+break the 2048-bit RSA. However, there are still noise issues not being well understood.
+A recent research [GE21] shows that factoring 2048-bit integer in RSA within 8 hours
+needs a quantum computer with about 20 million noisy qubits. This implies the current
+progress of quantum computers is still far from breaking the currently deployed 2048-bit
+RSA or 256-bit ECC. On the other hand, IBM’s roadmap of quantum computers [Hac20]
+claims that the number of qubits could be more than doubled per year, making a one
+million-qubit machine possible in 2030. The progress of experimental quantum computers
+and the surprising developments in the future motivated the cryptographic community to
+expedite the study of post-quantum cryptographic algorithms to find suitable alternatives
+to the traditional public-key cryptosystems within a decade or less.
+In order to promote the development of post-quantum cryptography (PQC), NIST
+initiated a standardization project in 2016 to solicit, evaluate, and standardize the post-
+quantum cryptographic algorithms. Until now, in the third round of the standardization
+process, seven finalists, including four key encapsulation mechanisms (KEM) and three
+digital signature algorithms, have been selected. Among these algorithms, three out of the
+four KEM finalists (i.e., Kyber [ABD+20], Saber [BMD+20], and NTRU [CDH+20]) are
+from lattice-based cryptography (LBC), which indicates that LBC is competitive in terms
+of security and implementation efficiency. Evaluating the implementation efficiency of
+these candidates is an essential task [AASA+20] not only in the third round of the NIST
+standardization project but also in the future commercial deployment.
+Among all the operations in LBC, polynomial multiplication is one of the core opera-
+tions. Therefore, a relatively low complexity method called Number Theoretic Transform
+(NTT) algorithm is widely used to reduce the computational complexity of polynomial
+multiplication. During the algorithm design of Kyber and NTTRU, the underlying ring
+was properly chosen so that NTT could be used. Modular multiplication is the dominant
+operation inside NTT, and the most commonly used modular multiplication algorithms
+are Montgomery multiplication [Mon85] and Barrett multiplication [Bar86], which were
+originally designed for large-moduli cryptosystems like RSA and ECC. However, the moduli
+of the NIST LBC candidates are relatively small, for example, 3329 for Kyber [ABD+20],
+12289 for Newhope [ADPS16], and 7681 for NTTRU [LS19]. Therefore, the product of
+two polynomial coefficients will extend to at most a word size (32 or 64 bits). Based on
+the word size characteristics of these moduli, Thomas Plantard proposed an efficient spe-
+cialized word size modular multiplication (Plantard multiplication) [Pla21]. The proposed
+Plantard multiplication by a constant introduces an l×2l-bit multiplication operation
+(l= 16/32 bit). Plantard suggested that if the l×2l-bit multiplication can be implemented
+in one multiplication instruction in the target platform, the Plantard multiplication by a
+constant would consume one multiplication fewer than its Montgomery as well as Barrett
+counterparts and could be well deployed in LBC schemes.
+Motivation. Plantard [Pla21] purely focused on the theoretical design yet leaves much
+room for further exploration. The original Plantard arithmetic cannot be efficiently
+applied to the existing LBC schemes for the following reasons. First, the original Plantard
+multiplication ([Pla21, Algorithm 8]) only presents a solution for multiplying unsigned
+integers mod an odd modulus q. Previous literature [Sei18, BKS19, ABCG20, GKS21,
+AHKS22] has shown that using unsigned integers in the NTT implementation of LBC
+schemes is inefficient because it would introduce an extra addition into each butterfly
+unit. Second, the input range of the original Plantard multiplication is mere [0,q], which
+requires expensive modular reductions on the polynomial coefficients after each NTT layer.
+Previous reports have offered solutions to these problems by adapting the Montgomery
+arithmetic. Alkim et al. [ADPS16] showed that the large input range of Montgomery
+reduction enables the so-called lazy reduction technique to reduce the use of expensive
+modular reduction. Seiler et al. [Sei18] proposed a signed version of Montgomery reduction

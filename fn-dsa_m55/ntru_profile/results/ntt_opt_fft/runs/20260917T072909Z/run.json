@@ -1,0 +1,549 @@
+{
+  "candidate": "ntt_opt_fft",
+  "started_utc": "2026-09-17T07:29:09.948386+00:00",
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_final_compare/exec_board.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/zephyr/zephyr.elf"
+  ],
+  "source_tree_sha256": "8356267ec5434628f98c6ef33d194d9fa60cae9f99d975d173b82f14b8aebe74",
+  "elf_sha256": "30508778ff2e42cfe6ece88aa319ce2d1bfd41acba2d1fb6a0f502fd2ced7093",
+  "mq_assembly": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/mq_cm55.s",
+  "probe": "003C00223335510735383531",
+  "build_provenance": {
+    "ready": true,
+    "inputs": {
+      "source_dir": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt",
+      "source_files": {
+        "codec.c": "d72b5b03b6b74aec02de60cc69bbe232c6f13e0ff94cbd096f157ea178bb6cc7",
+        "codec_cm4.s": "53a380bcb500ed2d665405fa6ef5f3eb39bbeb9def4f86b29a9be532bbd7cd94",
+        "fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+        "inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+        "kgen.c": "a034de222847ef5a5532d404df3bfd422bea2deffe0e54f25361dc6cb149f5cd",
+        "kgen_fxp.c": "cf93446862da0ba3429326bddb6633595cb2b2cb310b0e8489cb1b7f9c100edd",
+        "kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+        "kgen_inner.h": "0e124f2cbfee404b9e51c1723ef21544f0849a14e5b61ffa76c32f083fa0ec11",
+        "kgen_mp31.c": "c41e661b6cf9d6a1ac5f71cb007f37eab9667efcde928b7f76ea01155bcaedbc",
+        "kgen_mp31_cm55.s": "bad74cbe6f569a948b70f887b47cc0c5fc9f7e6130605df27adb70f3d88ece88",
+        "kgen_ntru.c": "35696b1619bbaaa14046ab85a66f384670e9f8c8d44e523a0dcf8cd402fb8abf",
+        "kgen_poly.c": "4508e2feeb7a19a5616243d205e395c6709b8c90dbcc19d1feb05421a8f71f7f",
+        "kgen_zint31.c": "ba655aabdfb7c36cf8d723c8a69521915c07f5d023cbbf96a05a35f6e759f81e",
+        "mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+        "mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+        "sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+        "sha3_cm4.s": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+        "sign.c": "e23b7a63ea92e535cf16cfeef4a1500ad0984047adfe15696b7642b795f2a732",
+        "sign_core.c": "d64678400179f60ecbcc53624c2aa93fde3539cf8dc064a53e8778fa79c29861",
+        "sign_fpoly.c": "d6187c282576f8f1b534f9e48da8dedcca8f6f4f2a4ab6aa73bfd5412492b1e6",
+        "sign_fpr.c": "995ad5b954913cd1d63a5d14d3cffdeb48e7fa2ccb9afacc3f8bda129ea1aa95",
+        "sign_fpr_cm4.s": "ba5b3cdff48f7302d3229bdd00db9fca8a6bf8b420ee0eb0c1ff167079a51789",
+        "sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+        "sign_sampler.c": "9f91e55b8d7f9a48c730affe05bffc3c9c304121df5d2ce5542b99854c53c69b",
+        "sign_sampler_cm4.s": "546ff1ad3ce37778a55ad3aa5c20ce73e83e4f97920351609e1a1d16e3af7fde",
+        "speed_fndsa.c": "621f9069bbafd6b2422656f69a1143a778cb9a7f5e0f5ec7f02ed24ae55ab096",
+        "sysrng.c": "663d943595102660f0c98ec3fef37d3b7825f162cd8a9218cf9df8317cb38bd1",
+        "test_fndsa.c": "893ef158f2c55110c157293184cb4d87dbc294d16b08e531af4ee07d64927bdd",
+        "test_sign.c": "761db5680f06c72bd1bf2a4a4bad5d5de8d81ee2aa6e47ab21316d8d405073fc",
+        "util.c": "eeaaa063aa1e5987ba81d6cb13941300d9e55d0c428aa33ef6127693d8eca80f",
+        "vrfy.c": "d6db7c9a50ef36c30ef951127bdee0ed90774b4a5811817beb19850c265db58f"
+      },
+      "source_tree_sha256": "8356267ec5434628f98c6ef33d194d9fa60cae9f99d975d173b82f14b8aebe74",
+      "hooks": {
+        "vect_FFT": "kernel_fft",
+        "vect_iFFT": "kernel_ifft",
+        "vect_mul_fft": "kernel_fxp_spectral",
+        "vect_div_selfadj_fft": "kernel_fxp_spectral",
+        "vect_inv_mul2e_fft": "kernel_fxp_spectral",
+        "solve_NTRU": "total",
+        "poly_big_to_fixed": "kernel_fixed_convert"
+      },
+      "harness": {
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/instrument.py": "8c26e988e8a19405b91cb16f6d88a8759d54ee2f195c0f3f0eed0b0697b41f7e",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/profile.c": "b6c9278fc1bb4a9faf5f1e7e04edfde354899388dde395a36c662b544400dc68",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/profile.h": "d0288cd604ec7a50be4e01a0ab2c285db807dad55781e1b15f5ded77e4cc0cc3",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/benchmark.c": "14f41639c65bbf36faf6506073763c40c9afe467522e1fcdde0d4b531becf037",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/CMakeLists.txt": "392da896fdc2ee627412cdea17bd1192235106474d2867c27ba4466083c04ed6",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build.sh": "1583b2ae517fee3b67e1c14b0fda4be6159294c99a3bd08e17cab2d3fbc9bd67",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/run.py": "791c5bb59e1dfcbe780c74b2a04b63d9208532f45f8a802e1ee5b57ebac43936",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/latest.py": "3ad071d7394945cda56835276a28f53e47e9991cf128fc26f10925abda1acdad",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_final_compare/exec_board.py": "17f7e1ac1acbae42dd7763796c14b362ffe69e1f8d8c1177a3952a4724645e6e",
+        "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/exec_with_tcm_init.py": "6f01ebd2840d289640dd4ca0a9a98d68f4f8fb6246d4e4378f78bd1966392246",
+        "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/dtcm_startup.s": "9970b18f9ff120116e6d917f7e3ca8be344181515d3d975f9394ac47be1ed0f6",
+        "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/generate_dtcm_linker.py": "7c637a878cd75b223ce1acf13cb24efbff7b204027782638821bb5e94c373087",
+        "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/fndsa.conf": "67b02f000d4936b976ccd6a16141743e5361b9da67f356ce28d0be42d06caef3"
+      },
+      "generated": {
+        "codec.c": "beb030d1e6edc9f02b31d9b4bf0f591e489c6a2bf6d762c63355e3f06d21bce9",
+        "kgen.c": "6e86a1a072f051fb41b013848344eacc304bd80f44d2dc725cff304e44968ffc",
+        "kgen_fxp.c": "052180e872125fb2c7a34f1f0879450a91751605c25d3cffc70bfcf831b5afce",
+        "kgen_gauss.c": "38c498ee1f0c13ab4d2d458f71983a93f49cd8cecce143aaac7cfa0b7a556e81",
+        "kgen_mp31.c": "589baf6d5c19a9d07cd8634031a0c434d2dacbbe0024e3f8d368708093c31d44",
+        "kgen_ntru.c": "64ded88059eb305cb32f52fc03b44c8321914abb0745eea5c50e68d3b3e7ca4c",
+        "kgen_poly.c": "91e77420e428a2f37d9ed3a1b9be190632518c36bb8bf3a5119516023da6c2de",
+        "kgen_zint31.c": "3d1b43b68f012a9e0de56b24a76193ff60b4b4382dee80de2cf3a4831e2d0c95",
+        "manifest.json": "89cee365e8a5dfbe9142550f051ba3e497ce5bb733021935fb70c53c6bca2ed6",
+        "mq.c": "14500c0a007eba8995dd470b4e93195eecf1e81df3fa725fcde76109a66a1007",
+        "sha3.c": "148188335fe16afb56b461c4b5023bef534f557fde954d834353479e8001c97e",
+        "sign.c": "6a7b418148417c80be6b71b86af6e26b742cd95df75cc6013cfe51e51e9a5458",
+        "sign_core.c": "b8b3e4af5dee62c574658529ec60af6bf7cebba1d9d738a096077a855d27b6f2",
+        "sign_fpoly.c": "4764bd8bfe19e0761cdd315ab12d93d0a5af369a137f4a2356fd3d289c15acbd",
+        "sign_fpr.c": "2baf18c3d3c61f6a39a1f0ef948bc0872d4cde88addb54fccdac4d64ff80931d",
+        "sign_sampler.c": "9a91c14f736aadf6e65e8be0e6232258f7a56c4370a7e84147f8e4111fa2f3b3",
+        "sysrng.c": "1c7f8b55a7febbb8be28fb510ffb505c9fb395f5a499f7aa78d5bdc93d41f479",
+        "util.c": "9b7347d7fe0427cb025fd312abe3225f58b3448b7ddddd5902804c571b39c50b",
+        "vrfy.c": "14e1575f52fcf0b571adee536a8dba4539e33b0b5bab8e7fc5ac7911ba8c56b0"
+      },
+      "baseline_raw_sha256": "0bf1ce4b53e7e12bc78ccc58c4e0c7531b5fa10de103cb53623204647c960c3e"
+    },
+    "build": {
+      "artifacts": {
+        "zephyr/zephyr.elf": "30508778ff2e42cfe6ece88aa319ce2d1bfd41acba2d1fb6a0f502fd2ced7093",
+        "zephyr/zephyr.map": "f51c791f435fb226102b2e2a31d0f4ba654e86025945fda468324ba2eafb67c9",
+        "zephyr/.config": "29add21e434a3054715e66a9711d44653b8362c0370b249dfbfd5744d14eb0ca",
+        "compile_commands.json": "87c5f5f800873c43151912cc13dd963726f33a26772a6287914517592335acea",
+        "CMakeCache.txt": "d8e09da8ae600661de688034d58213cd90e6670139e7a3c7c3ccfd7253a3d6bc",
+        "fndsa_dtcm_linker.ld": "4de97733aab7bc8680c0aa9caef321c6743a916092bf20dce05051ad77de58e8"
+      },
+      "compiled_crypto": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/codec.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/kgen.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/kgen_fxp.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/kgen_gauss.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/kgen_mp31.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/kgen_ntru.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/kgen_poly.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/kgen_zint31.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/mq.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/sha3.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/sign.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/sign_core.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/sign_fpoly.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/sign_fpr.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/sign_sampler.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/sysrng.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/util.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntru_profile/build/ntt_opt_fft/generated/vrfy.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/codec_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/kgen_mp31_cm55.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/mq_cm55.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/sha3_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/sign_fpr_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/sign_sampler_cm4.s"
+      ],
+      "itcm_used": 103616,
+      "dtcm_reserved": 221928,
+      "symbols": {
+        "fndsa_mp_NTT": "0x10000330",
+        "fndsa_mp_iNTT": "0x100007c0",
+        "fndsa_vect_FFT": "0x1000838c",
+        "fndsa_vect_iFFT": "0x1000857c"
+      }
+    }
+  },
+  "ended_utc": "2026-09-17T07:29:16.925925+00:00",
+  "returncode": 0,
+  "valid": true,
+  "validation_errors": [],
+  "totals": {
+    "512": {
+      "calls": 11,
+      "total": 422426310,
+      "minimum": 17333840,
+      "maximum": 40509247
+    },
+    "1024": {
+      "calls": 17,
+      "total": 1871192162,
+      "minimum": 62172867,
+      "maximum": 138273406
+    }
+  },
+  "phases": {
+    "512_orchestration": {
+      "cycles": 422426310,
+      "entries": 0
+    },
+    "512_deepest": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d1": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d2": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d3": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d4": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d5": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d6": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d7": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d8": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_intermediate_d9": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_depth0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_orchestration": {
+      "cycles": 1871192162,
+      "entries": 0
+    },
+    "1024_deepest": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d1": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d2": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d3": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d4": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d5": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d6": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d7": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d8": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_intermediate_d9": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_depth0": {
+      "cycles": 0,
+      "entries": 0
+    }
+  },
+  "kernels": {
+    "512_other": {
+      "cycles": 350240374,
+      "entries": 0
+    },
+    "512_mp_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_mp_intt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_twiddle": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_bezout": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_fft": {
+      "cycles": 17706215,
+      "entries": 8434
+    },
+    "512_ifft": {
+      "cycles": 17389412,
+      "entries": 8342
+    },
+    "512_fxp_spectral": {
+      "cycles": 22565213,
+      "entries": 8424
+    },
+    "512_fixed_convert": {
+      "cycles": 14525096,
+      "entries": 8414
+    },
+    "512_sub_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sub_depth1": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sub_plain": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_other": {
+      "cycles": 1680648616,
+      "entries": 0
+    },
+    "1024_mp_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_mp_intt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_twiddle": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_bezout": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_fft": {
+      "cycles": 47023551,
+      "entries": 25025
+    },
+    "1024_ifft": {
+      "cycles": 47068732,
+      "entries": 24906
+    },
+    "1024_fxp_spectral": {
+      "cycles": 48564805,
+      "entries": 25015
+    },
+    "1024_fixed_convert": {
+      "cycles": 47886458,
+      "entries": 25005
+    },
+    "1024_sub_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sub_depth1": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sub_plain": {
+      "cycles": 0,
+      "entries": 0
+    }
+  },
+  "ntt_logn": {
+    "512_forward_0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_1": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_2": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_3": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_4": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_5": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_6": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_7": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_8": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_9": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_forward_10": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_1": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_2": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_3": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_4": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_5": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_6": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_7": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_8": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_9": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_inverse_10": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_1": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_2": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_3": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_4": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_5": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_6": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_7": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_8": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_9": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_forward_10": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_1": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_2": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_3": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_4": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_5": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_6": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_7": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_8": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_9": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_inverse_10": {
+      "cycles": 0,
+      "entries": 0
+    }
+  },
+  "fingerprints": {
+    "512": "b69b316a",
+    "1024": "bf1ee4eb"
+  },
+  "raw_log_sha256": "3c2d37ec62ae0d7dff160080a1294c1dd95610d8bd8962f72a6c408d0c260a12"
+}

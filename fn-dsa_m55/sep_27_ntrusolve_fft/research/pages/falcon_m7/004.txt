@@ -1,0 +1,44 @@
+DOCUMENT: falcon_m7.pdf PAGE: 4/22
+
+4 James Howe and Bas Westerbaan
+more information on the details of these schemes, the reader is pointed to the
+specifications of Dilithium [LDK+20] and Falcon [PFH+20].
+We benchmark Dilithium and Falcon on a 32-bit ARM Cortex M7 to mainly
+observe how much faster these signature schemes are on this device, compared
+to the ARM Cortex M4, and more specifically, to see the performances of Falcon
+using the ARM Cortex M7’s 64-bit FPU. NIST decided on the ARM Cortex M44
+as the preferred microcontroller target in order to make comparisons between
+each candidate easier. The ARM Cortex M4 and M7 are fairly similar cores; the
+M7 has all the ISA features available in the M4. However, the M7 offers additional
+support for double-precision floating point, a six stage (vs. three stage on the
+M4) instruction pipeline, and memory features like cache and tightly coupled
+memory (TCM). More specific differences are that the M7 will have faster branch
+predicting, plus it has two units for reading data from memory making it twice
+that of the M4.
+The evaluation board we used for the benchmarking and profiling in this pa-
+per is the STM32 Nucleo-144 development board with STM32F767ZI MCU5
+which implements the ARMv7E-M instruction set. This is the extension of
+ARMv7-M that supports DSP type instructions (e.g., SIMD). The development
+board has a maximum clock frequency of 216 MHz, 2 MB of flash memory,
+512 KB of SRAM. On the Cortex M7, the floating point architecture is based
+on FPv5, rather than FPv4 in Cortex-M4, so it has a few additional float-
+ing point instructions. We later utilize three more STM32 development boards
+(STM32H743ZI, STM32H723ZG, and STM32F769I-DISCO) and a Raspberry
+Pi 3 in order to check the constant runtime of Falcon more thoroughly.
+All results reported in this paper used the GNU ARM embedded toolchain
+10-2020-q4-major, i.e. GCC version 10.2.1 20201103, using optimization flags
+-O2 -mcpu=cortex-m7 -march= -march=armv7e-m+fpv5+fp.dp. All clock cycle
+results were obtained using the integrated clock cycle counter (DWT->CYCCNT).
+3 Benchmarking on ARM Cortex M7
+This section presents the results of benchmarking Dilithium (Table 1) and Fal-
+con (Table 2) on the ARM Cortex M7 using the STM32F767ZI NUCLEO-144
+development board. The values presented in the following tables are iterated over
+1,000 runs of the operation. As noted previously, we provide results that are not
+available on the Cortex M4; Falcon-1024 sign tree and Dilithium for parameter
+set five.
+The tables report minimum, average, and maximum clock cycles, as well as
+the standard deviation and standard error of the clock cycles, and the overall
+runtime in milliseconds clocked at 216 MHz. We run these benchmarks for each
+4 See the NIST PQC forum: https://groups.google.com/a/list.nist.gov/g/pqc-
+forum/c/cJxMq0_90gU/m/qbGEs3TXGwAJ
+5 https://www.st.com/en/evaluation-tools/nucleo-f767zi.html.

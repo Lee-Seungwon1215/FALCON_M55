@@ -1,0 +1,52 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 2/38
+
+2 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Cortex®-M4 CPU. Representative of the latter, the focus of performance analysis on
+high-end cores has so far been the AVX2-capable Intel® CPUs Haswell and Skylake.
+In this article, we contribute to the performance analysis of prominent PQC candidates
+on CPUs implementing the application profile / A-profile of the Arm architecture1 – an
+area which, despite its importance, has been comparatively little studied so far. CPUs
+implementing the A-profile are ubiquitous, and form a wide spectrum in themselves: It
+contains power-eﬃcient CPUs like the Cortex-A7 processor for Linux-capable embedded
+IoT devices, cores for the mobile and desktop market like the Cortex-A78 processor, as
+well as the Arm® Neoverse™ IP for infrastructure applications, for example, the Arm
+Neoverse-based AWS Graviton processors. The Fugaku supercomputer ranked as the
+fastest supercomputer in the world in 2020 and 2021 [TOP20, TOP21], is also based on
+a core implementing the A-profile. Considering the breadth of use and availability of
+A-profile cores in the computing ecosystem, it is therefore important to include them in
+the performance evaluation for PQC.
+Another axis of distinction within the A-profile is the specific version of the architecture,
+suchasArmv7-A,Armv8-A,and, asoflate, Armv9-A,andtheirrespectivesetsofextensions.
+In this article, we focus on implementations of PQC on CPUs based on the 64-bit Armv8-A
+architecture, leveraging the availability of the Armv8-A version of the Arm® Neon™ Single
+Instruction Multiple Data (SIMD) instruction set. We do not study implementations based
+on the Neon instruction set for Armv7-A or implementations based on the Scalable Vector
+Instructions SVE and SVE2 here – this is left for future work.
+Returning to the nature of the PQC workloads themselves: Many of the remaining
+NISTPQCcandidateschemesarebasedonso-calledstructuredlattices, forwhichthecentral
+arithmetic operation is modular polynomial multiplication. A central implementation
+technique for such polynomial multiplication is the Number-Theoretic Transform (NTT),
+an integer-analog of the Fast Fourier Transform.
+In this work, we explore the use of NTTs in implementing the NISTPQC structured
+lattice finalist candidates. It has always been a point of interest to determine the realms
+of applicability for various advanced multiplication techniques, and in addition to finding
+out how well NTTs do, we also compare them to other approaches towards polynomial
+multiplication, in particular Toom-Cook/Karatsuba.
+Contributions. We exhibit NTT-based implementations of NISTPQC cyclotomic-ring
+lattice candidates for CPUs implementing the A-profile of the Arm architecture, leveraging
+the Neon vector extension. We optimized mainly for the common Cortex-A72 CPU (used
+e.g. in the Raspberry Pi 4), and somewhat for the Apple M1, a high-end desktop core.
+We improve on old and discover new implementation techniques, including a Barrett-
+reduction based one-known-factor multiplication, which we show to be roughly equivalent
+to the Montgomery multiplication technique of [Sei18], but particularly suitable for Neon.
+We also introduce the trick of “asymmetric base multiplication” which is applicable
+whenever we are caching incomplete NTT results (i.e., Kyber/Saber). Furthermore, we
+improve on the best-known two-unknown-factors multiplications and Barrett reduction
+sequences in the literature.
+Code. Our code is available at https://github.com/neon-ntt/neon-ntt.
+Related Work. The most recent work on lattice-based cryptography on the Armv8-A
+architecture using the Neon vector extension is by Nguyen and Gaj [NG21] and Sanal
+et al. [SKS+21]. NTT is frequently used in the context of polynomial multiplications
+1The Arm architecture has three profiles – application (A), real-time (R) and embedded (M) – and
+each Arm-based CPU implements a version of one of those profiles. The well-studied Cortex-M4 processor,
+for example, belongs to the M-profile.

@@ -1,0 +1,57 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 19/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 19
+Algorithm 17 CT butterflies.
+Algorithm 18 GS butterflies.
+Inputs:
+a,b,t, (z[l],z[h]) = (¯ ω,⌊ωR
+N ⌉2
+2 )
+Outputs:
+(a,b) = (a+ ωb,a−ωb)
+1: mul t, b, z[h]
+2: sqrdmulh b, b, z[l]
+3: mls t, b, N
+4: sub b, a, t
+5: add a, a, t
+Inputs:
+a,b,t, (z[l],z[h]) = (¯ ω,⌊ωR
+N ⌉2
+2 )
+Outputs:
+(a,b) = (a+ b,(a−b) ω)
+1: sub t, a, b
+2: add a, a, b
+3: mul b, t, z[h]
+4: sqrdmulh t, t, z[l]
+5: mls b, t, N
+qq_butterfly_{top, bot} and qq_butterfly_mixed{, _rev}. To facilitate the devel-
+opment of assembly implementation of radix-2 NTTs with interleaving, we split the
+computation of each layer into two qq_butterfly_top and two qq_butterfly_bot.
+qq_butterfly_top computes 4 Montgomery multiplications and qq_butterfly_bot com-
+putes 4 sub-add pairsas shown in Algorithm 34 and Algorithm 35. They are designed in
+the way that if we pass the same arguments to them, calling qq_butterfly_top followed
+by qq_butterfly_bot implements CT butterflies and reversing the order implements GS
+butterflies. Algorithm 38 is a straightforward implementation of a 4-layer-CT-butterfly. If
+there are no dependencies, we can interleave qq_butterfly_bot with qq_butterfly_top
+giving qq_butterfly_mixed for CT butterflies and qq_butterfly_mixed_rev for GS
+butterflies as shown in Algorithm 36 and Algorithm 37.
+Multi-layer butterflies. A common approach for reducing the number of memory op-
+erations is to compute several layers of NTTs at a time with multi-layer butterflies. To
+avoid the dependencies when interleaving instructions, we find that for radix-2 NTTs,
+computing coeﬃcients distributed over 16 SIMD registers is the most beneficial approach.
+This suggests that 4 layers at a time are possible since 24 = 16.
+Interleaving for multi-layer butterflies. At first glance, it seems natural to compute the
+butterflies in the order (v0,v8),..., (v6,v14), (v1,v9),..., (v7,v15) for the 0th layer,
+(v0,v4), (v2,v6), (v8,v12), (v10,v14), (v1,v5), (v3,v7), (v9,v13), (v11,v15) for the 1st
+layer, and so on. Since the independencies of the first three layers are exploited, the
+computation can be interleaved as follows: interleave the first half of sub-add pairs of layer
+0 with the second half of multiplications of layer 0, the second half of sub-add pairs of layer
+0 with the first half of multiplications of layer 1, and so on. However, we cannot interleave
+layers 2 with 3 at all. To overcome this, we compute the butterflies in the following
+order: (v1,v9),...,(v7,v15), (v0,v8),...,(v6,v14) for the 0th layer, (v1,v5), (v3,v7),
+(v9,v13), (v11,v15), (v0,v4), (v2,v6), (v8,v12), (v10,v14) for the 1st layer, (v1,v3),
+(v5,v7), (v9,v11), (v13,v15), (v0,v2), (v4,v6), (v8,v10), (v12,v14) for the 2nd layer,
+and finally (v0,v1), (v2,v3), (v4,v5), (v6,v7), (v8,v9), (v10,v11), (v12,v13), (v14,v15)
+for the 3rd layer. In this order, we are exploiting the independencies among the entire
+4-layer computation as shown in Algorithm 19.

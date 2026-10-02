@@ -1,0 +1,59 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 16/29
+
+16 Polynomial multiplication on embedded vector architectures
+VMLA.u16. Thirdly, a sign flip in a or b. The lowest instruction count is oﬀered by storing
+−b1 in another vector throughout the loop. Flipping a adds a 1-instruction overhead, but
+releases pressure on the vector file. At best, we get 1 ×LDRD and 3 ×VMLA per subproduct.
+As for the negacyclic shift, a naïve implementation would perform poorly on a dual-
+beat system because consecutive invocations of VMLA would stall. However, we found that
+interleaving subproduct and shift leads to good overlapping and resource utilization on
+the Cortex-M55 processor. We show an iteration of the core loop in Listing 3.
+Variants There is a variant computing the rotation abX instead of ab: We write
+aX = (a0 + a8X8)X1 + (a1 + a9X8)X2 +...+ (a7 + a15X8)X8
+= (−a15 + a7X8) + (a0 + a8X8)X1 +...+ (a6 + a14X8)X7
+and apply the same multiply-accumulate strategy as before. The rotation in the a-input is
+easy to express through modified immediate oﬀsets in the GPR loads.
+Secondly, consider what happens when we accumulate onto the destination vector in
+the first iteration. Since the result of first iteration gets shifted 7 times subsequently, this
+computes ab+ cX7, where c is the polynomial previously stored in the destination vectors.
+The previous points allow for eﬃcient integration of 16 →32 Karatsuba interpolation
+with degree-16 schoolbook multiplication: Recall that we have to compute (fege + Xfogo) +
+X(fsgs−fege−fogo). We avoid any manual shift of fogo here by computing Xfogo first,
+and then using the multiply-accumulate variant for fsgs−fogo = fsgs + X7(X8
+·(Xfogo)):
+Here, Xfogo is known, and·X8 is a single sign-flip and some re-indexing.
+6.3.1 Integrating Toom-Cook, Karatsuba, and Schoolbook
+We implement a degree 256 negacyclic polynomial through a combination of one layer
+of 4-way Toom-Cook for degree 256 →64 reduction, one layer of Karatsuba for degree
+32 →16 reduction, and an integrated 32 ↔16 followed by 16 ×16 schoolbook. We found
+this variant slightly more eﬃcient than an implementation of degree-32 schoolbook.
+6.4 Number Theoretic Transform
+Alg. 3: Barrett reduction
+Alg. 4: Montgomery multiplication
+In: Modulus n<232
+, |z|<231
+Out: Barrett reduction of z w.r.t. n.
+1: VQRDMULH.s32 t, z,
+2ℓ
+2n
+2: VMLA.s32 z, t,−n
+3: return z
+In: n<232
+, |a|,|b|<231
+, ω≡n−1 mod 232
+Out: Representative h of ab/232 modulo n
+1: V[QD]MULH.s32 h, a, b
+2: VMUL.u32 l, a, b
+3: VMUL.u32 l, l, ω
+4: V[QD]MULH.s32 c, l, n
+5: V[H]SUB.s32 h, h, c
+6.4.1 Modular Arithmetic
+Montgomery multiplication Algorithm 4 shows two implementations of single-width
+Montgomerymultiplication(Algorithm2),oneusingthemultiply-highinstructionVMULH.s32,
+whose functional eﬀect is a,b→ ab
+232 , the other the doubling multiply-high instruction
+VQDMULH.s32 from fixed-point arithmetic, whose functional eﬀect is a,b→ 2ab
+232 . In the
+latter case, the doubling can be corrected through a halving subtraction VHSUB.s32 in
+the last instruction. We mention the fixed-point variant for two reasons: Firstly, because
+VQDMULH has a scalar-vector variant where one vector is constant. This is useful for the

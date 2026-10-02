@@ -1,0 +1,67 @@
+{
+  "rows": [
+    {
+      "degree": 512,
+      "calls_per_implementation": 100,
+      "ref_mean_cycles": 62738244.04,
+      "current_mean_cycles": 67135489.3,
+      "ref_mean_ms": 78.42280505,
+      "current_mean_ms": 83.919361625,
+      "speedup_ratio_of_totals": 0.9345019257944099,
+      "time_reduction_percent": -7.008875251906077,
+      "ref_median_cycles": 53540318.5,
+      "current_median_cycles": 56901568.5,
+      "ref_min_cycles": 46436885,
+      "ref_max_cycles": 135545991,
+      "current_min_cycles": 50233993,
+      "current_max_cycles": 140566396,
+      "faster_seed_pairs": 0,
+      "per_seed_speedup_min": 0.8684153882581565,
+      "per_seed_speedup_max": 0.9892183384497767
+    },
+    {
+      "degree": 1024,
+      "calls_per_implementation": 100,
+      "ref_mean_cycles": 261716429.78,
+      "current_mean_cycles": 285653012.65,
+      "ref_mean_ms": 327.145537225,
+      "current_mean_ms": 357.0662658125,
+      "speedup_ratio_of_totals": 0.9162039894207992,
+      "time_reduction_percent": -9.145999313119614,
+      "ref_median_cycles": 212966848.5,
+      "current_median_cycles": 224223695.5,
+      "ref_min_cycles": 155582024,
+      "ref_max_cycles": 769576499,
+      "current_min_cycles": 171040773,
+      "current_max_cycles": 849894780,
+      "faster_seed_pairs": 0,
+      "per_seed_speedup_min": 0.8625120130625935,
+      "per_seed_speedup_max": 0.9698882397051193
+    }
+  ],
+  "encoded_key_hash_pairs_equal": 200,
+  "KAT_equation_cases_per_implementation": 200,
+  "hardware_config_identical": true,
+  "identical_linker_policy": true,
+  "memory_bytes": {
+    "keygen_ref": {
+      "ITCM": 76752,
+      "DTCM": 179752
+    },
+    "keygen_current": {
+      "ITCM": 110852,
+      "DTCM": 208552
+    }
+  },
+  "reference_run": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/results/keygen_ref/20260926T085739Z",
+  "current_run": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/results/keygen_current/20260926T085505Z",
+  "reference_source": "/Users/seungwon/FALCON/fn-dsa_m55/M55_ref",
+  "current_source": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate",
+  "harness_sha256": "aa97163d117cf234243039c030bff85a884cf70345c322526cd1a2b81a8f2887",
+  "raw_sha256": [
+    "c54b9e168cf87b7f2013d46dd463327914842e2ff838b8833192f378f37870bc",
+    "2cc5b5adfcc6784aa10c2a5d964786b243854f7d07f5b8d5b8cb37b935a068ae"
+  ],
+  "scope": "Full keygen incl all rejections/retries, key derivation and encoding. Current tree includes prior NTT and real-arithmetic/FFT changes; NOT FFT-only attribution.",
+  "timing": "Zephyr 64-bit SysTick cycle counter at 800MHz; interrupts enabled in both. Separate firmware images, same compiler/options and ITCM/DTCM/cache policy, not identical code addresses."
+}

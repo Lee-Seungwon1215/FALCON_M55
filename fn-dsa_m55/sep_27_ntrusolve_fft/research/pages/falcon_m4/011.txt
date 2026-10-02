@@ -1,0 +1,61 @@
+DOCUMENT: falcon_m4.pdf PAGE: 11/18
+
+Operation Invocations Cost
+fpr_scaled fpr_add fpr_add_sub fpr_mul fpr_div fpr_sqrt 11992 62680 32768 106685 2304 512 34
+80
+100
+45
+458
+610
+Table 2: Floating-point operations used in a Falcon-512 signature (average number of in-
+vocations, and individual cost in clock cycles).
+The costs listed in table 2 include the execution of all opcodes in the routine, including
+the final bx lr which returns to the caller, but excluding the bl opcode that the caller used to
+invoke the routine. The caller must also set the arguments into the proper registers; that cost
+is not accounted for in table 2 (and it depends on the call site). Most of our routines follow
+the proper call convention (AAPCS), in which registers r4 to r11 and s16 to s31 must
+be preserved by the callee; the saving costs are included in the costs above. fpr_add_sub is
+special, in that it needs to return two 64-bit values, which is not a case covered by the AAPCS,
+and the standard method (returning a struct instance at the C level) would entail using a
+pointer and extra memory accesses; to avoid that overhead, we invoke fpr_add_sub with a
+dedicated inline assembly routine:
+/* Inputs are x and y, both floating-point values declared
+with type uint64_t */
+register uint32_t x0 __asm__("r0") = (uint32_t)x;
+register uint32_t x1 __asm__("r1") = (uint32_t)(x >> 32);
+register uint32_t y0 __asm__("r2") = (uint32_t)y;
+register uint32_t y1 __asm__("r3") = (uint32_t)(y >> 32);
+__asm__(
+"bl fndsa_fpr_add_sub"
+: "+r" (x0), "+r" (x1), "+r" (y0), "+r" (y1)
+: "r4"
+,
+"r5"
+,
+"r6"
+,
+"r7"
+,
+"r8"
+,
+"r10"
+"r11"
+,
+,
+"r12"
+,
+"r14"
+,
+"s15"
+,
+"cc");
+uint64_t a = (uint64_t)x0 | ((uint64_t)x1 << 32);
+uint64_t b = (uint64_t)y0 | ((uint64_t)y1 << 32);
+The main consequence is that fpr_add_sub does not save the values of registers r4 to r11
+and the caller must see to saving them, for some extra overhead which is not accounted for in
+table 2. That overhead depends on the calling site and what register values the caller wants to
+preserve across the call. In that sense, the runtime cost of that routine is somewhat underesti-
+mated, but by an amount which is ill-defined; nevertheless, even taking into account the cost
+of saving all registers r4 to r11, fpr_add_sub is still substantially faster than two separate
+fpr_add calls.
+11

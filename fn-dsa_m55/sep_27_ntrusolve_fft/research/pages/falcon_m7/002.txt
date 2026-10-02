@@ -1,0 +1,44 @@
+DOCUMENT: falcon_m7.pdf PAGE: 2/22
+
+2 James Howe and Bas Westerbaan
+also in hardware [RBG20; HOK+18; HMO+21; BUC19; BUC19; XL21; BUC19;
+RMJ+21; Mar20; KRR+20; RB20].
+In July 2022, NIST announced in their Round 3 status report [AAC+22]
+that their first set of PQC standards; one Key Encapsulation Mechanism (KEM)
+called CRYSTALS-Kyber [SAB+20], and three digital signature schemes called
+CRYSTALS-Dilithium [LDK+20], Falcon [PFH+20], and SPHINCS+ [HBD+20],
+with three of the four of these being from the family of lattice-based cryptogra-
+phy.
+In their Round 2 status report, NIST [AASA+20] encouraged “more scrutiny
+of Falcon’s implementation to determine whether the use of floating-point arith-
+metic makes implementation errors more likely than other schemes or provides
+an avenue for side-channel attacks”. In this paper we look to bridge this gap
+by adding benchmarking, profiling, and analysing Falcon and Dilithium on the
+ARM Cortex M7. We choose this specific microcontroller for two reasons. Firstly,
+as it is very similar to the ARM Cortex M4, which was chosen by NIST as the
+preferred benchmarking target to enable fair comparisons. Secondly, the ARM
+Cortex M7 is the only processor in the Cortex-M family to offer suﬀicient double
+floating-point instructions, via a 64-bit floating-point unit (FPU), useful to Fal-
+con’s key generation and signing procedures. This adds another important eval-
+uation criteria to comparisons between the two lattice-based signature schemes,
+especially when considering Falcon using a FPU, and investigating whether or
+not it is safe to use this for constant run-time. We use publicly available3 code
+from the Falcon submission package and we take the Dilithium implementation
+from pqm4.
+Falcon’s round 3 code, similar to the round 2 version [Por19], provides sup-
+port for embedded targets (i.e., the ARM Cortex M4) which can use either
+custom emulated floating-point operations (FALCON_FPEMU) or native floating-
+point operations (FALCON_FPNATIVE). For Dilithium, we use the code available
+on the pqm4 repository (which performed better than the code on PQClean).
+Code designed for the Cortex M3 and Cortex M4 processors is compatible with
+the Cortex M7 processor as long as it does not rely on bit-banding [ARM18].
+1.1 Contributions
+In Section 3, we benchmark Dilithium and Falcon on the ARM Cortex M7 using
+the STM32F767ZI NUCLEO-144 development board, using 1,000 executions per
+scheme and providing minimum, average, and maximum clock cycles, standard
+deviation and standard error, and average runtime (in milliseconds). For Falcon,
+we provide benchmarks for key generation, sign dynamic, sign tree, verify, and
+expand private key operations. We provide these results for both native (dou-
+ble precision) and emulated floating-point operations and proving comparisons
+between these and those results publicly available on the ARM Cortex M4. We
+3 See https://falcon-sign.info/

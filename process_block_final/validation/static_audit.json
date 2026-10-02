@@ -1,0 +1,810 @@
+{
+  "candidate_sha256": "8da25be7532a6c6fc2bcd5977a4548ca58ec4d3afdaedea0dc0933868accefe7",
+  "reference_sha256": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+  "selected_components": {
+    "process_block/sha3_cm55.s": "8d0588db4ef95cd5f0f32774cd84e6e6e6e91b97390b96a635dac5d99862d2ce",
+    "process_block2/sha3_cm55.s": "42f68361c13d4e001940779b056b5b8ccd225c911f936777fe810782d5af5366",
+    "process_block3/sha3_cm55.s": "cf89e5f4396919d7b3850cfdff70fc28edbfe85dde4a9e0d36411c22a14fd922",
+    "process_block4/sha3_cm55.s": "1fbdaa4d96d34924428e085c048bb8b3e6135d7a53b2b99a68a314675b41bc8d",
+    "process_block5/sha3_cm55.s": "13ad1c15fa45062b4e2913d2d070f4e7c0358a553b1e981df9b5fc3b9144da43"
+  },
+  "scope": {
+    "checkpoint": "N12345_all",
+    "helpers_inject_source_unchanged": true,
+    "constants_unchanged": true,
+    "other_crypto_sources_equal_to_process_block": {
+      "sysrng.c": true,
+      "kgen_fft_bridge.c": true,
+      "kgen_mp31.c": true,
+      "fndsa.h": true,
+      "codec.c": true,
+      "kgen_ntru.c": true,
+      "kgen_gauss.c": true,
+      "kgen_fft_mve.c": true,
+      "util.c": true,
+      "test_sign.c": true,
+      "sign_inner.h": true,
+      "kgen_fxp.c": true,
+      "sha3_cm4.s": true,
+      "kgen_mp31_cm55.s": true,
+      "sign_fpoly.c": true,
+      "kgen.c": true,
+      "sign.c": true,
+      "speed_fndsa.c": true,
+      "kgen_fft_cm55.s": true,
+      "kgen_fft_cm55.h": true,
+      "codec_cm4.s": true,
+      "mq.c": true,
+      "kgen_ds.h": true,
+      "test_fndsa.c": true,
+      "sign_fpr.c": true,
+      "sign_fft_cm55.s": true,
+      "fndsa_m55_config.h": true,
+      "sign_sampler_cm4.s": true,
+      "kgen_poly.c": true,
+      "mq_cm55.s": true,
+      "sign_ldl_cm55.s": true,
+      "sha3.c": true,
+      "sign_split_merge_cm55.s": true,
+      "sign_core.c": true,
+      "sign_fpr_cm4.s": true,
+      "inner.h": true,
+      "kgen_zint31.c": true,
+      "vrfy.c": true,
+      "kgen_inner.h": true,
+      "sign_sampler.c": true
+    }
+  },
+  "composition": "direct local stages IO3 + T8 + R9 + C4 + I4; no production includes/selectors",
+  "frame_bytes": 200,
+  "original_frame_bytes": 184,
+  "new_external_scratch_bytes": 0,
+  "stack_layout": {
+    "0..71": "state A16..A24",
+    "72..75": "state pointer",
+    "76..79": "rate",
+    "80..87": "theta R14/R9; later pi old A6",
+    "88..95": "pi R14/R9",
+    "96..99": "alignment padding"
+  },
+  "branch_control": [
+    {
+      "address": 268440508,
+      "mnemonic": "beq.w",
+      "operands": "10001580 <fndsa_sha3_process_block__final>"
+    },
+    {
+      "address": 268440956,
+      "mnemonic": "b.w",
+      "operands": "10000f74 <fndsa_sha3_process_block__loop_step2>"
+    }
+  ],
+  "memory": [
+    {
+      "instruction": {
+        "address": 268439452,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #80]"
+      },
+      "address": "sp, #80"
+    },
+    {
+      "instruction": {
+        "address": 268439456,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #84]"
+      },
+      "address": "sp, #84"
+    },
+    {
+      "instruction": {
+        "address": 268439464,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp]"
+      },
+      "address": "sp"
+    },
+    {
+      "instruction": {
+        "address": 268439488,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp]"
+      },
+      "address": "sp"
+    },
+    {
+      "instruction": {
+        "address": 268439492,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #4]"
+      },
+      "address": "sp, #4"
+    },
+    {
+      "instruction": {
+        "address": 268439500,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp, #8]"
+      },
+      "address": "sp, #8"
+    },
+    {
+      "instruction": {
+        "address": 268439524,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #8]"
+      },
+      "address": "sp, #8"
+    },
+    {
+      "instruction": {
+        "address": 268439528,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #12]"
+      },
+      "address": "sp, #12"
+    },
+    {
+      "instruction": {
+        "address": 268439536,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp, #24]"
+      },
+      "address": "sp, #24"
+    },
+    {
+      "instruction": {
+        "address": 268439560,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #24]"
+      },
+      "address": "sp, #24"
+    },
+    {
+      "instruction": {
+        "address": 268439564,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #28]"
+      },
+      "address": "sp, #28"
+    },
+    {
+      "instruction": {
+        "address": 268439572,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp, #32]"
+      },
+      "address": "sp, #32"
+    },
+    {
+      "instruction": {
+        "address": 268439596,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #32]"
+      },
+      "address": "sp, #32"
+    },
+    {
+      "instruction": {
+        "address": 268439600,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #36]"
+      },
+      "address": "sp, #36"
+    },
+    {
+      "instruction": {
+        "address": 268439608,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp, #40]"
+      },
+      "address": "sp, #40"
+    },
+    {
+      "instruction": {
+        "address": 268439632,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #40]"
+      },
+      "address": "sp, #40"
+    },
+    {
+      "instruction": {
+        "address": 268439636,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #44]"
+      },
+      "address": "sp, #44"
+    },
+    {
+      "instruction": {
+        "address": 268439644,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp, #48]"
+      },
+      "address": "sp, #48"
+    },
+    {
+      "instruction": {
+        "address": 268439668,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #48]"
+      },
+      "address": "sp, #48"
+    },
+    {
+      "instruction": {
+        "address": 268439672,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #52]"
+      },
+      "address": "sp, #52"
+    },
+    {
+      "instruction": {
+        "address": 268439680,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp, #56]"
+      },
+      "address": "sp, #56"
+    },
+    {
+      "instruction": {
+        "address": 268439704,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #56]"
+      },
+      "address": "sp, #56"
+    },
+    {
+      "instruction": {
+        "address": 268439708,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #60]"
+      },
+      "address": "sp, #60"
+    },
+    {
+      "instruction": {
+        "address": 268439808,
+        "mnemonic": "ldr.w",
+        "operands": "lr, [sp, #80]"
+      },
+      "address": "sp, #80"
+    },
+    {
+      "instruction": {
+        "address": 268439812,
+        "mnemonic": "ldr.w",
+        "operands": "r9, [sp, #84]"
+      },
+      "address": "sp, #84"
+    },
+    {
+      "instruction": {
+        "address": 268439816,
+        "mnemonic": "ldrd",
+        "operands": "sl, fp, [sp, #64]"
+      },
+      "address": "sp, #64"
+    },
+    {
+      "instruction": {
+        "address": 268439828,
+        "mnemonic": "ldrd",
+        "operands": "r7, r6, [sp, #16]"
+      },
+      "address": "sp, #16"
+    },
+    {
+      "instruction": {
+        "address": 268439952,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #16]"
+      },
+      "address": "sp, #16"
+    },
+    {
+      "instruction": {
+        "address": 268439956,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #20]"
+      },
+      "address": "sp, #20"
+    },
+    {
+      "instruction": {
+        "address": 268439976,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #64]"
+      },
+      "address": "sp, #64"
+    },
+    {
+      "instruction": {
+        "address": 268439980,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #68]"
+      },
+      "address": "sp, #68"
+    },
+    {
+      "instruction": {
+        "address": 268439996,
+        "mnemonic": "ldrd",
+        "operands": "r6, r7, [sp]"
+      },
+      "address": "sp"
+    },
+    {
+      "instruction": {
+        "address": 268440000,
+        "mnemonic": "ldrd",
+        "operands": "sl, fp, [sp, #48]"
+      },
+      "address": "sp, #48"
+    },
+    {
+      "instruction": {
+        "address": 268440080,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp]"
+      },
+      "address": "sp"
+    },
+    {
+      "instruction": {
+        "address": 268440084,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #4]"
+      },
+      "address": "sp, #4"
+    },
+    {
+      "instruction": {
+        "address": 268440104,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #48]"
+      },
+      "address": "sp, #48"
+    },
+    {
+      "instruction": {
+        "address": 268440108,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #52]"
+      },
+      "address": "sp, #52"
+    },
+    {
+      "instruction": {
+        "address": 268440124,
+        "mnemonic": "ldrd",
+        "operands": "r6, r7, [sp, #24]"
+      },
+      "address": "sp, #24"
+    },
+    {
+      "instruction": {
+        "address": 268440128,
+        "mnemonic": "ldrd",
+        "operands": "sl, fp, [sp, #32]"
+      },
+      "address": "sp, #32"
+    },
+    {
+      "instruction": {
+        "address": 268440208,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #24]"
+      },
+      "address": "sp, #24"
+    },
+    {
+      "instruction": {
+        "address": 268440212,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #28]"
+      },
+      "address": "sp, #28"
+    },
+    {
+      "instruction": {
+        "address": 268440232,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #32]"
+      },
+      "address": "sp, #32"
+    },
+    {
+      "instruction": {
+        "address": 268440236,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #36]"
+      },
+      "address": "sp, #36"
+    },
+    {
+      "instruction": {
+        "address": 268440252,
+        "mnemonic": "ldrd",
+        "operands": "r6, r7, [sp, #8]"
+      },
+      "address": "sp, #8"
+    },
+    {
+      "instruction": {
+        "address": 268440256,
+        "mnemonic": "ldrd",
+        "operands": "sl, fp, [sp, #56]"
+      },
+      "address": "sp, #56"
+    },
+    {
+      "instruction": {
+        "address": 268440336,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #8]"
+      },
+      "address": "sp, #8"
+    },
+    {
+      "instruction": {
+        "address": 268440340,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #12]"
+      },
+      "address": "sp, #12"
+    },
+    {
+      "instruction": {
+        "address": 268440360,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #56]"
+      },
+      "address": "sp, #56"
+    },
+    {
+      "instruction": {
+        "address": 268440364,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #60]"
+      },
+      "address": "sp, #60"
+    },
+    {
+      "instruction": {
+        "address": 268440384,
+        "mnemonic": "ldrd",
+        "operands": "sl, fp, [sp, #40]"
+      },
+      "address": "sp, #40"
+    },
+    {
+      "instruction": {
+        "address": 268440484,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #40]"
+      },
+      "address": "sp, #40"
+    },
+    {
+      "instruction": {
+        "address": 268440488,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #44]"
+      },
+      "address": "sp, #44"
+    },
+    {
+      "instruction": {
+        "address": 268440492,
+        "mnemonic": "ldrd",
+        "operands": "r2, r3, [r9], #8"
+      },
+      "address": "r9"
+    },
+    {
+      "instruction": {
+        "address": 268440520,
+        "mnemonic": "ldrd",
+        "operands": "sl, fp, [sp, #48]"
+      },
+      "address": "sp, #48"
+    },
+    {
+      "instruction": {
+        "address": 268440528,
+        "mnemonic": "ldrd",
+        "operands": "r6, r7, [sp, #24]"
+      },
+      "address": "sp, #24"
+    },
+    {
+      "instruction": {
+        "address": 268440532,
+        "mnemonic": "str",
+        "operands": "r2, [sp, #80]"
+      },
+      "address": "sp, #80"
+    },
+    {
+      "instruction": {
+        "address": 268440534,
+        "mnemonic": "str",
+        "operands": "r3, [sp, #84]"
+      },
+      "address": "sp, #84"
+    },
+    {
+      "instruction": {
+        "address": 268440572,
+        "mnemonic": "str",
+        "operands": "r4, [sp, #48]"
+      },
+      "address": "sp, #48"
+    },
+    {
+      "instruction": {
+        "address": 268440574,
+        "mnemonic": "str",
+        "operands": "r5, [sp, #52]"
+      },
+      "address": "sp, #52"
+    },
+    {
+      "instruction": {
+        "address": 268440584,
+        "mnemonic": "ldrd",
+        "operands": "r8, ip, [sp, #32]"
+      },
+      "address": "sp, #32"
+    },
+    {
+      "instruction": {
+        "address": 268440604,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #32]"
+      },
+      "address": "sp, #32"
+    },
+    {
+      "instruction": {
+        "address": 268440608,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #36]"
+      },
+      "address": "sp, #36"
+    },
+    {
+      "instruction": {
+        "address": 268440664,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #88]"
+      },
+      "address": "sp, #88"
+    },
+    {
+      "instruction": {
+        "address": 268440668,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #92]"
+      },
+      "address": "sp, #92"
+    },
+    {
+      "instruction": {
+        "address": 268440672,
+        "mnemonic": "ldrd",
+        "operands": "r8, ip, [sp, #56]"
+      },
+      "address": "sp, #56"
+    },
+    {
+      "instruction": {
+        "address": 268440688,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #24]"
+      },
+      "address": "sp, #24"
+    },
+    {
+      "instruction": {
+        "address": 268440692,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #28]"
+      },
+      "address": "sp, #28"
+    },
+    {
+      "instruction": {
+        "address": 268440704,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #56]"
+      },
+      "address": "sp, #56"
+    },
+    {
+      "instruction": {
+        "address": 268440708,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #60]"
+      },
+      "address": "sp, #60"
+    },
+    {
+      "instruction": {
+        "address": 268440716,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp, #64]"
+      },
+      "address": "sp, #64"
+    },
+    {
+      "instruction": {
+        "address": 268440744,
+        "mnemonic": "ldrd",
+        "operands": "r8, ip, [sp, #40]"
+      },
+      "address": "sp, #40"
+    },
+    {
+      "instruction": {
+        "address": 268440760,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #64]"
+      },
+      "address": "sp, #64"
+    },
+    {
+      "instruction": {
+        "address": 268440764,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #68]"
+      },
+      "address": "sp, #68"
+    },
+    {
+      "instruction": {
+        "address": 268440776,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #40]"
+      },
+      "address": "sp, #40"
+    },
+    {
+      "instruction": {
+        "address": 268440780,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #44]"
+      },
+      "address": "sp, #44"
+    },
+    {
+      "instruction": {
+        "address": 268440784,
+        "mnemonic": "ldrd",
+        "operands": "r8, ip, [sp]"
+      },
+      "address": "sp"
+    },
+    {
+      "instruction": {
+        "address": 268440812,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp]"
+      },
+      "address": "sp"
+    },
+    {
+      "instruction": {
+        "address": 268440816,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #4]"
+      },
+      "address": "sp, #4"
+    },
+    {
+      "instruction": {
+        "address": 268440824,
+        "mnemonic": "ldrd",
+        "operands": "r9, lr, [sp, #16]"
+      },
+      "address": "sp, #16"
+    },
+    {
+      "instruction": {
+        "address": 268440852,
+        "mnemonic": "ldrd",
+        "operands": "r8, ip, [sp, #8]"
+      },
+      "address": "sp, #8"
+    },
+    {
+      "instruction": {
+        "address": 268440868,
+        "mnemonic": "str.w",
+        "operands": "r8, [sp, #16]"
+      },
+      "address": "sp, #16"
+    },
+    {
+      "instruction": {
+        "address": 268440872,
+        "mnemonic": "str.w",
+        "operands": "ip, [sp, #20]"
+      },
+      "address": "sp, #20"
+    },
+    {
+      "instruction": {
+        "address": 268440884,
+        "mnemonic": "str.w",
+        "operands": "r9, [sp, #8]"
+      },
+      "address": "sp, #8"
+    },
+    {
+      "instruction": {
+        "address": 268440888,
+        "mnemonic": "str.w",
+        "operands": "lr, [sp, #12]"
+      },
+      "address": "sp, #12"
+    },
+    {
+      "instruction": {
+        "address": 268440924,
+        "mnemonic": "ldr.w",
+        "operands": "lr, [sp, #88]"
+      },
+      "address": "sp, #88"
+    },
+    {
+      "instruction": {
+        "address": 268440928,
+        "mnemonic": "ldr.w",
+        "operands": "r9, [sp, #92]"
+      },
+      "address": "sp, #92"
+    },
+    {
+      "instruction": {
+        "address": 268440948,
+        "mnemonic": "ldrd",
+        "operands": "r8, ip, [sp, #80]"
+      },
+      "address": "sp, #80"
+    }
+  ],
+  "helpers_bytes": 1284,
+  "production_text_bytes": 6384,
+  "timing_classes": [
+    {
+      "class": 0,
+      "n": 1000,
+      "sum": 11485000,
+      "sumsq": 131905225000,
+      "min": 11485,
+      "max": 11485
+    },
+    {
+      "class": 1,
+      "n": 1000,
+      "sum": 11485000,
+      "sumsq": 131905225000,
+      "min": 11485,
+      "max": 11485
+    }
+  ],
+  "functional_runs": {
+    "kat": "results/mve_kat/20261001T120655Z",
+    "sigkat": "results/mve_sigkat/20261001T120739Z",
+    "api": "results/mve_api/20261001T120748Z"
+  },
+  "limitations": [
+    "not a formal CT proof",
+    "zero/random 1000 samples each are bounded evidence",
+    "finite correctness tests are not universal equivalence or power/EM/fault security validation"
+  ]
+}

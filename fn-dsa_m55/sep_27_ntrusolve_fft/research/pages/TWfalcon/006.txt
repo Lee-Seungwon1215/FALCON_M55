@@ -1,0 +1,54 @@
+DOCUMENT: TWfalcon.pdf PAGE: 6/25
+
+6 TWFalcon: Triple-Word Arithmetic for Falcon
+numbers, such as the IEEE 754 binary32 format. For this work we focus on emulating the
+53 bits of precision in the IEEE 754 binary64 format using three values in the binary32
+format, giving a combined precision of 72 bits. In [FMP19], algorithms for addition,
+multiplication, reciprocal, division, and square root are specified.
+A Triple-Word Floating-Point (TW) value is defined as a triplet (x0,x1,x2) of floating-
+point numbers that is P-nonoverlapping. The sequence (xi) is P-nonoverlapping when
+∀i,|xi+1| < ulp(xi), where ulp(xi) is the unit in the last place defined as ulp(x) =
+|next floating-point number−x|= 2⌊log2 |x|⌋·2−p+1 for precision p. The sequence (xi) is
+additionally F-nonoverlapping when ∀i,|xi+1|< 1
+2 uls(xi), where uls is the unit in the last
+significant place, defined as the largest power of 2 that divides xi.
+As a basis for these full TW arithmetic algorithms, two main building blocks are used
+to compute the sum and product of single floating-point numbers (2Sum, 2Prod). These
+take two single floating-point numbers as input and return two floating-point numbers,
+one representing the result of the computation (sum resp. product) and the other the
+error of the computation. Additionally, a Fused Multiply-Add (FMA) operation should
+be available, that multiplies two floats, and adds the result to another float, without
+intermediate rounding.
+To make sure the result of a computation is a TW value, the algorithms VecSum and
+VSEB are used. VecSum turns a sequence of “slightly” nonoverlapping floating-point
+numbers into a “more” nonoverlapping sequence. It does this according to the diagram
+shown in Figure 2a and ensures that the sum of the output vector is the same as the
+sum of the input vector. The output vector of VecSum is F-nonoverlapping if and only
+if the input vector is sorted from biggest to smallest. Then, the algorithm VSEB puts
+an F-nonoverlapping input vector into a P-nonoverlapping vector. An illustration of this
+algorithm is visible in Figure 2b.
+(a) The VecSum Algorithm [Pri91, FMP19]. (b) The VecSumErrBranch (VSEB) Al-
+gorithm [FMP19].
+Figure 2: TW base algorithms.
+We will not repeat all algorithms from [FMP19] here, but instead highlight the most
+important ones: the sum (Algorithm 1) and product (Algorithm 2 (3Prod)) of two TW
+values. In Algorithm 1, the values of two TW numbers are combined and sorted from
+biggest to smallest (Merge, absolute values are compared). VecSum and VSEB are then
+used to add and convert this sorted input into a sequence of 6 P-nonoverlapping floating-
+point numbers, of which the first three represent the TW. This essentially computes the
+sum of the two TW inputs ensuring a proven computation error bound. The number
+1
+u=
+2 ulp(1) = 2−p denotes the roundoff error unit of floating-point operations, where p is
+the amount of precision bits.
+We will illustrate the addition of two TW numbers,ˆ
+x= [1.12,1.23e−3
+,5.46e−6] and
+ˆ
+y = [2.12,3.11e−4
+,7.33e−6], in a toy floating-point system with three decimal digits of
+precision. The first step is to merge them together, by sorting the absolute values from
+biggest to smallest. This results in the list [2.12,1.12,1.23e−3
+,3.11e−4
+,7.33e−6
+,5.46e−6].

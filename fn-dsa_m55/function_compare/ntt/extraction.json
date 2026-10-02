@@ -1,0 +1,32 @@
+{
+  "inputs": {
+    "M55_ref/inner.h": "53a8fcb059d0a409e26e6a48c27deccd20815c2febb42469582a8b3a860c2412",
+    "M55_ref/kgen_inner.h": "0e124f2cbfee404b9e51c1723ef21544f0849a14e5b61ffa76c32f083fa0ec11",
+    "M55_ref/kgen_mp31.c": "d4423f4dfe784309fa99840e25353140c8c95f32e6e7b701f7b1ce0cb70ef002",
+    "ntt_ntrusolve/4th_array_compare/D1_vld4_last/kgen_mp31.c": "fd586b85ba6b8b6f72c7068dab8de10c7ffaac91b4ec9bae9215163923bffedb",
+    "M55_ref/mq_cm4.s": "d134b066b757ec7b884295e22cb334526f53db40723d6efa02f2a73e3fd29637",
+    "M55_ref/mq.c": "1c86060bd2d59a001447bb21c5ca0fda9d7d959a1693c8349ea0d9159ad5011e",
+    "ntt_ntrusolve/4th_array_compare/D1_vld4_last/mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+    "ntt_ntrusolve/4th_array_compare/D1_vld4_last/mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+    "ntt_ntrusolve/4th_array_compare/D1_vld4_last/kgen_mp31_cm55.s": "463137bc8fba5d660e39dcf05e839b81971864d00545e888d73363598eb086c6"
+  },
+  "outputs": {
+    "original/mp_helpers.h": "45a9b282c49a507de36bff82bbafb787bc479840995ec951230412b70e069789",
+    "original/kgen_mp31.c": "b5d825552537ffb7c6256d24e4863a4c58ea47ad27ea2f4fea92f354bcacb296",
+    "optimized/kgen_mp31_fallback.c": "adb6f6fa0fd3633008f9ad8655683c2b9d5d57f60b9a88e2f0193a6c13d107b1",
+    "bench/roots.c": "693dbe512b1c31521bb55149a42ac29eb1c6a384d0bcffaa1d449b2b2282f560",
+    "original/mq_cm4.s": "3a8ea7068c5ad4d18d6bb619e22afabeae063c63bc1ab518b7927bd7d7a8ea77",
+    "original/mq_tables.c": "6d917e9d70d5064e38a52ab82dbc980cc21b8981f3f16de6b9e2602509951dd6",
+    "optimized/mq_cm55.s": "5a386f915e72968ea95cc5a6752ad12f03e404a3d4eef213a8eac4bec0d0964a",
+    "optimized/mq_tables.c": "1496ca049b8ff51107b3673183b9a7c6fe9636655db79dcdbd28a3462e38aaee",
+    "optimized/kgen_mp31_cm55.s": "74cec08714ed79926094e9194246240523cf2f10245d41bff8686008739ef2ee"
+  },
+  "adaptations": [
+    "public symbol namespaces orig_/opt_ (no algorithm change)",
+    "NTT-only extraction, local minimal headers, ELF placement sections",
+    "M4 inline assembly enabled for original RNS and optimized small fallback",
+    "K1 optimized iNTT consumes full w*R inverse roots and uses a matching small fallback",
+    "K2 optimized RNS NTT/iNTT pipelines root preparation across independent butterfly work",
+    "mq tables copied from respective source; RNS roots generated once outside timing"
+  ]
+}

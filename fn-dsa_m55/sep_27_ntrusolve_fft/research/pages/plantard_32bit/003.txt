@@ -1,0 +1,132 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 3/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 3
+Availability of Our Software: The source codes of this
+paper is publicly available at https://github.com/UIC-ESLAS/
+Kyber RV M3.
+II. PRELIMINARIES
+This section gives a brief introduction to Kyber, its under-
+lying time-consuming operations and the target platforms.
+A. Kyber
+Kyber [3] is the only KEM standard in the NIST PQC
+standardization project. The overall security of the scheme is
+based on the theoretical security of the Module Learning With
+Errors (Module-LWE) problem, which was first introduced
+by Langlois and Stehl´ e in [21]. Specifically, for (A,b=
+ATs + e), the decisional Module-LWE problem describes
+the computational difficulty of distinguishing (A,b) from a
+uniform random pair, where s and e denotes the secret and
+noise vectors sampled from a centered binomial distribution
+Bη(Rk
+q); A is a public matrix sampled from a uniform random
+distribution U(Rk×k
+q ). The small k-dimensional matrix and
+vector are introduced by the Module-LWE problem, which
+helps to balance the inefficiency of LWE [22] and the potential
+weakness of the structured Ring-LWE [23]. k equals 2, 3, and
+4 for the three Kyber variants, respectively.
+The underlying polynomial ring of Kyber is Rq =
+Zq[X]/(Xn + 1), where q = 3329 and n = 256. The IND-
+CCA2-secure KEM of Kyber is constructed over an IND-CPA
+public-key encryption (PKC) scheme through the Fujisaki-
+Okamoto (FO) transform [24]. We refer interested readers to
+[25] for details of the PKC and KEM protocols of Kyber. Due
+to the introduction of the k-dimensional matrix and vector, the
+matrix-vector multiplication and vector inner product are two
+essential and time-consuming operations in Kyber.
+B. Number Theoretic Transform
+The underlying polynomial ring and its parameter choice
+(q and n) of Kyber enable efficient polynomial multiplication
+with number theoretic transform (NTT). While using NTT, the
+polynomial f(X) in the polynomial ring Zq[X]/f(X) can be
+factored as f(X) =n−1
+i=0 fi(X)(mod q), where fi(X) are
+small-degree polynomials. To multiply two degree-(n−1)
+polynomials a,b ∈ Zq[X]/f(X) using NTT, the first step
+ˆ
+is to computeˆ
+ai = amod fi(X),
+bi = bmod fi(X), where
+i = 0,···,n−1. Then, the polynomial multiplication of
+two degree-n polynomials is divided into n pairs of small-
+ˆ
+ˆ
+degree pointwise multiplications:ˆ
+a0
+b0,···
+ˆ
+,
+an−1
+bn−1. Lastly,
+the inverse NTT (INTT) is used to get the result polynomial
+c= INTT(NTT(a)◦NTT(b)) in the normal domain.
+For Kyber, suppose that ζ is the primitive 256-th root of
+unity, the polynomial f(X) = X256 + 1 can be factored as
+X256 + 1 = 127
+i=0 X2
+−ζ2i+1
+. Here, the NTT of Kyber
+is a 7-layer incomplete-NTT [25] since f(X) is factored as
+degree-2 polynomials instead of degree-1.
+NTT’s primary component is the butterfly unit, including
+two commonly-used algorithms: CT algorithm [15] and GS
+algorithm [16]. CT algorithm accepts normal order input but
+produces bit-reverse order output. In contrast, the GS algo-
+rithm takes bit-reverse order input and generates normal order
+output. To avoid the bit-reversal operation, the CT algorithm
+is normally used in NTT while the GS algorithm is adopted
+in INTT. However, recent work [14], [26] shows that better
+performance could be achieved when CT algorithm is used in
+INTT on Cortex-M4.
+C. Modular Arithmetic
+Notations: Before moving into details of the modular
+arithmetic, we first describe some notations used in the remain-
+ing sections. We set l= 16 throughout the paper to support the
+16-bit NTT/INTT in Kyber. We divide the modular reduction
+into mod and mod±. For an integer c, cmod q generates the
+modulo result of c in [0,q), while cmod±q produces output
+in [−
+q+1
+q
+2 ,
+2 ). For simplicity, [X]l′ denotes (Xmod±2l′), and
+[X]l′
+means (X >>l′) for a positive integer l′
+.
+Based on whether there is a constant operand, we di-
+vide the modular multiplication into two categories: modular
+multiplication by a constant and modular multiplication of
+two variables. The multiplication inside the butterfly unit
+in NTT/INTT is the former case, while the latter one is
+used in the base multiplication of Kyber. Previous software
+implementations [9], [10], [11], [12], [13], [14] utilized the
+Montgomery multiplication [17] to perform these modular
+multiplications. The Barrett reduction [18] is normally used
+to reduce the range of the coefficients in NTT/INTT [11],
+[12], [13]. However, the Montgomery arithmetic in previous
+software implementations offered the same implementation for
+two kinds of modular multiplications. In 2021, Thomas Plan-
+tard proposed the Plantard arithmetic, which offers an efficient
+modular multiplication by a constant. Later in 2022, Huang
+et al. [20] proposed a signed-version Plantard arithmetic and
+demonstrated its applicability in LBC schemes on Cortex-M4.
+Algorithm 1 Signed Montgomery multiplication [10]
+Input: Operand a,bsuch that−q2l−1 ≤ab<q2l−1, where l
+is the machine word size, the odd modulus q∈(0,2l−1)
+Output: r≡ab2−l mod q,r∈(−q,q)
+1: c= c12l + c0 = a·b
+2: m= [c0·q−1]2l 3: t1 = [m·q]l ▷ q−1 is a precomputed constant
+▷ shift right operation
+4: r= c1−t1
+5: return r
+In this section, we only introduce two modular arithmetic,
+the Montgomery and Plantard arithmetic, that share some
+similarities. For details about the Barrett arithmetic, we refer to
+[18] and its signed implementation in Kyber1. Algorithm 1 and
+2 give brief descriptions for the signed-version Montgomery
+and Plantard multiplication, respectively. Both of them require
+three multiplications and some additions or shift operations
+to complete a modular multiplication. The outputs of them
+are not straightforward least positive modular results as in
+1Signed Barrett reduction in Kyber’s implementation https://github.com/
+pq-crystals/kyber/blob/master/ref/reduce.c

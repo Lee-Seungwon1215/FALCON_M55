@@ -1,0 +1,136 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 14/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY performance compared to the stack-version, as stated in [38,
+Section 5.3]. However, as demonstrated in our Cortex-M3
+and PQRISCV results, the speed-version implementation can
+still outperform the stack-version on different platforms with
+different characteristics. Although the performance of the
+speed-version implementation on the SiFive board is slower
+than the stack-version, we show the feasibility of deploying
+both stack-version and speed-version Kyber implementations
+on memory-constrained IoT devices, except for the speed-
+version of Kyber1024. This is made possible by the memory
+optimized strategies proposed in Section V-B2.
+As for the Kyber-90s variants, we yeild 2.93%∼6.27%
+speed-ups on Cortex-M3 and 12.33%∼23.13% speed-ups on
+PQRISCV. The speed improvements are very similar to the
+Kyber variants on Cortex-M3 and PQRISCV. On the SiFive
+platform, the adoption of the reference AES implementation
+results in the Kyber-90s variants being over 3×slower than
+the Kyber variants. We did not utilize the optimized AES
+implementation in [37] because it would increase the code
+size, leading to slower performance. Additionally, the refer-
+ence AES implementation introduces additional stack usage,
+posing challenges on the deployment of the speed-version of
+Kyber768-90s and both versions of Kyber1024-90s on the
+selected memory-constrained SiFive platforms. Therefore, we
+are unable to provide their results on the SiFive platform.
+Addressing these deployment issues for Kyber-90s will require
+additional efforts and optimizations. However, we believe
+that if the target platforms have AES hardware support, the
+Kyber-90s variants will remain a promising option on these
+platforms.
+VII. CONCLUSIONS
+This paper presents faster implementations of Kyber on
+low-end 32-bit IoT devices, specifically for ARM Cortex-
+M3 and RISC-V. In particular, we prove that the input
+range of the Plantard arithmetic can be further enlarged.
+The enlarged Plantard arithmetic could also be tailored for
+Kyber’s modulus. Leveraging this theoretical foundation, we
+present efficient implementations of the Plantard arithmetic on
+the aforementioned devices by exploiting their specific ISA
+characteristics. We then propose various optimized strategies
+to improve the efficiency of NTT/INTT. Furthermore, two
+memory optimized techniques are introduced for the speed-
+version Kyber implementation, making it more feasible on
+low-end IoT devices. Overall, we achieve new speed records
+for Kyber on these low-end 32-bit platforms.
+ACKNOWLEDGMENTS
+This work is partially supported by the National
+Key Research and Development Program of China
+(2022YFB2702000), National Natural Science Foundation
+of China (62002023, 62002239, 62372417, and
+62071222), Guangdong Provincial Key Laboratory IRADS
+(2022B1212010006, R0400001-22), Guangdong Province
+General Universities Key Field Project (New Generation
+Information Technology) (2023ZDZX1033), Zhejiang Lab
+Open Research Project (K2022PD0AB03), Jiangsu Province
+14
+100 Foreign Experts Introduction Plan (BX2022012),
+¨
+˙
+T
+UB
+ITAK Projects (2232-118C332 and 1001-121F348), ITF
+Project ITS/098/22, and the InnoHK Project CIMDA.
+REFERENCES
+[1] C. Gidney and M. Eker˚ a, “How to factor 2048 bit RSA integers in 8
+hours using 20 million noisy qubits,” Quantum, vol. 5, p. 433, 2021.
+[Online]. Available: https://doi.org/10.22331/q-2021-04-15-433
+[2] NIST, “Announcing PQC candidates to be standardized,
+plus fourth round candidates,” https://csrc.nist.gov/News/2022/
+pqc-candidates-to-be-standardized-and-round-4, Jul. 2022, (accessed
+Mar. 13, 2023).
+[3] J. W. Bos, L. Ducas, E. Kiltz, T. Lepoint, V. Lyubashevsky, J. M.
+Schanck, P. Schwabe, G. Seiler, and D. Stehl´ e, “CRYSTALS - Kyber:
+A CCA-Secure module-lattice-based KEM,” in 2018 IEEE European
+Symposium on Security and Privacy, EuroS&P 2018, London, United
+Kingdom, April 24-26, 2018. IEEE, 2018, pp. 353–367. [Online].
+Available: https://doi.org/10.1109/EuroSP.2018.00032
+[4] L. Ducas, E. Kiltz, T. Lepoint, V. Lyubashevsky, P. Schwabe,
+G. Seiler, and D. Stehl´ e, “Crystals-dilithium: A lattice-based digital
+signature scheme,” IACR Trans. Cryptogr. Hardw. Embed. Syst.,
+vol. 2018, no. 1, pp. 238–268, 2018. [Online]. Available: https:
+//doi.org/10.13154/tches.v2018.i1.238-268
+[5] T. Prest, P.-A. Fouque, J. Hoffstein, P. Kirchner, V. Lyubashevsky,
+T. Pornin, T. Ricosset, G. Seiler, W. Whyte, and Z. Zhang, “Falcon,”
+Post-Quantum Cryptography Project of NIST, 2020.
+[6] D. J. Bernstein, A. H¨ ulsing, S. K¨ olbl, R. Niederhagen, J. Rijneveld, and
+P. Schwabe, “The SPHINCS+ signature framework,” in Proceedings of
+the 2019 ACM SIGSAC Conference on Computer and Communications
+Security, CCS 2019, London, UK, November 11-15, 2019, L. Cavallaro,
+J. Kinder, X. Wang, and J. Katz, Eds. ACM, 2019, pp. 2129–2146.
+[Online]. Available: https://doi.org/10.1145/3319535.3363229
+[7] Statista, “IoT connected devices worldwide 2019-2030,” https://www.
+statista.com/statistics/1183457/iot-connected-devices-worldwide/, Jul.
+2023, (accessed Mar. 13, 2023).
+[8] M. J. Kannwischer, J. Rijneveld, P. Schwabe, and K. Stoffelen, “PQM4:
+Post-quantum crypto library for the ARM Cortex-M4,” Accessed: Mar.
+13, 2023. [Online]. Available: https://github.com/mupq/pqm4
+[9] E. Alkim, L. Ducas, T. P¨ oppelmann, and P. Schwabe, “Post-
+quantum key exchange - A new hope,” in 25th USENIX Security
+Symposium, USENIX Security 16, Austin, TX, USA, August 10-12,
+2016, T. Holz and S. Savage, Eds. USENIX Association, 2016,
+pp. 327–343. [Online]. Available: https://www.usenix.org/conference/
+usenixsecurity16/technical-sessions/presentation/alkim
+[10] G. Seiler, “Faster AVX2 optimized NTT multiplication for Ring-LWE
+lattice cryptography,” IACR Cryptol. ePrint Arch., p. 39, 2018. [Online].
+Available: http://eprint.iacr.org/2018/039
+[11] L. Botros, M. J. Kannwischer, and P. Schwabe, “Memory-efficient
+high-speed implementation of Kyber on Cortex-M4,” in Progress in
+Cryptology - AFRICACRYPT 2019 - 11th International Conference on
+Cryptology in Africa, Rabat, Morocco, July 9-11, 2019, Proceedings,
+ser. Lecture Notes in Computer Science, J. Buchmann, A. Nitaj, and
+T. Rachidi, Eds., vol. 11627. Springer, 2019, pp. 209–228. [Online].
+Available: https://doi.org/10.1007/978-3-030-23696-0\ 11
+[12] E. Alkim, Y. A. Bilgin, M. Cenk, and F. G´ erard, “Cortex-M4
+optimizations for {R, M} LWE schemes,” IACR Trans. Cryptogr.
+Hardw. Embed. Syst., vol. 2020, no. 3, pp. 336–357, 2020. [Online].
+Available: https://doi.org/10.13154/tches.v2020.i3.336-357
+[13] D. O. C. Greconici, M. J. Kannwischer, and A. Sprenkels, “Compact
+Dilithium implementations on Cortex-M3 and Cortex-M4,” IACR Trans.
+Cryptogr. Hardw. Embed. Syst., vol. 2021, no. 1, pp. 1–24, 2021.
+[Online]. Available: https://doi.org/10.46586/tches.v2021.i1.1-24
+[14] A. Abdulrahman, V. Hwang, M. J. Kannwischer, and D. Sprenkels,
+“Faster Kyber and Dilithium on the Cortex-M4,” in Applied Cryptog-
+raphy and Network Security - 20th International Conference, ACNS
+2022, Rome, Italy, June 20-23, 2022, Proceedings, ser. Lecture Notes
+in Computer Science, G. Ateniese and D. Venturi, Eds., vol. 13269.
+Springer, 2022, pp. 853–871.
+[15] J. W. Cooley and J. W. Tukey, “An algorithm for the machine calculation
+of complex Fourier series,” Mathematics of computation, vol. 19, no. 90,
+pp. 297–301, 1965.
+[16] W. M. Gentleman and G. Sande, “Fast Fourier Transforms: for
+fun and profit,” in American Federation of Information Processing
+Societies: Proceedings of the AFIPS ’66 Fall Joint Computer
+Conference, November 7-10, 1966, San Francisco, California, USA,

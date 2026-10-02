@@ -1,0 +1,56 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 21/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 21
+Table 4: Performance results for NTT, NTT_heavy, base_mul, and NTT−1 for kyber768,
+saber, and dilithium3 on Cortex-A72 and Apple M1. dim refers to the module dimension.
+Some implementations implement the base_mul for each polynomial separately, while
+we implement it for an entire vector such that we can better optimize the accumulation.
+On Cortex-A72, we report the median cycle count of 10000 executions. On Apple M1,
+we report the average cycle count of 10000 executions. We also list related work on
+Cortex-A72, Cortex-A75, and Apple M1 for comparison.
+Arm Cortex-A72 (Arm Cortex-A75 for [SKS+21])
+NTT NTT_heavy dim ×base_mul NTT−1 CRT
+kyber768 (Ours) kyber768 [NG21] A72 A72 1200 1434 952 1473a
+– 3040d 1338 –
+1661 –
+kyber768 [SKS+21] A75 2332 – 3 ×1 313 3209 –
+saber 32-bit (Ours) saber 16-bit [NG21] A72 A72 1529 1991b
+2031 2689 – 1500d 1896 –
+1893 813d
+dilithium3 (Ours) dilithium3 (ref) A72 A72 2241 9302 – 1378 – 5 ×2 325 2821 –
+11633 –
+Apple M1
+NTT NTT_heavy dim ×base_mul NTT−1 CRT
+kyber768 (Ours) M1 263 kyber768 [NG21] M1 413a
+309 198 262 –
+– 753d 428 –
+saber (Ours) saber 16-bit [NG21] M1 M1 301 539c
+411 790 – 380d 389 –
+531 206d
+dilithium3 (Ours) dilithium3 (ref) M1 M1 479 2865 – 258 – 5 ×794 a [NG21] reports cycles without a final reduction, while our implementation includes a reduction.
+b A fair comparison to our 32-bit NTT is 2× 16-bit NTT + CRT = 4795
+c A fair comparison to our 32-bit NTT is 2× 16-bit NTT + CRT = 1284
+d Our own benchmarks; not reported in [NG21].
+582 –
+3749 –
+Apple M1. The Apple M1 system-on-chip is contained in Apple’s 2020 MacBooks. It
+has four high-performance Firestorm cores, and four energy-eﬃcient Icestorm cores. The
+Apple M1 has special instructions for Keccak. We use the Keccak implementation by
+Westerbaan [Wes] which makes use of these instructions. For obtaining cycle counts we
+make use of m1cycles.c6 from [NG21]. Due to the large and varying overhead of obtaining
+cycles, we cannot reasonably benchmark a single execution of a small function. Instead, we
+benchmark many iterations and report the average. We use clang version 12.0.5 with -O3.
+Results for NTT and NTT−1
+. Table 4 summarizes our results for the NTT for the level
+three parameter sets. On the Cortex-A72, we outperform the kyber768 NTT and NTT−1
+by Nguyen et al. [NG21] by 19% each, even though we include Barrett reduction which
+is not reported by Nguyen et al. [NG21]. Compared to the implementation by Sanal
+et al. [SKS+21], the speed-up is even more pronounced at 1.9×for the NTT and 2.4×
+for NTT−1. For saber, our 32-bit NTT is 23% faster than the 16-bit NTT by Nguyen et
+al. [NG21]. However, the 16-bit NTT approach requires two NTTs followed by CRT and,
+consequently, our real speed-up is 3.1×. On the Apple M1, our speed-up compared to the
+kyber768 NTT and NTT−1 by Nguyen et al. [NG21] is 1.6×each. The 16-bit saber NTTs
+are outperformed by our 32-bit NTTs by 44% and 27% on the M1. The actual speed-up
+when comparing the 32-bit NTT to two 16-bit NTTs followed by CRT is 4.3×. For Dilithium,
+we obtain a vast speed-up over the reference implementation.
+6https://github.com/GMUCERG/PQC_NEON/blob/main/neon/kyber/m1cycles.c

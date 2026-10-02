@@ -1,0 +1,46 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 19/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 19
+abis [a0,a1,a2,a3]·[b2,b1,ζb3,ζb2]. Like UMLAL, VMLALDAV.s32 accumulates into a pair of
+GPRs. We compute all coeﬃcients of abin pairs of GPRs each, before moving them into a
+vector using VMOV Qx[i], Qx[j], Ra, Rb and applying a single Montgomery reduction.
+The approach has some drawbacks: Firstly, we need four loads for b; a batched imple-
+mentation would require only one. This can be amortized by simultaneously computing
+multiple aib; we have not yet implemented this approach, yet. Secondly, the cost of prepar-
+ing b3,b2,b1,b0,ζb3,ζb2,ζb1. Following an approach similar to [BHK+] and adapted to this
+context, this can be partly amortized in the application to matrix-vector multiplication
+by precomputing b3,b2,b1,b0,ζb3,ζb2,ζb1 as part of the forward NTT. In Section 7 below,
+this size-doubling version of the NTT is called “expanded NTT”. We find that the above
+schoolbook multiplication strategy oﬀers a good mix of diﬀerent kinds of operations which
+can be interleaved to leverage instruction overlapping.
+6.4.5 Inverse NTT
+We use Gentleman-Sande butterflies (a,b) →(a+ b,ζ(a−b)), which we compute using
+interleaved add/sub sequences and the 3-instruction Montgomery multiplication as in the
+forward-NTT. Overflow is prevented through the addition of selected Barrett reductions.
+The GS butterflies are inverse to the CT butterflies only up to a factor of 2, which we
+need to compensate through a modular division in/after the inverse NTT. We also need to
+account for the Montgomery twist by 2−31 ∈Fq in the point multiplication. We merge half
+of the required scalings with the multiplications in the last-layer GS butterflies. For the
+other half, we add explicit Montgomery multiplications. One could integrate the scalings
+into the GS butterflies for all but the first coeﬃcient with a trick similar to Proposition 1;
+however, we would need explicit Barrett reductions at the end of the last layer in this case,
+which would only be one instruction shorter than the Montgomery multiplications.
+6.5 Side-Channel resistance
+All of our code is resistant against timing side-channels on Cortex-M4 and Cortex-M55:
+The control-flow is secret-independent, and all instructions we used have data-independent
+timing, including predication. We do not attempt resistance against other side-channels.
+6.6 Hashing
+We have not attempted to develop hashing implementations based on the Helium vector
+extension: Both the smaller scale nature of Cortex-M CPUs and the fact that software
+executes directly in the physical address space (without virtual to physical translation)
+mean that the overhead associated with oﬄoading computation to accelerators is very low.
+As a result, many Cortex-M microcontrollers already include accelerators for symmetric
+cryptography and hashing. It is expected that these accelerators will be used for the hashing
+in PQC schemes, eliminating the need for high performance software-based hashing.
+“90’s versions” Numerous PQC schemes oﬀer a “90’s version” replacing the use of SHA-3
+by AES and SHA-2, and it has been discussed whether NIST should standardize those
+versions. We support NIST standarizing “90’s versions”: Firstly, many existing MCUs
+already have hardware acceleration for AES and SHA-2. Secondly, AES and SHA-2 will not
+go away anytime soon, and limited gate budget may prevent vendors from shipping MCUs
+with both SHA-2 and SHA-3 acceleration. Finally, SHA-2 is a faster software-fallback for
+systems which do not have have any hardware acceleration for hashing.

@@ -1,0 +1,65 @@
+DOCUMENT: TWfalcon.pdf PAGE: 14/25
+
+14 TWFalcon: Triple-Word Arithmetic for Falcon
+added together, the term with the smaller exponent has progressively less influence on the
+result as the difference in exponents increases, eventually having no influence at all. As
+demonstrated in Section 3, such small floating-point errors do not pose security issues.
+4.2 Additional Algorithms
+In addition to the arithmetic operations described in [FMP19], several supplementary
+algorithms are needed to fully replace floating-point arithmetic in Falcon with TW. These
+include conversions between TW and integer values in both directions, supporting multiple
+rounding modes: “round” (to nearest, ties to even), “floor” (toward minus infinity), and
+“truncate” (toward zero), as detailed in Sections 4.2.3–4.2.5. We will refer to these functions
+as conversion functions.
+When operations are computed over values that fall within [−224
+,224], the range
+exactly representable by a single-precision floating-point value, a simpler, faster conversion
+algorithm can be used. Determining whether this is possible depends on multiple inputs,
+including the parameter µ. Parameter µ will be discussed in Section 4.2.1, and the other
+parameters will be discussed in detail for each new TW algorithm.
+Falcon also requires efficient algorithms for additional operations, or combinations of
+operations, that can be implemented more efficiently through custom algorithms than
+using the basic TW algorithms. These are discussed in Section 4.2.6.
+4.2.1 Precision in Gaussian Sampling
+To determine whether the input range of the conversion functions is within [−223
+,223], we
+analyze the range of parameter µ. Recall µ represents the mean of the Gaussian sampler
+used at each leaf in the ffSampling algorithm (see Section 2.1). It is also denoted as c
+when discussing the error values in Section 3.
+While other input sizes are discussed in their respective sections, µappears in multiple
+conversion functions and warrants separate consideration. The values of µ originate from
+the preimage vector:
+t=−
+·FFT(c) ⊙FFT(F),
+q
+q
+·FFT(c) ⊙FFT(f),
+which is recursively split down the Falcon tree until only single-coefficient polynomials
+remain at the leaves. For the leftmost leaf, µis equal to the leaf coefficient. For subsequent
+leaves, µ is computed by combining the sampled value from the previous leaf with the
+ℓ value from the parent node, derived from the LDL∗decomposition. As the algorithm
+proceeds rightward in the tree, ℓ values from higher levels are combined with accumulated
+sampled and target values, making an exact analytical range for µ difficult to obtain.
+The range of the coefficients of t is known: coefficients of c(from the message hash) lie
+in Zq, and after scaling by 1
+q, they lie in (−1,0] or [0,1). These are then multiplied by F
+and f, respectively, resulting in
+n
+i=1
+n
+ci·Fj and
+j=1
+n
+i=1
+n
+ci·fj.
+j=1
+However, since Fj and fj are symmetrically distributed around zero, positive and negative
+terms largely cancel and the overall magnitude remains similar to a single coefficient
+multiplication.
+The coefficients of f and g are sampled from a discrete Gaussian DZ,σf,g ,0 with
+σf,g = 1.17· q/2n, and F and G are computed from the NTRU equation, making them
+approximately O(√n) larger than f and g [PP19]. For Falcon-1024, σf,g ≈2.866 (mean
+zero), and large outliers are extremely rare due to the Gaussian tail.
+1
+1

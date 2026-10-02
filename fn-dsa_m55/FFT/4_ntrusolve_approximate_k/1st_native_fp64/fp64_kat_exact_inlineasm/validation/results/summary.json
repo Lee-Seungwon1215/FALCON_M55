@@ -1,0 +1,1296 @@
+{
+  "performance": [
+    {
+      "degree": 512,
+      "ref": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 5700700221,
+        "median": 48150560,
+        "min": 41158869,
+        "max": 124195710,
+        "mean_cycles": 57007002.21
+      },
+      "c": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 20973307699,
+        "median": 195532363,
+        "min": 188540673,
+        "max": 418959322,
+        "mean_cycles": 209733076.99
+      },
+      "asm": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 21106460687,
+        "median": 196836545,
+        "min": 189844855,
+        "max": 421567686,
+        "mean_cycles": 211064606.87
+      },
+      "asm_vs_c_cycle_change_percent": 0.6348688052020934,
+      "asm_vs_fixed_time_ratio": 3.702433011518288
+    },
+    {
+      "degree": 1024,
+      "ref": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 24337529554,
+        "median": 195772943,
+        "min": 139492971,
+        "max": 743361711,
+        "mean_cycles": 243375295.54
+      },
+      "c": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 65556851349,
+        "median": 589167784,
+        "min": 532887812,
+        "max": 1368389419,
+        "mean_cycles": 655568513.49
+      },
+      "asm": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 65949589814,
+        "median": 593044184,
+        "min": 536764212,
+        "max": 1375997019,
+        "mean_cycles": 659495898.14
+      },
+      "asm_vs_c_cycle_change_percent": 0.5990807320949587,
+      "asm_vs_fixed_time_ratio": 2.7097898193681225
+    }
+  ],
+  "profile": [
+    {
+      "degree": 512,
+      "kind": 0,
+      "name": "prepare",
+      "ref": {
+        "calls": 879,
+        "mean_cycles_per_key": 1083140.37
+      },
+      "c": {
+        "calls": 879,
+        "mean_cycles_per_key": 5752697.3
+      },
+      "asm": {
+        "calls": 879,
+        "mean_cycles_per_key": 5809043.02
+      },
+      "asm_vs_c_cycle_change_percent": 0.9794661019275175
+    },
+    {
+      "degree": 512,
+      "kind": 1,
+      "name": "repeat",
+      "ref": {
+        "calls": 92174,
+        "mean_cycles_per_key": 4740769.99
+      },
+      "c": {
+        "calls": 92174,
+        "mean_cycles_per_key": 152690150.92
+      },
+      "asm": {
+        "calls": 92174,
+        "mean_cycles_per_key": 153965797.58
+      },
+      "asm_vs_c_cycle_change_percent": 0.8354479004139437
+    },
+    {
+      "degree": 1024,
+      "kind": 0,
+      "name": "prepare",
+      "ref": {
+        "calls": 1107,
+        "mean_cycles_per_key": 2201931.68
+      },
+      "c": {
+        "calls": 1107,
+        "mean_cycles_per_key": 12974838.82
+      },
+      "asm": {
+        "calls": 1107,
+        "mean_cycles_per_key": 13116991.9
+      },
+      "asm_vs_c_cycle_change_percent": 1.0956057487271353
+    },
+    {
+      "degree": 1024,
+      "kind": 1,
+      "name": "repeat",
+      "ref": {
+        "calls": 251354,
+        "mean_cycles_per_key": 13442744.34
+      },
+      "c": {
+        "calls": 251354,
+        "mean_cycles_per_key": 414553586.82
+      },
+      "asm": {
+        "calls": 251354,
+        "mean_cycles_per_key": 418340235.27
+      },
+      "asm_vs_c_cycle_change_percent": 0.9134279790091737
+    }
+  ],
+  "kernels": [
+    {
+      "case": 0,
+      "logn": 1,
+      "fixed_prepare": 358400,
+      "c_prepare": 468400,
+      "asm_prepare": 467600,
+      "fixed_reduce": 17300,
+      "c_reduce": 545400,
+      "asm_reduce": 539600,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": -1.063439677301059
+    },
+    {
+      "case": 1,
+      "logn": 1,
+      "fixed_prepare": 358400,
+      "c_prepare": 468400,
+      "asm_prepare": 467600,
+      "fixed_reduce": 17300,
+      "c_reduce": 545400,
+      "asm_reduce": 539600,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": -1.063439677301059
+    },
+    {
+      "case": 2,
+      "logn": 2,
+      "fixed_prepare": 738000,
+      "c_prepare": 1520900,
+      "asm_prepare": 1517400,
+      "fixed_reduce": 73000,
+      "c_reduce": 2377900,
+      "asm_reduce": 2371900,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": -0.25232347869968974
+    },
+    {
+      "case": 3,
+      "logn": 2,
+      "fixed_prepare": 738000,
+      "c_prepare": 1520900,
+      "asm_prepare": 1517400,
+      "fixed_reduce": 73000,
+      "c_reduce": 2377900,
+      "asm_reduce": 2371900,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": -0.25232347869968974
+    },
+    {
+      "case": 4,
+      "logn": 3,
+      "fixed_prepare": 1507100,
+      "c_prepare": 4184400,
+      "asm_prepare": 4187100,
+      "fixed_reduce": 198500,
+      "c_reduce": 7248900,
+      "asm_reduce": 7257500,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 0.11863869000814375
+    },
+    {
+      "case": 5,
+      "logn": 3,
+      "fixed_prepare": 1507100,
+      "c_prepare": 4184400,
+      "asm_prepare": 4187100,
+      "fixed_reduce": 198500,
+      "c_reduce": 7248900,
+      "asm_reduce": 7257500,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 0.11863869000814375
+    },
+    {
+      "case": 6,
+      "logn": 4,
+      "fixed_prepare": 3070700,
+      "c_prepare": 10632900,
+      "asm_prepare": 10671200,
+      "fixed_reduce": 494900,
+      "c_reduce": 19437500,
+      "asm_reduce": 19524300,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 0.4465594855305399
+    },
+    {
+      "case": 7,
+      "logn": 4,
+      "fixed_prepare": 3070700,
+      "c_prepare": 10632900,
+      "asm_prepare": 10671200,
+      "fixed_reduce": 494900,
+      "c_reduce": 19437500,
+      "asm_reduce": 19524300,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 0.4465594855305399
+    },
+    {
+      "case": 8,
+      "logn": 5,
+      "fixed_prepare": 6251500,
+      "c_prepare": 25776200,
+      "asm_prepare": 25931700,
+      "fixed_reduce": 1184800,
+      "c_reduce": 48713700,
+      "asm_reduce": 49053500,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 0.6975450437967101
+    },
+    {
+      "case": 9,
+      "logn": 5,
+      "fixed_prepare": 6251500,
+      "c_prepare": 25776200,
+      "asm_prepare": 25931700,
+      "fixed_reduce": 1184800,
+      "c_reduce": 48713700,
+      "asm_reduce": 49053500,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 0.6975450437967101
+    },
+    {
+      "case": 10,
+      "logn": 6,
+      "fixed_prepare": 12723100,
+      "c_prepare": 60558700,
+      "asm_prepare": 61040200,
+      "fixed_reduce": 2765100,
+      "c_reduce": 117069900,
+      "asm_reduce": 118107500,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 0.8863080945657353
+    },
+    {
+      "case": 11,
+      "logn": 6,
+      "fixed_prepare": 12723100,
+      "c_prepare": 60558700,
+      "asm_prepare": 61040200,
+      "fixed_reduce": 2765100,
+      "c_reduce": 117069900,
+      "asm_reduce": 118107500,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 0.8863080945657353
+    },
+    {
+      "case": 12,
+      "logn": 7,
+      "fixed_prepare": 25889100,
+      "c_prepare": 139118800,
+      "asm_prepare": 140435100,
+      "fixed_reduce": 6333000,
+      "c_reduce": 273395700,
+      "asm_reduce": 276211100,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 1.0297894224378767
+    },
+    {
+      "case": 13,
+      "logn": 7,
+      "fixed_prepare": 25889100,
+      "c_prepare": 139118800,
+      "asm_prepare": 140435100,
+      "fixed_reduce": 6333000,
+      "c_reduce": 273395700,
+      "asm_reduce": 276211100,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 1.0297894224378767
+    },
+    {
+      "case": 14,
+      "logn": 8,
+      "fixed_prepare": 52669500,
+      "c_prepare": 314232500,
+      "asm_prepare": 317610600,
+      "fixed_reduce": 14289700,
+      "c_reduce": 625279900,
+      "asm_reduce": 632416900,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 1.1414088314689153
+    },
+    {
+      "case": 15,
+      "logn": 8,
+      "fixed_prepare": 52669500,
+      "c_prepare": 314232500,
+      "asm_prepare": 317610600,
+      "fixed_reduce": 14289700,
+      "c_reduce": 625279900,
+      "asm_reduce": 632416900,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 1.1414088314689153
+    },
+    {
+      "case": 16,
+      "logn": 9,
+      "fixed_prepare": 107129900,
+      "c_prepare": 700450200,
+      "asm_prepare": 709293500,
+      "fixed_reduce": 31851200,
+      "c_reduce": 1407519300,
+      "asm_reduce": 1424895900,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 1.2345550075228084
+    },
+    {
+      "case": 17,
+      "logn": 9,
+      "fixed_prepare": 107129900,
+      "c_prepare": 700450200,
+      "asm_prepare": 709293500,
+      "fixed_reduce": 31851200,
+      "c_reduce": 1407519300,
+      "asm_reduce": 1424895900,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": 1.2345550075228084
+    },
+    {
+      "case": 18,
+      "logn": 2,
+      "fixed_prepare": 738000,
+      "c_prepare": 1520900,
+      "asm_prepare": 1517400,
+      "fixed_reduce": 73000,
+      "c_reduce": 2377900,
+      "asm_reduce": 2371900,
+      "bitexact": "PASS",
+      "asm_vs_c_repeat_cycle_change_percent": -0.25232347869968974
+    }
+  ],
+  "differential": {
+    "random_pairs": 1000000,
+    "edge_pairs": 36864,
+    "checksum": "c665dcb55f68554d",
+    "result": 0
+  },
+  "oracle": {
+    "c_source": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact/kgen_fxp.c",
+    "c_sha256": "f4547b69ac8d3cff31d3e6160ed1fa87339575017644b29fe38fe2b4ac3b2b29",
+    "random_pairs": 1000000,
+    "product_checksum": "c665dcb55f68554d"
+  },
+  "kat_count": 300,
+  "key_and_signature_digests_equal": 200,
+  "changed_crypto_files": [
+    "kgen_fxp.c"
+  ],
+  "previous_candidates_preserved": [
+    "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/ref",
+    "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64",
+    "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_final_scaling",
+    "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/hybrid_fixed_div",
+    "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_q32_compat"
+  ],
+  "c_baseline_preserved": true,
+  "mul": [
+    {
+      "backend": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        6404
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        353540
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        348676
+      ],
+      "maximum_within_class_span": 1
+    }
+  ],
+  "CT_ops": [
+    {
+      "op": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        355076
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "op": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        52996
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "op": 2,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        81668
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "op": 3,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        162820
+      ],
+      "maximum_within_class_span": 1
+    }
+  ],
+  "CT_FFT": [
+    {
+      "backend": 0,
+      "logn": 1,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        12
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 1,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        34
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 2,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        233
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 2,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        266
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 3,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        720
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 3,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        827
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 4,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        1903
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 4,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        2194
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 5,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        4720
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 5,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        5448
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 6,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        11289
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 6,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        13026
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 7,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        26330
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 7,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        30352
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 8,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        60251
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 8,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        69374
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 0,
+      "logn": 9,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        135804
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 0,
+      "logn": 9,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        156188
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 0,
+      "logn": 10,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        302365
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 0,
+      "logn": 10,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        347386
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 1,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        21
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "logn": 1,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        70
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "logn": 2,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        5923
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "logn": 2,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        7138
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "logn": 3,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        23170
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "logn": 3,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        27891
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 4,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        68837
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "logn": 4,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        82686
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "logn": 5,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        182548
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 5,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        218881
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 1,
+      "logn": 6,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        454755
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 6,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        544508
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 7,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        1088770
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 7,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        1302263
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 8,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        2536033
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 8,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        3030802
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 9,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        5789056
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 9,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        6913965
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 10,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        13012127
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 1,
+      "logn": 10,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        15532488
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 1,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        18
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 2,
+      "logn": 1,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        16
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 2,
+      "logn": 2,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        5893
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 2,
+      "logn": 2,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        7119
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 2,
+      "logn": 3,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        23216
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 2,
+      "logn": 3,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        27961
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 2,
+      "logn": 4,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        69276
+      ],
+      "maximum_within_class_span": 0
+    },
+    {
+      "backend": 2,
+      "logn": 4,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        83185
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 5,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        184248
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 5,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        220733
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 6,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        459920
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 6,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        550049
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 7,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        1102744
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 7,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        1317141
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 8,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        2571376
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 8,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        3068265
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 9,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        5874632
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 9,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        7004413
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 10,
+      "inverse": 0,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        13213152
+      ],
+      "maximum_within_class_span": 1
+    },
+    {
+      "backend": 2,
+      "logn": 10,
+      "inverse": 1,
+      "input_classes": 20,
+      "distinct_input_minima": [
+        15744529
+      ],
+      "maximum_within_class_span": 1
+    }
+  ],
+  "observed_input_minima_equal": true,
+  "memory": {
+    "ref-perf": {
+      "reserved": 65536,
+      "untouched_low": 56048,
+      "observed_used": 9488,
+      "FLASH_region_bytes": 101780,
+      "RAM_region_bytes": 220296
+    },
+    "c-perf": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696,
+      "FLASH_region_bytes": 106560,
+      "RAM_region_bytes": 220296
+    },
+    "asm-perf": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696,
+      "FLASH_region_bytes": 106508,
+      "RAM_region_bytes": 220328
+    },
+    "ref-profile": {
+      "reserved": 65536,
+      "untouched_low": 56048,
+      "observed_used": 9488
+    },
+    "c-profile": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696
+    },
+    "asm-profile": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696
+    },
+    "kat": {
+      "reserved": 65536,
+      "untouched_low": 47360,
+      "observed_used": 18176
+    }
+  },
+  "machine": [
+    {
+      "label": "c-perf",
+      "elf_sha256": "6123b0dcaddbc97f9d7af8d7a912d9f2217f33f4464dd6fc145e6a30ce99eb79",
+      "functions": [
+        {
+          "name": "fndsa_fp64e_mul",
+          "instructions": 99,
+          "conversions": 26,
+          "FP64_ops": 76,
+          "calls": [],
+          "save_restore": [
+            [
+              "vpush",
+              "{d8-d15}"
+            ],
+            [
+              "vpop",
+              "{d8-d15}"
+            ]
+          ]
+        },
+        {
+          "name": "fndsa_vect_FFT_fp64_exact",
+          "instructions": 279,
+          "conversions": 40,
+          "FP64_ops": 124,
+          "calls": [
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          "save_restore": [
+            [
+              "vpush",
+              "{d8-d15}"
+            ],
+            [
+              "vpop",
+              "{d8-d15}"
+            ]
+          ]
+        },
+        {
+          "name": "fndsa_vect_iFFT_fp64_exact",
+          "instructions": 377,
+          "conversions": 84,
+          "FP64_ops": 221,
+          "calls": [
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>"
+          ],
+          "save_restore": [
+            [
+              "vpush",
+              "{d8-d15}"
+            ],
+            [
+              "vpop",
+              "{d8-d15}"
+            ]
+          ]
+        }
+      ],
+      "gcc_stack_usage_records": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/build/c-perf/generated/kgen_ntru.c:500:1:solve_NTRU_intermediate\t16592\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact/kgen_fxp.c:1248:1:fndsa_fp64e_mul\t144\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact/kgen_fxp.c:1418:1:fndsa_vect_FFT_fp64_exact\t424\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact/kgen_fxp.c:1436:1:fndsa_vect_iFFT_fp64_exact\t336\tstatic"
+      ]
+    },
+    {
+      "label": "asm-perf",
+      "elf_sha256": "6ea9d208ba77f4789a60f2eb40d41748bcd28449d7aaf7f8e7b80540078a8433",
+      "functions": [
+        {
+          "name": "fndsa_fp64e_mul",
+          "instructions": 105,
+          "conversions": 26,
+          "FP64_ops": 84,
+          "calls": [],
+          "save_restore": [
+            [
+              "vpush",
+              "{d8-d14}"
+            ],
+            [
+              "vpop",
+              "{d8-d14}"
+            ]
+          ]
+        },
+        {
+          "name": "fndsa_vect_FFT_fp64_exact",
+          "instructions": 273,
+          "conversions": 40,
+          "FP64_ops": 123,
+          "calls": [
+            "1000a31c <fndsa_fp64e_mul>",
+            "1000a31c <fndsa_fp64e_mul>",
+            "1000a31c <fndsa_fp64e_mul>"
+          ],
+          "save_restore": [
+            [
+              "vpush",
+              "{d8-d15}"
+            ],
+            [
+              "vpop",
+              "{d8-d15}"
+            ]
+          ]
+        },
+        {
+          "name": "fndsa_vect_iFFT_fp64_exact",
+          "instructions": 375,
+          "conversions": 84,
+          "FP64_ops": 214,
+          "calls": [
+            "1000a31c <fndsa_fp64e_mul>",
+            "1000a31c <fndsa_fp64e_mul>",
+            "1000a31c <fndsa_fp64e_mul>"
+          ],
+          "save_restore": [
+            [
+              "vpush",
+              "{d8-d15}"
+            ],
+            [
+              "vpop",
+              "{d8-d15}"
+            ]
+          ]
+        }
+      ],
+      "gcc_stack_usage_records": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/build/asm-perf/generated/kgen_ntru.c:500:1:solve_NTRU_intermediate\t16592\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/kgen_fxp.c:1248:1:fndsa_fp64e_mul\t120\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/kgen_fxp.c:1535:1:fndsa_vect_FFT_fp64_exact\t392\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/kgen_fxp.c:1553:1:fndsa_vect_iFFT_fp64_exact\t320\tstatic"
+      ]
+    }
+  ],
+  "runs": {
+    "ref-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/results/ref-perf/20260922T060908Z",
+      "elf_sha256": "a7de23b1e1968b8bc74e9993e9317af9cdc375248dedc617113595f2900aa756",
+      "raw_sha256": "951b251dea760fb0d1042adb11c46662f94d70f640928697dcd0304e85600bc6"
+    },
+    "c-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/results/c-perf/20260922T061114Z",
+      "elf_sha256": "6123b0dcaddbc97f9d7af8d7a912d9f2217f33f4464dd6fc145e6a30ce99eb79",
+      "raw_sha256": "26daaedc0bc6a51195a0061a376b83b05769bb36d069d282aee1447622d9079a"
+    },
+    "asm-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/results/asm-perf/20260922T061338Z",
+      "elf_sha256": "6ea9d208ba77f4789a60f2eb40d41748bcd28449d7aaf7f8e7b80540078a8433",
+      "raw_sha256": "486efd4cbe26916971e0274df0c519768b4a96a1157b987df91796a1afbd5a5c"
+    },
+    "ref-profile": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/results/ref-profile/20260922T061612Z",
+      "elf_sha256": "03355720cee456a1a066682a9c8efdb4e9b55a00ecd207049f0e5614c60429d4",
+      "raw_sha256": "95214e0131aaded885cccbc5e70ac913823ec0c9ccc16b2ddb6f43ab164e33af"
+    },
+    "c-profile": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/results/c-profile/20260922T061842Z",
+      "elf_sha256": "3f507d83977be250b7dcb81c764264abb336ff68cb21a3fc7f9a916551125798",
+      "raw_sha256": "5072eff07b8b7303199586a32dd2d0e1da770b6e9352564c1c38014141f2c333"
+    },
+    "asm-profile": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/results/asm-profile/20260922T062058Z",
+      "elf_sha256": "bc43398108210d9331ca6c93a957180c0d69aff7edbeaaa0b5e748f07ee8aff5",
+      "raw_sha256": "cd90125225644b2fb2435f081641e0bbc635d98c2091506e2f6efef2892b5d00"
+    },
+    "kernels": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/results/kernels/20260922T060238Z",
+      "elf_sha256": "78d653dcf78aa47bd772885b9c4f12e62eee4b65f3455d2025efaa5fa1597ee1",
+      "raw_sha256": "acc5f2dea8c398c4de6366c032bcd23abbd93b22da5c5095e8d567e2fb643084"
+    },
+    "kat": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/validation/results/kat/20260922T060650Z",
+      "elf_sha256": "b1c7fa037dcfa4721477b5aea82b4561acdeb2d0b2b08ba6252b3d92484f204c",
+      "raw_sha256": "5d667e0e6fd791472ef8ca13779828c1068453c26cf84b4e51269449365d097f"
+    }
+  },
+  "caveats": [
+    "One 100-seed batch per group, not repeated-batch confidence intervals.",
+    "Same placement policy, not identical function addresses.",
+    "Inline assembly not validated by a host sanitizer.",
+    "Observed timing and source/ELF review are not a complete constant-time proof.",
+    "Primitive timing includes same-ABI conversion wrappers, loop, indirect call and sink."
+  ]
+}

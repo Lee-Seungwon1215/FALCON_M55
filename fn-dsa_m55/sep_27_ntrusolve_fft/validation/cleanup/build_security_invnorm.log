@@ -1,0 +1,246 @@
+-- Found Python3: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python3.12 (found version "3.12.14") found components: Interpreter
+Loading Zephyr default modules (Zephyr base).
+-- Application: /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation
+-- CMake version: 3.31.6
+-- Found Python3: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python3.12 (found suitable version "3.12.14", minimum required is "3.12") found components: Interpreter
+-- Cache files will be written to: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/.cache
+-- Zephyr version: 4.4.1 (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1)
+-- Board: nucleo_n657x0_q, qualifiers: stm32n657xx
+-- Found toolchain: gnuarmemb (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi)
+-- Could NOT find Dtc (missing: DTC) (Required is at least version "1.4.6")
+Hint: The project() command has not yet been called.  It sets up system-specific search paths.
+-- Found BOARD.dts: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/boards/st/nucleo_n657x0_q/nucleo_n657x0_q.dts
+-- Found devicetree overlay: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/nucleo_n657x0_q.overlay
+-- Generated zephyr.dts: /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/build/A_tw_bridge/security_invnorm/zephyr/zephyr.dts
+-- Generated pickled edt: /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/build/A_tw_bridge/security_invnorm/zephyr/edt.pickle
+-- Generated devicetree_generated.h: /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/build/A_tw_bridge/security_invnorm/zephyr/include/generated/zephyr/devicetree_generated.h
+Parsing /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/Kconfig
+Loaded configuration '/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/build/A_tw_bridge/security_invnorm/zephyr/.config'
+No change to configuration in '/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/build/A_tw_bridge/security_invnorm/zephyr/.config'
+No change to Kconfig header in '/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/build/A_tw_bridge/security_invnorm/zephyr/include/generated/zephyr/autoconf.h'
+-- Found GnuLd: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/arm-none-eabi/bin/ld.bfd (found version "2.45.1")
+-- The C compiler identification is GNU 15.2.1
+-- The CXX compiler identification is GNU 15.2.1
+-- The ASM compiler identification is GNU
+-- Found assembler: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/CMakeLists.txt:688 (message):
+  
+  ZEPHYR_BASE=/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1
+  doesn't appear to be a git repository, please specify
+  '-DBUILD_VERSION=<version>'
+
+
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/soc/st/stm32/stm32n6x/CMakeLists.txt:31 (message):
+  
+
+        Signing Image tool (STM32_SigningTool_CLI) is not available.
+        Signed image will not be generated.
+        You won't be able to run application on the board.
+        Refer to board documentation for more information.
+      
+
+
+-- Found gen_kobject_list: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/scripts/build/gen_kobject_list.py
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/CMakeLists.txt:1081 (message):
+  No SOURCES given to Zephyr library: drivers__console
+
+  Excluding target from build.
+
+
+-- Configuring done (5.0s)
+-- Generating done (0.3s)
+-- Build files have been written to: /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/build/A_tw_bridge/security_invnorm
+[1/172] Generating misc/generated/syscalls.json, misc/generated/struct_tags.json
+[2/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sysrng.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sysrng.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[3/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sha3.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sha3.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[4/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/codec.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/codec.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[5/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/util.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/util.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[6/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/mq.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/mq.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[7/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_gauss.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_gauss.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[8/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[9/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_mp31.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_mp31.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[10/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fxp.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fxp.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[11/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_zint31.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_zint31.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[12/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_ntru.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_ntru.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[13/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign.c.obj
+[14/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_core.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_core.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[15/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_fpr.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_fpr.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[16/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_poly.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_poly.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[17/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/vrfy.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/vrfy.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[18/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_sampler.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_sampler.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[19/38] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/codec_cm4.s.obj
+[20/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fft_bridge.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_ds.h:7,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fft_bridge.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[21/38] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sha3_cm4.s.obj
+[22/38] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_fpr_cm4.s.obj
+[23/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_fpoly.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_fpoly.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[24/38] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_sampler_cm4.s.obj
+[25/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fft_mve.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_ds.h:7,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fft_mve.c:6:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[26/38] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/mq_cm55.s.obj
+[27/38] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_mp31_cm55.s.obj
+[28/38] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fft_cm55.s.obj
+[29/38] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/dtcm_startup.s.obj
+[30/38] Generating linker_zephyr_pre0.cmd
+[31/38] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/irq_multilevel.h:15,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/devicetree.h:21,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/arch/arm/cortex_m/nvic.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core_m.h:22,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:17:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/__assert.h:35:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   35 | void __printf_like(1, 2) assert_print(const char *fmt, ...);
+      | ^~~~
+[32/38] Building C object CMakeFiles/app.dir/security/invnorm_audit.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/util.h:27,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/atomic.h:18,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/kernel_includes.h:25,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/kernel.h:17,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/security/invnorm_audit.c:6:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/__assert.h:35:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   35 | void __printf_like(1, 2) assert_print(const char *fmt, ...);
+      | ^~~~
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/kernel_includes.h:35:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/printk.h:47:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   47 | __printf_like(1, 2) void printk(const char *fmt, ...);
+      | ^~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/printk.h:48:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   48 | __printf_like(1, 0) void vprintk(const char *fmt, va_list ap);
+      | ^~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/printk.h:73:41: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   73 |                                         const char *fmt, ...);
+      |                                         ^~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/printk.h:75:43: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   75 |                                           const char *fmt, va_list ap);
+      |                                           ^~~~~
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/security/invnorm_audit.c:2:
+/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[33/38] Linking C static library app/libapp.a
+[34/38] Linking C executable zephyr/zephyr_pre0.elf
+[35/38] Generating linker.cmd
+[36/38] Generating isr_tables.c, isr_tables_vt.ld, isr_tables_swi.ld
+[37/38] Building C object zephyr/CMakeFiles/zephyr_final.dir/isr_tables.c.obj
+[38/38] Linking C executable zephyr/zephyr.elf
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       47428 B       256 KB     18.09%
+             RAM:      175208 B       256 KB     66.84%
+        AXISRAM1:           0 B         2 MB      0.00%
+        AXISRAM2:           0 B       511 KB      0.00%
+            ITCM:           0 B       256 KB      0.00%
+            DTCM:           0 B       256 KB      0.00%
+  NUCLEO_AXISRAM:           0 B       192 KB      0.00%
+        IDT_LIST:           0 B        32 KB      0.00%
+Generating files from /Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/build/A_tw_bridge/security_invnorm/zephyr/zephyr.elf for board: nucleo_n657x0_q/stm32n657xx

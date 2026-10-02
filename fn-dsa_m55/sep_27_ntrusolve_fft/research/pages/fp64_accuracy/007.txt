@@ -1,0 +1,60 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 7/18
+
+Formal Verification of Emulated Floating-Point Arithmetic in Falcon 7
+Algorithm 4: Emulated C implementation (with some high-level syntax for the
+irrelevant parts for readability) of floating-point multiplication in Falcon.
+1: uint64_t xu, yu, zu, z;
+2: uint32_t z0, z1, sticky, round;
+3: int ex, ey, e, d, s;
+4: xu = 252 | x & (252
+−1);
+5: yu = 252 | y & (252
+−1);
+6: z0 + z1 * 225 + zu * 250 = xu * yu;
+7: sticky = ((z0 | z1) + 225
+−1 ) » 25; ▷ sticky = 0 if z0= z1 = 0, otherwise
+1.
+8: zu = zu | (uint64_t)sticky;
+9: ex = (int)((x » 52) & (211
+10: ey = (int)((y » 52) & (211
+−1));
+−1));
+11: e = ex + ey - 2100;
+12: (zu,e) = normalize(zu,e,55,sticky);
+13: s = (int)((x ˆ y) » 63);
+14: d = ((ex + 211
+−1) & (ey + 211
+−1)) » 11; ▷ d = 0 if ex = 0 or ey = 0,
+otherwise 1.
+15: zu = zu & (uint64_t)-d; 16: m = zu & ( ((uint32_t)(e + 1076) » 31) - 1); ▷ zu = 0 if d = 0, otherwise unchanged.
+▷ m = 0 if e <−1076,
+otherwise unchanged.
+17: e = e + 1076;
+18: e = e & -((int)(uint32_t)(m » 54) ); ▷e = 0 if m= 0, otherwise unchanged.
+19: z = ( ((uint64_t)s « 63) | (m » 2) ) + ( (uint64_t)(uint32_t) e ) «
+52;
+20: round = (0xc8 » ((uint32_t)m & 7) ) & 1; ▷ round = 1 if m & 7 = 3,6,7,
+otherwise 0.
+21: z = z + (uint64_t)round;
+22: return (fpr)z; ▷ fpr is defined as uint64_t.
+3.2 Extracting Witnesses
+We show how to find inputs triggering the incorrect zeroization. For a floating-
+pointnumberwithexponentfielde andmantissam,wefindthatif1 ≤e ≤1022,
+1 ≤m ≤252
+−2, and 2105
+252 +m
+252 + m ≥2105
+−251, then a floating-point with
+exponent field 1023−e and mantissa 2105
+252 +m
+leads to incorrect zeroization in
+Algorithm 4 where the correct result is a floating-point number with absolute
+value the smallest normal positive floating-point number.
+Recall that the issue of Algorithm 4 is that the product is zeroized due to the
+smallness of the sum of exponent prior to the rounding at the end. We seek for
+conditions triggering both lines (if-conditions are taken) while the floating-point
+product is large enough after the rounding.
+For simplicity, we first assume that the product of mantissas is an unsigned
+105-bit integer (we will explain how this condition is satisfied shortly) so Line 12
+changesnothing.Wethenchooseeasthelargestvalue,−1077,triggeringLine16
+in Algorithm 4:

@@ -1,0 +1,102 @@
+{
+  "candidate": "s2b",
+  "baseline": "ntt_opt",
+  "source_scope": {
+    "changed_files": [
+      "mq_cm55.s"
+    ],
+    "cross_layer_schedule_sites": 12,
+    "forward_sites": 7,
+    "inverse_sites": 5,
+    "new_secret_dependent_branches": 0,
+    "new_memory_accesses": 0,
+    "twiddle_loads_moved": 0,
+    "stack_spills_added": 0
+  },
+  "mq_object": {
+    "baseline_text_bytes": 10500,
+    "candidate_text_bytes": 10500,
+    "total_instruction_count": 2725,
+    "mnemonic_multiset_equal": true,
+    "control_flow_sequence_equal": true,
+    "memory_access_sequence_equal": true,
+    "shared_instruction_counts": {
+      "control_flow": 86,
+      "memory": 377,
+      "vadd": 318,
+      "vsub": 142,
+      "vcmp": 232,
+      "vqrdmulh": 57,
+      "vmul": 117,
+      "vmla": 57,
+      "vector_push_pop": 4
+    }
+  },
+  "performance": {
+    "paired_batches_per_degree_operation": 10,
+    "candidate_faster_samples": 45,
+    "equal_samples": 7,
+    "candidate_slower_samples": 8,
+    "baseline_minus_candidate_cycles": {
+      "512_keygen": {
+        "mean": -0.3,
+        "minimum": -1,
+        "maximum": 0,
+        "faster_equal_slower": [0, 7, 3]
+      },
+      "512_sign": {
+        "mean": 288.1,
+        "minimum": 287,
+        "maximum": 289,
+        "faster_equal_slower": [10, 0, 0]
+      },
+      "512_verify": {
+        "mean": 96.0,
+        "minimum": 96,
+        "maximum": 96,
+        "faster_equal_slower": [10, 0, 0]
+      },
+      "1024_keygen": {
+        "mean": -0.4,
+        "minimum": -5,
+        "maximum": 2,
+        "faster_equal_slower": [5, 0, 5]
+      },
+      "1024_sign": {
+        "mean": 959.8,
+        "minimum": 959,
+        "maximum": 960,
+        "faster_equal_slower": [10, 0, 0]
+      },
+      "1024_verify": {
+        "mean": 320.0,
+        "minimum": 320,
+        "maximum": 320,
+        "faster_equal_slower": [10, 0, 0]
+      }
+    }
+  },
+  "hashes": {
+    "baseline_mq_cm55_sha256": "b4f5834ac4cb72c6d51f62bf4c9746b58350e668ebcb193bf1e51272ae9fbbc3",
+    "candidate_mq_cm55_sha256": "0bd22d65a90bcfc2d1ebe046e7bf4f5c17d79631ce8dfd1ceb2f6293fb3bf815",
+    "candidate_source_tree_sha256": "6c5340fea271477e76706a3c812c165826ed1d1795b308fb1cf5ed28c4462157",
+    "candidate_elf_sha256": "541aade9cc70c26ea05598fd0b44b56268722fcd48cea7424453189c61390413",
+    "candidate_raw_log_sha256": "c97b1ac7464386b7974f710354a0ec9647649fc0ce222a24ab4dfe59584ca9d8"
+  },
+  "validation": {
+    "barrett_pair_mismatches": 0,
+    "forward_ntt_mismatches": 0,
+    "inverse_roundtrip_mismatches": 0,
+    "oracle_roundtrip_mismatches": 0,
+    "max_modular_error": 0,
+    "host_kat_digests_match": true,
+    "sign_verify": "PASS",
+    "tamper_rejection": "PASS",
+    "fault_registers_zero": true,
+    "tcm_ecc_start": "0x1300a",
+    "tcm_ecc_end": "0x1300a",
+    "stack_used_upper_bound_bytes": 9624
+  },
+  "verdict": "Repeatable standalone sign/verify speedup with keygen unchanged; retain S2-B for combination tests, while S1-B remains the faster standalone candidate.",
+  "limitations": "Static constant-time structure audit only; power/EM TVLA was not performed."
+}

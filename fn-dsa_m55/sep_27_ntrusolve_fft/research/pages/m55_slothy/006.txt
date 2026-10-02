@@ -1,0 +1,44 @@
+DOCUMENT: m55_slothy.pdf PAGE: 6/46
+
+6 Fast and Clean: Auditable high-performance assembly via constraint solving
+1 // in: src, modulus,
+2 // const, const_twisted
+3 mul dst, src, const
+4 sqrdmulh tmp, src, const_twisted
+5 mls dst, tmp, modulus
+6 // out: dst
+Figure 1: Left: Barrett multiplication [BHK+21] in Neon (lane widths elided). Right: The
+underlying computational flow graph.
+far iterations to overlap. We have so far found our restriction insignificant in the medium
+to large loops that we mainly consider in this paper, while for small loops, modest loop
+unrolling (e.g. 2×–4×) increases the effective overlapping distance between iterations.
+Second, our modeling approach includes concrete register allocation, that is, solutions
+to the constraint model include assignments of registers to instruction arguments. Prior
+ILP-formulations, in turn, seem to focus on bounds on the total number of registers used.
+Since our target architectures include numerous instruction-specific register constraints
+(such as requirements for high/low/distinct/consecutive registers), integrating concrete
+register allocation into our model is essential for it to apply to those architectures.
+Third, the presentation-style of our constraint model has a very different “flavour”
+compared to prior ILP-formulations, as it stays at the level of boolean, integer and interval
+variables to reduce the optimization problem at hand to a form of flexible job shop problem.
+Declarative vs. Algorithmic optimization. When comparing our work to scheduling
+and software pipelining algorithms used by compilers, we emphasize that our approach is
+declarative, not algorithmic: By way of the constraint model developed in this work, it is
+described what an ideal, optimized code would look like, but not how it can be computed:
+It is left to the underlying solver to synthesize a solution or find that there is none. As such,
+our approach is fundamentally different from, and not relying on, the various algorithmic
+(often heuristic) approaches for scheduling and software pipelining employed by compilers,
+such as iterative modulo scheduling or swing modulo scheduling [Rau94, LGAV96].
+3 Background
+3.1 Compilation terms & techniques
+Computational flow graphs. A computational flow graph (CFG) represents a compu-
+tation as a labelled directed graph, with nodes corresponding to computation steps and
+labelled edges indicating how outputs of one step are used as inputs of others. In this
+paper, we exclusively work with CFGs representing computations in assembly, with nodes
+corresponding to the instructions of the architecture under consideration. Inputs and
+outputs to the entire computation are represented as ’virtual’ instruction nodes without
+inputs and outputs, respectively. Figure 1 provides an example. Note that the ordering of
+instructions and the use of registers are forgotten when lifting assembly into a CFG. The
+reverse process is called lowering and is essential in the code generation phase of compilers.
+Phase ordering problem. Lowering a CFG into assembly requires instruction scheduling
+and register allocation: Instruction scheduling assigns a linear order to instructions —

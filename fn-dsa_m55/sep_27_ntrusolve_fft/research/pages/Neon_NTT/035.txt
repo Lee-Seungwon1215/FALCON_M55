@@ -1,0 +1,22 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 35/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 35
+Algorithm 35 qq_butterfly_bot for 16 parallel 32-bit sub-add pairs.
+Inputs:
+a0,...,a3, b0,...,b3, t0,...,t3, mod, z0,l0,h0,...,z3,l3,h3, qS, sS
+Roles of the symbols:
+Operating registers: a0,...,a3,b0,...,b3,t0,...,t3
+Registers with twiddle factors: z0,...,z3
+Indices for twiddle factors: l0,...,l3,h0,...,h3
+Modulus: mod
+Specifiers: (qS,sS) = (.4S,.S)
+Outputs:
+(a0,b0) = (a0+ t0,a0−t0),...,(a3,b3) = (a3+ t3,a3−t3)
+1: sub b0qS, a0qS, t0qS
+2: sub b1qS, a1qS, t1qS
+3: sub b2qS, a2qS, t2qS
+4: sub b3qS, a3qS, t3qS
+5: add a0qS, a0qS, t0qS
+6: add a1qS, a1qS, t1qS
+7: add a2qS, a2qS, t2qS
+8: add a3qS, a3qS, t3qS

@@ -1,0 +1,138 @@
+{
+  "kind": "audit",
+  "changed_crypto_sources": [
+    "kgen_mp31_cm55.s"
+  ],
+  "h0_original_arithmetic_preserved": true,
+  "control_only_unreachable_padding": true,
+  "h1_source_sha256": "c574a589db5d1eca36e711cec10cbe81c8761a09d4779eebce415e87d6d11872",
+  "elf_sha256": {
+    "h0_layout": "9001e3674192462b9e7fbf6e9934f19a1c4c036140172130785ff390883a66c3",
+    "h1": "7d62833b0a0604a372a6da93f5f945d57f0a21d7fd9ae8a4cd78c4053ea52fc6"
+  },
+  "all_allocated_addresses_sizes_identical": true,
+  "all_allocated_bytes_outside_intt_identical": true,
+  "changed_intt_bytes": 1362,
+  "kconfig_identical": true,
+  "symbols": {
+    "fndsa_mp_NTT": {
+      "h0_layout": {
+        "address": "0x10000330",
+        "bytes": 850
+      },
+      "h1": {
+        "address": "0x10000330",
+        "bytes": 850
+      }
+    },
+    "fndsa_mp_iNTT": {
+      "h0_layout": {
+        "address": "0x10000684",
+        "bytes": 974
+      },
+      "h1": {
+        "address": "0x10000684",
+        "bytes": 1400
+      }
+    },
+    "fndsa_mp_NTT_small": {
+      "h0_layout": {
+        "address": "0x10000c10",
+        "bytes": 724
+      },
+      "h1": {
+        "address": "0x10000c10",
+        "bytes": 724
+      }
+    },
+    "fndsa_sign_core": {
+      "h0_layout": {
+        "address": "0x1000efe0",
+        "bytes": 1344
+      },
+      "h1": {
+        "address": "0x1000efe0",
+        "bytes": 1344
+      }
+    },
+    "fndsa_mqpoly_int_to_ntt": {
+      "h0_layout": {
+        "address": "0x10001648",
+        "bytes": 4366
+      },
+      "h1": {
+        "address": "0x10001648",
+        "bytes": 4366
+      }
+    },
+    "fndsa_mqpoly_ntt_to_int": {
+      "h0_layout": {
+        "address": "0x10002764",
+        "bytes": 5236
+      },
+      "h1": {
+        "address": "0x10002764",
+        "bytes": 5236
+      }
+    }
+  },
+  "itcm_bytes": 115064,
+  "dtcm_bytes": 234304,
+  "extra_coefficient_stack_spills": false,
+  "stack_frame_bytes_including_abi_save": 112,
+  "branches_for_manual_review": [
+    [
+      "10000686",
+      "bcc.w",
+      "100093c0 <fndsa_mp_iNTT_c>"
+    ],
+    [
+      "100007fc",
+      "bne.w",
+      "100006b6 <fndsa_mp_iNTT+0x32>"
+    ],
+    [
+      "10000810",
+      "beq.w",
+      "10000996 <fndsa_mp_iNTT+0x312>"
+    ],
+    [
+      "10000814",
+      "bgt.w",
+      "10000b3c <fndsa_mp_iNTT+0x4b8>"
+    ],
+    [
+      "1000097a",
+      "bne.w",
+      "10000838 <fndsa_mp_iNTT+0x1b4>"
+    ],
+    [
+      "10000986",
+      "bne.w",
+      "1000082a <fndsa_mp_iNTT+0x1a6>"
+    ],
+    [
+      "10000994",
+      "b.n",
+      "10000806 <fndsa_mp_iNTT+0x182>"
+    ],
+    [
+      "10000b36",
+      "bne.w",
+      "100009e0 <fndsa_mp_iNTT+0x35c>"
+    ],
+    [
+      "10000b3a",
+      "b.n",
+      "10000bf2 <fndsa_mp_iNTT+0x56e>"
+    ],
+    [
+      "10000bf0",
+      "bne.n",
+      "10000b86 <fndsa_mp_iNTT+0x502>"
+    ]
+  ],
+  "constant_time_scope": "new iNTT control/address structure only; VPT predication retained",
+  "formal_constant_time_proof": false,
+  "dynamic_leakage_test": false
+}

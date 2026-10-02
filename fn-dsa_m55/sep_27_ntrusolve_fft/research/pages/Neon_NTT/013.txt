@@ -1,0 +1,72 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 13/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 13
+3.2 Implementation
+In this section, we look at Barrett and Montgomery multiplication from an implementation
+perspective, focusing on the Armv8-A version of the Neon SIMD instructions.
+3.2.1 Barrett multiplication in 3-instructions
+AnalogouslytoAlgorithm3, Barrettmultiplicationcanbedescribedintermsofsingle-width
+operations. The details are spelled out in Algorithm 9. We see that Barrett multiplication
+can be expressed in terms of 3 single-width operations: 1×unsigned multiply-low, 1×
+unsigned multiply-low-accumulate, 1×multiply-high-with-rounding.
+Algorithm 9 Barrett multiplication
+Algorithm 10 Barrett multiplication in Neon
+Require: N odd, R= 2n s.t. N < R
+3.
+Require: b∈Z,
+bR
+N ∈Z approx. bR
+N.
+Require: a∈Z, |a|≤R, to be multiplied
+Ensure: z≡ab(mod N), |z|< 3
+2 N < R
+2.
+1: z←a·b
+2: t← a bR
+N /R
+3: z←z+−N·t
+4: bar N (a,b) = z←z mod±R
+Require: N odd, R= 2n s.t. N < R
+3.
+⌊bR
+N ⌉2
+Require: b∈Z,
+2 precomputed
+Require: a∈Z, |a|≤R, to be multiplied
+Ensure: z≡ab(mod N), |z|< 3
+2 N < R
+2.
+1: mul z, a, b
+2: sqrdmulh t, a,
+⌊bR
+N ⌉2
+2
+3: mls z, t, N
+In Neon, unsigned multiply-low and multiply-low-accumulate are implemented via MUL
+and MLA, respectively. The multiply-high-with-rounding operations (a,b) → ab
+2n does
+not have an exact match in Neon, but as explained in Section 2.5, there is SQRDMULH
+which computes (a,b) → 2ab
+2n instead. We work around this diﬀerence by choosing the
+even integer approximation ⌊⌉2 as the basis for Barrett multiplication: In this case, we
+have a⌊bR/N⌉2
+R =
+2a(⌊bR/N⌉2 /2)
+R , which can be implemented through SQRDMULH since
+bR
+N 2 /2 can be computed upfront. We show the resulting Neon sequence in Algorithm 10.
+Note, however, that Barrett multiplication requires one factor to be known upfront. It
+does not apply for “point multiplication” of two unknown values.
+Remark 4. This strategy works for 16- and 32-bit moduli, and any SIMD ISA which oﬀers
+a double-multiply-high-with-rounding instruction. This includes the M-Profile Vector
+Extension (MVE), the Scalable Vector Extension 2 (SVE2) and, (16-bit lanes only), AVX2.
+3.2.2 Barrett reduction
+We comment on the implementation of Barrett reduction (Algorithm 3) in the Neon
+instruction set. For Barrett reduction of a single-width value, we choose R as large as
+possible in Algorithm 3 so that R
+N is still a single-width signed value, increasing precision
+of the approximation. To computez⌊R
+N ⌉
+R , however, we can no longer use SQRDMULH as in
+Algorithm 10 but have to split it into SQDMULH and a rounding right shift SRSHR. We show
+our implementation of Barrett reduction in the Neon instruction set in Algorithm 11.

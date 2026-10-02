@@ -1,0 +1,23 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 29/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 29
+D Permutation in Dilithium and Kyber
+Algorithm 29 Permutation of bottom 4 layers in Dilithium NTT.
+Inputs:
+a0= a3||a2||a1||a0
+a1= a7||a6||a5||a4
+a2= a11||a10||a9||a8
+a3= a15||a14||a13||a12
+Outputs:
+a0= a12||a8||a4||a0
+a1= a13||a9||a5||a1
+a2= a14||a10||a6||a2
+a3= a15||a11||a7||a3
+1: trn1 t0.4S, a0.4S, a1.4S
+2: trn2 t1.4S, a0.4S, a1.4S
+3: trn1 t2.4S, a2.4S, a3.4S
+4: trn2 t3.4S, a2.4S, a3.4S
+5: trn1 a0.2D, t0.2D, t2.2D
+6: trn2 a2.2D, t0.2D, t2.2D
+7: trn1 a1.2D, t1.2D, t3.2D
+8: trn2 a3.2D, t1.2D, t3.2D

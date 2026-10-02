@@ -1,0 +1,26 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 30/38
+
+30 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 30 Permutation of bottom 3 layers of Kyber NTT.
+Inputs:
+∗src0 = (a0a1,a2a3,...,a30a31)
+∗src1 = (a64a65,a66a67,...,a94a95)
+Outputs:
+v24 = (a0a1,a64a65,a16a17,a80a81)
+v25 = (a2a3,a66a67,a18a19,a82a83)
+v26 = (a4a5,a68a69,a20a21,a84a85)
+v27 = (a6a7,a70a71,a22a23,a86a87)
+v28 = (a8a9,a72a73,a24a25,a88a89)
+v29 = (a10a11,a74a75,a26a27,a90a91)
+v30 = (a12a13,a76a77,a28a29,a92a93)
+v31 = (a14a15,a78a79,a30a31,a94a95)
+1: ld4 {v16.4S, v17.4S, v18.4S, v19.4S}, [src0]
+2: ld4 {v20.4S, v21.4S, v22.4S, v23.4S}, [src1]
+3: trn1 v24.4S, v16.4S, v20.4S
+4: trn2 v28.4S, v16.4S, v20.4S
+5: trn1 v25.4S, v17.4S, v21.4S
+6: trn2 v29.4S, v17.4S, v21.4S
+7: trn1 v26.4S, v18.4S, v22.4S
+8: trn2 v30.4S, v18.4S, v22.4S
+9: trn1 v27.4S, v19.4S, v23.4S
+10: trn2 v31.4S, v19.4S, v23.4S

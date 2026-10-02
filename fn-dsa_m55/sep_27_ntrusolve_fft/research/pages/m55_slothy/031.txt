@@ -1,0 +1,47 @@
+DOCUMENT: m55_slothy.pdf PAGE: 31/46
+
+Abdulrahman, Becker, Kannwischer, Klein 31
+point addition and multiplication operations do not overlap as they run on the same
+execution pipe. On Cortex-M85, they can overlap, but floating point multiply-accumulate
+operations have a latency of 4 cycles. This reinforces the importance of precise scheduling,
+and also suggests that the implementations on Cortex-M55 and Cortex-M85 may be
+meaningfully different.
+Base implementation. Listing 7 shows our clean base implementations for the floating-
+point and the fixed-point FFT, using symbolic registers and assembler macros. We use
+more temporaries than available architectural registers, and leave it to slothy to reorder
+and rename instructions and registers to fit in the architectural register file.
+Optimized implementations. To get a sense of the slothy-optimizations, Listing 8
+shows the optimized fixed-point FFT for the Cortex-M55 CPU: In each iteration, seven
+instructions are pulled deep into the previous iteration, enabling a stall-free loop body —
+identifying such optimizations by hand would be very time-consuming. This version is
+also stall-free on Cortex-M85 — in fact, running slothy for Cortex-M85 finds a stall-free
+version with only one early instruction, owing to the simpler scheduling of load/stores.
+Benchmarking environment. We benchmark all code using the MPS3 FPGA prototyping
+board and the freely available AN552 and AN555 application nodes for Cortex-M55 and
+Cortex-M85, respectively. Intrinsics have been compiled with Arm Compiler 6.19.
+Results. Table 2 shows the performance of our slothy-optimized FFTs in comparison
+with the reference implementations. We improve upon the state of the art in all cases,
+achieving gains of 3%−10% compared to the prior microarchitecture-specific handwritten
+assembly from [Arme], and of 13%−20% compared to the intrinsics versions from [Armh].
+Given that the FFT is an exceptionally important and very well-studied workload for DSP,
+we consider these improvements proof of the capabilities of slothy. Our code is readable
+and the approach adaptable to other microarchitectures, similar to intrinsics-based code.
+Impact. Our optimized FFTs have been communicated to Arm and merged into [Arme].
+8.2 Example: NTT on Armv8.1-M+Helium
+Wenowpresentourfirstcryptographicexamplefortheuseof SLOTHY:TheSLOTHY-based
+optimizations for the Number Theoretic Transform (NTT) underlying Kyber and Dilithium,
+targeting the Cortex-M55 and Cortex-M85 CPUs implementing Armv8.1-M+Helium.
+8.2.1 Previous implementations
+[BHK+21] explores how to map modular arithmetic in the NTT to the Arm architecture,
+including Armv8.1-M+Helium. [BBMK+21, BHK+22] leverage those primitives for com-
+plete implementations of 32-bit NTTs in Helium. These implementations keep the data in
+vector registers but load constants in general purpose registers, allowing them to maintain
+a good balance between the register files, and to merge two radix-2 layers at a time.
+Coming up with the implementations from [BBMK+21, BHK+22] seems challenging
+due to the complex interleaving necessary to achieve good overlapping. Loc.cit. achieves
+this through loop unrolling and scripted register tracking. While the result is of very high
+performance, it is difficult both to read and adapt, and has a large code-size.
+In the following, we demonstrate how SLOTHY, instantiated for the Cortex-M55 and
+Cortex-M85 CPUs, derives high performance Helium assembly implementations for the
+NTT from readable base implementations. Beyond being considerably less effort and easier
+to reproduce, the resulting code is also much smaller than that in the previous works.

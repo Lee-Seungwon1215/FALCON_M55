@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "scope": "K2 to K4-C combined forward and inverse coefficient scheduling",
+  "baseline": {
+    "run": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/ref_preslothy/profiling/results/d1-k2_root_pipeline_audit-audit/runs/pilot-20260916T082122Z",
+    "elf_sha256": "d53cd515657c17a593a8532d2d2b36ca774492b4acf2f2524c4995857d5ec1da"
+  },
+  "candidate": {
+    "run": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/7th_coefficient_pipeline/K4C_combined/profiling/results/d1-k4c_combined_audit_v1-audit/runs/pilot-20260916T124600Z",
+    "elf_sha256": "c7d10d096902e9791dee5f3085e20f5b4b588785f3625bc7ce49acb5c72290a9"
+  },
+  "isolated_forward": {
+    "run": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/7th_coefficient_pipeline/K4A_forward/profiling/results/d1-k4a_forward_audit_v1-audit/runs/pilot-20260916T115027Z",
+    "elf_sha256": "c00b5a5e0098ee34118b9a47a0d32f277adf4659e5da2a98df16d83aed0e03d4"
+  },
+  "isolated_inverse": {
+    "run": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_ntrusolve/7th_coefficient_pipeline/K4B_inverse/profiling/results/d1-k4b_inverse_audit_v1-audit/runs/pilot-20260916T121445Z",
+    "elf_sha256": "74e4b5426f6c2a7754eacffa9668b7f605d133a672d44abd24c3896323840117"
+  },
+  "source_files_with_different_hash": [
+    "kgen_mp31_cm55.s"
+  ],
+  "whole_audit_elf_layout": {
+    "named_symbols": 502,
+    "address_or_size_changes": 0
+  },
+  "functions": {
+    "fndsa_mp_NTT": {
+      "address": "0x10000330",
+      "size_bytes": 1166,
+      "instructions": 312,
+      "branches": 11,
+      "memory_instructions": 49,
+      "instruction_rows_identical_to_isolated_candidate": true,
+      "mnemonic_multiset_equal_to_k2": true,
+      "branch_offset_mnemonic_operand_sequence_equal_to_k2": true,
+      "memory_address_multiset_equal_to_k2": true,
+      "forbidden_call_divide_or_fp_instructions": 0
+    },
+    "fndsa_mp_NTT_small": {
+      "address": "0x10000df0",
+      "size_bytes": 1030,
+      "instructions": 268,
+      "branches": 7,
+      "memory_instructions": 36,
+      "instruction_rows_identical_to_isolated_candidate": true,
+      "mnemonic_multiset_equal_to_k2": true,
+      "branch_offset_mnemonic_operand_sequence_equal_to_k2": true,
+      "memory_address_multiset_equal_to_k2": true,
+      "forbidden_call_divide_or_fp_instructions": 0
+    },
+    "fndsa_mp_iNTT": {
+      "address": "0x100007c0",
+      "size_bytes": 1562,
+      "instructions": 418,
+      "branches": 15,
+      "memory_instructions": 64,
+      "instruction_rows_identical_to_isolated_candidate": true,
+      "mnemonic_multiset_equal_to_k2": true,
+      "branch_offset_mnemonic_operand_sequence_equal_to_k2": true,
+      "memory_address_multiset_equal_to_k2": true,
+      "forbidden_call_divide_or_fp_instructions": 0
+    }
+  },
+  "reasoning": [
+    "K4-C is the direct source-level composition of K4-A forward and K4-B inverse scheduling.",
+    "Its forward instruction streams exactly match K4-A; its inverse stream exactly matches K4-B.",
+    "No instruction, branch, call, divide, floating-point operation, memory access, or address form was added or removed relative to K2.",
+    "All loop bounds and branch predicates remain functions of public logn and public counters.",
+    "No coefficient value is introduced into an address calculation."
+  ],
+  "limitation": "This is a disassembly-level structural regression check, not a formal constant-time proof or a dynamic leakage test such as dudect or TVLA."
+}

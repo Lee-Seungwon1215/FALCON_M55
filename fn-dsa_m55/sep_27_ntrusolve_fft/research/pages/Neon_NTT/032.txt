@@ -1,0 +1,33 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 32/38
+
+32 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 32 qq_montgomery for 16 parallel 32-bit Montgomery reductions.
+Inputs:
+c0,...,c3, l0,...,l3, h0,...,h3, t0,...,t3, Qprime, Q, dS, qS, dD
+Roles of the symbols:
+Output registers: c0,...,c3
+64-bit value to be reduced: l0+ h0 « 32,...,l3+ h3 « 32
+Auxiliary registers: t0,...,t3
+Specifiers: (dS,qS,dD) = (.2S,.4S,.2D)
+Outputs:
+c0 = (l0+ h0 « 32)32−1 mod Q,...,c3 = (l3+ h3 « 32)32−1 mod Q
+1: uzp1 t0qS, l0qS, h0qS
+2: uzp1 t1qS, l1qS, h1qS
+3: uzp1 t2qS, l2qS, h2qS
+4: uzp1 t3qS, l3qS, h3qS
+5: mul t0qS, t0qS, QprimeqS
+6: mul t1qS, t1qS, QprimeqS
+7: mul t2qS, t2qS, QprimeqS
+8: mul t3qS, t3qS, QprimeqS
+9: smlal l0dD, t0dS, QdS
+10: smlal2 h0dD, t0qS, QqS
+11: smlal l1dD, t1dS, QdS
+12: smlal2 h1dD, t1qS, QqS
+13: smlal l2dD, t2dS, QdS
+14: smlal2 h2dD, t2qS, QqS
+15: smlal l3dD, t3dS, QdS
+16: smlal2 h3dD, t3qS, QqS
+17: uzp2 c0qS, l0qS, h0qS
+18: uzp2 c1qS, l1qS, h1qS
+19: uzp2 c2qS, l2qS, h2qS
+20: uzp2 c3qS, l3qS, h3qS

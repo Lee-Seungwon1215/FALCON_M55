@@ -1,0 +1,58 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 15/38
+
+Becker, Hwang, Kannwischer, Yang, Yang 15
+Algorithm 13 Montgomery multiplication with rounding.
+1: sqrdmulh z, a, b
+2: mul k, a,−bN−1 mod± R
+3: sqrdmlah z, k, N
+3.2.5 Montgomery multiplication in long arithmetic
+Old Algorithm 14 Neon Montgomery
+multiplication [NG21, Alg. 12][SKS+21].
+Algorithm 14 Our Neon Montgomery
+Inputs: (a,b) = (a,b)
+Outputs: c ≡abR−1 (mod N), |c|<N
+1: smull l, a, b
+2: smull2 h, a, b
+3: uzp1 t0, l, h
+4: uzp2 t1, l, h
+5: mul c, t0, N−1
+mod± R
+6: smull l, c, N
+7: smull2 h, c, N
+8: uzp2 t0, l, h
+9: sub c, t1, t0
+Inputs: (a,b) = (a,b)
+Outputs: c = abR−1 (mod N), |c|<N
+1: smull l, a, b
+2: smull2 h, a, b
+3: uzp1 t, l, h
+4: mul t, t,−N−1
+mod± R
+5: smlal l, t, N
+6: smlal2 h, t, N
+7: uzp2 c, l, h
+Steps 3–7 do a better l,h→cMontgomery
+reduction than [NG21, Alg. 12, Steps 3–9].
+We have so far focused on single-width implementations of Montgomery and Barrett
+multiplication. Thoseimplementations, however, donotlendthemselveswelltoapplications
+which need to compute sums of modular multiplications: In this case, it is natural to reduce
+only once after the accumulation, rather than once after every product. Single-width
+modular multiplication cannot achieve this because it misses the carry-in between low and
+high parts. Instead, we need Montgomery multiplication using long products. We show an
+implementation of Montgomery multiplication in long arithmetic in Algorithm 14.
+After long pairwise products via smull, smull2 from two vectors, we perform a Mont-
+gomery reduction by taking the lower halves (conveniently, with uzp1). This we multiply
+by the inverse of the modulus with mul. We multiply the modulus to the result and accu-
+mulate the long products with smlal, smlal2. Now we collate the Montgomery results in
+the top half happily with uzp2. The result is exactly right as in Algorithm 14. As desired,
+we can accumulate several products before the Montgomery reduction (cf. Section 4.2).
+4 Implementation
+In this section, we fix F= Fq for Dilithium and Kyber, and F= Fq′ for Saber. Section 4
+is organized as follows: In Section 4.1, we describe our choices of butterflies for NTTs.
+Section 4.2 introduces the asymmetric multiplication applicable to the MatrixVectorMul
+in Kyber and Saber. Section 4.3 decribes our findings on how interleaving can be applied
+for radix-2 NTTs on Cortex-A72.
+4.1 Butterflies
+In this section, we adopt a more architectural viewpoint of radix-2 NTTs.
+The need for permutations in the NTTs. For vectorized implementations, an important
+consideration is the overhead of permuting data within vector registers. This is required

@@ -1,0 +1,477 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 50646
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :50646 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10011a94
+hbreak *0x10014d00
+set $early_fault_bp = $bpnum
+jump *0x10014d15
+if $pc != 0x10011a94
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpnkjckdm4/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10011a44
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10014d00
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 50646
+Info : Listening on port 50646 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/50646
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+FP64_BEGIN label=compat-profile runs=100
+HW cpu=800000000 ccr=00000611 itcmcr=00000049 dtcmcr=00000049 control=00000099 fpscr=00040000 mvfr0=10110221
+KEY degree=512 index=0 cycles=97151523 digest=cc67fb1346713086fbf8d75d904bd3f787562d19da4238a864fede09c9318050
+KEY degree=512 index=1 cycles=66868727 digest=75e99f525fe596747cd990aa2e8001b56ef00a48fa3b5e4a812750f616cf6bf6
+KEY degree=512 index=2 cycles=78545809 digest=02701166c76009acfc0f034a3e3bb7576e9f6d1796fc7837fa7ca8121112725f
+KEY degree=512 index=3 cycles=62590078 digest=67ade6cf83f293b4d968061c87ea2b01735c03140291df48a7a784742b791632
+KEY degree=512 index=4 cycles=90126128 digest=546c91b4261fadb45833e7c7a252ef1d8ebb0dd424850bee18f596462cf81405
+KEY degree=512 index=5 cycles=81943927 digest=aba805a1ef89424442fa51b04c491ee9d2c9003d984c6da81237919b0271186e
+KEY degree=512 index=6 cycles=70841750 digest=ccb72e08e6404fec4ad8cc52bcd96d69625a6bca7a589f8f462ff4e5c69eed6f
+KEY degree=512 index=7 cycles=84789531 digest=837e2c2c497e36f3013aa434420864764eadd2766b42aff5e5e633f327b6a85f
+KEY degree=512 index=8 cycles=81640181 digest=3d8d7272533b62a9adcc00443fb25f597bf4b6f4f13b5d6098e8f2def5242d7e
+KEY degree=512 index=9 cycles=68883509 digest=cd2fb9af0c8f3033c94c1b99e46ae18063f8439c956a35274bed7552275304ac
+KEY degree=512 index=10 cycles=62589867 digest=835f15715d01c13c2b7577918026aadbbc14322ddd88153da073f9b636cc181b
+KEY degree=512 index=11 cycles=85344410 digest=77700389d722840304003ce4a9a9569cd5dd563a31a277176279b934fb1a8c38
+KEY degree=512 index=12 cycles=67232688 digest=d1326ed453097aaad2be5e7491260ced4f009fe92c6ee4221afb66c803ec141a
+KEY degree=512 index=13 cycles=62590215 digest=7e1a865039c2237c75ba0bf9447e3c1065bf16dbec00b520a138dee4d8dd52b6
+KEY degree=512 index=14 cycles=67959988 digest=7240576513c126b5a7d39222a2208bda885f96ef0e7c5962136fa5c786c21c73
+KEY degree=512 index=15 cycles=101971161 digest=0751b1925bbe19d28c7b1850371815cb2cfe79170d5e4c6fcb708508f5b39c5d
+KEY degree=512 index=16 cycles=74615735 digest=0ca5bc8a9eda5b1d7d9d6fec427489e9e14bd500e2b7e97387f5c45ce2e262a6
+KEY degree=512 index=17 cycles=107122940 digest=1047268c33027af42ae9c57b4ef0e4172df0af4659c38adfe67606953fd524e3
+KEY degree=512 index=18 cycles=68687984 digest=e7479ea367496393a67aaf645cb39b91bfc157aef12549141aaeae4824a57c6d
+KEY degree=512 index=19 cycles=65442261 digest=3d8cc88e8d6d356a863faed06eefd41b85d7863c9cac9506553ece545e19157c
+KEY degree=512 index=20 cycles=71250254 digest=9ff3e98471b3657dc06404ef5f09cb901cc27baac072fcfd2585629c941f3cf2
+KEY degree=512 index=21 cycles=92518140 digest=06dbf6747c5c4197340747bcab2cdb32d5980178468d220ddd1d0fcb1bda46e9
+KEY degree=512 index=22 cycles=92364878 digest=c9514a9f1642a3ae735babc920dc101c95c45c2401b01cb84297ca9992da9e25
+KEY degree=512 index=23 cycles=66170721 digest=3ab505e2a7fe51960ef7ed22a4c5c6b1b22982bbcb8461b42dab224106c62f05
+KEY degree=512 index=24 cycles=76561366 digest=c5b9341f68da3918a24dc8bfbf401e5b889101f2bcd682b597489bee5993a3b6
+KEY degree=512 index=25 cycles=76894756 digest=d9e5658ededc1f4a3640e8c7c11cc99b179ce52575a192075af59049d3a0c423
+KEY degree=512 index=26 cycles=70448442 digest=a3fab72f3e4557b45ebf36481dd0c54e731211c8ea96e5de5429689253784d63
+KEY degree=512 index=27 cycles=62590099 digest=c7f51ae7849f6580ee0e76ef4e9dbd1d7ed00220f70161d132e4f201fe845dbe
+KEY degree=512 index=28 cycles=62954271 digest=86e6c4066ea2484ca07764b007d20111dcb39437c0abca45035bf87cfac821ac
+KEY degree=512 index=29 cycles=62953923 digest=ae787bf3850c272d3269a707a49950cb0b0fa11a7d88bcb82e8d3c0df33cacca
+KEY degree=512 index=30 cycles=70114007 digest=29d0ae77e9438cbda614067091a3dd526945c6cdbd2c4bdab2d96434db3b1063
+KEY degree=512 index=31 cycles=62590331 digest=1613c03a4896637a6664e42f466063a76ab8200fbef562f6857f375965bbdadf
+KEY degree=512 index=32 cycles=66897325 digest=36c876db5e85a50490eebb1556fac941ec47f6742505ec73bf6a4859b8e29126
+KEY degree=512 index=33 cycles=62589983 digest=f7b4153d85cc39283aefb89d65b87797e1becf07f70e4bf5f9a91c4adc1a62a5
+KEY degree=512 index=34 cycles=62954271 digest=1b1d898352f8ff3c564b7f34f1a0e03514b33033089f054fac33b214cbeba78a
+KEY degree=512 index=35 cycles=98012269 digest=14686d77aab49db3648c221c5c164f17cf8bed6025e77e5445e1d970a0e8333a
+KEY degree=512 index=36 cycles=69581557 digest=9eb64a07ce9a947f22a4d3106332d6d746af8f70cf6933c72250fc1245d28186
+KEY degree=512 index=37 cycles=66170257 digest=459782aa36cc86cf3e574df93d6d0689f31b49332fae5de000239cabeee5fdb3
+KEY degree=512 index=38 cycles=65119592 digest=b9210411c546463dff6c7ef6f312ae26d73ae42e53fa5ea1496d0b4fef9032f7
+KEY degree=512 index=39 cycles=66868516 digest=ec62d3349b83579e266b9c714abe284c05cd772a3f32f81b568421dab10a7bdd
+KEY degree=512 index=40 cycles=63498603 digest=8732c2c7ece3f1687a39d3c6463d4f3e153e24ebfc627195a1e4fa4def4c205d
+KEY degree=512 index=41 cycles=62953923 digest=869b2b0dd85cc61f7ebf8e8446f94fb82217b066f3e49c7940fe64cdb77d869f
+KEY degree=512 index=42 cycles=65107246 digest=bfb02e40a30f4f03b2001ba15559f2a125e291f607f14913062e5f7e507e2a99
+KEY degree=512 index=43 cycles=129889040 digest=2c541a8d091c97ee1c65605de4ac1f2582688d18767b8786ef03ee52d2d16a25
+KEY degree=512 index=44 cycles=65622305 digest=1d1e83e35e29496a23f3698847d2ff77f7103f641e8fecd6fef9b383de91a31c
+KEY degree=512 index=45 cycles=167057705 digest=117e56c351a1e740e28e9b005b47efb5f8d60e53e0dbe46f46c36d41068f4c9b
+KEY degree=512 index=46 cycles=107878262 digest=7c479ffd8782090244e11385a5e27b9682a7a24e760affcbdc428b216c48f27c
+KEY degree=512 index=47 cycles=82779257 digest=c624889857aeb5c7b52f84500db67cc06549313f6e06aab267d9e528093a764a
+KEY degree=512 index=48 cycles=77287390 digest=abc704d9cbee190ae67af1697f20c84de1b049e0e81c691745fe6a8077aa59f1
+KEY degree=512 index=49 cycles=82520477 digest=684704c3af61e0bd1fe40bddf8ccdd9a997fa58c39e0763cd219257a398aa626
+KEY degree=512 index=50 cycles=120815049 digest=e8d9d8dae92d28a379edc9af9d4482cca5118d5f21397e9111a0b2fe62a7a48d
+KEY degree=512 index=51 cycles=64744234 digest=4ea08634df8e74c7518301bf4e1df0b32d74930c663dcc53d95b207c8183b3a5
+KEY degree=512 index=52 cycles=109638010 digest=1bd8accdd89245410881daeb431eabdd0abb4d8976a99720ccdbe8363ef68ec2
+KEY degree=512 index=53 cycles=84949458 digest=a9d051d073c7304573c7d371b4e5fcb134b7716c9b86ca9dcf077ede320cc09c
+KEY degree=512 index=54 cycles=92881500 digest=8a2ddcdb8604a39a3c076247074ce8c747c1ec25843f9b16d6ca59c4997c44b8
+KEY degree=512 index=55 cycles=74406418 digest=79b65e6f83a5c5227c06217c58044531502dca78fc45a36e3a2ac792a51aa18e
+KEY degree=512 index=56 cycles=87875435 digest=3e084684a3ca75648fb34d8af9b72083531bd2f070edc16cb78bac1a486d2ce4
+KEY degree=512 index=57 cycles=89638097 digest=36d94f5531c03572c415ebc883a1166c6ede577571c293d902c3b867fb189bfa
+KEY degree=512 index=58 cycles=135735582 digest=220a173ff4aaab3f85334995d4c7ea27af7b67f2cd2252995924475cfba9b85b
+KEY degree=512 index=59 cycles=66170373 digest=0241ffba6de2740944cafe9e2c2b82584c0bf779b1a8a8be0d3de36295544f2d
+KEY degree=512 index=60 cycles=64744118 digest=961f6d6de7844284d3187f87c952542d18078130faea9527bf3b2887c1b3bc2d
+KEY degree=512 index=61 cycles=90970271 digest=a8221b704734afbd56f4ee1650a4b1cc1d09e6bda9a0dd6356705646de7efd08
+KEY degree=512 index=62 cycles=64380410 digest=83b85f5c7d65b1723e7dcde2718069ad684a10aad952181dc413cdd4396e60fa
+KEY degree=512 index=63 cycles=65441681 digest=9664afcc1441b70abd5133a468df53220a4a08a8cb438ff0977b76bf95b2a7aa
+KEY degree=512 index=64 cycles=63318095 digest=57f6cee369d319fb45bf0bd45ab5bddfba28b924965266f59c9b90e0ea57a779
+KEY degree=512 index=65 cycles=70114240 digest=cd6da3e4694abd30f1d8ffb0af41f8e0f72db845560aceffd5bed90a49101d66
+KEY degree=512 index=66 cycles=66533501 digest=a3f2718048f56985ab59cb10486c2da69919a74589567bde10e033381ace5802
+KEY degree=512 index=67 cycles=70493449 digest=873d052b9d6cf493ba6df46af79472f1171c57313a1f966cff694a7fda212ded
+KEY degree=512 index=68 cycles=107402085 digest=4e6e658ae21d69cd22979e6c775275e6bad9d15183476cdb255123917e7e07dc
+KEY degree=512 index=69 cycles=69386475 digest=24d1082ceeb0d7e55c1ef6154c5fc57a9bc8898a291be3f3704c7621e749cdc4
+KEY degree=512 index=70 cycles=64381223 digest=21828e601870fb1e4f06d5db7145121f32bae2aa50dfd526aa025cea6e893388
+KEY degree=512 index=71 cycles=64743886 digest=560074c05dfbb3c9ffbfc149d2af516c1d9f29ce0b4bbd7821433464f32fcf99
+KEY degree=512 index=72 cycles=65806085 digest=23e4b905c2fec217918bd408a9ea5dc938b4ff6c3668234128fc963777c51a32
+KEY degree=512 index=73 cycles=65442029 digest=4e2c78f0fa94ac05e465cd9c9074c7966552b12c6cb2fc47a8b6f14ccf564f12
+KEY degree=512 index=74 cycles=74674712 digest=7eeaba4bf74011dc4fce19942db6acf2a1a10b84f075e2611e63be0e9bd21a7a
+KEY degree=512 index=75 cycles=83554331 digest=3ef21b85746d1df96f3cf57fe10c9ac51888ad2879dfb81d6b2b4bc0ee0fe9be
+KEY degree=512 index=76 cycles=62589983 digest=5b4178ff299d1c329b032c64a182b9d7af9c2fcdd433c290b7c6dca923432e86
+KEY degree=512 index=77 cycles=91748066 digest=80f97d40479096ff4ab7ec5902677778d047ceeecef37688ce73f55c719bb518
+KEY degree=512 index=78 cycles=133267444 digest=27f4cb2d1e2dbde5bd5750dc9b6eeede0c62f541ba3c4f82e88acb448f13c6fb
+KEY degree=512 index=79 cycles=71402533 digest=86b1ca7866f828ced668e60c7f655af7ff7bbf3954ba104d1cb7cd199882b89b
+KEY degree=512 index=80 cycles=103095555 digest=ad35ff6e22cdcfa3c353db5080e3ae14198aa98dfb3b32e31edd6d4f91922738
+KEY degree=512 index=81 cycles=64016006 digest=a37bcdf3e24037a23e5e66fd4c32d09ee46acc9f2fa70a5e9c2748e911e816c0
+KEY degree=512 index=82 cycles=62589983 digest=67f2a12c1a86f34da39e9d27b23ce7d9420040d7051d67acfa0c16aaff4a81f3
+KEY degree=512 index=83 cycles=75469197 digest=f404f15fde79dc0c70dba9b11516f0e95baf4b32a1f425e70ea11d41b016c0e0
+KEY degree=512 index=84 cycles=68657783 digest=923f7d4789cb3212fda84021ad6cec2347b27086cf84258b2d49eac4a8ce9ac8
+KEY degree=512 index=85 cycles=67989377 digest=66d82f3a384a8f86c1f20747287bc0cd7e27d906eafc89ca9e07091519a5df13
+KEY degree=512 index=86 cycles=115018040 digest=a796436133cb1ea713201ea76b669efd973891fba831c9def77e78f2fff1d9b9
+KEY degree=512 index=87 cycles=132264285 digest=d44687f6eb9eb4eb45f9ea93e96a0420e509043fb4e9d0469c45db9bf56d3359
+KEY degree=512 index=88 cycles=66533617 digest=751e1bdd5d15a935d880cc8b4986bc4df4241955d50ece4157a73023f9b77176
+KEY degree=512 index=89 cycles=66534081 digest=6495bb72b3b5b921c2a6232b50e74e7519c5feb2090993a250beada0df4c98cc
+KEY degree=512 index=90 cycles=87828224 digest=e3a83a37c7c241f311f2e641dc16ee713b2e5e1af3de436a2fd86c679093be8f
+KEY degree=512 index=91 cycles=64015774 digest=8edb48db3971e5cb4b8bfdb2d80adad26ca97f9e7f8a9199fd4511af3884f4ba
+KEY degree=512 index=92 cycles=64045859 digest=557710b8274752786a0ed01af82640e0e7b360f7b789e7f557eb5f2433cea45b
+KEY degree=512 index=93 cycles=68353317 digest=542a75bc3a77d2b15264f8766de1be114ce694780a8990383533d15b380e78ed
+KEY degree=512 index=94 cycles=69022071 digest=65f4ab912b745b0c960ab5c27faed4537a9b2262c17cb728f5fe936da8b743e6
+KEY degree=512 index=95 cycles=62590099 digest=a2799e5c1899b19de94cb1e0c8f0b739a95981c83f2b48142e8c228c66d86911
+KEY degree=512 index=96 cycles=69431134 digest=4d3651d03acfefa9215ac8dbc1e7801469039be22aa459aeca88db61ee6b8dfc
+KEY degree=512 index=97 cycles=128821978 digest=357e713515ac9fbe8df85029556c4792632ed502632e3b25c4a5ad17c8b3d1e3
+KEY degree=512 index=98 cycles=111187796 digest=af8a12438d9301a244d98505fb481890705272d175aba30166eec0e4219ffb93
+KEY degree=512 index=99 cycles=62954271 digest=613a5bbe4a6dd4c3bef508b4184bcf1b74668aad2ce2a08f5fc36462cf83a13d
+TOTAL degree=512 runs=100 cycles=7924804798 median=69581557 min=62589867 max=167057705
+APPROX degree=512 kind=0 logn=1 calls=125 cycles=509750
+APPROX degree=512 kind=0 logn=2 calls=125 cycles=1126500
+APPROX degree=512 kind=0 logn=3 calls=112 cycles=2195200
+APPROX degree=512 kind=0 logn=4 calls=105 cycles=4498620
+APPROX degree=512 kind=0 logn=5 calls=104 cycles=9619168
+APPROX degree=512 kind=0 logn=6 calls=104 cycles=20816224
+APPROX degree=512 kind=0 logn=7 calls=102 cycles=43952616
+APPROX degree=512 kind=0 logn=8 calls=102 cycles=93627432
+APPROX degree=512 kind=1 logn=1 calls=46250 cycles=88019125
+APPROX degree=512 kind=1 logn=2 calls=21776 cycles=110483621
+APPROX degree=512 kind=1 logn=3 calls=10850 cycles=147861742
+APPROX degree=512 kind=1 logn=4 calls=5956 cycles=206107601
+APPROX degree=512 kind=1 logn=5 calls=3328 cycles=278156424
+APPROX degree=512 kind=1 logn=6 calls=1974 cycles=389048650
+APPROX degree=512 kind=1 logn=7 calls=1224 cycles=555673662
+APPROX degree=512 kind=1 logn=8 calls=816 cycles=837545358
+KEY degree=1024 index=0 cycles=220011565 digest=de4700af25318070ac462177369c545b60b7123ee37114cac88014de1be27e1f
+KEY degree=1024 index=1 cycles=196445006 digest=fe7c5af3a5252951f3cfc34fe6799d94809f034cdd35124adba863c6a850c5d3
+KEY degree=1024 index=2 cycles=398673832 digest=0845b498cd117d47a31245576a0603334aa98f352a9d73a12f969c596f851f3a
+KEY degree=1024 index=3 cycles=577052782 digest=efe21c78c84feb28094a7ac1f74033120839f16f64a053fd1b9dc8b22168857f
+KEY degree=1024 index=4 cycles=318934210 digest=5dc0363ae25562b46da1687693c5de384df21ce7afc1943751bf4ae8fdf4a81b
+KEY degree=1024 index=5 cycles=224139505 digest=b4e4fd469214284eeb3ea00a0c12c963b52730fc3bc7935896844e5c7d1d9c95
+KEY degree=1024 index=6 cycles=196445588 digest=a271e3cbe5d2c87ed72374767438ebeff73c8e19b82a4b8ee52f6a3936acda86
+KEY degree=1024 index=7 cycles=353669992 digest=cdd02cc5a1d9bbb0eb2c8746f9f2484109043ee9d43da54a1613c2d35e379a01
+KEY degree=1024 index=8 cycles=343222748 digest=85588145d05457d40ed0dad58290413b443a1056f12a4aabbc21a7449aa29647
+KEY degree=1024 index=9 cycles=203708721 digest=839481ba2130a119beb2fdb226e18d10ab6866916b9d4f65b07230eea4e2edf9
+KEY degree=1024 index=10 cycles=322416904 digest=ee24053ab22965ca7248d1eec6134b677a3aff9a7cf4e5e82c51acd13e1b276b
+KEY degree=1024 index=11 cycles=247015065 digest=0fd3fbf9f90f7946e7b5165815d9eed63022e10d8821f2c7a4ea9a722cbd3a20
+KEY degree=1024 index=12 cycles=493819941 digest=a6c67e6c3dda652621a392fc9347e7d2f41d28e1cc0abee79562dc78986cd004
+KEY degree=1024 index=13 cycles=356503481 digest=52833525c637099e308ac3e6de245b7cebfa4da5a3233852e490734ecd2a0d98
+KEY degree=1024 index=14 cycles=415563187 digest=1cef406fc2f9d09c2c806d30f00255e19cae1ac39a784802398fa9fa5adfe5d2
+KEY degree=1024 index=15 cycles=240124466 digest=9b6b1bdeea828112f5d2260d3b588af5e41e9a543248c0e1fd6e0bf2cd98aa96
+KEY degree=1024 index=16 cycles=234912481 digest=f426f2a370bc29da92c4fe9b0414fb55da65bf416b5f9ffb97ac2f7323108b2e
+KEY degree=1024 index=17 cycles=197831723 digest=27e3f6c05bf3b22bbfbb58538b5b246d1f78bc78e21534e5c14e069356178eba
+KEY degree=1024 index=18 cycles=250130104 digest=1afb2463a49a6e27ce59ffe76d7611f6c239275e4a731a4a73ac4967b0b6843e
+KEY degree=1024 index=19 cycles=244918799 digest=298404d90e73f1e98d5921c251b242f5c4f98a81714cac266ecbe9a31a466531
+KEY degree=1024 index=20 cycles=251909643 digest=2a66fa5db9646e4819b06df4b7940c659b11d56b32cb207f82e09b931ebe16f5
+KEY degree=1024 index=21 cycles=668690834 digest=861b850fd72d4bbbbc6642b6919e401ce0d92880ac65a4e916f8a90503a5e5f9
+KEY degree=1024 index=22 cycles=239373811 digest=bc621d8e2dcfa59170633d940a9045362bc26463500ab30988c32e65fd402968
+KEY degree=1024 index=23 cycles=215838282 digest=effb43a2b3e49fb11563b83afc558fc2927d70f451611723e58dfc44b1d56b7d
+KEY degree=1024 index=24 cycles=197138472 digest=34f69700e72bf6aca08ac4f82e8ee5cfc3bdc96fd2400823b474414a263c3afa
+KEY degree=1024 index=25 cycles=566039469 digest=240d4aef36a523ea5e97ffd33ab63514ebfc566c637049b9231c7f6f2e2041d9
+KEY degree=1024 index=26 cycles=221215193 digest=1f3257fc546423e58d9bb558dea817136d23c923c675b8cf33e84533a0721ebe
+KEY degree=1024 index=27 cycles=231402659 digest=49be163f0398ad039263b7853f2d3866de85c795160c6d7847e32f169f3ccaab
+KEY degree=1024 index=28 cycles=215837894 digest=bee430ca958de22ed9b3155b21ae7506b99777cd85d36b311a87bf2a09c65336
+KEY degree=1024 index=29 cycles=197832402 digest=d725fc83bdaaa2f70e0326044ce43f0f989ce8da5c961817ed145d735dd759dd
+KEY degree=1024 index=30 cycles=203708839 digest=591bc79c024845544bbb2f820b4f2a1eb87a62ac9acf2f036df8a8862529365b
+KEY degree=1024 index=31 cycles=205832159 digest=5f8587790bef462f5917f968e878f494f30548b5b71bd76f71ccb77d4c5a84ce
+KEY degree=1024 index=32 cycles=202865675 digest=4fe1ab9642bf18ba99fcd770a5769bace3502d83bfa4aa4a2c64695a7b7b5f6e
+KEY degree=1024 index=33 cycles=300779796 digest=1a29698d8de91e5dc530ba0eb0a4c2a08a721da0dfe91fcef28feef4b754bc4f
+KEY degree=1024 index=34 cycles=444711666 digest=a5686e4043ce528b85046001fdf43bdb761c57304d2ff3091ac808ca74263c9b
+KEY degree=1024 index=35 cycles=206496903 digest=67e772ed48a86c7962e2281ec320a27db084e20c29fa0e2a844dd915b3acc1e5
+KEY degree=1024 index=36 cycles=357472330 digest=5bcc3abf953ce4c384c611e467b800915af2cf27aec60acf88821fee2581d67e
+KEY degree=1024 index=37 cycles=252724978 digest=16160d8b186aa3150edc7b2efa6df2f4520673cfd536d9984dd47434b9e6bdc7
+KEY degree=1024 index=38 cycles=339414162 digest=4941cfcdb5a9562069b3689b17195eff56be7a4fe67ac4d8dc674aa935a19048
+KEY degree=1024 index=39 cycles=219468151 digest=fb93322fa773d2db239228ee169790c88847f530db944d209435d66b3b0b8f36
+KEY degree=1024 index=40 cycles=306999433 digest=323dd4059ee5315382a1d2a8e40af775d3dc0fcdf88c6804d47a39ded0594f0e
+KEY degree=1024 index=41 cycles=210156540 digest=98286393401538129fe7b0439148928c3f9daf671644b34cffdc0ed12874a009
+KEY degree=1024 index=42 cycles=224002771 digest=be7845314ed3e2449c56b58832d3030a82347fa2751891c3f727a036e466e1bc
+KEY degree=1024 index=43 cycles=208558829 digest=ed0181128324ed4d8f5972ae3192f9a290441d3f1cc0b42751db8411aed2dfcf
+KEY degree=1024 index=44 cycles=282600737 digest=6d931b6b6b29363a5ecf0999659aff97c2f7b9860436dbd974521e55fe21d32d
+KEY degree=1024 index=45 cycles=271094647 digest=f2b910c4b5c18b1b0d1aa2f81bb785530201f27b5ae7be6aebdad2f04040f93a
+KEY degree=1024 index=46 cycles=326479841 digest=11497d1ee03bfa6c978002246852564a82586af2078e9c9f070f682ce58a70b5
+KEY degree=1024 index=47 cycles=529082309 digest=ba673a194c8a1c16a8a6a803f28817b699a05f20560a8c54404499a4b86393d7
+KEY degree=1024 index=48 cycles=222284722 digest=72edaead8e90f799ea79e8ecbadfb319c947cf04b9d5253d886f20ff8c6c5bc3
+KEY degree=1024 index=49 cycles=236300341 digest=fde17b8cc3718c4c7eeb0ad5c0fc8810c047290528c9c27f01cec755719350d2
+KEY degree=1024 index=50 cycles=316868704 digest=e8eb4892ceca1dbe4bf801a1d266bbe4d10816ac26a1bbdea48472e9056e7f7d
+KEY degree=1024 index=51 cycles=382434240 digest=3c8df66dc96f271273efb3442be591cf8be2d84e8eb6878a2a9acdc849d4c524
+KEY degree=1024 index=52 cycles=261708873 digest=b0f5744ce25b1b7649b6fc21a024c0f4dfbfd770a8ea8b93fa99a1303ed8a12f
+KEY degree=1024 index=53 cycles=205259634 digest=c4c175797dd6b6c6051859c84a9bc41f8760f16fffb89ece08bac91c8c1276c1
+KEY degree=1024 index=54 cycles=227995799 digest=d2931353779f5b51032a018325d40feff919832d3ca7b20ef6c90877a30ed86b
+KEY degree=1024 index=55 cycles=283886069 digest=5e3700209e25cb54bd30f1b6355f4c07b2ae7bbe8a9ba48f6bae0aa162baa79e
+KEY degree=1024 index=56 cycles=648400374 digest=cb9abf45e0935ea29919877759c48db0177dfcb1136ba9e473e9d819892d96b3
+KEY degree=1024 index=57 cycles=196445512 digest=b1fe70ef8af0da2bbf989b7c6413742eb8b707ac62fb821b00580efbb8920ede
+KEY degree=1024 index=58 cycles=307427272 digest=c0b08ff3ca192d8bae7ee12bc60acbf18ca677954af2b12a7867c21eb3aba6a1
+KEY degree=1024 index=59 cycles=211346310 digest=71eb9c7324ac94276310e6eadac3b40e2dc9a95f0ffbe4111f07d13e97ff3fcc
+KEY degree=1024 index=60 cycles=248565084 digest=848a14316f72c9245297d43c643db58ca763d822e5ad6e802a5e58a449ce5545
+KEY degree=1024 index=61 cycles=297571838 digest=3c104f2265b2ee84c9d5fa29d7d2ae137c8539556bdf3f7f6dfa93543c4727cc
+KEY degree=1024 index=62 cycles=227693246 digest=6b9fa0348f82b03179b513d1dc98684d248e1d14aebd46015209aa823634b110
+KEY degree=1024 index=63 cycles=398152816 digest=1cbabf8eb7cf89a7b6df4e8b04b398b7da56711351e3f44af5e138080d1933b6
+KEY degree=1024 index=64 cycles=256446203 digest=b53d6bbfb91a041a02482fdfdab50ef8a92f909b9a782a2564eac7e40fce6ffd
+KEY degree=1024 index=65 cycles=571396813 digest=9c5b18f00beb30d30cbdd48d7292a179cd53e32034fb36f29df33a957cee030d
+KEY degree=1024 index=66 cycles=197138375 digest=6ca951d82c4acce8a50eff77a26b3167d4cd83ca0cbfd6dbfef3eb6b299dbfd5
+KEY degree=1024 index=67 cycles=369784014 digest=309daaed54b6ddb7f43f6598df36db53f24edaf778e6662a1930d49bb0a4905b
+KEY degree=1024 index=68 cycles=211844382 digest=62df5fa44d9120c6bfe8f1765759019e73a0bd68b34a9632bb84067335c0bfa5
+KEY degree=1024 index=69 cycles=245252188 digest=3b7b949f2e0bbfb3805e01191499bb591784684a564ad56f6c5ee8547b2dccdc
+KEY degree=1024 index=70 cycles=520631677 digest=1124385fa60084322692c0dcdd41b76fbe70883655d7293f70d18a07a8270ddc
+KEY degree=1024 index=71 cycles=205953273 digest=2d7ca9d76de468294af68986cae0e73ebefd97e2d1384091b6ac8f646e996afd
+KEY degree=1024 index=72 cycles=272202278 digest=4298dd04fea56a99d71498897f4b10e96fd9dd56abb030a1586149b05723a8ea
+KEY degree=1024 index=73 cycles=204761951 digest=6592cd85e18552d75cc44d3a42f0dbedd98042c837186b144eb953631c282648
+KEY degree=1024 index=74 cycles=507265978 digest=6719197a2c62f2ffe98ff1c72a17c3291838da76157ddaa2cfb7758e0ade730c
+KEY degree=1024 index=75 cycles=211735940 digest=a82271cf672a6338caf7cfa2c513ed1e57ee9893e42a21933bf381ee2c28637d
+KEY degree=1024 index=76 cycles=491891391 digest=cf76efea18b4813c33b75f21228ac6d393b52292ef5b96eaa6666d3cb6a17f87
+KEY degree=1024 index=77 cycles=287477950 digest=78aa85fc8725d1fe0b2cb3ccd3440cc820c1656835c7fc28a3418a3ee0787167
+KEY degree=1024 index=78 cycles=247524839 digest=6394de5d185a90f35878f87ad24e9cd4657f4f36902cd98fa077bd33ff068e3e
+KEY degree=1024 index=79 cycles=328397360 digest=68d501b8ef5090ed054031a39119381d25f06c775ffbf3a598b54b4a5f2ec262
+KEY degree=1024 index=80 cycles=305613308 digest=3e93c5c7b9e8654b8448999800243075ebe8326f0463f973ad430b2cdbdfa49e
+KEY degree=1024 index=81 cycles=637058765 digest=d05b5bcb277c5aae99d9b293215b86712cc460356fab326323bb30c1e4fdae2f
+KEY degree=1024 index=82 cycles=295016266 digest=dcfc7e77ddaeae2c14a94ff2752b0626f22c9e00890e6c189c0d0eb24f6690da
+KEY degree=1024 index=83 cycles=326504663 digest=84f564f6d36efde2e8f4f81a8283f1cb3aa4b2f486a59fca23449917dcc90144
+KEY degree=1024 index=84 cycles=810594259 digest=203d64f5d19d6181f1bfe44c81e2b88f26eeedeaef25350b279a251334382ed5
+KEY degree=1024 index=85 cycles=202157462 digest=97fc0b0528f7433c177e4bb5900ab467d80c93efc2d2ff4ee2c671ae38d52eb8
+KEY degree=1024 index=86 cycles=208048376 digest=b24710b36149e426c00db29b690158db4f104c23f9b567a9304c1bcc40c98936
+KEY degree=1024 index=87 cycles=209796194 digest=8558fc0164a28153bac04783606f8ee59251b5815dd693850b633d78c7a593e7
+KEY degree=1024 index=88 cycles=279650185 digest=e5dba610dabb5b04f74be1e5d9993fa26246748c64287222148e97d3f2fb7f5a
+KEY degree=1024 index=89 cycles=257288591 digest=6eec5711b7a0f740f4e26fcb8141e46d68ee213d690a57db1c88382d02942a1c
+KEY degree=1024 index=90 cycles=561617066 digest=b26212218c618730646ee6539e0c1513f8d44b960f02feefc1496593bca17b22
+KEY degree=1024 index=91 cycles=200076546 digest=8b69542868a40a1fdb83a2d367b87b190baee8ba264968ab831e02d34a350039
+KEY degree=1024 index=92 cycles=295395602 digest=b50e3f704879e93396cbfb0e32e514cbb8de74071f19569e4d526b7121741ec0
+KEY degree=1024 index=93 cycles=210127838 digest=cada7239cdfaa1e3bf0df5ac22e84a21240e61823f07ded2264fc1d28076f0c7
+KEY degree=1024 index=94 cycles=233648257 digest=ab9fb080c2edcd7fdc4605b5b1095f7bb2fdf3879b00ddf3186e83c3601592b5
+KEY degree=1024 index=95 cycles=369554075 digest=43664bca807efbbcb1c3287a5f32bde4a45378b028b08aee0e31440c4816363c
+KEY degree=1024 index=96 cycles=315578785 digest=1d02904a313bbf20cb17ca695bec76fc300f6ab3aed389959cc3378c5bb46eb9
+KEY degree=1024 index=97 cycles=199383973 digest=04ee0c18dc1a5b6abb607ba8f3d01a533102a762526fe06b53427970f62dc41d
+KEY degree=1024 index=98 cycles=208437424 digest=e1e69487bb840d61ac3ce80b8d8dfed1504bb00e934ccb5e423131d5e72a4a38
+KEY degree=1024 index=99 cycles=267264557 digest=bc56d3e15e82860d932362f8f810093f287608141e17544e64465c187f9aa683
+TOTAL degree=1024 runs=100 cycles=30328126163 median=252724978 min=196445006 max=810594259
+APPROX degree=1024 kind=0 logn=1 calls=173 cycles=771580
+APPROX degree=1024 kind=0 logn=2 calls=173 cycles=1570840
+APPROX degree=1024 kind=0 logn=3 calls=137 cycles=2708216
+APPROX degree=1024 kind=0 logn=4 calls=110 cycles=4712840
+APPROX degree=1024 kind=0 logn=5 calls=104 cycles=9689056
+APPROX degree=1024 kind=0 logn=6 calls=103 cycles=20616068
+APPROX degree=1024 kind=0 logn=7 calls=103 cycles=44383524
+APPROX degree=1024 kind=0 logn=8 calls=102 cycles=94175784
+APPROX degree=1024 kind=0 logn=9 calls=102 cycles=199828200
+APPROX degree=1024 kind=1 logn=1 calls=141687 cycles=300276619
+APPROX degree=1024 kind=1 logn=2 calls=58371 cycles=332866369
+APPROX degree=1024 kind=1 logn=3 calls=24665 cycles=339704228
+APPROX degree=1024 kind=1 logn=4 calls=12004 cycles=416203530
+APPROX degree=1024 kind=1 logn=5 calls=6513 cycles=548809422
+APPROX degree=1024 kind=1 logn=6 calls=3708 cycles=732460295
+APPROX degree=1024 kind=1 logn=7 calls=2162 cycles=984484859
+APPROX degree=1024 kind=1 logn=8 calls=1326 cycles=1366723908
+APPROX degree=1024 kind=1 logn=9 calls=918 cycles=2111241186
+FP64_DONE result=0 signature_and_tamper=PASS
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x19850 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xe22c lma 0x30000980
+Loading section datas, size 0x4c lma 0x3000ebc0
+Loading section device_states, size 0x2c lma 0x3000ec0c
+Loading section k_mutex_area, size 0x14 lma 0x3000ec38
+Loading section .last_section, size 0x4 lma 0x3000ec4c
+Start address 0x10014d14, load size 165808
+Transfer rate: 536 KB/sec, 6632 bytes/write.
+Temporary breakpoint 1 at 0x10011a94: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10014d00: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpnkjckdm4/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10011a44: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10014d00: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x985e4b            9985611
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30025b08          805460744
+r8             0x300000d0          805306576
+r9             0x30035c48          805526600
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30035bf8          0x30035bf8 <z_main_stack+65456>
+lr             0x10011a8b          268507787
+pc             0x10011a44          0x10011a44 <nucleo_test_breakpoint>
+xpsr           0x9060000           151388160
+fpscr          0x40010             262160
+msp            0x30025b08          0x30025b08 <z_idle_stacks>
+psp            0x30035bf8          0x30035bf8 <z_main_stack+65456>
+vpr            0xc03c              [ P0=49212 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30025b08          0x30025b08 <z_idle_stacks>
+psp_s          0x30035bf8          0x30035bf8 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30025308          0x30025308 <z_interrupt_stacks>
+psplim_s       0x30025c48          0x30025c48 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xc03c              -16324
+0x30035bf8 <z_main_stack+65456>:	0x00000000	0x10011aa7	0x00000000	0x10018443
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0xf30379ad
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30025b08
+PSP=0x30035bf8
+LR=0x10011a8b
+PC=0x10011a44
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30025b08 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30025b18 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0xf30379ad
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

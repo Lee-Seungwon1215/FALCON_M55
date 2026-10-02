@@ -1,0 +1,49 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 22/38
+
+22 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Table 5: Cycle counts for MatrixVectorMul (MV), and InnerProd (IP) for kyber768,
+saber, and dilithium3 on Cortex-A72 and Apple M1. For kyber768 and saber the
+InnerProdin encapsulation (E) can re-use intermediate results from the MatrixVectorMul;
+in decapsulation (D) a full InnerProd is needed. dilithium3 does not use an InnerProd.
+On Cortex-A72, we report median cycle count of 10000 executions. On Apple M1, we
+report the average cycle count of 10000 executions.
+Arm Cortex-A72 Apple M1
+MV IP(E) IP (D) MV IP (E) IP (D)
+kyber512 (Ours) kyber512 [NG21] 6849 2000 4844 10700 – 7100 1431 412 926
+2809 – 1858
+kyber768 (Ours) kyber768 [NG21] 11077 2242 6518 19300 – 9900 2291 461 1232
+4910 – 2545
+kyber1024 (Ours) kyber1024 [NG21] 16338 2758 8487 – – – 3247 509 1536
+7651 – 3271
+lightsaber 32-bit NTT (Ours) lightsaber 16-bit NTT [NG21] lightsaber Toom–Cook [NG21] 18149 7038 11113 37000 – 22500 40200 – 18100 3933 1556 2376
+10077 – 6117
+6640 – 3184
+saber 32-bit NTT (Ours) saber 16-bit NTT [NG21] saber Toom–Cook [NG21] 35730 9284 15452 71300 – 31500 81000 – 25000 7480 2082 3313
+18931 – 8470
+14029 – 4345
+firesaber 32-bit NTT (Ours) firesaber 16-bit NTT [NG21] firesaber Toom–Cook [NG21] 56109 11783 20112 – – – – – – 12074 2608 4248
+30393 – 10,839
+21591 – 5318
+dilithium2 (Ours) dilithium2 (ref) 26268 – – 135182 – – 5316 – –
+45742 – –
+dilithium3 (Ours) dilithium3 (ref) 38107 – – 215503 – – 7938 – –
+72516 – –
+dilithium5 (Ours) dilithium5 (ref) 54759 – – 334865 – – 11353 – –
+118211 – –
+Results for MatrixVectorMul and InnerProd. Table 5 presents the results for the
+core arithmetic operations MatrixVectorMul and InnerProd for all parameter sets. For
+kyber768, our MatrixVectorMul is 1.7×faster on Cortex-A72 and 2.1×faster on Apple
+M1 than previous implementations [NG21]. For InnerProd, our code is 1.5×faster on
+Cortex-A72 and 2.1×faster on Apple M1. For saber, we speed up MatrixVectorMul
+by 2.0×on Cortex-A72 and 1.9×on Apple M1. The speed-up for InnerProd is 1.6×on
+Cortex-A72 and 1.3×on Apple M1. Also note that for the InnerProd in encapsulation of
+Kyber and Saber, one can re-use NTT_heavy(s′) to obtain a much faster InnerProd.
+Results for full schemes. Table 6 shows our results for the full cryptographic schemes.
+Kyber runs 9 – 14% faster on Cortex-A72 and 26% – 41% faster on Apple M1 than
+previous work [NG21]. For Saber, the speed-ups are even more significant with 24 – 35%
+fewer cycles on Cortex-A72 and 19 – 36 % fewer cycles on Apple M1. Unsurprisingly, our
+Dilithium implementation performs much better than the reference implementation.
+On Saber’s SHA-3 performance. As we make use of a vectorized SHA-3 implementation
+computing two Keccak permutations at once, optimal performance can only be achieved if
+SHA-3/SHAKE calls can be parallelized. Unfortunately, the Saber specification mandates
+sampling vectors and matrices as a single call to SHAKE and can, thus, not benefit from

@@ -1,0 +1,100 @@
+{
+  "status": "PASS",
+  "scope": "static constant-time regression from K2 to experimental K3-B",
+  "baseline_elf_sha256": "d53cd515657c17a593a8532d2d2b36ca774492b4acf2f2524c4995857d5ec1da",
+  "candidate_elf_sha256": "c5e4de17646b1f86001503582673701285778af5198ccf6a5566f7599b461904",
+  "image": {
+    "k2": {
+      "text": 176880,
+      "data": 144,
+      "bss": 172351,
+      "total": 349375
+    },
+    "k3b": {
+      "text": 177156,
+      "data": 144,
+      "bss": 188735,
+      "total": 366035
+    },
+    "delta": {
+      "text": 276,
+      "data": 0,
+      "bss": 16384,
+      "total": 16660
+    }
+  },
+  "twist_tables": {
+    "count": 2,
+    "bytes_each": 8192,
+    "total_bytes": 16384,
+    "alignment": 32,
+    "index_source": "public root-table offset / public logn and loop counters"
+  },
+  "functions": {
+    "fndsa_mp_NTT": {
+      "size_bytes_k2": 1166,
+      "size_bytes_k3b": 1210,
+      "instructions_k2": 312,
+      "instructions_k3b": 325,
+      "branches_k2": 11,
+      "branches_k3b": 11,
+      "branch_mnemonic_sequence_equal": true,
+      "memory_instructions_k2": 49,
+      "memory_instructions_k3b": 58,
+      "forbidden_call_divide_or_fp": 0,
+      "mnemonic_delta": {
+        "added": {
+          "str": 1,
+          "ldr": 3,
+          "ldrd": 3,
+          "vdup.32": 7,
+          "add.w": 5,
+          "vldrw.u32": 1,
+          "sub.w": 2,
+          "vld20.32": 1,
+          "vld21.32": 1
+        },
+        "removed": {
+          "vmul.i32": 10,
+          "ldr.w": 1
+        }
+      }
+    },
+    "fndsa_mp_iNTT": {
+      "size_bytes_k2": 1562,
+      "size_bytes_k3b": 1614,
+      "instructions_k2": 418,
+      "instructions_k3b": 438,
+      "branches_k2": 15,
+      "branches_k3b": 15,
+      "branch_mnemonic_sequence_equal": true,
+      "memory_instructions_k2": 64,
+      "memory_instructions_k3b": 84,
+      "forbidden_call_divide_or_fp": 0,
+      "mnemonic_delta": {
+        "added": {
+          "str": 4,
+          "ldr": 10,
+          "add.w": 3,
+          "vldrw.u32": 1,
+          "vld20.32": 1,
+          "vld21.32": 1,
+          "vdup.32": 8,
+          "ldrd": 4
+        },
+        "removed": {
+          "vmul.i32": 11,
+          "ldr.w": 1
+        }
+      }
+    }
+  },
+  "reasoning": [
+    "K3-B adds no branch and preserves the K2 branch-mnemonic sequence.",
+    "The new table addresses use only the public root-table offset, public logn, and public loop counters.",
+    "Root and twist values depend only on public modulus/root parameters; no coefficient value enters an address or branch.",
+    "The added generator stores are fixed-count loops over public n and bit-reversed public indices."
+  ],
+  "semantic_warning": "The two process-global mutable interleaved root/twist tables make K3-B non-reentrant even though its instruction flow is data independent.",
+  "limitation": "Static structural regression only; not a formal proof and not dudect/TVLA or physical leakage testing."
+}

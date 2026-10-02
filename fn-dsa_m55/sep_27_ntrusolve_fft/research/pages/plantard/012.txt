@@ -1,0 +1,53 @@
+DOCUMENT: plantard.pdf PAGE: 12/24
+
+12 Improved Plantard Arithmetic for Lattice-based Cryptography
+q+1
+the product of q′and the constant input modulo 22l. Moreover, the Barrett arith-
+metic may require an explicit shift operation for a non-word-size offset, which will
+further decrease its efficiency. We refer readers to Subsubsection 4.2.4 for a detailed
+comparison with the Barrett arithmetic.
+• Secondly, theimprovedPlantardmultiplicationextendstheinputrangeto[−q2α,q2α].
+We can easily modify this algorithm into the Plantard reduction that accepts input
+in [−q222α,q222α] (see Algorithm 13 for details). Compared with the Montgomery
+reduction that accepts [−2l−1q,2l−1q], the improved Plantard reduction supports
+more redundancy if α is big enough. Therefore, we recommend choosing the largest
+αthat satisfies the prerequisites so that the improved algorithm has the largest input
+range. The input range of the proposed modular reduction is hard to compare with
+the Barrett reduction directly because the input range of the Barrett arithmetic
+depends on the parameter setting, i.e., q and γin Algorithm 8. The Barrett reduction
+used inside NTT/INTT in Kyber and NTTRU only needs to reduce 16-bit signed
+integers. Our modular reduction (see Algorithm 15) can also cover all 16-bit signed
+integers and can be a perfect replacement for the Barrett reduction in the NTT/INTT
+of these LBC schemes.
+• The output range of the improved algorithm is narrowed down to [−
+q
+2 ,
+2 ), which is
+the same as the state-of-the-art Barrett reduction presented in [AHKS22, Algorithm
+3.2]. Compared with the output range [−q,q] of the Montgomery multiplication,
+the improved Plantard multiplication halves or slows down the growing rate of the
+coefficient size in the NTT with CT butterflies or the INTT with GS butterflies,
+respectively. Together with the larger input range, the improved Plantard multiplica-
+tion enables better lazy reduction strategies in NTT/INTT (see Subsubsection 4.2.3).
+With all these merits over the Montgomery and Barrett arithmetic, the improved
+Plantard arithmetic has two weak spots. If we precompute the product of q′and the twiddle
+factors modulo 22l in NTT, the size of the precomputed intermediate result will be doubled.
+First, it needs to deal with the l×2l-bit multiplication, which may not be applicable
+to architectures like AVX2 and NEON. However, we show that this method is perfectly
+suitable for Cortex-M4, Cortex-M7 and some 32-bit microcontrollers (see Subsection 4.3).
+Second, the double-size twiddle factors are normally placed into the Read-Only Memory
+(ROM) instead of the Random Access Memory (RAM). Consequently, the side effect is
+that we need more cycles to load them into registers (see Subsubsection 4.2.2 for detailed
+discussion); this will not affect the stack usage. Nevertheless, arithmetic and experimental
+analyses show that the overall cycle reduction obtained from the aforementioned merits
+could offset the cycle increment introduced by twiddle factor loading.
+4 Optimized Implementation on Cortex-M4
+In this section, we present an efficient implementation of the improved Plantard arithmetic
+for 16-bit word-size moduli on Cortex-M4 and apply it to Kyber and NTTRU. Then,
+the extensibility of the improved Plantard arithmetic on other platforms and schemes is
+discussed. Note that the Plantard arithmetic mentioned below refers to the improved
+Plantard arithmetic presented in Section 3.
+4.1 Efficient Plantard Arithmetic for 16-bit Modulus
+Before moving forward into the implementation details, it is assumed that there exists a
+small integer α≥0 such that the prerequisite (q <2l−α−1) mentioned in Theorem 1 is
+established (which is the case for most of the LBC schemes, including Kyber and NTTRU).

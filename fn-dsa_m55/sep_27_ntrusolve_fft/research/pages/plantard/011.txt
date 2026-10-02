@@ -1,0 +1,78 @@
+DOCUMENT: plantard.pdf PAGE: 11/24
+
+Junhao Huang et al. 11
+(2) When ab∈[−q222α
+,0) and p0 ∈[0,2l), we have
+q2l+α
+−p0q+ ab>q(2l+α
+>q(2l+α
+= q(2l+α−1
+−2l
+−2l
+−q22α)
+−2l+α−1)
+−2l) ≥0 for α≥1, and
+q2l+α
+Therefore, we also have 0 <q2l+α
+we obtain
+−p0q+ ab<q2l+α <2l−α−12l+α = 22l−1 <22l
+.
+−p0q+ ab<22l when ab<0 and α>0. Overall,
+0 < q2l+α
+−p0q+ ab
+22l <1.
+Combining with the fact that pq−ab is divisible by 22l, we have the following
+equation:
+ab−2−2l mod q≡
+pq−ab
+22l ≡
+pq−ab
+22l + q2l+α
+−p0q+ ab
+22l ≡
+qp12l + q2l+α
+22l
+≡
+q(p1 + 2α)
+2l ≡
+   q abq−1 mod±22l
+2l + 2α
+2l
+   = r.
+q+1
+In brief, we have r≡ab(−2−2l) mod q with r∈[−
+2 ,
+q
+2 ) for a,b∈[−q2α,q2α].
+In summary, the improved Plantard multiplication is achieved by first imposing a
+stricter constraint on the modulus q. Then, the inequality that guarantees the correctness
+is modified into 0 <q2l+α
+−p0q+ab<22l. Note that the improved Plantard multiplication
+can be easily modified into a word size modular reduction (Plantard reduction).
+3.3 Comparisons
+Original Plantard multiplication. Although the main steps between the improved and
+original Plantard multiplications have only a minor difference, our tweaks make it more
+efficient and practical in LBC schemes thanks to the following merits.
+• The improved algorithm supports signed inputs and produces a result in [−
+q+1
+q
+2 ,
+2 ),
+while the original version only accepts unsigned integers in [0,q]. The advantage of
+using signed integers in LBC schemes has been fully discussed in previous work, i.e.,
+eliminating an extra addition during the butterfly computation.
+• Besides, our tweaks extend the input range of Plantard multiplication from [0,q] up
+to [−q2α,q2α] and change the output range from [0,q] to [−
+q+1
+q
+2 ,
+2 ), thus eliminating
+the final correction in the original version [Pla21, Algorithm 8]. A larger input
+range is especially useful in NTT/INTT because supporting more redundancy can
+reduce unnecessary modular reduction on the coefficients (refer to the lazy reduction
+strategy in Subsubsection 4.2.3).
+Montgomery and Barrett arithmetic. The improved modular arithmetic also has several
+merits over the state-of-the-art Montgomery and Barrett arithmetic in LBC schemes.
+• First of all, as introduced in [Pla21], the intrinsic advantage of the Plantard mul-
+tiplication is that it costs one multiplication fewer than Montgomery and Barrett
+multiplication when one of the two inputs is fixed. This is achieved by precomputing

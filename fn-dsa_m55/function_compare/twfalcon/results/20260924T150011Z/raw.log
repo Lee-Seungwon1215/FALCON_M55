@@ -1,0 +1,353 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3351...
+[exec_wrapper] SWO redirect port 53315
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3351 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :53315 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3351
+load
+tbreak *0x1000fb7c
+hbreak *0x10012de8
+set $early_fault_bp = $bpnum
+jump *0x10012dfd
+if $pc != 0x1000fb7c
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp96rrbic6/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x1000fb2c
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10012de8
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.279255
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3351
+Info : Listening on port 3351 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 53315
+Info : Listening on port 53315 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/53315
+Info : accepting 'gdb' connection on tcp/3351
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3351" instead of "target remote :3351"
+TW_COMPARE_BEGIN batches=10 calls=100 status=stage10_packed_tail
+HW cpu=800000000 sysclk=400000000 hclk=200000000 ccr=00000611 itcmcr=00000049 dtcmcr=00000049 fpscr=03040010
+PRIMITIVE_CHECK cases=8000 mismatches=0 add4_max_q32_lsb=0 mul4_max_q32_lsb=0 cmul4_max_q32_lsb=0
+DS_SPAN_EQ cases=1408 mismatches=0 comparison=ALL_BYTES
+DS_SPAN_PERF dir=fft blocks=1 calls=100 old_sum=59300 direct_sum=44000 new_sum=39500 old_min=593 old_max=593 direct_min=440 direct_max=440 new_min=395 new_max=395
+DS_SPAN_PERF dir=fft blocks=8 calls=100 old_sum=396700 direct_sum=272200 new_sum=251600 old_min=3967 old_max=3967 direct_min=2722 direct_max=2722 new_min=2516 new_max=2516
+DS_SPAN_PERF dir=fft blocks=64 calls=100 old_sum=3095900 direct_sum=2097800 new_sum=1948400 old_min=30959 old_max=30959 direct_min=20978 direct_max=20978 new_min=19484 new_max=19484
+DS_SPAN_PERF dir=ifft blocks=1 calls=100 old_sum=59300 direct_sum=44000 new_sum=42000 old_min=593 old_max=593 direct_min=440 direct_max=440 new_min=420 new_max=420
+DS_SPAN_PERF dir=ifft blocks=8 calls=100 old_sum=396700 direct_sum=272200 new_sum=271600 old_min=3967 old_max=3967 direct_min=2722 direct_max=2722 new_min=2716 new_max=2716
+DS_SPAN_PERF dir=ifft blocks=64 calls=100 old_sum=3095901 direct_sum=2097800 new_sum=2108400 old_min=30959 old_max=30960 direct_min=20978 direct_max=20978 new_min=21084 new_max=21084
+DS_TAIL_EQ cases=224 mismatches=0 comparison=ALL_BYTES
+TRANSFORM_LOGN logn=2 mve_vs_q32_lsb=0 mve_vs_tw_scalar_lsb=0
+TRANSFORM_LOGN logn=3 mve_vs_q32_lsb=2 mve_vs_tw_scalar_lsb=0
+TRANSFORM_LOGN logn=4 mve_vs_q32_lsb=3 mve_vs_tw_scalar_lsb=1
+TRANSFORM_LOGN logn=5 mve_vs_q32_lsb=5 mve_vs_tw_scalar_lsb=1
+TRANSFORM_LOGN logn=6 mve_vs_q32_lsb=10 mve_vs_tw_scalar_lsb=1
+TRANSFORM_LOGN logn=7 mve_vs_q32_lsb=20 mve_vs_tw_scalar_lsb=1
+TRANSFORM_LOGN logn=8 mve_vs_q32_lsb=42 mve_vs_tw_scalar_lsb=1
+TRANSFORM_LOGN logn=9 mve_vs_q32_lsb=78 mve_vs_tw_scalar_lsb=1
+TRANSFORM_LOGN logn=10 mve_vs_q32_lsb=140 mve_vs_tw_scalar_lsb=2
+TRANSFORM_ERROR max_fft_q32_lsb=140 max_roundtrip_q32_lsb=3992 q32_nonidentical=18909 scalar_nonidentical=3131
+DS_TRANSFORM_LOGN logn=2 ds_vs_q32_lsb=0
+DS_TRANSFORM_LOGN logn=3 ds_vs_q32_lsb=2
+DS_TRANSFORM_LOGN logn=4 ds_vs_q32_lsb=3
+DS_TRANSFORM_LOGN logn=5 ds_vs_q32_lsb=7
+DS_TRANSFORM_LOGN logn=6 ds_vs_q32_lsb=10
+DS_TRANSFORM_LOGN logn=7 ds_vs_q32_lsb=21
+DS_TRANSFORM_LOGN logn=8 ds_vs_q32_lsb=35
+DS_TRANSFORM_LOGN logn=9 ds_vs_q32_lsb=78
+DS_TRANSFORM_LOGN logn=10 ds_vs_q32_lsb=135
+DS_TRANSFORM_ERROR max_fft_q32_lsb=135 max_roundtrip_q32_lsb=3607 q32_nonidentical=18885
+DS_TRANSFORM_EQ cases=180 mismatches=0 comparison=ALL_BYTES
+BENCH mode=core logn=9 dir=fft calls=100 q32=11542700,11542700,11542700,11542700,11542700,11542700,11542700,11542700,11542700,11542700 fp64=23066400,23066401,23066400,23066400,23066401,23066400,23066401,23066400,23066400,23066400 tw_scalar=189092603,189092602,189092603,189092602,189092602,189092603,189092602,189092602,189092602,189092602 tw_mve=108181101,108181101,108181101,108181101,108181101,108181100,108181102,108181101,108181102,108181102 ds_stage7=24476000,24476001,24476001,24476000,24476000,24476000,24476000,24476000,24476000,24476000 ds_stage8=21499700,21499700,21499700,21499700,21499700,21499701,21499700,21499700,21499700,21499701 ds_stage9=20919500,20919500,20919500,20919500,20919500,20919500,20919501,20919500,20919501,20919500 ds_mve=9002600,9002600,9002601,9002600,9002601,9002600,9002600,9002600,9002600,9002600
+BENCH mode=core logn=9 dir=ifft calls=100 q32=14028100,14028100,14028100,14028100,14028100,14028100,14028100,14028100,14028100,14028100 fp64=31945601,31945601,31945601,31945601,31945600,31945600,31945600,31945601,31945601,31945601 tw_scalar=192312802,192312801,192312802,192312802,192312803,192312803,192312803,192312802,192312802,192312802 tw_mve=112477402,112477402,112477402,112477402,112477401,112477401,112477401,112477401,112477402,112477402 ds_stage7=25367800,25367800,25367800,25367800,25367801,25367801,25367800,25367801,25367800,25367800 ds_stage8=22583500,22583500,22583500,22583501,22583500,22583500,22583500,22583500,22583500,22583500 ds_stage9=22444900,22444901,22444901,22444900,22444900,22444900,22444900,22444901,22444901,22444901 ds_mve=9655300,9655300,9655300,9655300,9655300,9655300,9655300,9655300,9655300,9655300
+BENCH mode=conversion_inclusive logn=9 dir=fft calls=100 q32=11805501,11805501,11805501,11805501,11805501,11805501,11805501,11805501,11805501,11805501 fp64=27419501,27419502,27419501,27419502,27419501,27419502,27419501,27419501,27419502,27419501 tw_scalar=195497602,195497602,195497603,195497602,195497603,195497602,195497603,195497603,195497602,195497603 tw_mve=114586102,114586102,114586101,114586102,114586101,114586101,114586101,114586101,114586101,114586101 ds_stage7=29806400,29806400,29806400,29806400,29806401,29806401,29806401,29806401,29806401,29806400 ds_stage8=26830101,26830100,26830101,26830100,26830100,26830100,26830100,26830100,26830100,26830101 ds_stage9=26249900,26249901,26249900,26249901,26249900,26249900,26249900,26249900,26249901,26249900 ds_mve=14333000,14333000,14333000,14333000,14333000,14333001,14333001,14333000,14333000,14333000
+BENCH mode=conversion_inclusive logn=9 dir=ifft calls=100 q32=14290901,14290901,14290901,14290901,14290901,14290901,14290901,14290901,14290901,14290901 fp64=36196402,36196402,36196401,36196401,36196401,36196401,36196402,36196402,36196401,36196401 tw_scalar=198717802,198717802,198717803,198717803,198717803,198717803,198717802,198717802,198717803,198717803 tw_mve=118882402,118882402,118882401,118882401,118882401,118882401,118882402,118882402,118882401,118882401 ds_stage7=30698100,30698100,30698101,30698101,30698100,30698101,30698100,30698100,30698101,30698100 ds_stage8=27913800,27913801,27913800,27913800,27913801,27913800,27913800,27913800,27913800,27913801 ds_stage9=27775201,27775200,27775200,27775200,27775200,27775201,27775201,27775201,27775201,27775200 ds_mve=14985600,14985600,14985601,14985600,14985600,14985600,14985600,14985600,14985600,14985600
+CT_PROBE impl=ds_mve logn=9 dir=fft class=0 samples=32 min=90014 max=90014 mean=90014
+CT_PROBE impl=ds_mve logn=9 dir=fft class=1 samples=32 min=90014 max=90014 mean=90014
+CT_PROBE impl=ds_mve logn=9 dir=fft class=2 samples=32 min=90014 max=90014 mean=90014
+CT_PROBE impl=ds_mve logn=9 dir=fft class=3 samples=32 min=90014 max=90014 mean=90014
+CT_PROBE impl=ds_mve logn=9 dir=ifft class=0 samples=32 min=96542 max=96542 mean=96542
+CT_PROBE impl=ds_mve logn=9 dir=ifft class=1 samples=32 min=96542 max=96542 mean=96542
+CT_PROBE impl=ds_mve logn=9 dir=ifft class=2 samples=32 min=96542 max=96542 mean=96542
+CT_PROBE impl=ds_mve logn=9 dir=ifft class=3 samples=32 min=96542 max=96542 mean=96542
+BENCH mode=core logn=10 dir=fft calls=100 q32=25651100,25651100,25651100,25651100,25651100,25651100,25651100,25651100,25651100,25651100 fp64=50811201,50811201,50811201,50811201,50811201,50811201,50811200,50811200,50811199,50811200 tw_scalar=423698205,423698206,423698205,423698205,423698206,423698205,423698206,423698206,423698205,423698206 tw_mve=233775703,233775701,233775703,233775703,233775703,233775703,233775703,233775703,233775703,233775703 ds_stage7=52019101,52019100,52019101,52019101,52019100,52019101,52019101,52019101,52019101,52019100 ds_stage8=45068401,45068401,45068401,45068401,45068401,45068401,45068400,45068401,45068401,45068400 ds_stage9=43758600,43758601,43758601,43758601,43758601,43758600,43758601,43758600,43758600,43758601 ds_mve=19982501,19982500,19982500,19982500,19982500,19982501,19982500,19982501,19982501,19982500
+BENCH mode=core logn=10 dir=ifft calls=100 q32=31234400,31234400,31234400,31234400,31234400,31234400,31234400,31234400,31234400,31234400 fp64=70774701,70774699,70774701,70774701,70774701,70774701,70774699,70774701,70774701,70774701 tw_scalar=430873105,430873105,430873106,430873106,430873105,430873105,430873106,430873106,430873104,430873104 tw_mve=243006903,243006903,243006902,243006903,243006903,243006903,243006903,243006903,243006903,243006903 ds_stage7=53710601,53710600,53710601,53710601,53710600,53710601,53710601,53710601,53710601,53710601 ds_stage8=47207901,47207900,47207900,47207900,47207901,47207901,47207900,47207900,47207901,47207901 ds_stage9=46928501,46928501,46928501,46928501,46928501,46928501,46928501,46928501,46928501,46928501 ds_mve=21412300,21412300,21412300,21412300,21412300,21412300,21412301,21412300,21412300,21412300
+BENCH mode=conversion_inclusive logn=10 dir=fft calls=100 q32=26169901,26169901,26169901,26169901,26169901,26169901,26169901,26169901,26169901,26169901 fp64=59516301,59516302,59516301,59516301,59516302,59516302,59516302,59516302,59516302,59516302 tw_scalar=436503206,436503205,436503206,436503206,436503205,436503206,436503205,436503205,436503206,436503205 tw_mve=246580703,246580703,246580703,246580703,246580703,246580703,246580703,246580703,246580703,246580703 ds_stage7=62674301,62674301,62674301,62674301,62674301,62674301,62674301,62674301,62674300,62674301 ds_stage8=55723600,55723601,55723600,55723600,55723601,55723600,55723601,55723601,55723601,55723601 ds_stage9=54413801,54413800,54413801,54413801,54413800,54413801,54413801,54413801,54413801,54413800 ds_mve=30637700,30637701,30637701,30637700,30637701,30637700,30637700,30637700,30637700,30637701
+BENCH mode=conversion_inclusive logn=10 dir=ifft calls=100 q32=31753201,31753201,31753201,31753201,31753201,31753201,31753201,31753201,31753201,31753201 fp64=79275102,79275102,79275102,79275102,79275102,79275102,79275102,79275102,79275102,79275102 tw_scalar=443678106,443678106,443678105,443678105,443678106,443678106,443678105,443678105,443678106,443678106 tw_mve=255811903,255811903,255811903,255811903,255811903,255811903,255811903,255811903,255811903,255811903 ds_stage7=64365701,64365701,64365701,64365701,64365701,64365701,64365701,64365701,64365701,64365701 ds_stage8=57863000,57863000,57863001,57863001,57863000,57863000,57863001,57863001,57863000,57863000 ds_stage9=57583601,57583601,57583601,57583601,57583601,57583601,57583601,57583601,57583601,57583601 ds_mve=32067401,32067400,32067400,32067400,32067401,32067400,32067400,32067400,32067401,32067400
+CT_PROBE impl=ds_mve logn=10 dir=fft class=0 samples=32 min=199813 max=199814 mean=199813
+CT_PROBE impl=ds_mve logn=10 dir=fft class=1 samples=32 min=199813 max=199813 mean=199813
+CT_PROBE impl=ds_mve logn=10 dir=fft class=2 samples=32 min=199813 max=199813 mean=199813
+CT_PROBE impl=ds_mve logn=10 dir=fft class=3 samples=32 min=199813 max=199813 mean=199813
+CT_PROBE impl=ds_mve logn=10 dir=ifft class=0 samples=32 min=214112 max=214112 mean=214112
+CT_PROBE impl=ds_mve logn=10 dir=ifft class=1 samples=32 min=214112 max=214112 mean=214112
+CT_PROBE impl=ds_mve logn=10 dir=ifft class=2 samples=32 min=214112 max=214113 mean=214112
+CT_PROBE impl=ds_mve logn=10 dir=ifft class=3 samples=32 min=214112 max=214112 mean=214112
+DS_LAYER_BEGIN samples=100 warmup=10 irq=masked input=Q32_INTEGER_FRACTION inverse_input=FFT_OUTPUT comparison=ALL_BYTES
+DS_LAYER_TIMER samples=100 sum=900 min=9 max=9
+DS_LAYER_TOTAL logn=9 dir=fft calls=100 original=8992300 control=20919600 profiled=9083400 other=26100 mismatches=0
+DS_LAYER_RANGE logn=9 dir=fft variant=0 min=89923 max=89923
+DS_LAYER_RANGE logn=9 dir=fft variant=1 min=209196 max=209196
+DS_LAYER_RANGE logn=9 dir=fft variant=2 min=90834 max=90834
+DS_LAYER logn=9 dir=fft lm=1 order=1 ht=128 groups=1 calls=100 cycles=982500
+DS_LAYER logn=9 dir=fft lm=2 order=2 ht=64 groups=2 calls=100 cycles=994800
+DS_LAYER logn=9 dir=fft lm=3 order=3 ht=32 groups=4 calls=100 cycles=1019000
+DS_LAYER logn=9 dir=fft lm=4 order=4 ht=16 groups=8 calls=100 cycles=1067600
+DS_LAYER logn=9 dir=fft lm=5 order=5 ht=8 groups=16 calls=100 cycles=1164800
+DS_LAYER logn=9 dir=fft lm=6 order=6 ht=4 groups=32 calls=100 cycles=1359200
+DS_LAYER logn=9 dir=fft lm=7 order=7 ht=2 groups=64 calls=100 cycles=1228300
+DS_LAYER logn=9 dir=fft lm=8 order=8 ht=1 groups=128 calls=100 cycles=1241100
+DS_LAYER_SCALE logn=9 dir=fft calls=100 cycles=0
+DS_LAYER_TOTAL logn=9 dir=ifft calls=100 original=9643800 control=22470300 profiled=9909100 other=30200 mismatches=0
+DS_LAYER_RANGE logn=9 dir=ifft variant=0 min=96438 max=96438
+DS_LAYER_RANGE logn=9 dir=ifft variant=1 min=224703 max=224703
+DS_LAYER_RANGE logn=9 dir=ifft variant=2 min=99091 max=99091
+DS_LAYER logn=9 dir=ifft lm=8 order=1 ht=1 groups=128 calls=100 cycles=1276400
+DS_LAYER logn=9 dir=ifft lm=7 order=2 ht=2 groups=64 calls=100 cycles=1279600
+DS_LAYER logn=9 dir=ifft lm=6 order=3 ht=4 groups=32 calls=100 cycles=1495300
+DS_LAYER logn=9 dir=ifft lm=5 order=4 ht=8 groups=16 calls=100 cycles=1268100
+DS_LAYER logn=9 dir=ifft lm=4 order=5 ht=16 groups=8 calls=100 cycles=1154500
+DS_LAYER logn=9 dir=ifft lm=3 order=6 ht=32 groups=4 calls=100 cycles=1097700
+DS_LAYER logn=9 dir=ifft lm=2 order=7 ht=64 groups=2 calls=100 cycles=1069300
+DS_LAYER logn=9 dir=ifft lm=1 order=8 ht=128 groups=1 calls=100 cycles=1054900
+DS_LAYER_SCALE logn=9 dir=ifft calls=100 cycles=183100
+DS_LAYER_TOTAL logn=10 dir=fft calls=100 original=19956200 control=43752301 profiled=20043500 other=28600 mismatches=0
+DS_LAYER_RANGE logn=10 dir=fft variant=0 min=199562 max=199562
+DS_LAYER_RANGE logn=10 dir=fft variant=1 min=437523 max=437524
+DS_LAYER_RANGE logn=10 dir=fft variant=2 min=200435 max=200435
+DS_LAYER logn=10 dir=fft lm=1 order=1 ht=256 groups=1 calls=100 cycles=1948900
+DS_LAYER logn=10 dir=fft lm=2 order=2 ht=128 groups=2 calls=100 cycles=1961200
+DS_LAYER logn=10 dir=fft lm=3 order=3 ht=64 groups=4 calls=100 cycles=1985400
+DS_LAYER logn=10 dir=fft lm=4 order=4 ht=32 groups=8 calls=100 cycles=2034000
+DS_LAYER logn=10 dir=fft lm=5 order=5 ht=16 groups=16 calls=100 cycles=2131200
+DS_LAYER logn=10 dir=fft lm=6 order=6 ht=8 groups=32 calls=100 cycles=2325600
+DS_LAYER logn=10 dir=fft lm=7 order=7 ht=4 groups=64 calls=100 cycles=2714400
+DS_LAYER logn=10 dir=fft lm=8 order=8 ht=2 groups=128 calls=100 cycles=2444300
+DS_LAYER logn=10 dir=fft lm=9 order=9 ht=1 groups=256 calls=100 cycles=2469900
+DS_LAYER_SCALE logn=10 dir=fft calls=100 cycles=0
+DS_LAYER_TOTAL logn=10 dir=ifft calls=100 original=21399000 control=46979501 profiled=21829300 other=32700 mismatches=0
+DS_LAYER_RANGE logn=10 dir=ifft variant=0 min=213990 max=213990
+DS_LAYER_RANGE logn=10 dir=ifft variant=1 min=469795 max=469796
+DS_LAYER_RANGE logn=10 dir=ifft variant=2 min=218293 max=218293
+DS_LAYER logn=10 dir=ifft lm=9 order=1 ht=1 groups=256 calls=100 cycles=2540400
+DS_LAYER logn=10 dir=ifft lm=8 order=2 ht=2 groups=128 calls=100 cycles=2546800
+DS_LAYER logn=10 dir=ifft lm=7 order=3 ht=4 groups=64 calls=100 cycles=2986500
+DS_LAYER logn=10 dir=ifft lm=6 order=4 ht=8 groups=32 calls=100 cycles=2532100
+DS_LAYER logn=10 dir=ifft lm=5 order=5 ht=16 groups=16 calls=100 cycles=2304900
+DS_LAYER logn=10 dirInfo : Deferring arp_examine of stm32n6x.cpu
+=ifft lm=4 order=6 ht=32 groups=8 calls=100 cycles=2191300
+DS_LAYER logn=10 dir=ifft lm=3 order=7 ht=64 groups=4 calls=100 cycles=2134500
+DS_LAYER logn=10 dir=ifft lm=2 order=8 ht=128 groups=2 calls=100 cycles=2106100
+DS_LAYER logn=10 dir=ifft lm=1 order=9 ht=256 groups=1 calls=100 cycles=2091700
+DS_LAYER_SCALE logn=10 dir=ifft calls=100 cycles=362300
+DS_LAYER_DONE cases=880 mismatches=0 accounting_errors=0
+MEMORY_CANARY mismatches=0
+TW_COMPARE_DONE primitive_status=PASS transform_status=NUMERIC_NOT_Q32_IDENTICAL sink=00000000
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x18140 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x5278 lma 0x30000980
+Loading section datas, size 0x58 lma 0x30005c00
+Loading section device_states, size 0x2c lma 0x30005c58
+Loading section k_mutex_area, size 0x14 lma 0x30005c84
+Loading section .last_section, size 0x4 lma 0x30005c98
+Start address 0x10012dfc, load size 123128
+Transfer rate: 549 KB/sec, 5353 bytes/write.
+Temporary breakpoint 1 at 0x1000fb7c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10012de8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp96rrbic6/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x1000fb2c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10012de8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984635            9979445
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x3002e940          805497152
+r8             0x300000d0          805306576
+r9             0x3003ea80          805563008
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3003ea30          0x3003ea30 <z_main_stack+65456>
+lr             0x1000fb73          268499827
+pc             0x1000fb2c          0x1000fb2c <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x63040010          1661206544
+msp            0x3002e940          0x3002e940 <z_idle_stacks>
+psp            0x3003ea30          0x3003ea30 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x3002e940          0x3002e940 <z_idle_stacks>
+psp_s          0x3003ea30          0x3003ea30 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x3002e140          0x3002e140 <z_interrupt_stacks>
+psplim_s       0x3002ea80          0x3002ea80 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x3003ea30 <z_main_stack+65456>:	0x00000000	0x1000fb8f	0x00000000	0x10016c87
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x3002e940
+PSP=0x3003ea30
+LR=0x1000fb73
+PC=0x1000fb2c
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3002e940 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002e950 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

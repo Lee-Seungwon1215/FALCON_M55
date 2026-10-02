@@ -1,0 +1,195 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 10/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 10
+increase the coefficients by 0.5q. Therefore, the maximum
+absolute value of coefficients is 9qafter the fourth layer, which
+can still fit in a 16-bit signed integer. The reason why we adopt
+the 3+1+3 layer merging strategy instead of 3+3+1 is that
+it limits the growth of coefficients and obviates the need for
+more modular reductions. If we adopt the 3+3+1 layer merging
+strategy, the second three layers of INTT with CT algorithm
+would expand 256 ×4/8 = 128 coefficients (e.g., a0,a2,a4
+and a6 in Fig. 2) up to 10q, which will overflow a 16-bit
+signed integer, thus necessitating more modular reductions.
+The final three layers of INTT in the 3+1+3 layer merging
+strategy increase the coefficients up from 9q to 72q. It should
+be noted that 72q likewise surpasses the input range of
+[−64q,64q] in Plantard arithmetic [20, Algorithm 11], but can
+still fit into the input range [−137q,230q] of the proposed
+Plantard arithmetic. This further demonstrates the contribution
+of the larger input range to the better lazy reduction strategy.
+Similar to the INTT using GS algorithm on RISC-V, we also
+eliminate the modular reduction of coefficients for the stack-
+version INTT of Kyber512 and speed-version INTT of all three
+Kyber variants on Cortex-M3.
+Overall, we only need modular reduction for 32 coefficients
+in the stack-version INTT of Kyber768 and Kyber1024 on both
+platforms. Conversely, we entirely eliminate the modular re-
+duction of coefficients in the stack-version INTT of Kyber512
+and the speed-version INTT of all three Kyber variants. The
+better lazy reduction strategy is made possible by leveraging
+the excellent merits of the Plantard arithmetic, the optimal
+layer merging strategies, and the 32-bit platforms’ properties.
+B. Pointwise Multiplication and Memory Optimizations
+1) Pointwise multiplication: After the 7-layer NTT trans-
+form, two polynomials aand bare transformed into their NTT
+domainˆ
+a andˆ
+b. The pointwise multiplicationˆ
+c = ˆ a◦ˆ
+b is
+performed over Zq[X]/(X2
+−ζ2br7 (i)+1). The symbol br7(i)
+denotes the bit reversal operation of a 7-bit integer i∈[0,127]
+to obtain the corresponding twiddle factor. The symbol ◦con-
+sists of 128 pointwise multiplications, and each of them is per-
+ˆ
+ˆ
+formed asˆ
+c2i+ ˆ c2i+1X = (ˆ a2i+ ˆ a2i+1X)(
+b2i+
+b2i+1X) mod
+(X2
+−ζ2br7 (i)+1), whereˆ
+ˆ
+ˆ
+c2i = ˆ a2i
+b2i+ ˆ a2i+1
+b2i+1ζ2br7 (i)+1
+ˆ
+ˆ
+andˆ
+c2i+1 = ˆ a2i
+b2i+1 +
+b2iˆ
+a2i+1. As mentioned in Sec-
+tion V-A3, to align with the stack-version and speed-version
+matrix-vector multiplication, we also implement two versions
+of pointwise multiplications for Kyber.
+For the stack-version pointwise multiplication, we follow
+the lazy reduction strategy proposed in [12], namelyˆ
+c2i =
+ˆ
+ˆ
+(ˆ a2i·
+b2i + ˆ a2i+1·(
+b2i+1·ζ2br7 (i)+1 mod q)) mod q and
+ˆ
+ˆ
+ˆ
+c2i+1 = (ˆ a2i·
+b2i+1 +
+b2i·
+ˆ
+a2i+1) mod q. In total, three
+modular reductions are required for each pointwise multi-
+plication and the result is stored in 16-bit array. We can
+see that the computation ofˆ
+b2i+1·ζ2br7 (i)+1 mod q is a
+modular multiplication by a twiddle factor ζ2br7 (i)+1 and
+can be speeded up with the efficient Plantard multiplication
+by a constant (Algorithm 4 and 5). Overall, compared to
+the Montgomery-based implementation, we can utilize the
+Plantard arithmetic to reduce 128 multiplications in the stack-
+version pointwise multiplication implementation. The other
+two modular reductions, on the other hand, can only be
+implemented with the Plantard reduction (see Section IV-B).
+Note that the proposed Plantard reduction is as efficient as
+the state-of-the-art Montgomery and Barrett reduction on the
+target platforms. After the Plantard reduction, the coefficient
+range of each pointwise multiplication lies in [−
+q+1
+q
+2 ,
+2 ).
+As for the speed-version implementation, we follow the
+asymmetric multiplication and a better accumulation strategies
+in [14] and [26], which help to further minimize the num-
+ber of modular multiplications or modular reductions, with
+nearly doubled the stack usage. The so-called asymmetric
+multiplication is that during the matrix-vector product As in
+Kyber, they [14], [26] observed that every row of the NTT-
+domain matrixˆ
+A needs to multiply the NTT-domain secret
+vector ˆs (vector inner product) for k times. For the pointwise
+multiplication of two NTT-domain polynomialsˆ
+a ◦ˆ
+s = ˆ c,
+the termˆ
+s2i+1ζ2br7 (i)+1 also needs to be computed k times
+throughout the process. Therefore, they proposed to reduce
+these computations by cachingˆ
+s2i+1ζ2br7 (i)+1 using an addi-
+tional polynomial vectorˆ
+s′. When ˆs is multiplied with the first
+row of matrixˆ
+A, the termˆ
+s2i+1·ζ2br7 (i)+1 mod q for each
+polynomial of the vector ˆs is computed and stored inˆ
+s′. Sim-
+ilar to the stack-version implementation, this computation can
+also be speeded up with the efficient Plantard multiplication
+by a constant. The follow-up vector inner products of ˆs with
+the remaining k−1 rows of matrixˆ
+A can directly load the
+correspondingˆ
+s2i+1ζ2br7 (i)+1 fromˆ
+s′ without re-computing
+the modular multiplication.
+Similarly, the better accumulation technique also trades the
+speed with extra memory. This technique is utilized in the vec-
+tor inner product, i.e. c= ˆa ×ˆs=
+k−1
+ˆ
+i=0
+ai◦ˆ
+si,k∈{2,3,4},
+which requires to accumulate kpointwise multiplications. Ab-
+dulrahman et al. [14, Section 3.4] showed that one can reduce
+the final modular reduction of c2i and c2i+1, namely only
+ˆ
+ˆ
+computingˆ
+c2i = ˆ a2i·
+b2i + ˆ a2i+1·(
+b2i+1·ζ2br7 (i)+1 mod q)
+ˆ
+ˆ
+andˆ
+c2i+1 = ˆ a2i·
+b2i+1 +
+b2i·
+ˆ
+a2i+1, and then accumulate
+these k pointwise multiplications together in a 32-bit array
+with 256 entries without overflowing 32-bit signed integers.
+The k-th pointwise multiplication will finally reduce each 32-
+bit coefficient down to 16-bit using the Plantard reduction.
+After that, the coefficient range of the vector inner product
+lies in [−
+q+1
+q
+2 ,
+2 ).
+2) Memory optimizations: The speed-version Kyber imple-
+mentation from [14] utilizes the asymmetric multiplication and
+better accumulation techniques in [26] to minimize the number
+of modular multiplications or modular reductions. However,
+these techniques double the stack usage and pose a challenge
+for its deployment on memory-constrained IoT devices. In
+this paper, we propose two memory optimized techniques for
+the speed-version implementation to address this concern and
+make it more feasible for such devices.
+The first memory optimized technique is carried out for the
+asymmetric multiplication technique. Recall that Abdulrahman
+et al. [14], [26] proposed to cache the termˆ
+s2i+1ζ2br7 (i)+1
+using an additional polynomial vectorˆ
+s′. To make use of the
+SIMD instruction smuad on Cortex-M4, they also stored a
+redundantˆ
+s2i together with eachˆ
+s2i+1ζ2br7 (i)+1 inˆ
+s′. This
+leads to the increment of memory usage, as the redundantˆ
+s2i

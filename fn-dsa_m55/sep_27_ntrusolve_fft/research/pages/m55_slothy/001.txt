@@ -1,0 +1,47 @@
+DOCUMENT: m55_slothy.pdf PAGE: 1/46
+
+Fast and Clean: Auditable high-performance
+assembly via constraint solving
+Amin Abdulrahman1,2, Hanno Becker3
+,
+Matthias J. Kannwischer4 and Fabien Klein5
+1 Ruhr University Bochum, Germany
+amin.abdulrahman@mpi-sp.org
+2 Max Planck Institute for Security and Privacy, Bochum, Germany
+3 Automated Reasoning Group, Amazon Web Services, Cambridge, United Kingdom‡
+beckphan@amazon.co.uk
+4 Quantum Safe Migration Center, Chelpis Quantum Tech, Taipei, Taiwan§
+matthias@kannwischer.eu
+5 Arm Limited
+fabien.klein@arm.com
+Abstract. Handwritten assembly is a widely used tool in the development of high-
+performance cryptography: By providing full control over instruction selection,
+instruction scheduling, and register allocation, highest performance can be unlocked.
+On the flip side, developing handwritten assembly is not only time-consuming, but
+the artifacts produced also tend to be difficult to review and maintain – threatening
+their suitability for use in practice.
+In this work, we present SLOTHY (Super (Lazy) Optimization of Tricky Handwritten
+assemblY), a framework for the automated superoptimization of assembly with
+respect to instruction scheduling, register allocation, and loop optimization (software
+pipelining): With SLOTHY, the developer controls and focuses on algorithm and
+instruction selection, providing a readable “base” implementation in assembly, while
+SLOTHY automatically finds optimal and traceable instruction scheduling and register
+allocation strategies with respect to a model of the target (micro)architecture.
+We demonstrate the flexibility of SLOTHY by instantiating it with models of the
+Cortex-M55, Cortex-M85, Cortex-A55 and Cortex-A72 microarchitectures, imple-
+menting the Armv8.1-M+Helium and AArch64+Neon architectures. We use the
+resulting tools to optimize three workloads: First, for Cortex-M55 and Cortex-M85, a
+radix-4 complex Fast Fourier Transform (FFT) in fixed-point and floating-point arith-
+metic, fundamental in Digital Signal Processing. Second, on Cortex-M55, Cortex-M85,
+Cortex-A55 and Cortex-A72, the instances of the Number Theoretic Transform (NTT)
+underlying CRYSTALS-Kyber and CRYSTALS-Dilithium, two recently announced
+winners of the NIST Post-Quantum Cryptography standardization project. Third,
+for Cortex-A55, the scalar multiplication for the elliptic curve key exchange X25519.
+The SLOTHY-optimized code matches or beats the performance of prior art in all
+cases, while maintaining compactness and readability.
+Keywords: Superoptimization· ConstraintSolving· Cryptography· Post-Quantum
+Cryptography· Armv8.1-M· AArch64· Helium· Neon· Kyber· Dilithium·
+X25519· Fast Fourier Transform· FFT· Number Theoretic Transform· NTT·
+Software Pipelining· Google OR-Tools
+‡This work was done while the author was at Arm Research.
+§This work was done while the author was at Academia Sinica.

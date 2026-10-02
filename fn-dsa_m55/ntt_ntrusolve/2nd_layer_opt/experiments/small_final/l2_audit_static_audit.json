@@ -1,0 +1,23 @@
+{
+  "candidate": "l2_audit",
+  "control": "experiments/small_hot_control/results/l2_audit/runs/pilot-20260915T084443Z",
+  "source_sha256": "7f338f2abb7083dcf26c7ffc838d92b67fc02f990bd12f910abde7308d9a6c81",
+  "old_elf_sha256": "653af91b2ed21a2287e73d60a2f86bf76d2c5897f5ca831bdb91e52985137add",
+  "new_elf_sha256": "18ddc24ef7fb144256cd325ce179d0e79fe56c36bba27e0dc13c525db0d19f64",
+  "changed_byte_addresses": [
+    "0x10000330",
+    "0x10000332",
+    "0x10000333"
+  ],
+  "changes_confined_to_entry_guard_and_small_helper": true,
+  "small_helper_address": "0x10000a60",
+  "all_other_allocated_bytes_addresses_sizes_identical": true,
+  "config_identical": true,
+  "inverse_and_arithmetic_unchanged": true,
+  "ct2_group_and_final_arithmetic_instruction_order_unchanged": true,
+  "small_frame_bytes": 104,
+  "small_p0i_slot": 104,
+  "new_function_calls_divisions_fp_conversions_or_coefficient_stack_spills": false,
+  "formal_constant_time_proof": false,
+  "dynamic_leakage_test": false
+}

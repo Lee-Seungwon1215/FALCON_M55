@@ -1,0 +1,47 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 4/38
+
+4 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+2.2 Saber
+Saber [DKRV20] is a NISTPQC finalist candidate lattice-based key encapsulation mecha-
+nism based on the Module Learning With Rounding (M-LWR) problem. The module is of
+dimension ℓ×ℓ over the ring Rq = Zq[x]/⟨xn + 1⟩, with q= 213 and n= 256. Similar to
+Kyber, the Saber KEM is built on top of a CPA-secure PKE via the CCA-transform a
+la [HHK17]. For algorithmic descriptions of the Saber PKE see Appendix B.
+In CPA-secure key generation and encryption, the rate-determining operations are (ℓ×
+ℓ)×(ℓ×1) matrix-to-vector polynomial multiplications AT
+·sand As′(MatrixVectorMul).
+In decryption, it is the ℓ×1 inner product of polynomials b′T
+·s (InnerProd). There is 1
+MatrixVectorMul in key generation; 1 MatrixVectorMul + 1 InnerProd in encapsulation;
+and 1 MatrixVectorMul + 2 InnerProd in decapsulation, as decapsulation needs a full
+re-encryption.
+Note that Saber’s base ring Z213 is not a field and thus not directly amenable for
+application of the NTT. Accordingly, the specification samples the public matrix A in
+polynomial domain.
+Parameters. The module dimension l, the rounding parameter T, and the secret distribu-
+tion parameter ηvary according to the parameter sets Lightsaber, Saber, and Firesaber
+(respectively targeting the NIST security levels 1, 3, and 5, cf. Table 1).
+2.3 Dilithium
+Dilithium [ABD+20a] is a NISTPQC [NIS] finalist digital signature scheme based on
+the M-SIS (Module Small Integer Solutions) and M-LWE problems. The module is of
+dimension k×ℓ over the ring Rq = Fq[x]/⟨x256 + 1⟩with q= 223
+−213 + 1 = 8380417.
+For algorithmic descriptions see Appendix C. The core operation of key generation,
+signature generation, and signature verification is the (k×ℓ) ×(ℓ×1) matrix-to-vector
+polynomial multiplications As1, Ay, and Az (resp.) (MatrixVectorMul). In signature
+generation, this operation is particularly time-consuming since it is executed in a loop.
+Similar to Kyber, Dilithium builds a (complete) NTT into the specification, i.e., A is
+sampled in NTT domain using the XOF SHAKE256.
+Table 2: Dilithium parameter sets
+Name NIST level (k,ℓ) η β ω |pk| |sig| exp. iterations
+Dilithium2 2 (4,4) 2 78 80 1312 2420 4.25
+Dilithium3 3 (6,5) 4 196 55 1952 3293 5.1
+Dilithium4 5 (8,7) 2 120 75 2592 4595 3.85
+Parameters. Dilithium has parameter sets Dilithium2, Dilithium3, and Dilithium5
+targeting the corresponding NIST security levels. For all parameter sets γ1 = (q−1)/16 =
+523776 and γ2 = γ1/2 = 261888. For each parameter set, the remaining parameters are
+given in Table 2. The parameters consist of the matrix dimension (k,ℓ), the sampling
+bounds of the secret η, and the rejection thresholds β and ω.
+2.4 Modular arithmetic
+In this section, we establish some basic facts and notation about modular arithmetic which
+we will use throughout the paper.

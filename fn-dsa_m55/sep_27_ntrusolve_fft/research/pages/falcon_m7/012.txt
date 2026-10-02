@@ -1,0 +1,52 @@
+DOCUMENT: falcon_m7.pdf PAGE: 12/22
+
+12 James Howe and Bas Westerbaan
+Table 8: Profiling Falcon on the ARM Cortex M7 using the STM32F767ZI
+NUCLEO-144 development board. All values reported are in KCycles.
+Key Generation 512-FPU 512-EMU Vs. 1024-FPU 1024-EMU Vs.
+total ntru gen 77,095 (99%) 127,828 (100%) 1.66x 186,120 (100%) 332,876 (100%) 1.79x
+—poly small mkgauss 34,733 (45%) 34,805 (27%) 1.00x 56,509 (30%) 57,033 (17%) 1.00x
+—poly small sqnorm 28 (0.04%) 29 (0.02%) 1.04x 94 (0.05%) 94 (0.03%) 1.00x
+—poly small to fp 40 (0.05%) 306 (0.24%) 7.65x 132 (0.07%) 989 (0.30%) 7.50x
+—fft multiply 609 (0.80%) 10,496 (8%) 17.2x 2,277 (1%) 38,681 (12%) 17.00x
+—poly invnorm2 fft 110 (0.14%) 1,446 (1%) 13.2x 421 (0.22%) 4,777 (1%) 11.00x
+—poly adj fft 23 (0.03%) 12 (0.01%) 0.52x 70 (0.04%) 43 (0.01%) 0.60x
+—poly mulconst 69 (0.09%) 354 (0.28%) 5.13x 218 (0.12%) 1,168 (0.35%) 5.36x
+—poly mul autoadj fft 63 (0.08%) 383 (0.30%) 6.08x 237 (0.13%) 1272 (0.38%) 5.37x
+—ifft multiply 683 (0.90%) 10,666 (8%) 15.6x 2,544 (1.36%) 39,071 (12%) 15.4x
+—bnorm/fpr add 14 (0.02%) 184 (0.14%) 13.1x 35 (0.02%) 424 (0.13%) 12.1x
+—compute public key 383 (0.49%) 383 (0.30%) 1.00x 887 (0.50%) 887 (0.27%) 1.00x
+—solve ntru: 40,337 (52%) 68,764 (54%) 1.70x 122,696 (66%) 188,438 (56%) 1.54x
+encode priv key 26 (0.03%) 26 (0.02%) 1.00x 52 (0.03%) 52 (0.02%) 1.00x
+recomp sk and encode 384 (0.50%) 385 (0.3%) 1.00x 815 (0.44%) 815 (0.24%) 1.00x
+Signing Dynamic 512-FPU 512-EMU Vs. 1024-FPU 1024-EMU Vs.
+sign start 4 (0.08%) 4 (0.01%) 1.00x 4 (0.04%) 4 (0.01%) 1.00x
+decode/comp priv key 488 (11%) 489 (1.69%) 1.00x 1,040 (11%) 1,040 (2%) 1.00x
+hash mess to point <1 (0.01%) <1 (0.00%) 0.10x <1 (0.00%) <1 (0.00%) 1.00x
+signature encode 11 (0.26%) 11 (0.04%) 1.00x 22 (0.24%) 22 (0.03%) 1.00x
+convert basis to fft 241 (6%) 3,885 (13%) 16.1x 549 (6%) 8,751 (14%) 15.9x
+comp gram matrix 67 (2%) 628 (2%) 9.37x 167 (2%) 1,290 (2%) 7.72x
+apply lattice basis 89 (2%) 1,250 (4%) 14.0x 207 (2%) 2,756 (4%) 13.3x
+ffsampling 2,814 (66%) 16,190 (56%) 5.75x 6,009 (65%) 35,324 (56%) 5.88x
+recomp matrix basis 258 (6%) 3,900 (14%) 15.1x 586 (6%) 8,787 (14%) 15.0x
+get lattice point 314 (7%) 2,527 (9%) 8.05x 706 (8%) 5,564 (8%) 7.88x
+Signing Tree 512-FPU 512-EMU Vs. 1024-FPU 1024-EMU Vs.
+sign start 4 (0.08%) 4 (0.03%) 1.00x 4 (0.07%) 4 (0.07%) 1.0x
+get deg/check params <1 (0.00%) <1 (0.00%) 1.00x <1 (0.00%) <1 (0.00%) 1.0x
+hash mess to point <1 (0.01%) <1 (0.00%) 1.00x <1 (0.00%) <1 (0.00%) 1.0x
+sig encode 11 (0.46%) 11 (0.09%) 1.00x 22 (0.44%) 22 (0.08%) 1.00x
+apply lattice basis 89 (3.70%) 1,255 (10%) 14.1x 194 (4%) 2,746 (9.87%) 14.1x
+apply ff sampling 1,975 (82%) 9,081 (70%) 4.60x 406 (82%) 4,094 (82%) 10.1x
+get lattice point 314 (13%) 2,527 (20%) 8.05x 706 (14%) 5,564 (14%) 7.88x
+compute signature 135 (6%) 23 (0.18%) 0.17x 272 (5%) 46 (0.17%) 0.17x
+Verifying 512-FPU 512-EMU Vs. 1024-FPU 1024-EMU Vs.
+verf start <1 (0.06%) <1 (0.06%) 1.00x <1 (0.03%) <1 (0.00%) 1.00x
+get degree via pk <1 (0.01%) <1 (0.01%) 1.00x <1 (0.00%) <1 (0.00%) 1.00x
+decode pub key 9 (1.6%) 9 (2%) 1.00x 18 (2%) 18 (2%) 1.00x
+decode sign 12 (2%) 12 (2%) 1.00x 24 (2%) 24 (2%) 1.00x
+hash mess to point 312 (55%) 311 (55%) 1.00x 595 (52%) 595 (52%) 1.00x
+verify sign 231 (41%) 231 (41%) 1.00x 501 (44%) 501 (44%) 1.00x
+Expand Private Key 512-FPU 512-EMU Vs. 1024-FPU 1024-EMU Vs.
+get priv deg <1 (0.00%) <1 (0.00%) 1.00x <1 (0.00%) <1 (0.00%) 1.00x
+decode priv 494 (35%) 494 (4%) 1.00x 1,040 (34%) 1,040 (34%) 1.00x
+expand priv key 905 (65%) 11,281 (96%) 12.5x 2,018 (66%) 25,010 (96%) 12.3x

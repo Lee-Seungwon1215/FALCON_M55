@@ -1,0 +1,80 @@
+DOCUMENT: plantard.pdf PAGE: 9/24
+
+Junhao Huang et al. 9
+Algorithm 10 Improved Plantard multiplication
+Input: Two signed integers a,b∈[−q2α,q2α],q<2l−α−1,q′
+Output: r≡ab(−2−2l) mod q where r∈[−
+q+1
+2 ,
+q
+2 )
+1: r= [[abq′]2l]l + 2α q
+l
+2: return r
+= q−1 mod±22l
+between the original constraint and the moduli adopted in LBC schemes. Besides, all
+of the current state-of-the-art modular arithmetic is implemented with signed integers,
+which can eliminate extra additions of the multiple of q to ensure a positive output of the
+butterfly unit. Considering that the Plantard multiplication proposed by Thomas Plantard
+has the advantage of multiplying a constant (i.e., one multiplication is saved) but only
+supports unsigned integers, we believe that adapting signed integers for this algorithm will
+lead to more efficient modular arithmetic in LBC schemes.
+We start by first introducing a small integer α > 0, which narrows down the range
+of the modulus q from q < 2l
+ϕ to q <2l−α−1 < 2l−α
+ϕ . Based on this tweak, we can then
+replace the original main step r = [[abq′]2l]l + 1 q
+l
+by r = [[abq′]2l]l + 2α q
+l
+. In
+order to adapt signed inputs for this algorithm, we modify the inequality that maintains
+the correctness of this algorithm from 0 <q2l
+−p0q+ab<22l to 0 <q2l+α
+−p0q+ab<22l
+under certain circumstances (see Subsection 3.2 for more details). We will show the
+correctness proof and advantages of the improved algorithm in the following two parts.
+3.2 Proof of the Improved Plantard Multiplication
+Theorem 1 states the correctness of Algorithm 10, and we will give the specific proof below.
+Recently, Yang et al. [YJX24] provided an insightful derivation of the Montgomery type
+algorithms, including the improved Plantard arithmetic. In their work, they identified
+a misuse of the floor and ceiling functions in our approach. Their findings were further
+supported by counterexamples that exposed flaws in the original algorithm. Upon careful
+analysis, we realized that we had inaccurately applied the rounding property of the right-
+shift operation during the initial proof. To rectify this issue, we have made the necessary
+corrections in our proof. The main update we made in the algorithm is to ensure α>0
+instead of α≥0 in the original paper. This update will not affect the correctness of the
+Kyber implementation as we were using α= 3.
+In February 2026, the Apple team identified a subtle discrepancy between mod±q and
+the output range of the improved Plantard multiplication, namely [−
+q+1
+q
+2 ,
+2 ). This output
+range is consistent with the original Plantard multiplication, which contains q+ 1 elements
+when the final conditional subtraction is omitted. However, it differs from the canonical
+definition of mod±q, whose range is [−
+q
+q
+2 ,
+2 ). Consequently, the original equality expression
+r= ab(−2−2n) mod±q is not strictly correct. To address this issue, we replace the equality
+with a modular equivalence and explicitly specify the output range as r≡ab(−2−2l) mod q
+with r∈[−
+q+1
+q
+2 ,
+2 ), and update Algorithm 10 and the proof accordingly.
+Theorem 1 (Correctness). Let q be an odd modulus, l be the minimum word size (power
+of 2 number, e.g., 16, 32, and 64) such that q<2l−α−1, where α>0, then Algorithm 10
+is correct for−q2α ≤a,b≤q2α
+.
+Proof of Theorem 1. ThemainstepofAlgorithm10istocomputer= [[abq′]2l]l + 2α q
+namely:
+   abq′mod±22l
+2l + 2α q
+2l
+   .
+l
+,
+r=

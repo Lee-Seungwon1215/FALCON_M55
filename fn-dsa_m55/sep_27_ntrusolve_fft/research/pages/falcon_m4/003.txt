@@ -1,0 +1,45 @@
+DOCUMENT: falcon_m4.pdf PAGE: 3/18
+
+constant-time code into non-constant-time constructions, in particular by recognizing that
+a variable value is a Boolean in disguise and using it in conditional jumps to shortcut some
+computations. Since some platforms use hidden JIT compilation techniques (e.g. NVIDIA’s
+“project Denver” and subsequent designs), whether constant-time properties are maintained
+can be impossible to verify in practice.
+In our implementation, this means the following:
+– No memory access is performed at a secret-dependent address.
+– No conditional jump uses a secret condition.
+– At the assembly level, we do not use the conditional execution opcode (it). This opcode
+appears to be constant-time in the M4 itself (i.e. the wrapped instructions take the same
+amount of time regardless of whether they are executed or not), but it could plausibly
+be subject to non-constant-time optimizations in larger CPUs (e.g. handling as a condi-
+tional jump with speculative execution based on a prediction on the condition value).
+– Pure computational instructions, including multiplications with a 32-bit or 64-bit out-
+put size, are expected to be constant-time, to the exclusion of division opcodes (udiv,
+sdiv), which we do not use on secret data.
+An important caveat is that we do not try to achieve any kind of protection against power
+analysis or fault attacks. Such attacks can be (potentially) mitigated only through a careful
+analysis taking into account the physical characteristics of the target device, something which
+cannot be done in all generality in portable software. The only side-channel attacks that we
+attempt to thwart in our implementation are timing attacks.
+Usability Stance. Our implementation is meant to be production-level; in other words,
+it should be usable in various applications right away. It is optimized for an ARM Cortex-M4,
+but it should run “as is” on larger ARMv7 platforms, possibly using more complex operat-
+ing systems than what are typically encountered on microcontrollers. This has a few conse-
+quences:
+– The code is reentrant and thread-safe. No modifiable global data is used.
+– The register r9 is not used by any of our assembly routines.
+– Some effort has been made toward code compacity, e.g. by not fully unrolling time-
+critical loops.
+The register r9 is also called the “static base” in the standard ARM application binary
+interface (dubbed AAPCS[2]). It is nominally reserved for any purposes (that the target plat-
+form must document). In practice, that register may be used either to access thread-local stor-
+age, or to support position-independent code. In the latter case, a given platform might im-
+plement asynchronous interruptions as a signal delivery, and the signal handler may then rely
+on the value of r9 to be correct. The operating system would not necessarily take care, or
+even be able, to set the register to the correct value before entering the signal handler; it has
+been reported that very early versions of iOS were operating in that way. If some routine tem-
+porarily modifies r9 and a signal is delivered just at that moment, then execution may derail,
+possibly in ways that can be leveraged by attackers to gain control of the system. This failure
+mode would be hard to detect in unit tests. Fortunately, most operating systems, and in par-
+ticular bare-metal microcontrollers (with no operating system at all), do not have such strict
+3

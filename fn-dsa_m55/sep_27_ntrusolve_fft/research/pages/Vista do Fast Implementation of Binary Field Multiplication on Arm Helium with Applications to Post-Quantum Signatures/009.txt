@@ -1,0 +1,49 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 9/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+of CH(X) r(x) and h(x) the overflow terms that must be reduced once more. Interpret-
+ing CH as eight 16-bit coefficients, the product cH(x) r (x) is computed using the same
+even/odd lane decomposition as in the multiplication step: / = VMULLB(CH, mod) and
+h = VMULLT(CH, mod), where mod encodes the polynomial r(x).
+The high part h corresponds to terms multiplied by x'° and must be shifted right by
+one 16-bit lane before accumulation. This shift is implemented without an explicit instruc-
+tion: h is stored in an aligned buffer at offset 1 via vst 1 (&v|1], h) and reloaded from offset
+O via v1d1(&v(0]), which places a zero in lane O and shifts the remaining lanes by one po-
+sition. The shifted value is XOR-ed into l, and the residual high word at v[8] is reduced by a
+second multiplication by mod and XOR-ed in. The final reduced result is c(x) mod f(x) =
+cL(x) @ VMULLB(CH, mod) @ shift(VMULLT(cH, mod)) # VMULLB(v[8], mod). For
+GF(22), GF(2'2), and GF(22°), the constants mod = 0x0087, 0x0087, and
+0×0425 are used, respectively; the corresponding algorithms are given in Algorithms 12,
+13, and 14.
+We also evaluated a mixed implementation that combines Helium vector instruc-
+tions with scalar Arm instructions for parts of the reduction, motivated by the fact that
+the Cortex-M85 maintains separate pipelines for vector and scalar operations, which in
+principle allows overlap between the two. However, in practice, the fully vectorized
+implementation outperformed the mixed variant across all field sizes, as the overhead
+of moving data between the scalar and vector register files and the synchronization cost
+between the two pipelines exceeded any benefit from the attempted interleaving. As a
+result, all reductions in the final implementation use only Helium vector instructions.
+5. Application to post-quantum cryptography
+The field arithmetic primitives described in the previous section are evaluated in the context
+of two post-quantum signature schemes that rely heavily on binary field multiplication:
+FAEST and AlMer. Both schemes require arithmetic over GF(2128), GF(2192), and
+GF(2256), and are described below.
+5.1. FAEST
+FAEST [Baum et al. 2025] is a post-quantum digital signature scheme submitted to the
+NIST additional signature standardization process [NIST 2022]. Its security relies solely
+on the one-wayness of AES: the secret signing key is an AES key sk, and the public
+verification key is a pair of plaintext-ciphertext (x, y) such that Esk(x) = y. A sig-
+nature is a non-interactive zero-knowledge argument of knowledge of sk, constructed
+by combining the VOLE-in-the-Head (VOLEitH) paradigm with the QuickSilver proof
+system [Baum et al. 2023], made non-interactive via the Fiat-Shamir transform. The
+dominant computational cost of FAEST arises from evaluating the AES circuit inside the
+QuickSilver proof: both the S-box inversion and the MixColumns step require multipli-
+cations in GF(28), which are then lifted to the extension field GF(2') used by the VOLE
+correlations so that the proof system can verify them. Key and signature sizes for all
+parameter sets are listed in Table 1.
+5.2. AIMer
+AIMer [Ha et al. 2024] is a post-quantum digital signature scheme standardized by the
+Korean post-quantum competition KpqC in January 2025 [Firmin 2025]. Its security is
+9

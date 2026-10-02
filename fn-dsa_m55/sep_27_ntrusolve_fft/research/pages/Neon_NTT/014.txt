@@ -1,0 +1,72 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 14/38
+
+14 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 12 Montgomery multiplication with doubling.
+Require: N odd modulus, R= 2n >N
+Require: a,b∈Z representative mod N with |a|,|b|<R.
+Require: Precomputed T= N−1
+∈ZR.
+Ensure: mont+
+N(a,b) representative of abR−1 ∈ZN satisfying |mont+
+N(a,b)|≤|a||b|
+2n + N
+2.
+1: sqdmulh z, a, b
+2: mul k, a, bT mod± R
+3: sqdmulh c, k, N
+4: shsub z, z, c
+Old Algorithm 11 Barrett Reduction
+(Vectorized) [NG21, Algorithm 13]
+Algorithm 11 Barrett Reduction for Neon
+Require: Odd modulus N, i bits long.
+Require: Radix R= 216 or 232
+Require: Rounding constant r = 2i−3
+.
+Require: Multiplier V= ⌈2i−2R/N⌋
+Ensure: z≡B (mod N),−N
+2 ≤z< N
+2
+1: smull T0, B, V
+2: smull2 T1, B, V
+3: uzp2 T0, T0, T1
+4: add T1, r, T0
+5: sshr T1, T1, #(i−2)
+6: mls z, T1, N
+Require: Odd modulus N, i bits long.
+Require: Radix R= 216 or 232
+Require: Multiplier V= ⌈2i−2R/N⌋
+Ensure: z≡B (mod N),−N
+2 ≤z< N
+2
+1: sqdmulh T0, B, V
+2: srshr T1, T1, #(i−1)
+3: mls z, T1, N
+sqdmulh = doubling multiplication, high half
+sshr = signed shift right
+srshr = signed shift right with rounding
+Note: N,V can be one lane of a Neon register
+3.2.3 Montgomery multiplication via doubling
+Ordinary Montgomery multiplication does not lend itself to a straightforward implementa-
+tion in Neon because Neon does not oﬀer a multiply-high instruction. This is the reason
+why e.g. [NG21] use the long multiply UMULL to implement Montgomery multiplication.
+We propose to use the doubling multiply-high instruction QDMULH instead to implement
+Algorithm 7. Moreover, the final step mont±
+N(z) ← z−c
+2 can be implemented via the
+halving subtract instruction SHSUB.
+The resulting Neon sequence is shown in Algorithm 12. It provides a 5-instruction
+sequence for Montgomery multiplication of two unknown values, and a 4-instruction
+sequence if one factor is a constant.
+3.2.4 Montgomery multiplication via rounding
+It is natural to try to merge the multiply-high and subtract step in Montgomery multipli-
+cation to shorten the modular multiplication sequence further. However, there is no plain
+multiply-high-accumulate instruction. Instead, MVE, SVE2 and the Armv8.1-A extension
+to Neon provide a multiply-high-accumulate-with-rounding instruction, which lends itself
+to an implementation of Algorithm 8 as shown in Algorithm 13. Like Barrett multiplication,
+this provides a 3-instruction sequence for modular multiplication with a known constant;
+unlike Barrett multiplication, however, it also applies to two unknown factors, provided
+one of them is known to be odd. While this is a strong condition, one has some leverage to
+reason about parity since the result of Algorithm 13 is always even. Note also that since
+sqrdmlah does not perform halving, Algorithm 13 computes a representative of 2abR−1
+instead of abR−1
+.

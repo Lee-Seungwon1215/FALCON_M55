@@ -1,0 +1,51 @@
+DOCUMENT: m55_slothy.pdf PAGE: 16/46
+
+16 Fast and Clean: Auditable high-performance assembly via constraint solving
+we model maxgaps as an undetermined integer variable that is part of the model, and
+mark its minimization as the objective of the underlying solver, if supported.
+Our experiments with CP-SAT did not render either approach generally better than
+the other: For optimization problems of small or medium complexity, modelling stalls
+“internally” in the model appears to work well and lead to the optimal solution faster
+than an “external” binary search. For highly complex models, however, adding further
+dynamics through the flexible maxgaps could sometimes render the optimization problem
+infeasible (that is, we would abort the solver prior to having found a solution), while the
+solver could make progress using an “external” binary search.
+4.8 Performance/µArch constraints: Instruction Overlapping
+Next, we describe how we model functional units and instruction overlapping. As before,
+we make the simplifying assumption that the target microarchitecture is single-issue and
+in-order, leaving generalizations to Section 4.9 and Section 4.10 below.
+Instruction overlapping is modeled by assigning to each instruction I a functional
+unit Unit(I) (depending on the target microarchitecture) and a usage time (in cycles)
+block(I) capturing for how long I keeps Unit(I) busy. We then demand that for any
+fixed functional unit U, the set of intervals {[I.pos,I.pos + block(I)) |Unit(I) = U}I
+is non-overlapping. This is a straightforward instance of the job shop problem. If an
+instruction may run on multiple functional units, we create Boolean variables tracking
+where they actually run, and condition the usage intervals accordingly — that is, we
+reduce to a flexible job shop problem. On the Cortex-M55 processor, an example for an
+instruction that can run on multiple functional units is the double vector-to-register move
+VMOV Ra, Rb, Qn[i], Qn[j].
+We highlight that the latency of an instruction may be smaller than its usage time: On
+Cortex-M55, for example, many vector instructions (e.g. VADD) occupy their functional
+units for 2 cycles, but have 1 cycle latency: This is possible since instruction overlapping
+supports data dependencies between the overlapping instructions.
+4.9 Superscalar microarchitectures
+We have so far described our model for single-issue microarchitectures, using a single integer
+variable I.pos for an instruction’s position in program order as well as its (ideal) issue
+cycle. For in-order, superscalar microarchitectures, we need two separate, yet closely related
+variables: In addition to I.pos, keeping its meaning as the position of I in program order,
+we introduce another variable I.cyc for the issue cycle. If N is the maximum number of
+instructions issued per cycle, we relate I.pos and I.cyc via I.cyc= ⌊I.pos
+N ⌋. Where
+such ideal issue-rate cannot be achieved, gaps will be left in the program order assignments,
+as described in Section 4.7. In particular, we note that N may be strictly larger than the
+issue-rate of the target microarchitecture — the true limit to multi-issuing is enforced
+through the configuration of functional units (Section 4.8) and microarchitecture-specific
+constraints capturing which instructions may be issued in the same cycle.
+4.10 Out-of-order microarchitectures
+A typical out-of-order CPU performs register renaming and instruction reordering in
+hardware. Those also being the core tasks of SLOTHY, one might wonder whether using
+SLOTHY for out-of-order CPUs is fruitful. Somewhat surprisingly, we found (and show
+later) that SLOTHY can be useful for some out-of-order CPUs as well, as we explain now.
+First, the amount of renaming and reordering a given out-of-order CPU is capable of is
+bounded, and a trade-off between performance and hardware cost: The number of physical
+registers available for renaming is fixed, as is the width of the reordering window and the

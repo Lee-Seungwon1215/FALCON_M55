@@ -1,0 +1,46 @@
+DOCUMENT: falcon_m7.pdf PAGE: 18/22
+
+18 James Howe and Bas Westerbaan
+The FPU does not have any effect on Falcon’s verification operation, this is
+essentially because it does not require floating-point operations and is a relatively
+computationally light procedure.
+In Section 5, we find constant time issues with Falcon on four different STM32
+development boards using the ARM Cortex M7 and the Raspberry Pi 3 using the
+ARM Cortex A53. The issues we found on the STM32 development boards were
+where the devices’ dedicated floating-point unit was used (which can significantly
+speed-up Falcon), specifically the double-precision functions, were all shown to
+be non-constant-time. Specifically analysing the double-precision addition, we
+discovered the size of the significand influenced the runtime of this function.
+We further investigated constant timeness on the Raspberry Pi 3, which uses
+the ARM Cortex A53, where we also found timing issues when casting from a
+double to an int64_t, and when implemented in LLVM, it is not constant time
+and leaks the sign of the value.
+We reported these issues and our proposed fix to the Falcon team, but we
+did not investigate how to exploit this for a timing attack.
+Overall, this research shows that when implementing Falcon the platform
+and/or situation it is used in should play a major consideration. At the very
+least, the processor should be checked for constant timeness if the FPU is being
+used. A recent Cloudflare blog10 took note of our results and is currently only
+considering uses for Falcon in an offline manner, as they “feel it’s too early to
+deploy Falcon where the timing of signature minting can be measured”.
+[AAC+22] References
+[AAAS+19] G. Alagic, G. Alagic, J. Alperin-Sheriff, D. Apon, D. Cooper, Q. Dang,
+Y.-K. Liu, C. Miller, D. Moody, R. Peralta, et al. Status report on
+the first round of the NIST post-quantum cryptography standardization
+process. US Department of Commerce, National Institute of Standards
+and Technology …, 2019 (cited on page 1).
+G. Alagic, D. Apon, D. Cooper, Q. Dang, T. Dang, J. Kelsey, J. Lichtinger,
+C. Miller, D. Moody, R. Peralta, et al. Status Report on the Third
+Round of the NIST Post-Quantum Cryptography Standardization Pro-
+cess. Technical report, National Institute of Standards and Technology
+Gaithersburg, MD, 2022 (cited on pages 2, 5, 6).
+G. Alagic, J. Alperin-Sheriff, D. Apon, D. Cooper, Q. Dang, J. Kelsey,
+Y.-K. Liu, C. Miller, D. Moody, R. Peralta, et al. Status Report on the
+Second Round of the NIST Post-Quantum Cryptography Standardiza-
+tion Process. NIST, Tech. Rep., July, 2020 (cited on pages 1, 2).
+ARM. ARM Cortex-M7 Processor: Technical Reference Manual. Re-
+vision r1p2, 2018. https : / / developer . arm . com / documentation /
+ddi0489/f/programmers- model/instruction- set- summary/binary-
+compatibility-with-other-cortex-processors (cited on page 2).
+10 https://blog.cloudflare.com/nist-post-quantum-surprise/
+[AASA+20] [ARM18] 

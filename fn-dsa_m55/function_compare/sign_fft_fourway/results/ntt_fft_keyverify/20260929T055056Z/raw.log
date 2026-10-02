@@ -1,0 +1,696 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 49585
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :49585 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+compare-sections
+tbreak *0x10013048
+hbreak *0x100162d8
+set $early_fault_bp = $bpnum
+jump *0x100162ed
+if $pc != 0x10013048
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmps5gtxde2/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10012ff8
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x100162d8
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+if *(unsigned int*)0xe000ed28 != 0
+echo [[EXTENDED-FAULT-DIAGNOSTIC]]\n
+echo VTOR_FPCCR_FPCAR:\n
+x/wx 0xe000ed08
+x/3wx 0xe000ef34
+echo VECTOR_WORDS:\n
+x/16wx 0x10000000
+echo MEMSYSCTL:\n
+x/24wx 0xe001e000
+echo PSP_EXTENDED:\n
+x/96wx $psp
+echo MSP_EXTENDED:\n
+x/48wx $msp
+end
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.276064
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 49585
+Info : Listening on port 49585 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/49585
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+KV_HW cpu=800000000 fpscr=00040000 ccr=00000611 tcm=00000099 calls=100 warmups=3 kg_irq=ON verify_irq=OFF
+KV_TIMER_CHECK result=PASS systick64=80000248 dwt32=80000656 error=-408
+KV_SAMPLE op=keygen degree=512 index=0 cycles=52791399
+KV_SAMPLE op=keygen degree=512 index=1 cycles=73117485
+KV_SAMPLE op=keygen degree=512 index=2 cycles=74721256
+KV_SAMPLE op=keygen degree=512 index=3 cycles=50484074
+KV_SAMPLE op=keygen degree=512 index=4 cycles=51320381
+KV_SAMPLE op=keygen degree=512 index=5 cycles=48992238
+KV_SAMPLE op=keygen degree=512 index=6 cycles=78479718
+KV_SAMPLE op=keygen degree=512 index=7 cycles=49356739
+KV_SAMPLE op=keygen degree=512 index=8 cycles=54707697
+KV_SAMPLE op=keygen degree=512 index=9 cycles=51553441
+KV_SAMPLE op=keygen degree=512 index=10 cycles=47572664
+KV_SAMPLE op=keygen degree=512 index=11 cycles=49356510
+KV_SAMPLE op=keygen degree=512 index=12 cycles=54706887
+KV_SAMPLE op=keygen degree=512 index=13 cycles=50084362
+KV_SAMPLE op=keygen degree=512 index=14 cycles=54706769
+KV_SAMPLE op=keygen degree=512 index=15 cycles=47573134
+KV_SAMPLE op=keygen degree=512 index=16 cycles=116098110
+KV_SAMPLE op=keygen degree=512 index=17 cycles=52195201
+KV_SAMPLE op=keygen degree=512 index=18 cycles=61309409
+KV_SAMPLE op=keygen degree=512 index=19 cycles=49536661
+KV_SAMPLE op=keygen degree=512 index=20 cycles=47572554
+KV_SAMPLE op=keygen degree=512 index=21 cycles=52560042
+KV_SAMPLE op=keygen degree=512 index=22 cycles=52559583
+KV_SAMPLE op=keygen degree=512 index=23 cycles=47572662
+KV_SAMPLE op=keygen degree=512 index=24 cycles=73686987
+KV_SAMPLE op=keygen degree=512 index=25 cycles=55435364
+KV_SAMPLE op=keygen degree=512 index=26 cycles=58834385
+KV_SAMPLE op=keygen degree=512 index=27 cycles=125087858
+KV_SAMPLE op=keygen degree=512 index=28 cycles=52560273
+KV_SAMPLE op=keygen degree=512 index=29 cycles=99561133
+KV_SAMPLE op=keygen degree=512 index=30 cycles=49720325
+KV_SAMPLE op=keygen degree=512 index=31 cycles=135980480
+KV_SAMPLE op=keygen degree=512 index=32 cycles=47936358
+KV_SAMPLE op=keygen degree=512 index=33 cycles=86595179
+KV_SAMPLE op=keygen degree=512 index=34 cycles=129288982
+KV_SAMPLE op=keygen degree=512 index=35 cycles=82830544
+KV_SAMPLE op=keygen degree=512 index=36 cycles=90924875
+KV_SAMPLE op=keygen degree=512 index=37 cycles=70074397
+KV_SAMPLE op=keygen degree=512 index=38 cycles=103136284
+KV_SAMPLE op=keygen degree=512 index=39 cycles=47936943
+KV_SAMPLE op=keygen degree=512 index=40 cycles=54757824
+KV_SAMPLE op=keygen degree=512 index=41 cycles=50411696
+KV_SAMPLE op=keygen degree=512 index=42 cycles=69790735
+KV_SAMPLE op=keygen degree=512 index=43 cycles=47572783
+KV_SAMPLE op=keygen degree=512 index=44 cycles=47937054
+KV_SAMPLE op=keygen degree=512 index=45 cycles=47573012
+KV_SAMPLE op=keygen degree=512 index=46 cycles=48992354
+KV_SAMPLE op=keygen degree=512 index=47 cycles=61130430
+KV_SAMPLE op=keygen degree=512 index=48 cycles=50776431
+KV_SAMPLE op=keygen degree=512 index=49 cycles=47936356
+KV_SAMPLE op=keygen degree=512 index=50 cycles=54707400
+KV_SAMPLE op=keygen degree=512 index=51 cycles=52560625
+KV_SAMPLE op=keygen degree=512 index=52 cycles=61164586
+KV_SAMPLE op=keygen degree=512 index=53 cycles=51141213
+KV_SAMPLE op=keygen degree=512 index=54 cycles=49537121
+KV_SAMPLE op=keygen degree=512 index=55 cycles=68313379
+KV_SAMPLE op=keygen degree=512 index=56 cycles=63835334
+KV_SAMPLE op=keygen degree=512 index=57 cycles=59295646
+KV_SAMPLE op=keygen degree=512 index=58 cycles=64176733
+KV_SAMPLE op=keygen degree=512 index=59 cycles=47936247
+KV_SAMPLE op=keygen degree=512 index=60 cycles=52559350
+KV_SAMPLE op=keygen degree=512 index=61 cycles=121233150
+KV_SAMPLE op=keygen degree=512 index=62 cycles=90585026
+KV_SAMPLE op=keygen degree=512 index=63 cycles=48664213
+KV_SAMPLE op=keygen degree=512 index=64 cycles=72983557
+KV_SAMPLE op=keygen degree=512 index=65 cycles=89640596
+KV_SAMPLE op=keygen degree=512 index=66 cycles=55121282
+KV_SAMPLE op=keygen degree=512 index=67 cycles=53651239
+KV_SAMPLE op=keygen degree=512 index=68 cycles=47936935
+KV_SAMPLE op=keygen degree=512 index=69 cycles=54175375
+KV_SAMPLE op=keygen degree=512 index=70 cycles=59709345
+KV_SAMPLE op=keygen degree=512 index=71 cycles=57598176
+KV_SAMPLE op=keygen degree=512 index=72 cycles=50775849
+KV_SAMPLE op=keygen degree=512 index=73 cycles=49392169
+KV_SAMPLE op=keygen degree=512 index=74 cycles=53979037
+KV_SAMPLE op=keygen degree=512 index=75 cycles=48992346
+KV_SAMPLE op=keygen degree=512 index=76 cycles=61541075
+KV_SAMPLE op=keygen degree=512 index=77 cycles=48300168
+KV_SAMPLE op=keygen degree=512 index=78 cycles=86399303
+KV_SAMPLE op=keygen degree=512 index=79 cycles=53668994
+KV_SAMPLE op=keygen degree=512 index=80 cycles=48665022
+KV_SAMPLE op=keygen degree=512 index=81 cycles=55435592
+KV_SAMPLE op=keygen degree=512 index=82 cycles=57562119
+KV_SAMPLE op=keygen degree=512 index=83 cycles=47572780
+KV_SAMPLE op=keygen degree=512 index=84 cycles=47572551
+KV_SAMPLE op=keygen degree=512 index=85 cycles=47937172
+KV_SAMPLE op=keygen degree=512 index=86 cycles=47572899
+KV_SAMPLE op=keygen degree=512 index=87 cycles=101988383
+KV_SAMPLE op=keygen degree=512 index=88 cycles=50412269
+KV_SAMPLE op=keygen degree=512 index=89 cycles=53288054
+KV_SAMPLE op=keygen degree=512 index=90 cycles=54539475
+KV_SAMPLE op=keygen degree=512 index=91 cycles=79213866
+KV_SAMPLE op=keygen degree=512 index=92 cycles=86285460
+KV_SAMPLE op=keygen degree=512 index=93 cycles=115646732
+KV_SAMPLE op=keygen degree=512 index=94 cycles=47571575
+KV_SAMPLE op=keygen degree=512 index=95 cycles=57547583
+KV_SAMPLE op=keygen degree=512 index=96 cycles=69365274
+KV_SAMPLE op=keygen degree=512 index=97 cycles=123275433
+KV_SAMPLE op=keygen degree=512 index=98 cycles=47936476
+KV_SAMPLE op=keygen degree=512 index=99 cycles=47936710
+KV_SUMMARY op=keygen degree=512 calls=100 total=6322298912 median_lo=53668994 median_hi=53979037 min=47571575 max=135980480
+KV_DIGEST op=keygen degree=512 sha3=034e32c18a431b6213d7eb434f1fc25e5a534453b388f9e981fe4b28d0740ce5
+KV_SAMPLE op=verify degree=512 index=0 cycles=308928
+KV_SAMPLE op=verify degree=512 index=1 cycles=308602
+KV_SAMPLE op=verify degree=512 index=2 cycles=323391
+KV_SAMPLE op=verify degree=512 index=3 cycles=308400
+KV_SAMPLE op=verify degree=512 index=4 cycles=308753
+KV_SAMPLE op=verify degree=512 index=5 cycles=323232
+KV_SAMPLE op=verify degree=512 index=6 cycles=308666
+KV_SAMPLE op=verify degree=512 index=7 cycles=308772
+KV_SAMPLE op=verify degree=512 index=8 cycles=308710
+KV_SAMPLE op=verify degree=512 index=9 cycles=323283
+KV_SAMPLE op=verify degree=512 index=10 cycles=308632
+KV_SAMPLE op=verify degree=512 index=11 cycles=323427
+KV_SAMPLE op=verify degree=512 index=12 cycles=308667
+KV_SAMPLE op=verify degree=512 index=13 cycles=308644
+KV_SAMPLE op=verify degree=512 index=14 cycles=323331
+KV_SAMPLE op=verify degree=512 index=15 cycles=323350
+KV_SAMPLE op=verify degree=512 index=16 cycles=308626
+KV_SAMPLE op=verify degree=512 index=17 cycles=323292
+KV_SAMPLE op=verify degree=512 index=18 cycles=308743
+KV_SAMPLE op=verify degree=512 index=19 cycles=323233
+KV_SAMPLE op=verify degree=512 index=20 cycles=323322
+KV_SAMPLE op=verify degree=512 index=21 cycles=323349
+KV_SAMPLE op=verify degree=512 index=22 cycles=323401
+KV_SAMPLE op=verify degree=512 index=23 cycles=308605
+KV_SAMPLE op=verify degree=512 index=24 cycles=308837
+KV_SAMPLE op=verify degree=512 index=25 cycles=308761
+KV_SAMPLE op=verify degree=512 index=26 cycles=308796
+KV_SAMPLE op=verify degree=512 index=27 cycles=308847
+KV_SAMPLE op=verify degree=512 index=28 cycles=323212
+KV_SAMPLE op=verify degree=512 index=29 cycles=323435
+KV_SAMPLE op=verify degree=512 index=30 cycles=323406
+KV_SAMPLE op=verify degree=512 index=31 cycles=323279
+KV_SAMPLE op=verify degree=512 index=32 cycles=308764
+KV_SAMPLE op=verify degree=512 index=33 cycles=323392
+KV_SAMPLE op=verify degree=512 index=34 cycles=323270
+KV_SAMPLE op=verify degree=512 index=35 cycles=323310
+KV_SAMPLE op=verify degree=512 index=36 cycles=323402
+KV_SAMPLE op=verify degree=512 index=37 cycles=308844
+KV_SAMPLE op=verify degree=512 index=38 cycles=323421
+KV_SAMPLE op=verify degree=512 index=39 cycles=308492
+KV_SAMPLE op=verify degree=512 index=40 cycles=308616
+KV_SAMPLE op=verify degree=512 index=41 cycles=308635
+KV_SAMPLE op=verify degree=512 index=42 cycles=308814
+KV_SAMPLE op=verify degree=512 index=43 cycles=323412
+KV_SAMPLE op=verify degree=512 index=44 cycles=308755
+KV_SAMPLE op=verify degree=512 index=45 cycles=323382
+KV_SAMPLE op=verify degree=512 index=46 cycles=323526
+KV_SAMPLE op=verify degree=512 index=47 cycles=323195
+KV_SAMPLE op=verify degree=512 index=48 cycles=323369
+KV_SAMPLE op=verify degree=512 index=49 cycles=323404
+KV_SAMPLE op=verify degree=512 index=50 cycles=323322
+KV_SAMPLE op=verify degree=512 index=51 cycles=323486
+KV_SAMPLE op=verify degree=512 index=52 cycles=323295
+KV_SAMPLE op=verify degree=512 index=53 cycles=323310
+KV_SAMPLE op=verify degree=512 index=54 cycles=323633
+KV_SAMPLE op=verify degree=512 index=55 cycles=323306
+KV_SAMPLE op=verify degree=512 index=56 cycles=323463
+KV_SAMPLE op=verify degree=512 index=57 cycles=308554
+KV_SAMPLE op=verify degree=512 index=58 cycles=308755
+KV_SAMPLE op=verify degree=512 index=59 cycles=323331
+KV_SAMPLE op=verify degree=512 index=60 cycles=323355
+KV_SAMPLE op=verify degree=512 index=61 cycles=323426
+KV_SAMPLE op=verify degree=512 index=62 cycles=308673
+KV_SAMPLE op=verify degree=512 index=63 cycles=308759
+KV_SAMPLE op=verify degree=512 index=64 cycles=308502
+KV_SAMPLE op=verify degree=512 index=65 cycles=323423
+KV_SAMPLE op=verify degree=512 index=66 cycles=323470
+KV_SAMPLE op=verify degree=512 index=67 cycles=323249
+KV_SAMPLE op=verify degree=512 index=68 cycles=323346
+KV_SAMPLE op=verify degree=512 index=69 cycles=323369
+KV_SAMPLE op=verify degree=512 index=70 cycles=323441
+KV_SAMPLE op=verify degree=512 index=71 cycles=323395
+KV_SAMPLE op=verify degree=512 index=72 cycles=323486
+KV_SAMPLE op=verify degree=512 index=73 cycles=308760
+KV_SAMPLE op=verify degree=512 index=74 cycles=323208
+KV_SAMPLE op=verify degree=512 index=75 cycles=308697
+KV_SAMPLE op=verify degree=512 index=76 cycles=323379
+KV_SAMPLE op=verify degree=512 index=77 cycles=323398
+KV_SAMPLE op=verify degree=512 index=78 cycles=323272
+KV_SAMPLE op=verify degree=512 index=79 cycles=323594
+KV_SAMPLE op=verify degree=512 index=80 cycles=323283
+KV_SAMPLE op=verify degree=512 index=81 cycles=323386
+KV_SAMPLE op=verify degree=512 index=82 cycles=323268
+KV_SAMPLE op=verify degree=512 index=83 cycles=308614
+KV_SAMPLE op=verify degree=512 index=84 cycles=308648
+KV_SAMPLE op=verify degree=512 index=85 cycles=323348
+KV_SAMPLE op=verify degree=512 index=86 cycles=308793
+KV_SAMPLE op=verify degree=512 index=87 cycles=323242
+KV_SAMPLE op=verify degree=512 index=88 cycles=323414
+KV_SAMPLE op=verify degree=512 index=89 cycles=323423
+KV_SAMPLE op=verify degree=512 index=90 cycles=308748
+KV_SAMPLE op=verify degree=512 index=91 cycles=308758
+KV_SAMPLE op=verify degree=512 index=92 cycles=308737
+KV_SAMPLE op=verify degree=512 index=93 cycles=323431
+KV_SAMPLE op=verify degree=512 index=94 cycles=323688
+KV_SAMPLE op=verify degree=512 index=95 cycles=323340
+KV_SAMPLE op=verify degree=512 index=96 cycles=308701
+KV_SAMPLE op=verify degree=512 index=97 cycles=323298
+KV_SAMPLE op=verify degree=512 index=98 cycles=323309
+KV_SAMPLE op=verify degree=512 index=99 cycles=323470
+KV_SUMMARY op=verify degree=512 calls=100 total=31779491 median_lo=323283 median_hi=323283 min=308400 max=323688
+KV_DIGEST op=verify degree=512 sha3=bca8f6d23139099846d5879570fed377dfb4828a833b9e3d41ee5a62e59cd772
+KV_SAMPLE op=keygen degree=1024 index=0 cycles=406874843
+KV_SAMPLE op=keygen degree=1024 index=1 cycles=224415485
+KV_SAMPLE op=keygen degree=1024 index=2 cycles=294963945
+KV_SAMPLE op=keygen degree=1024 index=3 cycles=195901263
+KV_SAMPLE op=keygen degree=1024 index=4 cycles=210754522
+KV_SAMPLE op=keygen degree=1024 index=5 cycles=492205834
+KV_SAMPLE op=keygen degree=1024 index=6 cycles=464921230
+KV_SAMPLE op=keygen degree=1024 index=7 cycles=220506996
+KV_SAMPLE op=keygen degree=1024 index=8 cycles=284591774
+KV_SAMPLE op=keygen degree=1024 index=9 cycles=185613577
+KV_SAMPLE op=keygen degree=1024 index=10 cycles=164683819
+KV_SAMPLE op=keygen degree=1024 index=11 cycles=346180338
+KV_SAMPLE op=keygen degree=1024 index=12 cycles=165377564
+KV_SAMPLE op=keygen degree=1024 index=13 cycles=166070913
+KV_SAMPLE op=keygen degree=1024 index=14 cycles=170080093
+KV_SAMPLE op=keygen degree=1024 index=15 cycles=206440361
+KV_SAMPLE op=keygen degree=1024 index=16 cycles=422266172
+KV_SAMPLE op=keygen degree=1024 index=17 cycles=171923929
+KV_SAMPLE op=keygen degree=1024 index=18 cycles=176250533
+KV_SAMPLE op=keygen degree=1024 index=19 cycles=196110586
+KV_SAMPLE op=keygen degree=1024 index=20 cycles=273504475
+KV_SAMPLE op=keygen degree=1024 index=21 cycles=184075220
+KV_SAMPLE op=keygen degree=1024 index=22 cycles=353883608
+KV_SAMPLE op=keygen degree=1024 index=23 cycles=405600302
+KV_SAMPLE op=keygen degree=1024 index=24 cycles=178027838
+KV_SAMPLE op=keygen degree=1024 index=25 cycles=704479770
+KV_SAMPLE op=keygen degree=1024 index=26 cycles=172479724
+KV_SAMPLE op=keygen degree=1024 index=27 cycles=259462677
+KV_SAMPLE op=keygen degree=1024 index=28 cycles=178511607
+KV_SAMPLE op=keygen degree=1024 index=29 cycles=164683918
+KV_SAMPLE op=keygen degree=1024 index=30 cycles=239829496
+KV_SAMPLE op=keygen degree=1024 index=31 cycles=165377165
+KV_SAMPLE op=keygen degree=1024 index=32 cycles=275421992
+KV_SAMPLE op=keygen degree=1024 index=33 cycles=220312923
+KV_SAMPLE op=keygen degree=1024 index=34 cycles=279449300
+KV_SAMPLE op=keygen degree=1024 index=35 cycles=243200409
+KV_SAMPLE op=keygen degree=1024 index=36 cycles=172146214
+KV_SAMPLE op=keygen degree=1024 index=37 cycles=202699137
+KV_SAMPLE op=keygen degree=1024 index=38 cycles=513144343
+KV_SAMPLE op=keygen degree=1024 index=39 cycles=286992540
+KV_SAMPLE op=keygen degree=1024 index=40 cycles=270221245
+KV_SAMPLE op=keygen degree=1024 index=41 cycles=233780274
+KV_SAMPLE op=keygen degree=1024 index=42 cycles=641661068
+KV_SAMPLE op=keygen degree=1024 index=43 cycles=294569215
+KV_SAMPLE op=keygen degree=1024 index=44 cycles=178150581
+KV_SAMPLE op=keygen degree=1024 index=45 cycles=358546207
+KV_SAMPLE op=keygen degree=1024 index=46 cycles=168664500
+KV_SAMPLE op=keygen degree=1024 index=47 cycles=180714501
+KV_SAMPLE op=keygen degree=1024 index=48 cycles=171922157
+KV_SAMPLE op=keygen degree=1024 index=49 cycles=204975403
+KV_SAMPLE op=keygen degree=1024 index=50 cycles=168304068
+KV_SAMPLE op=keygen degree=1024 index=51 cycles=294271769
+KV_SAMPLE op=keygen degree=1024 index=52 cycles=366467968
+KV_SAMPLE op=keygen degree=1024 index=53 cycles=164683817
+KV_SAMPLE op=keygen degree=1024 index=54 cycles=177638778
+KV_SAMPLE op=keygen degree=1024 index=55 cycles=176249859
+KV_SAMPLE op=keygen degree=1024 index=56 cycles=261736577
+KV_SAMPLE op=keygen degree=1024 index=57 cycles=167610247
+KV_SAMPLE op=keygen degree=1024 index=58 cycles=401450359
+KV_SAMPLE op=keygen degree=1024 index=59 cycles=324715788
+KV_SAMPLE op=keygen degree=1024 index=60 cycles=308370612
+KV_SAMPLE op=keygen degree=1024 index=61 cycles=219756842
+KV_SAMPLE op=keygen degree=1024 index=62 cycles=193184531
+KV_SAMPLE op=keygen degree=1024 index=63 cycles=190438284
+KV_SAMPLE op=keygen degree=1024 index=64 cycles=551556705
+KV_SAMPLE op=keygen degree=1024 index=65 cycles=309267388
+KV_SAMPLE op=keygen degree=1024 index=66 cycles=458544925
+KV_SAMPLE op=keygen degree=1024 index=67 cycles=270434465
+KV_SAMPLE op=keygen degree=1024 index=68 cycles=167610442
+KV_SAMPLE op=keygen degree=1024 index=69 cycles=294814638
+KV_SAMPLE op=keygen degree=1024 index=70 cycles=192975640
+KV_SAMPLE op=keygen degree=1024 index=71 cycles=589972429
+KV_SAMPLE op=keygen degree=1024 index=72 cycles=164685008
+KV_SAMPLE op=keygen degree=1024 index=73 cycles=164685113
+KV_SAMPLE op=keygen degree=1024 index=74 cycles=341969257
+KV_SAMPLE op=keygen degree=1024 index=75 cycles=534928021
+KV_SAMPLE op=keygen degree=1024 index=76 cycles=510262003
+KV_SAMPLE op=keygen degree=1024 index=77 cycles=321585745
+KV_SAMPLE op=keygen degree=1024 index=78 cycles=164684808
+KV_SAMPLE op=keygen degree=1024 index=79 cycles=264732153
+KV_SAMPLE op=keygen degree=1024 index=80 cycles=260816988
+KV_SAMPLE op=keygen degree=1024 index=81 cycles=182797781
+KV_SAMPLE op=keygen degree=1024 index=82 cycles=164684911
+KV_SAMPLE op=keygen degree=1024 index=83 cycles=339853251
+KV_SAMPLE op=keygen degree=1024 index=84 cycles=269488302
+KV_SAMPLE op=keygen degree=1024 index=85 cycles=184919233
+KV_SAMPLE op=keygen degree=1024 index=86 cycles=190214338
+KV_SAMPLE op=keygen degree=1024 index=87 cycles=179176279
+KV_SAMPLE op=keygen degree=1024 index=88 cycles=175210388
+KV_SAMPLE op=keygen degree=1024 index=89 cycles=174849546
+KV_SAMPLE op=keygen degree=1024 index=90 cycles=245779944
+KV_SAMPLE op=keygen degree=1024 index=91 cycles=172977730
+KV_SAMPLE op=keygen degree=1024 index=92 cycles=176944369
+KV_SAMPLE op=keygen degree=1024 index=93 cycles=268780800
+KV_SAMPLE op=keygen degree=1024 index=94 cycles=538199882
+KV_SAMPLE op=keygen degree=1024 index=95 cycles=500628029
+KV_SAMPLE op=keygen degree=1024 index=96 cycles=183488389
+KV_SAMPLE op=keygen degree=1024 index=97 cycles=171230576
+KV_SAMPLE op=keygen degree=1024 index=98 cycles=164684814
+KV_SAMPLE op=keygen degree=1024 index=99 cycles=308903940
+KV_SUMMARY op=keygen degree=1024 calls=100 total=26913839315 median_lo=220312923 median_hi=220506996 min=164683817 max=704479770
+KV_DIGEST op=keygen degree=1024 sha3=3333ac29d88139a54b06448870f21fa2dfe65a8d88bdfc2454425adea49159c1
+KV_SAMPLE op=verify degree=1024 index=0 cycles=625394
+KV_SAMPLE op=verify degree=1024 index=1 cycles=625201
+KV_SAMPLE op=verify degree=1024 index=2 cycles=625119
+KV_SAMPLE op=verify degree=1024 index=3 cycles=610710
+KV_SAMPLE op=verify degree=1024 index=4 cycles=610347
+KV_SAMPLE op=verify degree=1024 index=5 cycles=625012
+KV_SAMPLE op=verify degree=1024 index=6 cycles=625311
+KV_SAMPLE op=verify degree=1024 index=7 cycles=625414
+KV_SAMPLE op=verify degree=1024 index=8 cycles=625463
+KV_SAMPLE op=verify degree=1024 index=9 cycles=610493
+KV_SAMPLE op=verify degree=1024 index=10 cycles=625439
+KV_SAMPLE op=verify degree=1024 index=11 cycles=625191
+KV_SAMPLE op=verify degree=1024 index=12 cycles=610444
+KV_SAMPLE op=verify degree=1024 index=13 cycles=625122
+KV_SAMPLE op=verify degree=1024 index=14 cycles=610618
+KV_SAMPLE op=verify degree=1024 index=15 cycles=610470
+KV_SAMPLE op=verify degree=1024 index=16 cycles=625239
+KV_SAMPLE op=verify degree=1024 index=17 cycles=625313
+KV_SAMPLE op=verify degree=1024 index=18 cycles=610912
+KV_SAMPLE op=verify degree=1024 index=19 cycles=625431
+KV_SAMPLE op=verify degree=1024 index=20 cycles=610465
+KV_SAMPLE op=verify degree=1024 index=21 cycles=625258
+KV_SAMPLE op=verify degree=1024 index=22 cycles=625399
+KV_SAMPLE op=verify degree=1024 index=23 cycles=625158
+KV_SAMPLE op=verify degree=1024 index=24 cycles=610389
+KV_SAMPLE op=verify degree=1024 index=25 cycles=610515
+KV_SAMPLE op=verify degree=1024 index=26 cycles=610511
+KV_SAMPLE op=verify degree=1024 index=27 cycles=625094
+KV_SAMPLE op=verify degree=1024 index=28 cycles=625438
+KV_SAMPLE op=verify degree=1024 index=29 cycles=625238
+KV_SAMPLE op=verify degree=1024 index=30 cycles=625186
+KV_SAMPLE op=verify degree=1024 index=31 cycles=625398
+KV_SAMPLE op=verify degree=1024 index=32 cycles=625259
+KV_SAMPLE op=verify degree=1024 index=33 cycles=625282
+KV_SAMPLE op=verify degree=1024 index=34 cycles=610891
+KV_SAMPLE op=verify degree=1024 index=35 cycles=610369
+KV_SAMPLE op=verify degree=1024 index=36 cycles=625272
+KV_SAMPLE op=verify degree=1024 index=37 cycles=610633
+KV_SAMPLE op=verify degree=1024 index=38 cycles=625176
+KV_SAMPLE op=verify degree=1024 index=39 cycles=625405
+KV_SAMPLE op=verify degree=1024 index=40 cycles=610896
+KV_SAMPLE op=verify degree=1024 index=41 cycles=625507
+KV_SAMPLE op=verify degree=1024 index=42 cycles=625109
+KV_SAMPLE op=verify degree=1024 index=43 cycles=625365
+KV_SAMPLE op=verify degree=1024 index=44 cycles=610429
+KV_SAMPLE op=verify degree=1024 index=45 cycles=625276
+KV_SAMPLE op=verify degree=1024 index=46 cycles=625506
+KV_SAMPLE op=verify degree=1024 index=47 cycles=625282
+KV_SAMPLE op=verify degree=1024 index=48 cycles=625568
+KV_SAMPLE op=verify degree=1024 index=49 cycles=610585
+KV_SAMPLE op=verify degree=1024 index=50 cycles=610766
+KV_SAMPLE op=verify degree=1024 index=51 cycles=610788
+KV_SAMPLE op=verify degree=1024 index=52 cycles=610553
+KV_SAMPLE op=verify degree=1024 index=53 cycles=610598
+KV_SAMPLE op=verify degree=1024 index=54 cycles=625278
+KV_SAMPLE op=verify degree=1024 index=55 cycles=610780
+KV_SAMPLE op=verify degree=1024 index=56 cycles=625203
+KV_SAMPLE op=verify degree=1024 index=57 cycles=625354
+KV_SAMPLE op=verify degree=1024 index=58 cycles=625278
+KV_SAMPLE op=verify degree=1024 index=59 cycles=625097
+KV_SAMPLE op=verify degree=1024 index=60 cycles=625556
+KV_SAMPLE op=verify degree=1024 index=61 cycles=625185
+KV_SAMPLE op=verify degree=1024 index=62 cycles=610558
+KV_SAMPLE op=verify degree=1024 index=63 cycles=625495
+KV_SAMPLE op=verify degree=1024 index=64 cycles=625625
+KV_SAMPLE op=verify degree=1024 index=65 cycles=610747
+KV_SAMPLE op=verify degree=1024 index=66 cycles=625391
+KV_SAMPLE op=verify degree=1024 index=67 cycles=610792
+KV_SAMPLE op=verify degree=1024 index=68 cycles=610689
+KV_SAMPLE op=verify degree=1024 index=69 cycles=610547
+KV_SAMPLE op=verify degree=1024 index=70 cycles=610602
+KV_SAMPLE op=verify degree=1024 index=71 cycles=610520
+KV_SAMPLE op=verify degree=1024 index=72 cycles=610645
+KV_SAMPLE op=verify degree=1024 index=73 cycles=625464
+KV_SAMPLE op=verify degree=1024 index=74 cycles=625195
+KV_SAMPLE op=verify degree=1024 index=75 cycles=625106
+KV_SAMPLE op=verify degree=1024 index=76 cycles=624957
+KV_SAMPLE op=verify degree=1024 index=77 cycles=625552
+KV_SAMPLE op=verify degree=1024 index=78 cycles=610794
+KV_SAMPLE op=verify degree=1024 index=79 cycles=625098
+KV_SAMPLE op=verify degree=1024 index=80 cycles=610812
+KV_SAMPLE op=verify degree=1024 index=81 cycles=610382
+KV_SAMPLE op=verify degree=1024 index=82 cycles=610530
+KV_SAMPLE op=verify degree=1024 index=83 cycles=625346
+KV_SAMPLE op=verify degree=1024 index=84 cycles=610838
+KV_SAMPLE op=verify degree=1024 index=85 cycles=625402
+KV_SAMPLE op=verify degree=1024 index=86 cycles=625322
+KV_SAMPLE op=verify degree=1024 index=87 cycles=625251
+KV_SAMPLE op=verify degree=1024 index=88 cycles=625333
+KV_SAMPLE op=verify degree=1024 index=89 cycles=610558
+KV_SAMPLE op=verify degree=1024 index=90 cycles=625432
+KV_SAMPLE op=verify degree=1024 index=91 cycles=625518
+KV_SAMPLE op=verify degree=1024 index=92 cycles=610368
+KV_SAMPLE op=verify degree=1024 index=93 cycles=625026
+KV_SAMPLE op=verify degree=1024 index=94 cycles=625233
+KV_SAMPLE op=verify degree=1024 index=95 cycles=610412
+KV_SAMPLE op=verify degree=1024 index=96 cycles=625320
+KV_SAMPLE op=verify degree=1024 index=97 cycles=625113
+KV_SAMPLE op=verify degree=1024 index=98 cycles=610634
+KV_SAMPLE op=verify degree=1024 index=99 cycles=625215
+KV_SUMMARY op=verify degree=1024 calls=100 total=61956760 median_lo=625122 median_hi=625158 min=610347 max=625625
+KV_DIGEST op=verify degree=1024 sha3=a6da11dff4ef500ac4a0a48b8fad1562ae592c5abb5aa1f4284ac580f9927cb2
+KEYVERIFY_DONE keypairs=PASS verify=PASS tamper=PASS timer=PASS
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1af00 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xede4 lma 0x30000980
+Loading section datas, size 0x4c lma 0x3000f780
+Loading section device_states, size 0x2c lma 0x3000f7cc
+Loading section k_mutex_area, size 0x14 lma 0x3000f7f8
+Loading section .last_section, size 0x4 lma 0x3000f80c
+Start address 0x100162ec, load size 174616
+Transfer rate: 550 KB/sec, 6984 bytes/write.
+Section rom_start, range 0x10000000 -- 0x1000032c: matched.
+Section text, range 0x10000330 -- 0x1001b230: matched.
+Section .ARM.exidx, range 0x30000000 -- 0x30000008: matched.
+Section initlevel, range 0x30000008 -- 0x300000d0: matched.
+Section device_area, range 0x300000d0 -- 0x30000338: matched.
+Section sw_isr_table, range 0x30000338 -- 0x30000910: matched.
+Section gpio_driver_api_area, range 0x30000910 -- 0x30000934: matched.
+Section reset_driver_api_area, range 0x30000934 -- 0x30000944: matched.
+Section clock_control_driver_api_area, range 0x30000944 -- 0x30000960: matched.
+Section otp_driver_api_area, range 0x30000960 -- 0x30000964: matched.
+Section uart_driver_api_area, range 0x30000964 -- 0x30000978: matched.
+Section rodata, range 0x30000980 -- 0x3000f764: matched.
+Section datas, range 0x3000f780 -- 0x3000f7cc: matched.
+Section device_states, range 0x3000f7cc -- 0x3000f7f8: matched.
+Section k_mutex_area, range 0x3000f7f8 -- 0x3000f80c: matched.
+Section .last_section, range 0x3000f80c -- 0x3000f810: matched.
+Temporary breakpoint 1 at 0x10013048: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x100162d8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmps5gtxde2/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10012ff8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x100162d8: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x985e4b            9985611
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x300268c8          805464264
+r8             0x300000d0          805306576
+r9             0x30036a08          805530120
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x300369b8          0x300369b8 <z_main_stack+65456>
+lr             0x1001303f          268513343
+pc             0x10012ff8          0x10012ff8 <nucleo_test_breakpoint>
+xpsr           0x9060000           151388160
+fpscr          0x40010             262160
+msp            0x300268c8          0x300268c8 <z_idle_stacks>
+psp            0x300369b8          0x300369b8 <z_main_stack+65456>
+vpr            0xf330              [ P0=62256 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x300268c8          0x300268c8 <z_idle_stacks>
+psp_s          0x300369b8          0x300369b8 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x300260c8          0x300260c8 <z_interrupt_stacks>
+psplim_s       0x30026a08          0x30026a08 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xf330              -3280
+0x300369b8 <z_main_stack+65456>:	0x00000000	0x1001305b	0x00000000	0x10019af3
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x300268c8
+PSP=0x300369b8
+LR=0x1001303f
+PC=0x10012ff8
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x300369b8 <z_main_stack+65456>:	0x00000000	0x1001305b	0x00000000	0x10019af3
+0x300369c8 <z_main_stack+65472>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

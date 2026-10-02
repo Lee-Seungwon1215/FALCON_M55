@@ -1,0 +1,42 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 12/18
+
+12 Hwang
+Algorithm 6: Range arithmetic of floating-point addition/subtraction.
+Inputs: a= (a.l,a.u) ,b= (b.l,b.u)
+Output: c= (c.l,c.u)
+1: t= a∩b.
+2: if t= {0}then
+3: (d0,d1) = (|a.u−b.l|,|b.u−a.l|)
+4: c.l= min (d0,d1)
+5: c.u= a.u+ b.u
+6: return c
+7: c.u= a.u+ b.u
+8: s|e|m= t.l
+9: c.l= s|(e−52)|0
+10: return c
+Table 1: Verification time of range conditions for a size-1024 complex FFT with
+C∼
+= R[z]/ z2 + 1 and input polynomials drawn from Z ∩ −215
+, 215 . Floating-
+point subtractions are regarded as floating-point additions in our interval arith-
+metic. FP stands for “floating-point.”
+Operation Number of instances Verification time (avr. / total in seconds)
+FP addition 767 0.297886 / 228.478732
+FP multiplication 511 2.589009 / 1322.983371
+5 Equivalence Proofs
+In this section, we briefly describe our implementations of floating-point multi-
+plication and their equivalence proofs.
+5.1 Our Implementations and The Claimed Behavior
+Since there is a discrepancy between the emulated floating-point multiplications
+in Falcon and the claimed behavior, we implement our own assembly implemen-
+tation honoring the following rules:
+– It rounds the values correctly by experiment.
+– Its output range is always zeros or normal floating-point values by formal
+verification. If the real number product is too small in absolute value, it
+returns a zero. If the real number product is too large in absolute value, the
+largest possible normal value is returned when the result is positive (smallest
+possible normal value is returned in the negative case).
+We start with the assembly implementation in Falcon, which is much more op-
+timized compared to the C reference implementation, and implement the above
+rules. This ensures that the output range is always a zero or a normal floating-
+point value when the inputs are zeros or normal floating-point values.

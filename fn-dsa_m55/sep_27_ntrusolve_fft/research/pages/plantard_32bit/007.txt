@@ -1,0 +1,118 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 7/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 7
+Algorithm 5 Efficient Plantard multiplication by a constant
+for Kyber on RISC-V
+Input: An 32-bit signed integer a ∈[−137q,230q], a pre-
+computed 32-bit integer bq′ where b is a constant and
+q′
+= q−1 mod 232,q2l = q×2l
+Output: r= ab(−2−2l) mod±q
+1: bq′←bq−1 mod±22l ▷ precomputed
+2: mul r,a,bq′ ▷ r←[abq′]2l
+3: srai r,r,#16
+4: addi r,r,2α ▷ r←([r]l + 2α)
+5: mulh r,r,q2l ▷ r←[rq2l]2l
+6: return r
+Compared to the existing Plantard and Montgomery multi-
+plication on RISC-V or Cortex-M3 [20], [32] and [33] that
+take five instructions, the proposed implementation is one
+multiplication fewer.
+B. Plantard reduction
+We propose a 4-instruction Plantard reduction for the mod-
+ular multiplication of two variables on both architectures,
+which is equally efficient as the state-of-the-art Montgomery or
+Barrett reduction in [32] and [33]. The proposed instruction se-
+quence of the Plantard reduction is similar to Algorithm 4 and
+5, except that the 32-bit precomputed constant bq′is replaced
+by q−1 mod 22l in the modular multiplication of two variables
+or (−22l mod q) ×q−1 mod 22l in the modular reduction of
+coefficients. This variant of modular multiplication is used in
+the base multiplication of Kyber. Besides, previous implemen-
+tations mostly utilize the Barrett reduction to implement the
+modular reduction of coefficients. Nevertheless, despite the
+same cycle consumption as the Barrett reduction on Cortex-
+M3 and RISC-V, we chose to adopt the Plantard reduction for
+the sake of consistency.
+V. OPTIMIZED KYBER IMPLEMENTATION ON CORTEX-M3
+AND RISC-V
+Based on the efficient Plantard arithmetic presented in
+Section IV, we propose a number of optimizations that are
+geared towards improving the efficiency and reducing the
+memory consumption of Kyber on Cortex-M3 and RISC-V.
+A. Efficient 16-bit NTT/INTT Implementation
+This section presents efficient 16-bit NTT/INTT implemen-
+tations on Cortex-M3 and RISC-V.
+1) Butterfly Unit: To integrate the Plantard arithmetic to the
+butterfly unit, we follow the method described in [20] to pre-
+compute the 32-bit twiddle factor as ζ = ((ζ·(−22l) mod q)·
+q−1) mod±22l. For two signed coefficients a and b, the CT
+algorithm computes a′
+= a+ bζ and b′
+= a−bζ, while the
+GS algorithm computes a′
+= a + b and b′ = (a−b)·ζ.
+We present the efficient implementations of CT algorithm on
+Cortex-M3 and RISC-V in Algorithm 6 and 7, respectively.
+The instruction sequence for the GS algorithm is similar, hence
+we will not discuss it in detail.
+Algorithm 6 CT algorithm on Cortex-M3
+Input: Two signed integers a,b, the 32-bit twiddle factor ζ
+Output: a′
+= a+ bζ,b′
+= a−bζ
+1: mul b,b,ζ
+2: add b,2α,b, asr #16
+3: mul t,b,q
+4: sub b′,a,t, asr #16
+5: add a′,a,t, asr #16
+6: return a′,b′
+We demonstrated that by utilizing the inline barrel shifter
+operation on Cortex-M3, one could omit the final shift op-
+eration in Algorithm 4 and achieve an efficient 5-instruction
+CT algorithm with the Plantard arithmetic. Conversely, the
+GS algorithm cannot benefit from the barrel shifter operation
+due to the operation difference. Specifically, GS algorithm
+requires one more instruction compared to the CT algorithm.
+Nevertheless, it is worth highlighting that both CT and GS
+algorithms are one instruction fewer than their Montgomery-
+based counterparts on Cortex-M3 [33]. Since the CT algorithm
+costs one instruction fewer than the GS algorithm, it motivates
+us to also adopt it in INTT.
+Following similar optimization strategies outlined in [14]
+and [26], in order to minimize the side-effect of additional
+twists in the last layer of INTT using CT algorithm, light
+butterfly was proposed and applied in the first three layers of
+INTT. The so-called light butterfly is to reduce the modular
+multiplication by the twiddle factor in the CT butterfly, i.e.,
+only computing a′
+= a + b and b′
+= a−b. Additionally,
+they suggested that using CT algorithm in INTT could also
+help to decrease the number of modular reductions and yield
+a superior INTT implementation on Cortex-M4 [14]. After
+applying the CT algorithm to INTT of Kyber, we further
+validate its extensibility on Cortex-M3. It is worth to note that
+we are the first to apply the above improved CT algorithm to
+INTT on Cortex-M3.
+Algorithm 7 demonstrates the instruction sequence of the
+CT algorithm on RISC-V. Unlike the implementation on
+Cortex-M3, the GS and CT algorithms are equally efficient
+on RISC-V. Initially, we also contemplated the use of CT
+algorithm in INTT on RISC-V; however, the results indicated
+that the INTT with CT algorithm cannot outperform the
+GS one. The crucial reasons for that are two-fold. Firstly,
+the use of CT algorithm in INTT results in the doubling
+of the twiddle factors, which increases the memory access
+overhead. Specifically, in our implementation, the INTT with
+CT algorithm consumes 61 additional memory accesses for
+the twiddle factors, which reduces its efficiency and warrants
+a further 0.5KiB memory to accommodate these extra twiddle
+factors. The extra memory cost also increases the difficulty of
+deploying Kyber on memory-constrained platforms. Secondly,
+the number of modular reduction in INTT with GS algorithm
+has been significantly reduced by using Algorithm 3 on RISC-
+V (see the better lazy reduction strategy in Section V-A3 for
+detailed discussions). Thus, there left only a small space for
+further optimization through the utilization of CT algorithm
+in INTT.

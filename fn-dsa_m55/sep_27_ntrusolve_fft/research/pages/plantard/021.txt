@@ -1,0 +1,52 @@
+DOCUMENT: plantard.pdf PAGE: 21/24
+
+Junhao Huang et al. 21
+Table 2: Cycle counts (cc) and stack usage (Bytes) for KeyGen, Encaps, and Decaps on
+Cortex-M4. k is the dimension of the underlying Module-LWE problem for Kyber. The
+first row of each entry indicates the cycle count and the second row refers to stack usage.
+Scheme Implementation KeyGen Encaps Decaps
+k= 2 k= 3 k= 4 k= 2 k= 3 k= 4 k= 2 k= 3 k= 4
+[ABCG20] 454k 2464 741k 2696 1177k 3584 548k 2168 893k 2640 1367k 3208 506k 2184 832k 2656 1287k
+3224
+This worka 446k 2464 729k 2696 1162k 3584 542k 2168 885k 2640 1357k 3208 497k 2184 818k 2656 1270k
+3224
+Kyber
+Stack[AHKS22] 439k 2608 717k 3056 1139k 3576 534k 2160 871k 2660 1329k 3236 484k 2176 797k 2676 1233k
+3252
+Speed[AHKS22] 438k 4268 711k 6732 1129k 7748 531k 5252 864k 6284 1316k 7292 479k 5260 787k 6308 1217k
+7300
+This workb 430k 2608 702k 3056 1119k 3576 526k 2160 861k 2660 1314k 3236 472k 2176 780k 2676 1211k
+3252
+[LS19] 526k 431k 559k
+9384 8748 10324
+NTTRU
+This work 267k 9372 237k 7452 254k
+8816
+a Implementation based on [ABCG20], b Implementation based on the stack-friendly code of [AHKS22].
+International College (2022B1212010006), Guangdong Higher Education Upgrading Plan
+(2021-2025) (UIC R0400001-22), Guangdong Higher Education Key Platform and Research
+Project (No. 2020KQNCX100), Hong Kong Innovation and Technology Commission
+(InnoHK Project CIMDA), and Hong Kong Research Grants Council (Project 11204821).
+References
+[AAB+19] Frank Arute, Kunal Arya, Ryan Babbush, Dave Bacon, Joseph C Bardin,
+Rami Barends, Rupak Biswas, Sergio Boixo, Fernando GSL Brandao, David A
+Buell, et al. Quantum supremacy using a programmable superconducting
+processor. Nature, 574(7779):505–510, 2019.
+[AASA+20] Gorjan Alagic, Jacob Alperin-Sheriff, Daniel Apon, David Cooper, Quynh
+Dang, John Kelsey, Yi-Kai Liu, Carl Miller, Dustin Moody, Rene Peralta, et al.
+Status report on the second round of the NIST post-quantum cryptography
+standardization process. US Department of Commerce, NIST, 2020.
+[ABCG20] [ABD+20] [ADPS16] [AHKS22] Erdem Alkim, Yusuf Alper Bilgin, Murat Cenk, and François Gérard. Cortex-
+M4 optimizations for {R, M} LWE schemes. IACR Trans. Cryptogr. Hardw.
+Embed. Syst., 2020(3):336–357, 2020.
+Roberto Avanzi, Joppe Bos, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim
+Lyubashevsky, John M Schanck, Peter Schwabe, Gregor Seiler, and Damien
+Stehlé. CRYSTALS-Kyber algorithm specifications and supporting documen-
+tation. 2020.
+Erdem Alkim, Léo Ducas, Thomas Pöppelmann, and Peter Schwabe. Post-
+quantum key exchange - A new hope. In Thorsten Holz and Stefan Savage,
+editors, 25th USENIX Security Symposium, USENIX Security 16, Austin,
+TX, USA, August 10-12, 2016, pages 327–343. USENIX Association, 2016.
+Amin Abdulrahman, Vincent Hwang, Matthias J. Kannwischer, and Daan
+Sprenkels. Faster Kyber and Dilithium on the Cortex-M4. In Giuseppe
+Ateniese and Daniele Venturi, editors, Applied Cryptography and Network

@@ -1,0 +1,50 @@
+DOCUMENT: m55_slothy.pdf PAGE: 36/46
+
+36 Fast and Clean: Auditable high-performance assembly via constraint solving
+achieving much smaller code and better maintainability and readability. Compared to
+the Cortex-M4 implementation from [AHKS22], we note speedups of 3.97×and 4.05×
+for Cortex-M55 and Cortex-M85, respectively. Considering that the Dilithium NTT
+is a 32-bit workload theoretically amenable to a 4×SIMD speedup from Helium, this
+is close to optimal — and a remarkable demonstration of the power of Helium given
+that the Cortex-M55 CPU does only have twice the memory and ALU resources as the
+Cortex-M4. Finally, the performance on the Cortex-M85 CPU is slightly better yet very
+close to the performance on the Cortex-M55 CPU, which is expected due to their similar
+microarchitecture in terms of Helium (recall Section 6.2).
+For the Kyber NTTs, we observe speedups of 6.36−6.58×compared to the Cortex-M4
+implementation of [AHKS22] and of 4.75−4.92×compared to [HZZ+22], while maintaining
+readability and code compactness. Those gains make sense considering that the Kyber
+NTT is a 16-bit workload and thus amenable to 8×SIMD on Helium, and 2×SIMD on
+Cortex-M4 when 32-bit SIMD instructions are used. Moreover, for [HZZ+22] the speedup
+is smaller because the latter uses Plantard arithmetic which cannot be vectorized.
+Overall, as shown in Table 3, we achieve IPCs very close to 1, despite most MVE
+instructions having a throughput of 1 /2. The minor drop in the 1 + 2 + 2 + 2-split for the
+Kyber NTT on Cortex-M55 is due to the share of loads and stores in the isolated first
+layer — on Cortex-M85, a stall-free scheduling exists due to load/store overlap.
+8.3 Example: NTT on AArch64
+In this section, we discuss the optimization of the Kyber and Dilithium NTT on AArch64,
+targeting the Arm Cortex-A55 and Cortex-A72 CPUs. Since this section is largely parallel
+to Section 8.2, we are brief and focus only on the specifics of optimizing the NTT for
+AArch64. We again refer to Section 3.4 for a brief introduction to the NTT.
+State of the art. [BHK+21] describes the state-of-the-art implementations of the Kyber
+and Dilithium NTTs for AArch64, putting emphasis on optimization for the Cortex-A72
+CPU. We base our implementation on their arithmetic, but create our own readable base
+implementation and experiment with numerous variations that we detail in the following.
+Readable base implementation. As in Section 8.2, we experiment with different layer
+merges for both NTTs. Due to the large vector register file of AArch64, up to four initial
+layers can be merged without stack spills, suggesting layer splits of 4 + 3 or 3 + 4 for the
+Kyber NTT, and of 4 + 4 or 3 + 5 for the Dilithium NTT. Between those, the 3 + 4 split
+for Kyber and the 3 + 5 for Dilithium seem preferable since — slightly counterintuitively —
+they lead to smaller code size (and thus optimization complexity): The last two layers
+consist of intra-vector butterflies which do not require new data to be loaded and thus do
+not increase the vector register pressure.
+We also experiment with base implementations involving scalar instructions to perform
+some loading/transposing/storing of data, the idea being to reserve the Neon units for
+the core arithmetic and have the scalar operations run in parallel. While scheduling such
+hybrid implementations by hand is very tedious and highly microarchitecture-specific, here
+we only need to provide the sequential implementations, which is simple — we let SLOTHY
+do the interleaving work, determining if/when the hybrid approach works.
+As before, we heavily use register aliases and assembly macros to make the base
+implementations clean and readable.
+Optimized implementations. On Cortex-A55, the best implementation strategies for
+both Kyber and Dilithium are the scalar/Neon hybrids offloading vector loads to scalar
+instructions, but no other vector instructions. Alternatively or additionally offloading

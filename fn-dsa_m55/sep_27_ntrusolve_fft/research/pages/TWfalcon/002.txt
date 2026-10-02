@@ -1,0 +1,53 @@
+DOCUMENT: TWfalcon.pdf PAGE: 2/25
+
+2 TWFalcon: Triple-Word Arithmetic for Falcon
+The fourth digital signature scheme Falcon [PFH+22] is currently being drafted as a
+standard under its new name FN-DSA and target of this paper. Falcon was selected by
+NIST for its favorable balance of performance, security, and implementation compactness,
+making it seemingly a promising candidate for deployment in constrained environments
+such as embedded systems and IoT devices.
+Despite its benefits for embedded systems, Falcon also poses considerable drawbacks
+for these platforms. Most prominently, Falcon relies on double-precision floating-point
+arithmeticforitskeygenerationandsignatureoperations. Firstly, notallembeddedsystems
+are able to perform double-precision floating-point arithmetic. Larger constrained devices
+often feature an Floating-Point Unit (FPU) for these operations, but highly constrained
+ones typically do not. Devices based on a Cortex-M4 or Cortex-M33 have an optional
+single-precision FPU, while for higher-end processors like the Cortex-M7 a single-precision
+FPU is always available, but the double-precision FPU is optional [Yiu16, Arm25]. Vendors
+can therefore choose to design in Cortex-M7, but still disable the use of double-precision
+for code-size, performance, or power consumption reasons.
+Secondly, even the double-precision FP arithmetic is not sufficient for the security proof
+of the Falcon digital signature scheme. Recall that in [PFH+22] the security proof only
+holds, i.e. resisting attacks of 264 signature queries, when the double-precision errors are
+bound by 2−46. [PFH+22] shows the values can in fact go up to 2−40 and thereby only
+ensuring protection against 253 queries. In this work we will show that in practice the
+error values even go up to 2−37, which gives concern for attack avenues escaping the proof
+guarantees.
+One direction is to switch out the double-precision operations: [PFH+22] suggests to
+emulate all floating-point operations (such as FFTs and Gaussian sampling) using integer
+arithmetic implementing the IEEE 754 binary64 operations [IEE19]. This conversion
+significantly slows down performance [Por19, Por25a], but can then be run on devices
+without a double-precision FPU. This, however, does not impact security. We will compare
+the performance of our implementation against [Por25a].
+Triple-Word Floating-Point (TW) arithmetic [FMP19] are algorithms designed to
+extend the precision of numerical computations by representing a high-precision value as
+the sum of three lower-precision floating-point numbers. By decomposing a value into
+three components (i.e., the high, middle, and low words) triple-word arithmetic enables
+more precision and therefore more accurate arithmetic. Consequently, this approach yields
+reduced floating-point errors, leading to a Gaussian sampler implementation that abides
+by the proven error bounds.
+Contributions. In this paper we observe that for embedded devices that have a single-
+precision FPU available, Falcon can be implemented securely with a performance penalty of
+85% compared to integer-emulated Falcon. By representing higher precision floating-point
+values in three single-precision floating-point values, Falcon signature generation can be
+performed at a lower error rate. To the best of our knowledge, we are the first to apply
+triple-word arithmetic to a cryptographic scheme.
+Because our approach only requires a single-precision FPU compared to the double-
+precision FPU for the original implementation, it can be enabled on a larger range of
+embedded devices. It offers a practical balance between computational efficiency, numerical
+accuracy, and the security of Falcon, making it a compelling choice for high-assurance
+software and hardware implementations of Falcon.
+More concretely, in this work:
+• We are the first to apply and analyze the application of triple-word arithmetic
+to a cryptographic scheme, using three single-precision floating-point values for
+combined precision. To make it fully applicable to the Falcon digital signature

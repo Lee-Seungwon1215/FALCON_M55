@@ -1,0 +1,613 @@
+{
+  "sample_policy": "10 unique deterministic seeds per degree, two repetitions; not 20 independent seeds",
+  "fingerprints": {
+    "keygen_512": "6405624ccf523f4d7a8b0ad25e1ca9d5d9e485cf7374640a2bfd594a226aac96",
+    "verify_512": "27b64d68f701abcc87e7a0f48ddf2ac7ee4906f8b0fb0991c1efb3acbcca9919",
+    "keygen_1024": "eb94bd367016becf13000444b2f34343ce3207219eda126881abc2303ad80d8f",
+    "verify_1024": "c62eb64985ff0860e6ea169c0eb2d1423f8aeeee175151af0f9a5a93737248d7"
+  },
+  "perf": {
+    "ref_keygen_512": {
+      "mean": 66563282.75,
+      "median": 59530044.5,
+      "min": 54851356,
+      "max": 87107048,
+      "run_means": [
+        66563283.8,
+        66563281.7
+      ],
+      "run_delta_cycles": 2.0999999940395355
+    },
+    "ref_keygen_1024": {
+      "mean": 332122670.3,
+      "median": 281942660.5,
+      "min": 207911132,
+      "max": 543859631,
+      "run_means": [
+        332122670.7,
+        332122669.9
+      ],
+      "run_delta_cycles": 0.800000011920929
+    },
+    "ref_sign_512": {
+      "mean": 26560560.4,
+      "median": 26547735.0,
+      "min": 26398741,
+      "max": 26803300,
+      "run_means": [
+        26560560.4,
+        26560560.4
+      ],
+      "run_delta_cycles": 0.0
+    },
+    "ref_sign_1024": {
+      "mean": 57033148,
+      "median": 57059005.5,
+      "min": 56525657,
+      "max": 57358923,
+      "run_means": [
+        57033148,
+        57033148
+      ],
+      "run_delta_cycles": 0
+    },
+    "ref_verify_512": {
+      "mean": 496414.95,
+      "median": 489939.0,
+      "min": 489440,
+      "max": 511879,
+      "run_means": [
+        496414.9,
+        496415
+      ],
+      "run_delta_cycles": 0.09999999997671694
+    },
+    "ref_verify_1024": {
+      "mean": 986050.8,
+      "median": 992518.0,
+      "min": 970382,
+      "max": 992952,
+      "run_means": [
+        986050.8,
+        986050.8
+      ],
+      "run_delta_cycles": 0.0
+    },
+    "ntt_keygen_512": {
+      "mean": 60832916.2,
+      "median": 53891585.5,
+      "min": 49402513,
+      "max": 81062514,
+      "run_means": [
+        60832916.8,
+        60832915.6
+      ],
+      "run_delta_cycles": 1.1999999955296516
+    },
+    "ntt_keygen_1024": {
+      "mean": 312845670,
+      "median": 263801629.0,
+      "min": 190725275,
+      "max": 521416776,
+      "run_means": [
+        312845671.9,
+        312845668.1
+      ],
+      "run_delta_cycles": 3.799999952316284
+    },
+    "ntt_sign_512": {
+      "mean": 26271182.45,
+      "median": 26258357.0,
+      "min": 26109363,
+      "max": 26513922,
+      "run_means": [
+        26271182.5,
+        26271182.4
+      ],
+      "run_delta_cycles": 0.10000000149011612
+    },
+    "ntt_sign_1024": {
+      "mean": 56423973,
+      "median": 56449831.0,
+      "min": 55916482,
+      "max": 56749747,
+      "run_means": [
+        56423973,
+        56423973
+      ],
+      "run_delta_cycles": 0
+    },
+    "ntt_verify_512": {
+      "mean": 447087.95,
+      "median": 440612.0,
+      "min": 440113,
+      "max": 462552,
+      "run_means": [
+        447087.9,
+        447088
+      ],
+      "run_delta_cycles": 0.09999999997671694
+    },
+    "ntt_verify_1024": {
+      "mean": 881970.8,
+      "median": 888438.0,
+      "min": 866302,
+      "max": 888872,
+      "run_means": [
+        881970.8,
+        881970.8
+      ],
+      "run_delta_cycles": 0.0
+    },
+    "full_keygen_512": {
+      "mean": 55616532.85,
+      "median": 49736591.5,
+      "min": 45420678,
+      "max": 75473557,
+      "run_means": [
+        55616533.6,
+        55616532.1
+      ],
+      "run_delta_cycles": 1.5
+    },
+    "full_keygen_1024": {
+      "mean": 289391713.8,
+      "median": 245581740.5,
+      "min": 178249454,
+      "max": 481119055,
+      "run_means": [
+        289391713.4,
+        289391714.2
+      ],
+      "run_delta_cycles": 0.800000011920929
+    },
+    "full_sign_512": {
+      "mean": 15372603.3,
+      "median": 15359777.5,
+      "min": 15210784,
+      "max": 15615343,
+      "run_means": [
+        15372603.3,
+        15372603.3
+      ],
+      "run_delta_cycles": 0.0
+    },
+    "full_sign_1024": {
+      "mean": 31923452.6,
+      "median": 31949310.5,
+      "min": 31415962,
+      "max": 32249228,
+      "run_means": [
+        31923452.5,
+        31923452.7
+      ],
+      "run_delta_cycles": 0.19999999925494194
+    },
+    "full_verify_512": {
+      "mean": 447087.9,
+      "median": 440612.0,
+      "min": 440113,
+      "max": 462552,
+      "run_means": [
+        447087.9,
+        447087.9
+      ],
+      "run_delta_cycles": 0.0
+    },
+    "full_verify_1024": {
+      "mean": 881970.8,
+      "median": 888438.0,
+      "min": 866302,
+      "max": 888872,
+      "run_means": [
+        881970.8,
+        881970.8
+      ],
+      "run_delta_cycles": 0.0
+    }
+  },
+  "profile": {
+    "keygen_512": {
+      "total": 492171956,
+      "classified": 445246858,
+      "remainder": 46925098,
+      "categories": {
+        "kg_ntru_rest": {
+          "calls": 11,
+          "exclusive": 365976895,
+          "inclusive": 406210848,
+          "percent": 74.35955879615376
+        },
+        "kg_ortho_rest": {
+          "calls": 55,
+          "exclusive": 909920,
+          "inclusive": 39036010,
+          "percent": 0.18487847365281415
+        },
+        "kg_fft_fixed": {
+          "calls": 110,
+          "exclusive": 13866769,
+          "inclusive": 13866769,
+          "percent": 2.817464268524881
+        },
+        "kg_ifft_fixed": {
+          "calls": 110,
+          "exclusive": 15768036,
+          "inclusive": 15768036,
+          "percent": 3.2037656367401803
+        },
+        "kg_fft_ntru": {
+          "calls": 8414,
+          "exclusive": 10172286,
+          "inclusive": 10172286,
+          "percent": 2.066815444478515
+        },
+        "kg_ifft_ntru": {
+          "calls": 8332,
+          "exclusive": 11700709,
+          "inclusive": 11700709,
+          "percent": 2.377361988499808
+        },
+        "kg_fft_fp64": {
+          "calls": 20,
+          "exclusive": 2619220,
+          "inclusive": 2619220,
+          "percent": 0.53217579101561
+        },
+        "kg_ifft_fp64": {
+          "calls": 10,
+          "exclusive": 1421980,
+          "inclusive": 1421980,
+          "percent": 0.2889193467171055
+        },
+        "kg_invnorm": {
+          "calls": 55,
+          "exclusive": 6366525,
+          "inclusive": 6366525,
+          "percent": 1.293557042896609
+        },
+        "kg_mul": {
+          "calls": 8332,
+          "exclusive": 3351540,
+          "inclusive": 3351540,
+          "percent": 0.6809693155292253
+        },
+        "kg_recip": {
+          "calls": 82,
+          "exclusive": 3764044,
+          "inclusive": 3764044,
+          "percent": 0.7647822989735725
+        },
+        "kg_div": {
+          "calls": 10,
+          "exclusive": 1866630,
+          "inclusive": 1866630,
+          "percent": 0.3792637872280557
+        },
+        "kg_fft_misc": {
+          "calls": 330,
+          "exclusive": 1727440,
+          "inclusive": 1727440,
+          "percent": 0.35098302106428836
+        },
+        "kg_input": {
+          "calls": 8524,
+          "exclusive": 5734864,
+          "inclusive": 5734864,
+          "percent": 1.1652155166679183
+        }
+      }
+    },
+    "sign_512": {
+      "total": 119313399,
+      "classified": 105277940,
+      "remainder": 14035459,
+      "categories": {
+        "sg_fft": {
+          "calls": 50,
+          "exclusive": 9762350,
+          "inclusive": 9762350,
+          "percent": 8.182107023872483
+        },
+        "sg_ifft": {
+          "calls": 20,
+          "exclusive": 4040920,
+          "inclusive": 4040920,
+          "percent": 3.3868115684140387
+        },
+        "sg_ldl": {
+          "calls": 2550,
+          "exclusive": 3281500,
+          "inclusive": 3281500,
+          "percent": 2.7503197691987635
+        },
+        "sg_split": {
+          "calls": 5100,
+          "exclusive": 4627400,
+          "inclusive": 4627400,
+          "percent": 3.87835736705481
+        },
+        "sg_merge": {
+          "calls": 5100,
+          "exclusive": 4083940,
+          "inclusive": 4083940,
+          "percent": 3.4228678708583264
+        },
+        "sg_split_selfadj": {
+          "calls": 5100,
+          "exclusive": 5805160,
+          "inclusive": 5805160,
+          "percent": 4.8654719827401784
+        },
+        "sg_mul": {
+          "calls": 2570,
+          "exclusive": 10173780,
+          "inclusive": 10173780,
+          "percent": 8.526938370098735
+        },
+        "sg_add": {
+          "calls": 2550,
+          "exclusive": 3742501,
+          "inclusive": 3742501,
+          "percent": 3.136697999861692
+        },
+        "sg_sub": {
+          "calls": 2550,
+          "exclusive": 3988260,
+          "inclusive": 3988260,
+          "percent": 3.3426757040087343
+        },
+        "sg_gram": {
+          "calls": 10,
+          "exclusive": 4544380,
+          "inclusive": 4544380,
+          "percent": 3.808775911245308
+        },
+        "sg_basis": {
+          "calls": 10,
+          "exclusive": 779090,
+          "inclusive": 4749520,
+          "percent": 0.6529777933826192
+        },
+        "sg_deepest": {
+          "calls": 2560,
+          "exclusive": 9971202,
+          "inclusive": 50448659,
+          "percent": 8.357151907138276
+        },
+        "sg_sampler": {
+          "calls": 10240,
+          "exclusive": 40477457,
+          "inclusive": 40477457,
+          "percent": 33.925323843971626
+        }
+      }
+    },
+    "verify_512": {
+      "total": 3144019,
+      "classified": 0,
+      "remainder": 3144019,
+      "categories": {}
+    },
+    "keygen_1024": {
+      "total": 2495941922,
+      "classified": 2186557229,
+      "remainder": 309384693,
+      "categories": {
+        "kg_ntru_rest": {
+          "calls": 17,
+          "exclusive": 1762165677,
+          "inclusive": 1865181783,
+          "percent": 70.60122919799254
+        },
+        "kg_ortho_rest": {
+          "calls": 209,
+          "exclusive": 6453932,
+          "inclusive": 321375446,
+          "percent": 0.2585770102706741
+        },
+        "kg_fft_fixed": {
+          "calls": 418,
+          "exclusive": 117310936,
+          "inclusive": 117310936,
+          "percent": 4.7000667349662795
+        },
+        "kg_ifft_fixed": {
+          "calls": 418,
+          "exclusive": 133128337,
+          "inclusive": 133128337,
+          "percent": 5.33379145670682
+        },
+        "kg_fft_ntru": {
+          "calls": 25005,
+          "exclusive": 26911114,
+          "inclusive": 26911114,
+          "percent": 1.078194719308056
+        },
+        "kg_ifft_ntru": {
+          "calls": 24896,
+          "exclusive": 31628805,
+          "inclusive": 31628805,
+          "percent": 1.2672091734672983
+        },
+        "kg_fft_fp64": {
+          "calls": 20,
+          "exclusive": 5682231,
+          "inclusive": 5682231,
+          "percent": 0.22765878283925872
+        },
+        "kg_ifft_fp64": {
+          "calls": 10,
+          "exclusive": 3082920,
+          "inclusive": 3082920,
+          "percent": 0.12351729713044181
+        },
+        "kg_invnorm": {
+          "calls": 209,
+          "exclusive": 48381369,
+          "inclusive": 48381369,
+          "percent": 1.9384012333601086
+        },
+        "kg_mul": {
+          "calls": 24896,
+          "exclusive": 8862468,
+          "inclusive": 8862468,
+          "percent": 0.3550750889627471
+        },
+        "kg_recip": {
+          "calls": 109,
+          "exclusive": 7565783,
+          "inclusive": 7565783,
+          "percent": 0.30312335929425527
+        },
+        "kg_div": {
+          "calls": 10,
+          "exclusive": 3732870,
+          "inclusive": 3732870,
+          "percent": 0.1495575665081521
+        },
+        "kg_fft_misc": {
+          "calls": 1254,
+          "exclusive": 13091761,
+          "inclusive": 13091761,
+          "percent": 0.5245218602486377
+        },
+        "kg_input": {
+          "calls": 25423,
+          "exclusive": 18559026,
+          "inclusive": 18559026,
+          "percent": 0.743568022813954
+        }
+      }
+    },
+    "sign_1024": {
+      "total": 249365068,
+      "classified": 221409821,
+      "remainder": 27955247,
+      "categories": {
+        "sg_fft": {
+          "calls": 50,
+          "exclusive": 21969800,
+          "inclusive": 21969800,
+          "percent": 8.810295754816789
+        },
+        "sg_ifft": {
+          "calls": 20,
+          "exclusive": 9069700,
+          "inclusive": 9069700,
+          "percent": 3.637117288617185
+        },
+        "sg_ldl": {
+          "calls": 5110,
+          "exclusive": 7501660,
+          "inclusive": 7501660,
+          "percent": 3.008304274598718
+        },
+        "sg_split": {
+          "calls": 10220,
+          "exclusive": 10588360,
+          "inclusive": 10588360,
+          "percent": 4.246128010199087
+        },
+        "sg_merge": {
+          "calls": 10220,
+          "exclusive": 9339620,
+          "inclusive": 9339620,
+          "percent": 3.7453601961602736
+        },
+        "sg_split_selfadj": {
+          "calls": 10220,
+          "exclusive": 13076841,
+          "inclusive": 13076841,
+          "percent": 5.2440548729944805
+        },
+        "sg_mul": {
+          "calls": 5130,
+          "exclusive": 22400342,
+          "inclusive": 22400342,
+          "percent": 8.982951052310181
+        },
+        "sg_add": {
+          "calls": 5110,
+          "exclusive": 8406820,
+          "inclusive": 8406820,
+          "percent": 3.371290160015516
+        },
+        "sg_sub": {
+          "calls": 5110,
+          "exclusive": 8964260,
+          "inclusive": 8964260,
+          "percent": 3.5948339003119716
+        },
+        "sg_gram": {
+          "calls": 10,
+          "exclusive": 9099260,
+          "inclusive": 9099260,
+          "percent": 3.64897139482263
+        },
+        "sg_basis": {
+          "calls": 10,
+          "exclusive": 1562450,
+          "inclusive": 9990050,
+          "percent": 0.626571320727248
+        },
+        "sg_deepest": {
+          "calls": 5120,
+          "exclusive": 19947520,
+          "inclusive": 99430708,
+          "percent": 7.999324107416681
+        },
+        "sg_sampler": {
+          "calls": 20480,
+          "exclusive": 79483188,
+          "inclusive": 79483188,
+          "percent": 31.874227066960316
+        }
+      }
+    },
+    "verify_1024": {
+      "total": 6234735,
+      "classified": 0,
+      "remainder": 6234735,
+      "categories": {}
+    }
+  },
+  "logs": [
+    {
+      "variant": "full",
+      "mode": "perf",
+      "log": "results/full_perf/20260929T062720Z/raw.log"
+    },
+    {
+      "variant": "full",
+      "mode": "perf",
+      "log": "results/full_perf/20260929T062806Z/raw.log"
+    },
+    {
+      "variant": "full",
+      "mode": "profile",
+      "log": "results/full_profile/20260929T062846Z/raw.log"
+    },
+    {
+      "variant": "ntt",
+      "mode": "perf",
+      "log": "results/ntt_perf/20260929T062635Z/raw.log"
+    },
+    {
+      "variant": "ntt",
+      "mode": "perf",
+      "log": "results/ntt_perf/20260929T062818Z/raw.log"
+    },
+    {
+      "variant": "ref",
+      "mode": "perf",
+      "log": "results/ref_perf/20260929T062551Z/raw.log"
+    },
+    {
+      "variant": "ref",
+      "mode": "perf",
+      "log": "results/ref_perf/20260929T062832Z/raw.log"
+    }
+  ],
+  "profile_limitation": "Instrumented, unpadded image: percentages use its own API totals; not a speed comparator or a measured overhead vs fixed-layout perf."
+}

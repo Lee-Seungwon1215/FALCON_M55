@@ -1,0 +1,53 @@
+DOCUMENT: plantard.pdf PAGE: 20/24
+
+20 Improved Plantard Arithmetic for Lattice-based Cryptography
+Table 1: Cycle counts for the core polynomial arithmetic in Kyber and NTTRU on
+Cortex-M4, i.e., NTT, INTT, base multiplication, and base inversion.
+Scheme Implementation NTT INTT Base Mult Base Inv
+[ABCG20] 6822 6951 2291 -
+This worka 5441 5775 2421 -
+Speed-up 20.24% 16.92% -5.67% -
+Stack[AHKS22] 5967 5917 2293 -
+Kyber
+Speed[AHKS22] This workb 5967 4474 5471 4684/4819/4854 1202 -
+2422 -
+Speed-up (stack) 25.02% 20.84%/18.56%/17.97% -5.58% -
+Speed-up (speed) 25.02% 14.38%/11.92%/11.28% -101.41% -
+[LS19] 102881 97986 44703 100249
+NTTRU
+This work 17274 20931 10550 40763
+Speed-up 83.21% 78.64% 76.40% 59.34%
+a Implementation based on [ABCG20], b Implementation based on the stack-friendly code of [AHKS22].
+5.3 Performance of Schemes
+Table 2 shows the cycle counts and stack usage of the KEM protocols, namely key
+generation (KeyGen), encapsulation (Encaps), and decapsulation (Decaps). The Kyber
+implementation based on either [ABCG20] or the stack-friendly code of [AHKS22] achieves
+better speed performance than its Montgomery-based counterpart with the same stack
+usage. For the Kyber implementation based on [ABCG20], the speed-ups for KeyGen,
+Encaps, and Decaps are 1.27%-1.76%, 0.73%-1.09%, and 1.32%-1.78%, respectively. As for
+the Kyber implementation based on the stack-friendly code in [AHKS22], we achieve speed-
+ups of 1.76%-2.09%, 1.13%-1.50%, and 1.78%-2.48% for KeyGen, Encaps, and Decaps,
+respectively. It is worth noting that our implementation based on the stack-friendly
+version of [AHKS22] outperforms their high-speed version with approximately half of the
+stack. If the stack usage is not one of the primary improved goals, one can also integrate
+the improved Plantard arithmetic into their speed-optimized implementation for better
+efficiency. As stated in previous work [KRSS19], the dominance of the hashing functions of
+Kyber will reduce the overall effect of the optimized polynomial arithmetic, which explains
+the relatively small speed-ups for the KEM protocols of Kyber.
+As the first assembly NTTRU implementation on Cortex-M4, we obtain 49.24%, 45.01%,
+and 54.56% speed-ups for KeyGen, Encaps, and Decaps compared with its reference
+implementation. The excellent speed-ups mainly come from the highly optimized assembly
+implementation of NTT, INTT, base multiplication, and base inversion implemented with
+the improved Plantard arithmetic. It is obvious that NTTRU outperforms every variant
+of Kyber by a large margin in terms of speed on Cortex-M4. Compared with the fastest
+Kyber512, NTTRU provides 37.91%, 55.03%, 46.19% faster KeyGen, Encaps, and Decaps
+with approximately 3.45∼4.05 times larger stack usage, respectively. In sum, although it
+is not a candidate for the NIST PQC competition, its efficiency might make it suitable for
+some specific application scenarios or platforms.
+Acknowledgments
+The authors would like to thank the anonymous reviewers (including the shepherd: Bo-
+Yin Yang) and Hao Cheng for their constructive suggestions and comments on our
+paper. This work is partially supported by the National Key R&D Program of China
+(No.2020AAA0107703 and No.2021YFB3100700), the National Natural Science Foundation
+of China (No. 62002023 and No.62132008), the Guangdong Provincial Key Laboratory
+of Interdisciplinary Research and Application for Data Science, BNU-HKBU United

@@ -1,0 +1,72 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 18/38
+
+18 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 15 4 ×4 convolution.
+Algorithm 16 4 × 4 asymmetric multiplication.
+Inputs:
+c, l,h, a0,...,a3, T0,...,T3
+Output:
+c0 + c1x+ c2x2 + c3x3 =
+(a ∗b) R−1 mod (x4
+−1)
+1: Name c = c0,
+(a0,...,a3) = (a0,a1,a2,a3),
+(T0,...,T3) = (b0,b1,b2,b3)
+2: smull l, a0, T0
+3: smull2 h, a0, T0
+4: smlal l, a1, T3
+5: smlal2 h, a1, T3
+6: smlal l, a2, T2
+7: smlal2 h, a2, T2
+8: smlal l, a3, T1
+9: smlal2 h, a3, T1
+10: q_montgomery c, l, h
+11: Rename (T0–3) = (b1,b2,b3,b0),
+c = c1 and repeat lines 4–10
+12: Rename (T0–3) = (b2,b3,b0,b1),
+c = c2 and repeat lines 4–10
+13: Rename (T0–3) = (b3,b0,b1,b2),
+c = c3 and repeat lines 4–10
+Inputs:
+c, l,h, a0,...,a3, T0,...,T3
+Output:
+c0 +c1x+c2x2 +c3x3 = (a ∗b) R−1 mod (x4
+−ω)
+1: Name c = c0,
+(a0,...,a3) = (a0,a1,a2,a3),
+(T0,...,T3) = (b0,ωb1,ωb2,ωb3)
+2: smull l, a0, T0
+3: smull2 h, a0, T0
+4: smlal l, a1, T3
+5: smlal2 h, a1, T3
+6: smlal l, a2, T2
+7: smlal2 h, a2, T2
+8: smlal l, a3, T1
+9: smlal2 h, a3, T1
+10: q_montgomery c, l, h
+11: Rename (T0–3) = (b1,ωb2,ωb3,b0), c = c1
+and repeat lines 4–10
+12: Rename (T0–3) = (b2,ωb3,b0,b1), c = c2
+and repeat lines 4–10
+13: Rename (T0–3) = (b3,b0,b1,b2), c = c3
+and repeat lines 4–10
+q_montgomery is Step 3–7 in Algorithm 14.
+4.3 Interleaving for Multi-Layer Butterflies on Cortex-A72
+This section describes our findings on how to implement radix-2 NTTs for the CPU
+Cortex-A72. We follow the software optimization guide of Cortex-A72 [ARM].
+In-order frontend and out-of-order backend. In the in-order frontend of the pipeline,
+instructions are fetched and decoded into internal micro-operations (µops). After renaming
+the registers, µops are dispatched to the out-of-order backend. In the backend, there is
+one branch pipeline B, two integer pipelines I0 and I1, one integer multi-cycle pipeline M,
+two FP/ASIMD pipelines F0 and F1, one load pipeline L, and one store pipeline S. While
+up to three µops can be dispatched per cycle, there are limitations on the number of each
+type of µops that can be dispatched simultaneously. The following are the numbers for
+each type in a single cycle: one µop using B, up to two µops using I0/I1, up to two µops
+using M, one µop using F0, one µop using F1, and up to two µops using L/S. Furthermore,
+µops are dispatched in the oldest-to-youngest age order.
+F0 and F1 for butterflies. We focus on the pipelines F0 and F1 for our vectorized imple-
+mentation. The basic building blocks for butterflies are Algorithm 17 and Algorithm 18.
+Instructions mul, mls, sqrdmulh can only go to F0, while sub and add go to F0 or F1. We
+interleave the instructions so sub and add have a better chance to be dispatched to F1.
+We believe F0 is the bottleneck of NTTs, and hence, reducing the loading of F0 speeds up
+the computation.

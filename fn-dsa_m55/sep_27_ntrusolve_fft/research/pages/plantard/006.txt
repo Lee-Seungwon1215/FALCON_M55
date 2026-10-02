@@ -1,0 +1,56 @@
+DOCUMENT: plantard.pdf PAGE: 6/24
+
+6 Improved Plantard Arithmetic for Lattice-based Cryptography
+Algorithm 5 NTTRU.PKE Encryption [LS19]
+Input: Message m, randomness r, pk= h
+Output: Ciphertext c
+1: c:= hr+ m (computed in NTT representation)
+2: return c
+Algorithm 6 NTTRU.PKE Decryption [LS19]
+Input: Ciphertext c, sk= f (both in NTT representation)
+Output: Message m
+1: m:= cfmod±q mod±3
+2: return m
+polynomial f(X) can be factored as
+f(X) =
+n−1
+i=0
+fi(X)(mod q),
+wherefi(X) aresmall-degree(degree-0foracomplete-NTT,higherdegreeforanincomplete-
+NTT [CHK+21]) polynomials. The polynomial multiplication of a,b∈Zq[X]/f(X) is first
+calculated using NTT as
+ai = amod fi(X) and bi = bmod fi(X) (2)
+for i = 0,···,n−1. Then we compute the base multiplication as a0b0,···,an−1bn−1.
+Finally, using the inverse NTT (INTT), we find the result polynomial c such that c =
+abmod f(X).
+For Kyber, the polynomial f(X) = X256 + 1 can be factored, with the help of a
+primitive 256-th root of unity ζ, as
+X256 + 1 =
+127
+i=0
+X2
+−ζ2i+1
+.
+This factorization is incomplete since f(X) is factored as degree-1 polynomials instead of
+degree-0. Therefore, the NTT of Kyber is a 7-layer incomplete-NTT.
+For NTTRU, the polynomial f(X) = X768
+−X384 + 1 is initially split into (X384 +
+684)(X384
+−685), then all the way down to irreducible polynomials X3 ±r. The NTT of
+NTTRU consists of 8 layers of butterflies, and we refer readers to [LS19] for more details.
+The commonly used computing structures of NTT are Cooley-Tukey (CT) butterfly
+[CT65] and Gentleman-Sande (GS) butterfly [GS66]. The CT butterfly accepts inputs in
+normal order and generates outputs in bit-reverse order. In contrast, the GS butterfly
+takes inputs in bit-reverse order and produces outputs in normal order. Therefore, a hybrid
+structure which uses CT butterfly for NTT and GS butterfly for INTT will accept inputs
+and generate outputs both in normal order without any bit-reversal operations.
+2.4 Modular Arithmetic
+In this paper, we divide the modular reduction into two types: mod and mod±, where
+cmod q obtains a result in [0,q) while cmod ± q gets a signed result in [−
+q
+q
+2 ,
+2 ). The
+“modular reduction” in this paper refers to both types of modular reduction. The modular
+multiplication c= a·bmod qis normally divided into two parts: the multiplication c= a·b
+and the modular reduction cmod q. The modular reduction cmod q can be done by

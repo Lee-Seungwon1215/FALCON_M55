@@ -1,0 +1,50 @@
+{
+  "elf": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4.3_ntrusolve_intfpint/validation/build/extra/zephyr/zephyr.elf",
+  "elf_sha256": "94d57c27008d40b379d994ca8aa651efa863288526081164037a5543d4e11f68",
+  "scope": "branch screening only; predication, operand timing and whole keygen not proven",
+  "symbols": {
+    "qd_raw_floor": {
+      "conditional_branches": [],
+      "it_blocks": [
+        "1000f48a:\tbf4c      \tite\tmi",
+        "1000f4b4:\tbf18      \tit\tne",
+        "1000f4c0:\tbfb4      \tite\tlt",
+        "1000f4ce:\tbfb4      \tite\tlt"
+      ],
+      "fp32_arithmetic": 28
+    },
+    "qd_mul": {
+      "conditional_branches": [],
+      "it_blocks": [
+        "1000f5ea:\tbf34      \tite\tcc"
+      ],
+      "fp32_arithmetic": 46
+    },
+    "fndsa_inner_fxr_div": {
+      "conditional_branches": [],
+      "it_blocks": [],
+      "fp32_arithmetic": 0
+    },
+    "fndsa_ds_mul": {
+      "conditional_branches": [
+        "10010c8c:\tf47f aba4 \tbne.w\t100103d8 <fndsa_ds_mul+0x50>"
+      ],
+      "it_blocks": [],
+      "fp32_arithmetic": 403
+    },
+    "fndsa_ds_div_real": {
+      "conditional_branches": [
+        "10010fa4:\tf47f ae98 \tbne.w\t10010cd8 <fndsa_ds_div_real+0x3c>"
+      ],
+      "it_blocks": [],
+      "fp32_arithmetic": 111
+    },
+    "fndsa_ds_inverse": {
+      "conditional_branches": [
+        "1001037a:\tf47f ace3 \tbne.w\t1000fd44 <fndsa_ds_inverse+0x50>"
+      ],
+      "it_blocks": [],
+      "fp32_arithmetic": 275
+    }
+  }
+}

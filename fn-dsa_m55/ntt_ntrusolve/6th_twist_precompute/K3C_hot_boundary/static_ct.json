@@ -1,0 +1,282 @@
+{
+  "status": "PASS",
+  "scope": "static constant-time regression from K2 to K3-C",
+  "baseline_elf_sha256": "d53cd515657c17a593a8532d2d2b36ca774492b4acf2f2524c4995857d5ec1da",
+  "baseline_image": {
+    "text": 176880,
+    "data": 144,
+    "bss": 172351,
+    "total": 349375
+  },
+  "candidates": {
+    "F_forward": {
+      "elf_sha256": "f2d1014b1c3162c8a3f044626de684df9968cce307b896cea79472d312d411cf",
+      "image": {
+        "text": 177164,
+        "data": 144,
+        "bss": 184543,
+        "total": 361851
+      },
+      "image_delta_from_k2": {
+        "text": 284,
+        "data": 0,
+        "bss": 12192,
+        "total": 12476
+      },
+      "packed_tables": {
+        "count": 1,
+        "bytes_each": 12192,
+        "total_bytes": 12192,
+        "alignment": 32
+      },
+      "functions": {
+        "fndsa_mp_NTT": {
+          "size_bytes_k2": 1166,
+          "size_bytes_k3c": 1154,
+          "instructions_k2": 312,
+          "instructions_k3c": 309,
+          "branches_k2": 11,
+          "branches_k3c": 11,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 49,
+          "memory_instructions_k3c": 51,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {
+              "vldrw.u32": 1,
+              "ldr.w": 1,
+              "sub.w": 1
+            },
+            "removed": {
+              "vmul.i32": 3,
+              "add.w": 1,
+              "addw": 2
+            }
+          }
+        },
+        "fndsa_mp_iNTT": {
+          "size_bytes_k2": 1562,
+          "size_bytes_k3c": 1562,
+          "instructions_k2": 418,
+          "instructions_k3c": 418,
+          "branches_k2": 15,
+          "branches_k3c": 15,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 64,
+          "memory_instructions_k3c": 64,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {},
+            "removed": {}
+          }
+        },
+        "fndsa_mp_NTT_small": {
+          "size_bytes_k2": 1030,
+          "size_bytes_k3c": 1016,
+          "instructions_k2": 268,
+          "instructions_k3c": 265,
+          "branches_k2": 7,
+          "branches_k3c": 7,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 36,
+          "memory_instructions_k3c": 38,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {
+              "ldr": 1,
+              "vldrw.u32": 1,
+              "sub.w": 1
+            },
+            "removed": {
+              "add.w": 1,
+              "vmul.i32": 3,
+              "addw": 2
+            }
+          }
+        }
+      }
+    },
+    "I_inverse": {
+      "elf_sha256": "72a0d671b4b31cfad29b241ccb75f1aa74148db001ae9e4192c7a7c2358ff410",
+      "image": {
+        "text": 177196,
+        "data": 144,
+        "bss": 184543,
+        "total": 361883
+      },
+      "image_delta_from_k2": {
+        "text": 316,
+        "data": 0,
+        "bss": 12192,
+        "total": 12508
+      },
+      "packed_tables": {
+        "count": 1,
+        "bytes_each": 12192,
+        "total_bytes": 12192,
+        "alignment": 32
+      },
+      "functions": {
+        "fndsa_mp_NTT": {
+          "size_bytes_k2": 1166,
+          "size_bytes_k3c": 1166,
+          "instructions_k2": 312,
+          "instructions_k3c": 312,
+          "branches_k2": 11,
+          "branches_k3c": 11,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 49,
+          "memory_instructions_k3c": 49,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {},
+            "removed": {}
+          }
+        },
+        "fndsa_mp_iNTT": {
+          "size_bytes_k2": 1562,
+          "size_bytes_k3c": 1550,
+          "instructions_k2": 418,
+          "instructions_k3c": 415,
+          "branches_k2": 15,
+          "branches_k3c": 15,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 64,
+          "memory_instructions_k3c": 66,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {
+              "ldr.w": 1,
+              "sub.w": 1,
+              "vldrw.u32": 1
+            },
+            "removed": {
+              "add.w": 1,
+              "addw": 2,
+              "vmul.i32": 3
+            }
+          }
+        },
+        "fndsa_mp_NTT_small": {
+          "size_bytes_k2": 1030,
+          "size_bytes_k3c": 1030,
+          "instructions_k2": 268,
+          "instructions_k3c": 268,
+          "branches_k2": 7,
+          "branches_k3c": 7,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 36,
+          "memory_instructions_k3c": 36,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {},
+            "removed": {}
+          }
+        }
+      }
+    },
+    "FI_combined": {
+      "elf_sha256": "1cfa845e5fe2e744979e5f8973cbb7f682ce524f544e94256656bb76189fb9c7",
+      "image": {
+        "text": 177244,
+        "data": 144,
+        "bss": 196735,
+        "total": 374123
+      },
+      "image_delta_from_k2": {
+        "text": 364,
+        "data": 0,
+        "bss": 24384,
+        "total": 24748
+      },
+      "packed_tables": {
+        "count": 2,
+        "bytes_each": 12192,
+        "total_bytes": 24384,
+        "alignment": 32
+      },
+      "functions": {
+        "fndsa_mp_NTT": {
+          "size_bytes_k2": 1166,
+          "size_bytes_k3c": 1154,
+          "instructions_k2": 312,
+          "instructions_k3c": 309,
+          "branches_k2": 11,
+          "branches_k3c": 11,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 49,
+          "memory_instructions_k3c": 51,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {
+              "vldrw.u32": 1,
+              "ldr.w": 1,
+              "sub.w": 1
+            },
+            "removed": {
+              "vmul.i32": 3,
+              "add.w": 1,
+              "addw": 2
+            }
+          }
+        },
+        "fndsa_mp_iNTT": {
+          "size_bytes_k2": 1562,
+          "size_bytes_k3c": 1550,
+          "instructions_k2": 418,
+          "instructions_k3c": 415,
+          "branches_k2": 15,
+          "branches_k3c": 15,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 64,
+          "memory_instructions_k3c": 66,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {
+              "ldr.w": 1,
+              "sub.w": 1,
+              "vldrw.u32": 1
+            },
+            "removed": {
+              "add.w": 1,
+              "addw": 2,
+              "vmul.i32": 3
+            }
+          }
+        },
+        "fndsa_mp_NTT_small": {
+          "size_bytes_k2": 1030,
+          "size_bytes_k3c": 1016,
+          "instructions_k2": 268,
+          "instructions_k3c": 265,
+          "branches_k2": 7,
+          "branches_k3c": 7,
+          "branch_mnemonic_sequence_equal": true,
+          "memory_instructions_k2": 36,
+          "memory_instructions_k3c": 38,
+          "forbidden_call_divide_or_fp": 0,
+          "mnemonic_delta": {
+            "added": {
+              "ldr": 1,
+              "vldrw.u32": 1,
+              "sub.w": 1
+            },
+            "removed": {
+              "add.w": 1,
+              "vmul.i32": 3,
+              "addw": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  "reasoning": [
+    "K3-C preserves each K2 transform's branch-mnemonic sequence.",
+    "Added table addresses depend only on public logn and public loop counters.",
+    "Packed roots/twists depend only on public modulus/root parameters.",
+    "Packing loops have fixed public bounds and public bit-reversed indices."
+  ],
+  "semantic_warning": "Mutable process-global packed tables make K3-C non-reentrant.",
+  "limitation": "Static structural regression only; not a formal proof, dudect/TVLA, or physical leakage test."
+}

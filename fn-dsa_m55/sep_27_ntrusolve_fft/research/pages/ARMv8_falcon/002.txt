@@ -1,0 +1,116 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 2/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+of the 3 Round candidates are lattice-based cryptography.
+Polynomial multiplication, the core operation of lattice-based
+cryptography, achieves high performance even in embedded
+platforms because it is accelerated through various algorithms
+such as Fast-Fourier Transform/Number-Theoretic Trans-
+form (FFT/NTT) and Toom-Cook. Among Round 3 DSA
+schemes, Falcon supports a shorter key length and faster ver-
+ification speed compared to other DSA schemes; thus, it has
+advantages that it can be seamlessly integrated into currently
+used security protocols and applications. For example, recent
+studies have been conducted to apply PQC-DSA schemes
+to cryptographic protocols. Since the short signature length
+and fast verification speed, in WAVE-based V2Verifier, Fal-
+con was selected as the most suitable DSA scheme in the
+autonomous driving environment [2]. In addition, in TLS 1.3,
+Falcon is judged that it is the most suitable DSA scheme
+in a server environment that supports floating-point opera-
+tions [3].
+The Falcon is designed based on the NTRU lattices.
+Unlike other crypto systems based on the Learning With
+Error/Learning With Rounding (LWE/LWR), Falcon per-
+forms polynomial operations in complex number domain
+where each coefficient of a polynomial consists of a real and
+an image part which are represented in floating-point number
+(Fortunately, since ARMv8 MCU supports generic floating-
+point arithmetics, we can make use of them to enhance the
+performance of floating-point arithmetic in Falcon). In addi-
+tion, in key generation and signature verification process,
+polynomial operations in integer domain are also required.
+In summary, the core operation of Falcon is polynomial
+multiplication in both complex number domain and integer
+number domain. The reference software of Falcon makes
+use of FFT/NTT-based multiplication methods for enhanc-
+ing the performance of polynomial multiplication in each of
+complex and integer domain, respectively. In particular, key
+generation process calls various kinds of FFT/NTT to solve
+NTRU equations, which is a key part of Falcon’s performance
+load. Therefore, in order to accelerate the performance of
+Falcon, the FFT/NTT need to be optimized. Various imple-
+mentation studies have been conducted on PQC PKE/KEM
+and DSA in the ARM architecture, but it is mainly aimed at
+the ARM-Cortex M series [4]–[6]. As far as we know, the
+implementation of Falcon in the ARMv8 environment does
+not yet exist.
+ARMv8 architectures are currently being used as a
+core Micro-Controller Unit (MCU) for mobile, tablet, and
+autonomous driving. ARMv8 core supports the NEON
+engine, a parallel processing module, and the Floating-Point
+(FP) instruction set that can efficiently process FP opera-
+tions. Thus, in this paper, we present an optimized FFT and
+NTT based polynomial multiplications, the core operation
+of Falcon, in ARMv8-A environment. We basically apply
+data parallelism for processing several coefficients at once
+by using NEON engine during FFT/NTT-based polynomial
+operations. For example, 2 (resp. 8) coefficient of a poly-
+nomial in complex domain (resp. integer domain) can be
+simultaneously processed with NEON engine. Furthermore,
+regarding FFT multiplication, we optimize FPC functions
+(FPC-MUL/DIV/ADD/SUB), which are the lowest-level
+operations of FFT multiplication, by utilizing fused FP
+instructions and the NEON engine. In addition, the Falcon
+has different degrees of polynomials for each security level,
+thus the depth of NTT/FFT at each security level is different.
+Thus, we apply memory optimization paths taking this into
+account to minimize the memory access overheads. Through
+the aforementioned optimization technique, the performance
+of Falcon has been significantly improved. Our optimized
+Falcon software library can be utilized for several applica-
+tion where PQC-DSA is required such as V2X (Vehicle to
+everying) communications requiring authentication of BSM
+(Basic Security Message), TLS, and DNSSEC.
+This work’s contributions can be summarized as follows.
+• First Work of Software Optimization about Falcon
+on ARMv8 Platforms
+Until now, the research on software optimization of Fal-
+con has been only studied on classical CPU (Intel/AMD)
+and 32-bit ARM Cortex-M4. However, in IoT applica-
+tion, there are many types of devices used. Currently,
+ARMv8-A based devices like mobile phones, tables,
+and so on have been are widely used for various IoT
+applications and Edge computing applications. Hence,
+we concentrate on the software optimization of Falcon,
+Post Quantum Digital Signature Algorithm (PQDSA),
+on ARMv8-A based devices. As far as we know, this
+is the first work on software optimization of Falcon on
+ARMv8-A based device. At first, we discuss in depth
+optimization methods of FFT/NTT-based polynomial
+multiplication, the core operation of Falcon algorithm.
+As a result of the proposed methods, our Falcon software
+improved its performance by 15.1% (resp. 18.1%) in
+KeyGen, 16.5% (17.1%) in Sign, and 65.4% (69.4%)
+in Verify when compared to Falcon reference software
+on security level 1 (resp. 5).
+• Optimizing FFT/NTT-based polynomial multiplica-
+tion on ARMv8-A Devices
+Polynomial multiplication is one of the most time-
+consuming operation in Lattice-based Post Quantum
+Cryptosystem. However, Falcon computes polynomial
+multiplications on not only integer number domain but
+also complex number while other Lattice-based cryp-
+tosystems like Crystals-Dilithium and Crystals-Kyber
+computing those on only integer number domain. For
+accelerating the polynomial multiplication in com-
+plex number domain and integer number domain,
+FFT-based polynomial multiplication and NTT-based
+polynomial multiplication have been widely used,
+respectively. However, there are room for optimizing
+them on ARMv8 in order to enhance the overall per-
+formance of Falcon. For enhancing the FFT-based and
+NTT-based polynomial multiplication method, we take
+full advantage of NEON engine in ARMv8-A MCU.
+We basically data parallelism approach for processing
+VOLUME 10, 2022 44447

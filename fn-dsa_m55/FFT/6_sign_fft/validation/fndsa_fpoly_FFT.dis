@@ -1,0 +1,138 @@
+10002578 <fndsa_fpoly_FFT>:
+10002578:	2801      	cmp	r0, #1
+1000257a:	f240 80fe 	bls.w	1000277a <fndsa_fpoly_FFT+0x202>
+1000257e:	ed2d 8b10 	vpush	{d8-d15}
+10002582:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+10002586:	b083      	sub	sp, #12
+10002588:	9100      	str	r1, [sp, #0]
+1000258a:	f04f 0804 	mov.w	r8, #4
+1000258e:	fa08 f800 	lsl.w	r8, r8, r0
+10002592:	ea4f 0798 	mov.w	r7, r8, lsr #2
+10002596:	f1a0 0901 	sub.w	r9, r0, #1
+1000259a:	f04f 0a01 	mov.w	sl, #1
+1000259e:	f1b9 0f01 	cmp.w	r9, #1
+100025a2:	f000 80a8 	beq.w	100026f6 <fndsa_fpoly_FFT+0x17e>
+100025a6:	4e75      	ldr	r6, [pc, #468]	@ (1000277c <fndsa_fpoly_FFT+0x204>)
+100025a8:	eb06 108a 	add.w	r0, r6, sl, lsl #6
+100025ac:	eb06 164a 	add.w	r6, r6, sl, lsl #5
+100025b0:	9a00      	ldr	r2, [sp, #0]
+100025b2:	4651      	mov	r1, sl
+100025b4:	eb02 0407 	add.w	r4, r2, r7
+100025b8:	eb04 0507 	add.w	r5, r4, r7
+100025bc:	eb05 0b07 	add.w	fp, r5, r7
+100025c0:	ed96 0b00 	vldr	d0, [r6]
+100025c4:	ed96 1b02 	vldr	d1, [r6, #8]
+100025c8:	ed90 cb00 	vldr	d12, [r0]
+100025cc:	ed90 db02 	vldr	d13, [r0, #8]
+100025d0:	ed90 eb04 	vldr	d14, [r0, #16]
+100025d4:	ed90 fb06 	vldr	d15, [r0, #24]
+100025d8:	f106 0610 	add.w	r6, r6, #16
+100025dc:	f100 0020 	add.w	r0, r0, #32
+100025e0:	ea4f 0ed7 	mov.w	lr, r7, lsr #3
+100025e4:	f04e e001 	dls	lr, lr
+100025e8:	ed92 2b00 	vldr	d2, [r2]
+100025ec:	eb02 0308 	add.w	r3, r2, r8
+100025f0:	ed93 3b00 	vldr	d3, [r3]
+100025f4:	ed94 4b00 	vldr	d4, [r4]
+100025f8:	eb04 0308 	add.w	r3, r4, r8
+100025fc:	ed93 5b00 	vldr	d5, [r3]
+10002600:	ed95 6b00 	vldr	d6, [r5]
+10002604:	eb05 0308 	add.w	r3, r5, r8
+10002608:	ed93 7b00 	vldr	d7, [r3]
+1000260c:	ed9b 8b00 	vldr	d8, [fp]
+10002610:	eb0b 0308 	add.w	r3, fp, r8
+10002614:	ed93 9b00 	vldr	d9, [r3]
+10002618:	ee26 ab00 	vmul.f64	d10, d6, d0
+1000261c:	ee07 ab41 	vmls.f64	d10, d7, d1
+10002620:	ee26 bb01 	vmul.f64	d11, d6, d1
+10002624:	ee07 bb00 	vmla.f64	d11, d7, d0
+10002628:	ee32 6b4a 	vsub.f64	d6, d2, d10
+1000262c:	ee32 2b0a 	vadd.f64	d2, d2, d10
+10002630:	ee33 7b4b 	vsub.f64	d7, d3, d11
+10002634:	ee33 3b0b 	vadd.f64	d3, d3, d11
+10002638:	ee28 ab00 	vmul.f64	d10, d8, d0
+1000263c:	ee09 ab41 	vmls.f64	d10, d9, d1
+10002640:	ee28 bb01 	vmul.f64	d11, d8, d1
+10002644:	ee09 bb00 	vmla.f64	d11, d9, d0
+10002648:	ee34 8b4a 	vsub.f64	d8, d4, d10
+1000264c:	ee34 4b0a 	vadd.f64	d4, d4, d10
+10002650:	ee35 9b4b 	vsub.f64	d9, d5, d11
+10002654:	ee35 5b0b 	vadd.f64	d5, d5, d11
+10002658:	ee24 ab0c 	vmul.f64	d10, d4, d12
+1000265c:	ee05 ab4d 	vmls.f64	d10, d5, d13
+10002660:	ee24 bb0d 	vmul.f64	d11, d4, d13
+10002664:	ee05 bb0c 	vmla.f64	d11, d5, d12
+10002668:	ee32 4b4a 	vsub.f64	d4, d2, d10
+1000266c:	ee32 2b0a 	vadd.f64	d2, d2, d10
+10002670:	ee33 5b4b 	vsub.f64	d5, d3, d11
+10002674:	ee33 3b0b 	vadd.f64	d3, d3, d11
+10002678:	ee28 ab0e 	vmul.f64	d10, d8, d14
+1000267c:	ee09 ab4f 	vmls.f64	d10, d9, d15
+10002680:	ee28 bb0f 	vmul.f64	d11, d8, d15
+10002684:	ee09 bb0e 	vmla.f64	d11, d9, d14
+10002688:	ee36 8b4a 	vsub.f64	d8, d6, d10
+1000268c:	ee36 6b0a 	vadd.f64	d6, d6, d10
+10002690:	ee37 9b4b 	vsub.f64	d9, d7, d11
+10002694:	ee37 7b0b 	vadd.f64	d7, d7, d11
+10002698:	ed82 2b00 	vstr	d2, [r2]
+1000269c:	eb02 0308 	add.w	r3, r2, r8
+100026a0:	ed83 3b00 	vstr	d3, [r3]
+100026a4:	ed84 4b00 	vstr	d4, [r4]
+100026a8:	eb04 0308 	add.w	r3, r4, r8
+100026ac:	ed83 5b00 	vstr	d5, [r3]
+100026b0:	ed85 6b00 	vstr	d6, [r5]
+100026b4:	eb05 0308 	add.w	r3, r5, r8
+100026b8:	ed83 7b00 	vstr	d7, [r3]
+100026bc:	ed8b 8b00 	vstr	d8, [fp]
+100026c0:	eb0b 0308 	add.w	r3, fp, r8
+100026c4:	ed83 9b00 	vstr	d9, [r3]
+100026c8:	f102 0208 	add.w	r2, r2, #8
+100026cc:	f104 0408 	add.w	r4, r4, #8
+100026d0:	f105 0508 	add.w	r5, r5, #8
+100026d4:	f10b 0b08 	add.w	fp, fp, #8
+100026d8:	f00f c07b 	le	lr, 100025e8 <fndsa_fpoly_FFT+0x70>
+100026dc:	465a      	mov	r2, fp
+100026de:	3901      	subs	r1, #1
+100026e0:	f47f af68 	bne.w	100025b4 <fndsa_fpoly_FFT+0x3c>
+100026e4:	ea4f 0a8a 	mov.w	sl, sl, lsl #2
+100026e8:	ea4f 0797 	mov.w	r7, r7, lsr #2
+100026ec:	f1b9 0902 	subs.w	r9, r9, #2
+100026f0:	f47f af55 	bne.w	1000259e <fndsa_fpoly_FFT+0x26>
+100026f4:	e03c      	b.n	10002770 <fndsa_fpoly_FFT+0x1f8>
+100026f6:	4e21      	ldr	r6, [pc, #132]	@ (1000277c <fndsa_fpoly_FFT+0x204>)
+100026f8:	eb06 164a 	add.w	r6, r6, sl, lsl #5
+100026fc:	9a00      	ldr	r2, [sp, #0]
+100026fe:	eb02 0308 	add.w	r3, r2, r8
+10002702:	f102 0408 	add.w	r4, r2, #8
+10002706:	f103 0508 	add.w	r5, r3, #8
+1000270a:	46d6      	mov	lr, sl
+1000270c:	f04e e001 	dls	lr, lr
+10002710:	ed96 0b00 	vldr	d0, [r6]
+10002714:	ed96 1b02 	vldr	d1, [r6, #8]
+10002718:	ed92 2b00 	vldr	d2, [r2]
+1000271c:	ed93 3b00 	vldr	d3, [r3]
+10002720:	ed94 4b00 	vldr	d4, [r4]
+10002724:	ed95 5b00 	vldr	d5, [r5]
+10002728:	ee24 6b00 	vmul.f64	d6, d4, d0
+1000272c:	ee05 6b41 	vmls.f64	d6, d5, d1
+10002730:	ee24 4b01 	vmul.f64	d4, d4, d1
+10002734:	ee05 4b00 	vmla.f64	d4, d5, d0
+10002738:	ee32 5b06 	vadd.f64	d5, d2, d6
+1000273c:	ee32 2b46 	vsub.f64	d2, d2, d6
+10002740:	ed82 5b00 	vstr	d5, [r2]
+10002744:	ed84 2b00 	vstr	d2, [r4]
+10002748:	ee33 6b04 	vadd.f64	d6, d3, d4
+1000274c:	ee33 3b44 	vsub.f64	d3, d3, d4
+10002750:	ed83 6b00 	vstr	d6, [r3]
+10002754:	ed85 3b00 	vstr	d3, [r5]
+10002758:	f106 0610 	add.w	r6, r6, #16
+1000275c:	f102 0210 	add.w	r2, r2, #16
+10002760:	f103 0310 	add.w	r3, r3, #16
+10002764:	f104 0410 	add.w	r4, r4, #16
+10002768:	f105 0510 	add.w	r5, r5, #16
+1000276c:	f00f c031 	le	lr, 10002710 <fndsa_fpoly_FFT+0x198>
+10002770:	b003      	add	sp, #12
+10002772:	e8bd 4ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+10002776:	ecbd 8b10 	vpop	{d8-d15}
+1000277a:	4770      	bx	lr
+1000277c:	30000998 	.word	0x30000998

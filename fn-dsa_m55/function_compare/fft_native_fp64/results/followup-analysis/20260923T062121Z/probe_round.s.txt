@@ -1,0 +1,53 @@
+
+/Users/seungwon/FALCON/fn-dsa_m55/function_compare/fft_native_fp64/build/q32_trial-perfct/zephyr/zephyr.elf:     file format elf32-littlearm
+
+
+Disassembly of section rom_start:
+
+Disassembly of section text:
+
+10004b70 <probe_round>:
+10004b70:	ed9f 6b1f 	vldr	d6, [pc, #124]	@ 10004bf0 <probe_round+0x80>
+10004b74:	ed9f 7b20 	vldr	d7, [pc, #128]	@ 10004bf8 <probe_round+0x88>
+10004b78:	eeb4 0bc6 	vcmpe.f64	d0, d6
+10004b7c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+10004b80:	eeb4 0bc7 	vcmpe.f64	d0, d7
+10004b84:	bfac      	ite	ge
+10004b86:	2101      	movge	r1, #1
+10004b88:	2100      	movlt	r1, #0
+10004b8a:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+10004b8e:	f001 0101 	and.w	r1, r1, #1
+10004b92:	bf58      	it	pl
+10004b94:	2100      	movpl	r1, #0
+10004b96:	ee10 ca10 	vmov	ip, s0
+10004b9a:	4248      	negs	r0, r1
+10004b9c:	ea00 020c 	and.w	r2, r0, ip
+10004ba0:	4601      	mov	r1, r0
+10004ba2:	ee10 0a90 	vmov	r0, s1
+10004ba6:	ea00 0301 	and.w	r3, r0, r1
+10004baa:	ec43 2b17 	vmov	d7, r2, r3
+10004bae:	eefd 6bc7 	vcvt.s32.f64	s13, d7
+10004bb2:	eeb8 3be6 	vcvt.f64.s32	d3, s13
+10004bb6:	eeb6 4b00 	vmov.f64	d4, #96	@ 0x3f000000  0.5
+10004bba:	ee37 7b43 	vsub.f64	d7, d7, d3
+10004bbe:	eebe 5b00 	vmov.f64	d5, #224	@ 0xbf000000 -0.5
+10004bc2:	eeb4 7bc4 	vcmpe.f64	d7, d4
+10004bc6:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+10004bca:	eeb4 7bc5 	vcmpe.f64	d7, d5
+10004bce:	ee16 2a90 	vmov	r2, s13
+10004bd2:	bfac      	ite	ge
+10004bd4:	2301      	movge	r3, #1
+10004bd6:	2300      	movlt	r3, #0
+10004bd8:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+10004bdc:	4413      	add	r3, r2
+10004bde:	bf4c      	ite	mi
+10004be0:	2201      	movmi	r2, #1
+10004be2:	2200      	movpl	r2, #0
+10004be4:	1a9b      	subs	r3, r3, r2
+10004be6:	ee00 3a10 	vmov	s0, r3
+10004bea:	eeb8 0bc0 	vcvt.f64.s32	d0, s0
+10004bee:	4770      	bx	lr
+10004bf0:	00000000 	.word	0x00000000
+10004bf4:	c1e00000 	.word	0xc1e00000
+10004bf8:	ffe00000 	.word	0xffe00000
+10004bfc:	41dfffff 	.word	0x41dfffff

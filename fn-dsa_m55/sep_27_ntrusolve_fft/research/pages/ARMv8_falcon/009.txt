@@ -1,0 +1,83 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 9/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+Algorithm 4: Proposed FPC Parallel Implementation Using NEON Engine
+Input : XRe, XIm, YRe, YIm
+Output: v28(Re), v29(Im)
+Alg: FPC-MUL : (a +bi) ×(c +di)=(ac−bd) +(ad +bc)i
+1 FMUL v28.2d, \XRe\().2d, \YRe\().2d ◃ Real Part Operation ac
+2 FMLS v28.2d, \XIm\().2d, \YIm\().2d ◃ Result →(ac−bd)
+3 FMUL v29.2d, \XRe\().2d, \YIm\().2d ◃ Image Part Operation ad
+4 FMLA v29.2d, \XIm\().2d, \YRe\().2d ◃ Result →(ad +bc)
+Alg: FPC-DIV : (a +bi)/(c +di)=((ac +bd)−(ad−bc)i)/(c2 +d2)
+5 FMUL v28.2d, \YRe\().2d, \YRe\().2d ◃ c2
+6 FMLA v28.2d, \YIm\().2d, \YIm\().2d ◃ c2 +d2
+7 FDIV v28.2d, v31.2d, v28.2d ◃ 1/(c2 +d2)
+8 FMUL \YRe\().2d, v28.2d, \YRe\().2d ◃ c/(c2 +d2))
+9 FSUB v29.2d, v30.2d, \YIm\().2d ◃−d
+10 FMUL \YIm\().2d, v29.2d, v28.2d ◃−d/(c2 +d2)
+11 FMUL v28.2d, \XRe\().2d, \YRe\().2d ◃ Real Part Operation ac/(c2 +d2)
+12 FMLS v28.2d, \XIm\().2d, \YIm\().2d ◃ Result →(ac +bd)/(c2 +d2)
+13 FMUL v29.2d, \XRe\().2d, \YIm\().2d ◃ Image Part Operation (−ad)/(c2 +d2)i
+14 FMLA v29.2d, \XIm\().2d, \YRe\().2d ◃ Result →(−ad +bc)/(c2 +d2)
+Alg: FPC-ADD : (a +bi) +(c +di)=(a +c) +(b +d)i
+15 FADD v28.2d, \XRe\().2d, \YRe\().2d ◃ Real Part Result →(a +c)
+16 FADD v29.2d, \XIm\().2d, \YIm\().2d ◃ Image Part Result →(b +d)
+Alg: FPC-SUB :(a +bi)−(c +di)=(a−c) +(b−d)i
+17 FSUB v28.2d, \XRe\().2d, \YRe\().2d ◃ Real Part Result →(a−c)
+18 FSUB v29.2d, \XIm\().2d, \YIm\().2d ◃ Image Part Result →(b−d)
+algorithms, Falcon has the advantage of significantly faster
+signature verification speed. Thus, to further emphasize
+this advantage, we focus on the parallel implementation
+of the mq-NTT algorithm utilized in the signature verifi-
+cation process of the Falcon. The NTT algorithm used in
+the rest of KeyGen and Sign can be implemented simi-
+larly. Algorithm 5 shows the proposed parallel implementa-
+tion technique for CT Butterfly operation for the mq-NTT
+algorithm. Input of Algorithm 5 is the vector registers each
+storing 8 coefficients, and Out corresponds to the vector reg-
+isters storing 8 coefficients for which CT-Butterfly operation
+has been completed. Also, CT-Butterfly is an algorithm for
+accelerating NTT in parallel, and consists of mq-montymul,
+mq-add, and mq-sub operations.
+First, the code corresponding to Step 1-23 is to process mq-
+montymul. In Step 1-2, the multiplication between Zetas and
+the In1 is performed in 16-bit units by separating the 128-bit
+vector register into 64-bit unit. Since the parallel unit has been
+changed from 16-bit to 32-bit due to multiplication opera-
+tion, the subsequent operation processing must be divided
+into two parts and performed separately. Step 24-25 is the
+process of converting an 8 ×16-bit input vector register into
+two 4 ×32-bit vector registers to perform mq-add, which
+processes operations in 32-bit units. Steps 27-39 perform the
+parallel processing of mq-add in a 128-bit vector register by
+32-bit units. When the mq-add operation is completed, since
+the CT-Butterfly of one part is finished, it is necessary to
+change the parallel unit from 4 ×32-bit to 8 ×16-bit again,
+which is Step 40. Finally, CT-Butterfly operation is final-
+ized through mq-sub. Similar to mq-add, since operations
+are performed in 32-bit units, the process of integrating the
+parallelization of the resulting two vector registers is required.
+CT-Butterfly operation is a key operation in NTT, and the
+proposed parallel implementation has faster performance by
+processing multiple operations simultaneously compared to a
+serial implementation.
+C. MEMORY OPTIMIZATION STRATEGY: FFT/NTT
+Falcon guarantees security based on NTRU lattice, so the
+polynomial degree increases with each security level.
+In order words, Falcon-512 operates on polynomials of the
+512 degree, and Falcon-1024 operates on polynomials of
+the 1024 degree If the degree of polynomial is different
+according to the security level, the depth of the FFT/NTT is
+different. Since memory access is expensive in the embedded
+environment, a memory optimization strategy considering the
+depth of such FFT/NTT is required. Thus, we present a mem-
+ory optimization path for FFT/NTT-512, FFT/NTT-1024.
+We designed the memory optimization paths by maximizing
+the merging proposed in previous study [27]. For example,
+based on FFT-512, it is possible to save 16 LD1 and ST1
+memory access instructions each in Real and Image Part for
+2 depths compared to Standard implementation. In addition,
+by maximizing NEON vector registers v0−v31, coefficients
+of polynomial are held and processed in all vector registers
+44454 VOLUME 10, 2022

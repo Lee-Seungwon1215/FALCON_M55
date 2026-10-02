@@ -1,0 +1,103 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 12/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 12
+TABLE I
+CYCLE COUNTS OF THE CORE POLYNOMIAL ARITHMETIC, NAMELY NTT, INTT AND BASE MULTIPLICATION, IN KYBER ON CORTEX-M3, SIFIVE
+FREEDOM E310, AND PQRISCV.
+Platform Implementation NTT INTT Base Multiplication
+Cortex-M3
+Denisa et al. [13] This work (stack) This work (speed) Speedup (stack) Speedup (speed) 10 874 8 026 8 026 26.19% 26.19% 13 049 8 594/8 799 8 594 34.14%/32.57% 34.14% 4 821
+4 311
+3 028/3 922/5 851
+1.06%
+37.19%/18.65%/-21.37%
+SiFive Freedom E310
+Denisa et al. [32] This work (stack) This work (speed) Speedup (stack) Speedup (speed) 24 353 15 888 15 888 34.76% 34.76% 36 513 -a
+15 719/16 227 10 020
+15 719 4 893/5 662/9 313
+56.95%/55.53% -
+56.95% -
+PQRISCV
+Denisa et al. [32] This work (stack) This work (speed) Speedup (stack) Speedup (speed) 28 417 21 975 21 975 22.67% 22.67% 42 636 -a
+23 666/24 146 12 236
+23 666 7 747/9 795/13 068
+44.49%/43.37% -
+44.49% -
+a. [32] did not provide results for base multiplication.
+PQRISCV similar to the PQM3 [33]. On the SiFive platform,
+however, we use the reference SHA3, SHAKE, and AES
+implementations provided in SUPERCOP7 to reduce the code
+size. This is because a bloated code size might impact the
+performance of the platform. Further discussion on this issue
+will be provided in Section VI-C.
+B. Performance of the Polynomial Arithmetic
+Table I presents the performance comparison of the poly-
+nomial arithmetic. The state-of-the-art Kyber implementation
+on Cortex-M3 was presented by Denisa et al. [13], which is
+also the latest implementation integrated in PQM3 [33]. On
+RISC-V, the closest related work also comes from Denisa et
+al. [32]. However, since the implementations on RISC-V [32]
+do not involve any memory optimization techniques, we are
+unable to deploy their Kyber implementation on the SiFive
+platform. Instead, we only incorporate their NTT and INTT
+implementations on the SiFive platform for comparison.
+As mentioned in Section V-A3, we eliminate the modular
+reduction of coefficients for NTT, therefore, both the stack-
+version and speed-version NTT cost the same number of
+cycles. Specifically, the proposed NTT implementation obtains
+speedups of 26.19%, 34.76%, and 22.67% on the ARM
+Cortex-M3, SiFive Freedom E310, and PQRISCV, respec-
+tively, compared to the implementations in [13] and [32].
+In terms of INTT, because we manage to eliminate the
+modular reduction of coefficients in the stack-version INTT
+of Kyber512 and the speed-version INTT of all three Kyber
+variants, the INTT of Kyber512 is slightly faster than the one
+in the stack-version INTT of Kybe768 and Kyber1024. Over-
+all, our INTT achieve speedups of 32.57%/34.14%,55.53%/
+56.95%, and 43.36%/44.49% on the ARM Cortex-M3, SiFive
+Freedom E310, and PQRISCV, respectively, compared to the
+implementations in [13] and [32].
+Huang et al. [20] reported that the stack-version base
+multiplication with the Plantard arithmetic is slower than
+the previous Montgomery-based counterpart on Cortex-M4
+due to the lack of register usage resulting from the Plantard
+7http://bench.cr.yp.to/supercop.html
+multiplication of two variables. However, on Cortex-M3 and
+RISC-V platforms, the stack-version base multiplication does
+not have this issue thus could even benefit from the Plan-
+tard multiplication by the twiddle factor. The speed-version
+implementation offers three variants of base multiplication
+to deploy the asymmetric multiplication and better accumu-
+lation techniques described in Section V-B1, which help to
+mitigate the need of some modular reductions. Therefore,
+two of the three variants are 29.74% and 9.02% faster than
+our stack-version base multiplication, while the third variant
+is 35.72% slower, mainly due to additional loading cycles
+and high register pressure. Compared to the state-of-the-
+art Montgomery-based implementation in in [13], these two
+variants of the speed-version base multiplications are 37.19%
+and 18.65% faster than the base multiplication due to the use
+of the improved Plantard arithmetic, asymmetric multiplication
+and better accumulation techniques. Since the implementation
+from Denisa et al. [32] did not provide results for the base
+multiplication, we do not compare it with our results on the
+RISC-V platforms. Overall, the speed-version implementation
+offers faster INTT and base multiplications for all variants
+of Kyber than the stack-version. It should be noted that the
+slower variant of base multiplication will only be used at
+the final stage of the innver-vector product and matrix-vector
+product while the two faster variants will be used repeatedly
+in these two operations. Therefore, the faster INTT and base
+multiplications would speed up these two time-consuming
+operations. Together with the proposed memory optimizations
+in Section V-B2, the speed-version implementation provides
+an effective time-memory trade-off for Kyber on low-end 32-
+bit platforms. Detailed improvements of the speed-version
+implementation could be found in Table II.
+C. Performance and Stack Usage of Kyber
+Table II presents the cycle counts of the KEM protocols
+for Kyber and Kyber-90s, including key generation (KeyGen),
+encapsulation (Encaps), and decapsulation (Decaps), which are
+obtained by repeating each protocol one hundred times and
+then computing the average results. The stack usage is mea-
+sured in a similar way to [33] and [32]. We have implemented

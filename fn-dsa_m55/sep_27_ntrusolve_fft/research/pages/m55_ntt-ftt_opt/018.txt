@@ -1,0 +1,52 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 18/29
+
+18 Polynomial multiplication on embedded vector architectures
+layers, where each size-4 butterfly operates on consecutive 32-bit elements, we use the
+de-interleaving load VLD4{0-3} and compute four size-4 butterflies at once. In this case,
+we require 6 vectors for the root constants, in addition to the 4 input vectors. However,
+we find that with careful register management, the total of 8 vector registers is suﬃcient.
+Alg. 8: Size-4 NTT Cooley-Tukey butterfly
+In: a0,a1,a2,a3,ζ0,ζ1,ζ2 ∈Fq
+Out: Radix-4 butterfly of (ai) w.r.t. ζj.
+1: a2 ←ζ0a2, a3 ←ζ0a3 Montgomery
+2: (a0,a2) ←(a0 + a2,a0−a2), (a1,a3) ←(a1 + a3,a1−a3) 3: a1 ←ζ1a1, a3 ←ζ2a3 Montgomery
+4: (a0,a1) ←(a0 + a1,a0−a1), (a2,a3) ←(a2 + a3,a2−a3) Add/Sub
+Add/Sub
+To leverage instruction overlapping, it is vital to interleave the Montgomery multiplica-
+tions – consisting of multiplications only – and the add/sub steps – consisting of addition
+operations only. Moreover, since there are 6 multiplications but only 4 addition/subtraction
+operations, we also interleave loads/stores in order to achieve a stall-free execution.
+6.4.3 Point multiplication for full NTT
+For the point multiplication in Fn
+q, our measured code uses Algorithm 4. We comment on
+the possibility of using the shorter Algorithm 5: This algorithm is only applicable if one of
+the inputs is odd. Here, the following trick can be applied:
+Proposition 1. Assume a Montgomery multiplication routine for the NTT which produces
+only even representatives. Then, if (xs) is an input vector to the NTT, all entries of its
+NTT transform have the same parity, which agrees with the parity of the representative x0.
+In particular, if x0 is odd, then all entries in the NTT transform of (xs) are odd.
+Proof. Consider the first layer: If n is the size of the NTT, each pair (a= xr,b= xr+n/2)
+of elements in the lower and upper half is transformed via (a,b) →(a+ ζb,a−ζb). By
+assumption, ζbis represented by an even integer, so at the end of layer 0, the parity of the
+elements in the lower half has not changed, and the parity of elements in the upper half is
+the same as the parity of the corresponding lower half element. Continue inductively.
+As long we ensure that x0 is odd initially, we can therefore force all outputs of the NTT
+to have only odd entries, and thus be suitable for our accelerated point multiplication via
+Algorithm 5. We leave it for future work to explore the use of this trick further.
+6.4.4 Point multiplication for partial NTT
+When implementing multiplication in Fq[X]/(X256 + 1) using a 6-layer incomplete NTT,
+the base multiplication is in Fq[X]/(X4
+−ζ). For this, [CHK+21] relies on SMLAL to reduce
+the number of Montgomery reductions by operating in double-width values as long as
+possible, as does [BHK+], which moreover batches the base multiplication.
+As mentioned in Section 3.2, batched implementations are diﬃcult to realize in the
+Helium instruction set due to the lower number of vectors. A batched multiplication in
+Fq[X]/(X4
+−ζ) would need at least 4 + 4 + 4 vectors for the two inputs and the output.
+Instead, we vectorize a single multiplication in Fq[X]/(X4
+−ζ) as follows: For inputs
+a= a0 + a1X+ a2X2 + a3X3 and b= b0 + b1X+ b2X2 + b3X3, we first prepare the reversed
+and expanded array of 32-bit values b3,b2,b1,b0,ζb3,ζb2,ζb1 in memory. We can then
+compute the coeﬃcients of abas dot products of [a0,a1,a2,a3] with length-4 subvectors of
+the expanded array, each of which can be computed with a single invocation of the long-
+multiply-accumulate-across instruction VMLALDAV.s32. For example, the X2-coeﬃcient of

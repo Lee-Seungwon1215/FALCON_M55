@@ -1,0 +1,361 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 51849
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :51849 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10003a8c
+hbreak *0x10006d1c
+set $early_fault_bp = $bpnum
+jump *0x10006d31
+if $pc != 0x10003a8c
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp32llyd1u/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10003a3c
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10006d1c
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 51849
+Info : Listening on port 51849 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/51849
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+SELECT_TIMING class=0 scale=0 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=0 scale=0 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=1 scale=1 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=1 scale=1 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=2 scale=2 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=2 scale=2 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=3 scale=3 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=3 scale=3 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=4 scale=4 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=4 scale=4 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=5 scale=5 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=5 scale=5 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=6 scale=6 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=6 scale=6 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=7 scale=7 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=7 scale=7 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=8 scale=8 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=8 scale=8 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=9 scale=9 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=9 scale=9 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=10 scale=10 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=10 scale=10 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=11 scale=11 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=11 scale=11 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=12 scale=12 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=12 scale=12 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=13 scale=13 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=13 scale=13 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=14 scale=14 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=14 scale=14 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=15 scale=15 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=15 scale=15 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=16 scale=31 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=16 scale=31 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=17 scale=62 old=0 calls=128 lanes=4 min=48651 max=48652
+SELECT_TIMING class=17 scale=62 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=18 scale=93 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=18 scale=93 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=19 scale=124 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=19 scale=124 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=20 scale=155 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=20 scale=155 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=21 scale=186 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=21 scale=186 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=22 scale=217 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=22 scale=217 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=23 scale=248 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=23 scale=248 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=24 scale=279 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=24 scale=279 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=25 scale=310 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=25 scale=310 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=26 scale=341 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=26 scale=341 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=27 scale=372 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=27 scale=372 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=28 scale=403 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=28 scale=403 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=29 scale=434 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=29 scale=434 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=30 scale=465 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=30 scale=465 old=1 calls=128 lanes=4 min=139403 max=139403
+SELECT_TIMING class=31 scale=63487 old=0 calls=128 lanes=4 min=48651 max=48651
+SELECT_TIMING class=31 scale=63487 old=1 calls=128 lanes=4 min=139403 max=139403
+FROM_BIG_TIMING logn=9 len=1 old=0 calls=32 total=1253376 min=39168 max=39168
+FROM_BIG_TIMING logn=9 len=1 old=1 calls=32 total=2352032 min=73501 max=73501
+FROM_BIG_TIMING logn=9 len=2 old=0 calls=32 total=1384448 min=43264 max=43264
+FROM_BIG_TIMING logn=9 len=2 old=1 calls=32 total=2843552 min=88861 max=88861
+FROM_BIG_TIMING logn=9 len=4 old=0 calls=32 total=1646592 min=51456 max=51456
+FROM_BIG_TIMING logn=9 len=4 old=1 calls=32 total=3810208 min=119069 max=119069
+FROM_BIG_TIMING logn=9 len=8 old=0 calls=32 total=2170880 min=67840 max=67840
+FROM_BIG_TIMING logn=9 len=8 old=1 calls=32 total=7988128 min=249629 max=249629
+FROM_BIG_TIMING logn=10 len=1 old=0 calls=32 total=2502656 min=78208 max=78208
+FROM_BIG_TIMING logn=10 len=1 old=1 calls=32 total=4699040 min=146845 max=146845
+FROM_BIG_TIMING logn=10 len=2 old=0 calls=32 total=2764800 min=86400 max=86400
+FROM_BIG_TIMING logn=10 len=2 old=1 calls=32 total=5682080 min=177565 max=177565
+FROM_BIG_TIMING logn=10 len=4 old=0 calls=32 total=3289088 min=102784 max=102784
+FROM_BIG_TIMING logn=10 len=4 old=1 calls=32 total=7615393 min=237981 max=237982
+FROM_BIG_TIMING logn=10 len=8 old=0 calls=32 total=4337664 min=135552 max=135552
+FROM_BIG_TIMING logn=10 len=8 old=1 calls=32 total=15971232 min=499101 max=499101
+SELECT_DONE cases=67840 full=272 failures=0
+ENCODE_TIMING class=0 pattern=0 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=0 pattern=0 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=1 pattern=1 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=1 pattern=1 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=2 pattern=2 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=2 pattern=2 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=3 pattern=3 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=3 pattern=3 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=4 pattern=4 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=4 pattern=4 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=5 pattern=5 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=5 pattern=5 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=6 pattern=6 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=6 pattern=6 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=7 pattern=7 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=7 pattern=7 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=8 pattern=8 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=8 pattern=8 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=9 pattern=9 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=9 pattern=9 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=10 pattern=10 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=10 pattern=10 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=11 pattern=11 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=11 pattern=11 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=12 pattern=12 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=12 pattern=12 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=13 pattern=13 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=13 pattern=13 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=14 pattern=14 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=14 pattern=14 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=15 pattern=15 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=15 pattern=15 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=16 pattern=0 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=16 pattern=0 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=17 pattern=1 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=17 pattern=1 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=18 pattern=2 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=18 pattern=2 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_TIMING class=19 pattern=3 scalar=0 calls=128 lanes=4 min=18824 max=18824 fpscr=00040010
+ENCODE_TIMING class=19 pattern=3 scalar=1 calls=128 lanes=4 min=28810 max=28810 fpscr=00040010
+ENCODE_EDGES values=1024 failures=0
+ENCODE_DONE words=1000000 from_big=2070 failures=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xb874 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xc94 lma 0x30000978
+Loading section datas, size 0x54 lma 0x30001620
+Loading section device_states, size 0x2c lma 0x30001674
+Loading section k_mutex_area, size 0x14 lma 0x300016a0
+Loading section .last_section, size 0x4 lma 0x300016b4
+Start address 0x10006d30, load size 53828
+Transfer rate: 536 KB/sec, 2990 bytes/write.
+Temporary breakpoint 1 at 0x10003a8c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10006d1c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmp32llyd1u/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10003a3c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10006d1c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984635            9979445
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30014380          805389184
+r8             0x300000d0          805306576
+r9             0x300244c0          805455040
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30024470          0x30024470 <z_main_stack+65456>
+lr             0x10003a83          268450435
+pc             0x10003a3c          0x10003a3c <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x40010             262160
+msp            0x30014380          0x30014380 <z_idle_stacks>
+psp            0x30024470          0x30024470 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30014380          0x30014380 <z_idle_stacks>
+psp_s          0x30024470          0x30024470 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30013b80          0x30013b80 <z_interrupt_stacks>
+psplim_s       0x300144c0          0x300144c0 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x30024470 <z_main_stack+65456>:	0x00000000	0x10003a9f	0x00000000	0x1000a467
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30014380
+PSP=0x30024470
+LR=0x10003a83
+PC=0x10003a3c
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30014380 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30014390 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

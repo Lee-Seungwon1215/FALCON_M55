@@ -1,0 +1,58 @@
+DOCUMENT: falcon_m7.pdf PAGE: 21/22
+
+Dilithium and Falcon on the ARM Cortex M7 A The Dilithium signature scheme
+21
+The Dilithium signature scheme is provided in Algorithm 1. The algorithms
+inside these procedures have been omitted for space, but the reader can refer to
+the specifications for more details [LDK+20].
+Algorithm 1: The CRYSTALS-Dilithium signature scheme [LDK+20].
+1 Procedure KeyGen()
+2 ζ ←{0, 1}256
+3 (ρ, ρ
+′, K) ←{0, 1}256 ×{0, 1}512 ×{0, 1}256 := H(ζ)
+4 A ∈Rk×ℓ
+q
+= ExpandA(ρ
+′)
+5 t= A·s1 + s2
+6 (t1, t0) = Power2Roundq (t, d)
+7 tr ∈{0, 1}256 := H(ρ||t1)
+8 return pk = (ρ, t1), sk = (ρ, K, tr, s1, s2, t0)
+9
+1 Procedure Sign(sk, M )
+2 A ∈Rk×ℓ
+q := ExpandA(ρ)
+3 µ ∈{0, 1}512 := H(tr∥M )
+4 κ := 0, (z, h) = ⊥
+5 while (z, h) = ⊥do
+6 y ∈Sℓ
+γ1 := ExpandMask(ρ
+′
+, κ)
+7 w := Ay
+8 w1 := HighBitsq (w, 2γ2)
+9 c ∈{0, 1}256 := H(µ∥w1)
+10 c ∈Bτ := SampleInBall(c)
+11 z := y + cs1
+12 r0 := LowBitsq (w−c·s2, 2γ2)
+13 if ∥z∥∞ ≥γ1−β or ∥r0∥∞ ≥γ2−β then
+14 (z, h) := ⊥
+15 else
+16 17 18 h := MakeHintq (−ct0, w−c·s2 + c·t0, 2γ2)
+if ∥ct0∥∞ ≥γ2 or wt(h) > ω then
+(z, h) = ⊥
+19 20 end
+κ = κ + ℓ
+21 end
+22 return σ = (c, z, h)
+23
+1 Procedure Verify(pk, M, σ = (c, z, h)))
+2 A ∈Rk×ℓ
+q := ExpandA(ρ)
+3 µ ∈{0, 1}512 := H(H(ρ∥t1)∥M )
+4 c ∈Bτ := SampleInBall(c)
+5 w1 := UseHintq (h, A·z−ct1·2d
+, 2γ2)
+6 return ∥z∥∞ < γ1−β and c = H(µ∥w
+′
+1) and wt(h) ≤ω

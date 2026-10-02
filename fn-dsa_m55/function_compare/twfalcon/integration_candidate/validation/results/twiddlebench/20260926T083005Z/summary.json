@@ -1,0 +1,117 @@
+{
+  "rows": [
+    {
+      "degree": 512,
+      "op": "FFT",
+      "mean_cycles": {
+        "stage10_ondemand": 175009.0,
+        "stage11_precomputed": 114718.998,
+        "stage11_alias": 114721.004,
+        "M55_ref_fixed": 126039.0
+      },
+      "time_reduction_vs_stage10_percent": 34.44965801758766,
+      "time_reduction_vs_fixed_percent": 8.981348630185892,
+      "speedup_vs_stage10": 1.5255450540110191,
+      "speedup_vs_fixed": 1.098675914167242
+    },
+    {
+      "degree": 512,
+      "op": "iFFT",
+      "mean_cycles": {
+        "stage10_ondemand": 180316.002,
+        "stage11_precomputed": 122436.008,
+        "stage11_alias": 122438.0,
+        "M55_ref_fixed": 143336.0
+      },
+      "time_reduction_vs_stage10_percent": 32.09919993678654,
+      "time_reduction_vs_fixed_percent": 14.581118490818778,
+      "speedup_vs_stage10": 1.472736696871071,
+      "speedup_vs_fixed": 1.1707013511907378
+    },
+    {
+      "degree": 1024,
+      "op": "FFT",
+      "mean_cycles": {
+        "stage10_ondemand": 369110.004,
+        "stage11_precomputed": 248351.002,
+        "stage11_alias": 248353.008,
+        "M55_ref_fixed": 280633.006
+      },
+      "time_reduction_vs_stage10_percent": 32.71626363180338,
+      "time_reduction_vs_fixed_percent": 11.503281264071974,
+      "speedup_vs_stage10": 1.486243264683909,
+      "speedup_vs_fixed": 1.1299853986496096
+    },
+    {
+      "degree": 1024,
+      "op": "iFFT",
+      "mean_cycles": {
+        "stage10_ondemand": 380909.002,
+        "stage11_precomputed": 265401.988,
+        "stage11_alias": 265404.002,
+        "M55_ref_fixed": 318470.008
+      },
+      "time_reduction_vs_stage10_percent": 30.3240441663282,
+      "time_reduction_vs_fixed_percent": 16.66342784781164,
+      "speedup_vs_stage10": 1.4352153307909659,
+      "speedup_vs_fixed": 1.1999533628210801
+    }
+  ],
+  "timing_classes": [
+    {
+      "degree": 512,
+      "op": "FFT",
+      "class_mean_spread_cycles": 0.01,
+      "all_samples_span_cycles": 1
+    },
+    {
+      "degree": 512,
+      "op": "iFFT",
+      "class_mean_spread_cycles": 0.01,
+      "all_samples_span_cycles": 1
+    },
+    {
+      "degree": 1024,
+      "op": "FFT",
+      "class_mean_spread_cycles": 0.01,
+      "all_samples_span_cycles": 1
+    },
+    {
+      "degree": 1024,
+      "op": "iFFT",
+      "class_mean_spread_cycles": 0.01,
+      "all_samples_span_cycles": 1
+    }
+  ],
+  "memory": {
+    "kat": {
+      "elf_sha256": "44fc8fbab041395a16c14ddec24bcac57dc540666893c8d52d388b11dca44afc",
+      "unused_original_Q32_table_garbage_collected": true,
+      "ITCM_used": 110148,
+      "ITCM_increase": -1144,
+      "ITCM_free": 151996,
+      "DTCM_used": 214760,
+      "DTCM_increase": 8192,
+      "DTCM_free": 47384
+    },
+    "sigkat": {
+      "elf_sha256": "220fd39ab51fd18b902a992e79245b3a30a117221e57c02670415093b821e789",
+      "unused_original_Q32_table_garbage_collected": true,
+      "ITCM_used": 126072,
+      "ITCM_increase": -1148,
+      "ITCM_free": 136072,
+      "DTCM_used": 246824,
+      "DTCM_increase": 8192,
+      "DTCM_free": 15320
+    }
+  },
+  "checks": {
+    "root_float_components": 6144,
+    "transform_equivalence_cases": 3600,
+    "benchmark_equivalence_cases": 6600
+  },
+  "conditions": "Same image; 800MHz M55, ITCM code/DTCM data and stack 256KiB each, caches off; GCC15.2.1 O3 fpv5-d16 no-fast-math ffp-contract=off; 5x100 measured calls +10 warmups per batch",
+  "scope": "Whole public FFT/iFFT including double/DS conversion; not whole keygen speed",
+  "raw_sha256": "07f150d2f387cad089a0520e43f79808427842474b78e5f1affe4bc849a13b55",
+  "elf_sha256": "adcd0497cd5373fcfb16942c943855953450cfeda82147dd70e96231c4c81494"
+}

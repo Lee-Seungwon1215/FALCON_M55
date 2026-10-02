@@ -1,0 +1,65 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 20/29
+
+20 Polynomial multiplication on embedded vector architectures
+Table 2 Comparison of Toom-Cook and NTT-based implementations of Ind-CPA and
+Ind-CCA versions of the NIST PQC finalist Saber. SW-based hashing waters down
+optimizations for polynomial multiplication, but is expected to be HW-accelerated in
+practice, see Section 6.6. Numbers are for the SHA3-based Saber, not the 90s version.
+Operation Cortex-M4 Cortex-M55
+NTT
+[CHK+21] TC† TC
+TC
+NTT
+[This]
+[This]
+[This]
+KeyGen 294k 377k 367k 244k 232k
+CPA
+Encaps 330k 440k 425k 250k 233k
+Decaps 58k 101k 96k 22k 20k
+LightSaber
+KeyGen 360k 443k 433k 308k 296k
+CCA
+Encaps 513k 622k 607k 429k 412k
+Decaps 498k 631k 612k 378k 358k
+KeyGen 554k 759k 737k 466k 436k
+CPA
+Encaps 606k 858k 829k 480k 442k
+Decaps 79k 142k 135k 30k 27k
+Saber
+KeyGen 658k 862k 840k 568k 538k
+CCA
+Encaps 864k 1115k 1086k 735k 697k
+Decaps 835k 1128k 1091k 655k 615k
+KeyGen 879k 1260k 1222k 750k 693k
+CPA
+Encaps 947k 1395k 1346k 772k 706k
+Decaps 101k 184k 174k 40k 36k
+Firesaber
+KeyGen 1008k 1389k 1350k 877k 820k
+CCA
+Encaps 1255k 1703k 1654k 1077k 1011k
+Decaps 1227k 1732k 1674k 985k 914k
+†Saber implementation from [KRSS] using Toom-Cook for polynomial multiplication instead of NTT.
+7 Results
+7.1 Development setup
+Benchmarking for the Cortex-M4 processor We have developed our code based on the
+pqm4 framework [KRSS]. We have focused our development on polynomial multiplication
+only without optimizing other operations in Saber. To measure the performance, we have
+executed the benchmark environment provided by pqm4 on a STM32F4 Discovery board
+featuring a 32-bit Arm Cortex-M4 with FPU core, 1MB of Flash, and 192KB of RAM.
+Benchmarking for the Cortex-M55 processor We developed our code using the Fixed
+Virtual Platform (FVP) for the Arm® Corstone®-300 MPS21, containing a functional
+model of the Cortex-M55. To measure performance, we have used an FPGA model for
+the Cortex-M55r1 CPU which is expected to be publicly released by the end of 2021. An
+image including the Cortex-M55r0 CPU is already available2. Researchers can get access to
+Cortex-M55 RTL and cycle-accurate models through the Arm Academic Access program3
+.
+Code generation Most of our Helium and Cortex-M4 assembly was developed with the
+help of a small Python-based code-generation framework, similar to [KRS19]. The main
+tasks the framework performs are register management and address oﬀset calculations when
+1Freely available at https://developer.arm.com/tools-and-software/open-source-software/
+arm-platforms-software/arm-ecosystem-fvps
+2https://developer.arm.com/tools-and-software/development-boards/fpga-prototyping-boards
+contains more information on prototyping boards and FPGA images.
+3https://www.arm.com/academicaccess

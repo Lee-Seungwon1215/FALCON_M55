@@ -1,0 +1,106 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 1/15
+
+arXiv:2309.00440v3 [cs.CY] 18 Feb 2024
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 1
+Yet another Improvement of Plantard Arithmetic for
+Faster Kyber on Low-end 32-bit IoT Devices
+Junhao Huang, Haosong Zhao, Jipeng Zhang, Wangchen Dai, Lu Zhou
+Ray C. C. Cheung, Senior Member, IEEE, C¸ etin Kaya Koc¸, Fellow, IEEE, Donglong Chen
+Abstract—In 2022, the National Institute of Standards and
+Technology (NIST) made an announcement regarding the stan-
+dardization of Post-Quantum Cryptography (PQC) candidates.
+Out of all the Key Encapsulation Mechanism (KEM) schemes,
+the CRYSTAL-Kyber emerged as the sole winner. This paper
+presents another improved version of Plantard arithmetic that
+could speed up Kyber implementations on two low-end 32-bit IoT
+platforms (ARM Cortex-M3 and RISC-V) without SIMD exten-
+sions. Specifically, we further enlarge the input range of the Plan-
+tard arithmetic without modifying its computation steps. After
+tailoring the Plantard arithmetic for Kyber’s modulus, we show
+that the input range of the Plantard multiplication by a constant
+is at least 2.14× larger than the original design in TCHES2022.
+Then, two optimization techniques for efficient Plantard arith-
+metic on Cortex-M3 and RISC-V are presented. We show that the
+Plantard arithmetic supersedes both Montgomery and Barrett
+arithmetic on low-end 32-bit platforms. With the enlarged input
+range and the efficient implementation of the Plantard arithmetic
+on these platforms, we propose various optimization strategies
+for NTT/INTT. We minimize or entirely eliminate the modular
+reduction of coefficients in NTT/INTT by taking advantage of
+the larger input range of the proposed Plantard arithmetic on
+low-end 32-bit platforms. Furthermore, we propose two memory
+optimization strategies that reduce 23.50%∼28.31% stack usage
+for the speed-version Kyber implementation when compared
+to its counterpart on Cortex-M4. The proposed optimizations
+make the speed-version implementation more feasible on low-
+end IoT devices. Thanks to the aforementioned optimizations,
+our NTT/INTT implementation shows considerable speedups
+compared to the state-of-the-art work. Overall, we demonstrate
+the applicability of the speed-version Kyber implementation on
+memory-constrained IoT platforms and set new speed records
+for Kyber on these platforms.
+Index Terms—Post-quantum cryptography, Kyber, Plantard
+arithmetic, Cortex-M3, RISC-V
+Junhao Huang, Haosong Zhao and Donglong Chen are with Guang-
+dong Provincial Key Laboratory of Interdisciplinary Research and Appli-
+cation for Data Science, BNU-HKBU United International College, Zhuhai,
+China. Junhao Huang and Haosong Zhao are also with Hong Kong Baptist
+University, Hong Kong, China. Email: {huangjunhao, zhaohaosong, dong-
+longchen}@uic.edu.cn.
+Jipeng Zhang and Lu Zhou are with Nanjing University of Aero-
+nautics and Astronautics, Nanjing, China. E-mail: jp-zhang@outlook.com,
+lu.zhou@nuaa.edu.cn.
+C¸ etin Kaya Koc¸ is with Nanjing University of Aeronautics and Astronautics
+(China), Iˇgdır University (Turkey), and University of California Santa Barbara
+(USA). E-mail: cetinkoc@ucsb.edu.
+Wangchen Dai and Donglong Chen are with Zhejiang Lab, Hangzhou,
+China. E-mail: w.dai@my.cityu.edu.hk.
+Ray C.C. Cheung is with City University of Hong Kong, Hong Kong,
+China. E-mail: r.cheung@cityu.edu.hk.
+Corresponding author: Donglong Chen.
+I. INTRODUCTION
+With the emergence of quantum computing technology, the
+existing Public Key Cryptographic (PKC) schemes face a
+significant threat. Shor’s algorithm on quantum computers can
+solve the mathematical hard problems of these PKC schemes,
+such as the big number factorization problem of RSA, the
+Discrete Logarithm Problem (DLP) of ElGamal, and the El-
+liptic Curve Discrete Logarithm Problem (ECDLP) of Elliptic
+Curve Cryptography (ECC), in polynomial time. Although the
+creation of quantum computers that can crack these PKCs is
+still beyond realistic reach [1], the potential threat of quantum
+computers has prompted the cryptographic community to seek
+alternative solutions to replace the traditional PKC. In 2022,
+NIST announced four finalists to be standardized for its
+six-year Post-Quantum Cryptography (PQC) standardization
+project [2]. Among them, CRYSTAL-Kyber [3] is the only
+KEM standard, while CRYSTAL-Dilithium [4], FALCON [5],
+and SPHINCS+ [6] are three digital signature standards.
+Therefore, the efficient implementation of Kyber, the only
+PQC KEM standard, will have great significance for the future
+deployment of Kyber in realistic practices, such as cloud, edge,
+and Internet of Things (IoT).
+The application of IoT has spread out in various fields,
+such as smart healthcare, home, and transportation domains.
+Increasingly, IoT devices have been utilized to gather sensitive
+data from individuals, corporations, military organizations, and
+governments. It is estimated that by 2030, there will be around
+30 billion interconnected IoT devices [7]. With the rapid
+development of quantum computing, safeguarding sensitive
+data on numerous IoT devices against quantum computers is a
+pressing concern in the near future. Therefore, deploying NIST
+KEM standard Kyber for these IoT devices is essential. The
+ARM Cortex-M4 platform is a NIST-recommended platform
+for evaluating PQC performance and memory consumption in
+IoT scenarios [8]. It has sufficient memory and a powerful
+Single Instruction Multiple Data (SIMD) extension for PQC
+implementation. However, there are also many low-end plat-
+forms, such as the 32-bit ARM Cortex-M3/M0 and RISC-V,
+which have more restricted power, computational resources,
+and memory compared to ARM Cortex-M4. The above re-
+strictions on these platforms result in different implementa-
+tion requirements for Kyber. Both memory consumption and
+efficiency are critical metrics for evaluating the applicability
+of Kyber on low-end IoT devices. Therefore, it is crucial
+to conduct more in-depth research to achieve efficient and
+feasible Kyber implementation on these IoT devices in the

@@ -1,0 +1,252 @@
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Debug: 3 1 options.c:348 parse_cmdline_args(): ARGV[0] = "fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd"
+Debug: 4 1 options.c:348 parse_cmdline_args(): ARGV[1] = "-d3"
+Debug: 5 1 options.c:348 parse_cmdline_args(): ARGV[2] = "-f"
+Debug: 6 1 options.c:348 parse_cmdline_args(): ARGV[3] = "interface/stlink.cfg"
+Debug: 7 1 options.c:348 parse_cmdline_args(): ARGV[4] = "-c"
+Debug: 8 1 options.c:348 parse_cmdline_args(): ARGV[5] = "transport select swd"
+Debug: 9 1 options.c:348 parse_cmdline_args(): ARGV[6] = "-f"
+Debug: 10 1 options.c:348 parse_cmdline_args(): ARGV[7] = "target/stm32n6x.cfg"
+Debug: 11 1 options.c:348 parse_cmdline_args(): ARGV[8] = "-c"
+Debug: 12 1 options.c:348 parse_cmdline_args(): ARGV[9] = "adapter serial 003C00223335510735383531"
+Debug: 13 1 options.c:348 parse_cmdline_args(): ARGV[10] = "-c"
+Debug: 14 1 options.c:348 parse_cmdline_args(): ARGV[11] = "adapter speed 1000"
+Debug: 15 1 options.c:348 parse_cmdline_args(): ARGV[12] = "-c"
+Debug: 16 1 options.c:348 parse_cmdline_args(): ARGV[13] = "stm32n6x.cpu configure -defer-examine"
+Debug: 17 1 options.c:348 parse_cmdline_args(): ARGV[14] = "-c"
+Debug: 18 1 options.c:348 parse_cmdline_args(): ARGV[15] = "gdb port disabled"
+Debug: 19 1 options.c:348 parse_cmdline_args(): ARGV[16] = "-c"
+Debug: 20 1 options.c:348 parse_cmdline_args(): ARGV[17] = "tcl port disabled"
+Debug: 21 1 options.c:348 parse_cmdline_args(): ARGV[18] = "-c"
+Debug: 22 1 options.c:348 parse_cmdline_args(): ARGV[19] = "telnet port disabled"
+Debug: 23 1 options.c:348 parse_cmdline_args(): ARGV[20] = "-c"
+Debug: 24 1 options.c:348 parse_cmdline_args(): ARGV[21] = "init"
+Debug: 25 1 options.c:348 parse_cmdline_args(): ARGV[22] = "-c"
+Debug: 26 1 options.c:348 parse_cmdline_args(): ARGV[23] = "stm32n6x.dap dpreg 0 0x1f"
+Debug: 27 1 options.c:348 parse_cmdline_args(): ARGV[24] = "-c"
+Debug: 28 1 options.c:348 parse_cmdline_args(): ARGV[25] = "stm32n6x.dap apsel 1"
+Debug: 29 1 options.c:348 parse_cmdline_args(): ARGV[26] = "-c"
+Debug: 30 1 options.c:348 parse_cmdline_args(): ARGV[27] = "stm32n6x.dap apcsw 0x0B000000 0x4F000000"
+Debug: 31 1 options.c:348 parse_cmdline_args(): ARGV[28] = "-c"
+Debug: 32 1 options.c:348 parse_cmdline_args(): ARGV[29] = "stm32n6x.cpu arp_examine"
+Debug: 33 1 options.c:348 parse_cmdline_args(): ARGV[30] = "-c"
+Debug: 34 1 options.c:348 parse_cmdline_args(): ARGV[31] = "stm32n6x.cpu mdw 0xE000ED00 1"
+Debug: 35 1 options.c:348 parse_cmdline_args(): ARGV[32] = "-c"
+Debug: 36 1 options.c:348 parse_cmdline_args(): ARGV[33] = "shutdown"
+Debug: 37 1 options.c:233 add_default_dirs(): bindir=/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin
+Debug: 38 1 options.c:234 add_default_dirs(): pkgdatadir=/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd
+Debug: 39 1 options.c:235 add_default_dirs(): exepath=/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin
+Debug: 40 1 options.c:236 add_default_dirs(): bin2data=../share/openocd
+Debug: 41 1 configuration.c:33 add_script_search_dir(): adding /Users/seungwon/Library/Preferences/org.openocd
+Debug: 42 1 configuration.c:33 add_script_search_dir(): adding /Users/seungwon/.config/openocd
+Debug: 43 1 configuration.c:33 add_script_search_dir(): adding /Users/seungwon/.openocd
+Debug: 44 1 configuration.c:33 add_script_search_dir(): adding /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/../share/openocd/site
+Debug: 45 1 configuration.c:33 add_script_search_dir(): adding /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/../share/openocd/scripts
+Debug: 46 1 command.c:82 script_debug(): command - ocd_find interface/stlink.cfg
+Debug: 47 1 configuration.c:89 find_file(): found /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/../share/openocd/scripts/interface/stlink.cfg
+Debug: 48 1 command.c:82 script_debug(): command - adapter name
+Debug: 49 1 command.c:82 script_debug(): command - adapter driver st-link
+Debug: 50 1 command.c:82 script_debug(): command - st-link vid_pid 0x0483 0x3744 0x0483 0x3748 0x0483 0x374b 0x0483 0x374d 0x0483 0x374e 0x0483 0x374f 0x0483 0x3752 0x0483 0x3753 0x0483 0x3754 0x0483 0x3755 0x0483 0x3757
+Debug: 51 1 command.c:82 script_debug(): command - transport select swd
+Debug: 52 1 adi_v5_dapdirect.c:187 dapdirect_swd_select(): dapdirect_swd_select()
+Debug: 53 1 command.c:82 script_debug(): command - ocd_find target/stm32n6x.cfg
+Debug: 54 1 configuration.c:89 find_file(): found /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/../share/openocd/scripts/target/stm32n6x.cfg
+Debug: 55 1 command.c:82 script_debug(): command - ocd_find target/swj-dp.tcl
+Debug: 56 1 configuration.c:89 find_file(): found /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/../share/openocd/scripts/target/swj-dp.tcl
+Debug: 57 1 command.c:82 script_debug(): command - transport select
+Debug: 58 1 command.c:82 script_debug(): command - ocd_find mem_helper.tcl
+Debug: 59 1 configuration.c:89 find_file(): found /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/../share/openocd/scripts/mem_helper.tcl
+Debug: 60 1 command.c:82 script_debug(): command - add_usage_text mrw address
+Debug: 61 1 command.c:82 script_debug(): command - add_help_text mrw Returns value of word in memory.
+Debug: 62 1 command.c:82 script_debug(): command - add_usage_text mrh address
+Debug: 63 1 command.c:82 script_debug(): command - add_help_text mrh Returns value of halfword in memory.
+Debug: 64 1 command.c:82 script_debug(): command - add_usage_text mrb address
+Debug: 65 1 command.c:82 script_debug(): command - add_help_text mrb Returns value of byte in memory.
+Debug: 66 1 command.c:82 script_debug(): command - add_usage_text mmw address setbits clearbits
+Debug: 67 1 command.c:82 script_debug(): command - add_help_text mmw Modify word in memory. new_val = (old_val & ~clearbits) | setbits;
+Debug: 68 1 command.c:82 script_debug(): command - transport select
+Debug: 69 1 command.c:82 script_debug(): command - transport select
+Debug: 70 1 command.c:82 script_debug(): command - transport select
+Debug: 71 1 command.c:82 script_debug(): command - swd newdap stm32n6x cpu -irlen 4 -ircapture 0x1 -irmask 0xf -expected-id 0x6ba02477
+Debug: 72 1 tcl.c:405 handle_jtag_newtap_args(): Creating New Tap, Chip: stm32n6x, Tap: cpu, Dotted: stm32n6x.cpu, 8 params
+Debug: 73 1 core.c:1489 jtag_tap_init(): Created Tap: stm32n6x.cpu @ abs position 0, irlen 4, capture: 0x1 mask: 0xf
+Debug: 74 1 command.c:82 script_debug(): command - dap create stm32n6x.dap -chain-position stm32n6x.cpu
+Debug: 75 1 command.c:82 script_debug(): command - target create stm32n6x.ap0 mem_ap -endian little -dap stm32n6x.dap -ap-num 0
+Debug: 76 1 command.c:82 script_debug(): command - target create stm32n6x.cpu cortex_m -endian little -dap stm32n6x.dap -ap-num 1
+Debug: 77 1 command.c:187 register_command(): command 'tpiu' is already registered
+Debug: 78 1 command.c:187 register_command(): command 'rtt' is already registered
+Debug: 79 1 command.c:82 script_debug(): command - stm32n6x.cpu configure -work-area-phys 0x34000000 -work-area-size 0x10000 -work-area-backup 1
+Debug: 80 1 target.c:2159 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 81 1 target.c:2159 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 82 1 target.c:2159 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 83 1 command.c:82 script_debug(): command - transport select
+Debug: 84 1 command.c:82 script_debug(): command - swo create stm32n6x.swo -dap stm32n6x.dap -ap-num 1 -baseaddr 0xE008A000
+Debug: 85 1 command.c:82 script_debug(): command - tpiu create stm32n6x.tpiu -dap stm32n6x.dap -ap-num 1 -baseaddr 0xE0084000
+Debug: 86 1 command.c:82 script_debug(): command - adapter speed 8000
+Debug: 87 1 adapter.c:259 adapter_config_khz(): handle adapter khz
+Debug: 88 1 adapter.c:222 adapter_khz_to_speed(): convert khz to adapter specific speed value
+Debug: 89 1 adapter.c:222 adapter_khz_to_speed(): convert khz to adapter specific speed value
+Debug: 90 1 command.c:82 script_debug(): command - adapter srst delay 100
+Debug: 91 1 command.c:82 script_debug(): command - transport select
+Debug: 92 1 command.c:82 script_debug(): command - transport select
+Debug: 93 1 command.c:82 script_debug(): command - cortex_m reset_config sysresetreq
+Debug: 94 1 command.c:82 script_debug(): command - stm32n6x.ap0 configure -event examine-end 
+    set _CHIPNAME [stm32n6x_get_chipname]
+    # Enable Trace Port and DBG Clock (uses more power)
+    # DBGMCU_CR |= DBGCLK_EN | TRACECLK_EN
+    stm32n6x_mmw $_CHIPNAME.ap0 0x44001004 0x00300000 0
+
+Debug: 95 1 command.c:82 script_debug(): command - stm32n6x.cpu configure -event examine-end 
+    stm32n6x_enter_debug
+    set _CHIPNAME [stm32n6x_get_chipname]
+
+    # Enable debug during low power modes (uses more power)
+    # DBGMCU_CR |= DBG_STANDBY | DBG_STOP | DBG_SLEEP
+    stm32n6x_mmw $_CHIPNAME.ap0 0x44001004 0x00000007 0
+
+    # Stop watchdog counters during halt
+    # DBGMCU_APB1LFZ |= DBG_WWDG_STOP
+    stm32n6x_mmw $_CHIPNAME.ap0 0x44001010 0x00000800 0
+    # DBGMCU_APB4FZ |= DBG_IWDG_STOP
+    stm32n6x_mmw $_CHIPNAME.ap0 0x4400101C 0x00040000 0
+
+Debug: 96 1 command.c:82 script_debug(): command - stm32n6x.cpu configure -event halted 
+    stm32n6x_enter_debug
+
+Debug: 97 1 command.c:82 script_debug(): command - adapter serial 003C00223335510735383531
+Debug: 98 1 command.c:82 script_debug(): command - adapter speed 1000
+Debug: 99 1 adapter.c:259 adapter_config_khz(): handle adapter khz
+Debug: 100 1 adapter.c:222 adapter_khz_to_speed(): convert khz to adapter specific speed value
+Debug: 101 1 adapter.c:222 adapter_khz_to_speed(): convert khz to adapter specific speed value
+User : 102 1 options.c:52 configuration_output_handler(): adapter speed: 1000 kHzUser : 103 1 options.c:52 configuration_output_handler(): 
+Debug: 104 1 command.c:82 script_debug(): command - stm32n6x.cpu configure -defer-examine
+Debug: 105 1 command.c:82 script_debug(): command - gdb port disabled
+Debug: 106 1 command.c:82 script_debug(): command - tcl port disabled
+Debug: 107 1 command.c:82 script_debug(): command - telnet port disabled
+Debug: 108 1 command.c:82 script_debug(): command - init
+Debug: 109 1 command.c:82 script_debug(): command - target init
+Debug: 110 1 command.c:82 script_debug(): command - target names
+Debug: 111 2 command.c:82 script_debug(): command - stm32n6x.ap0 cget -event gdb-flash-erase-start
+Debug: 112 2 command.c:82 script_debug(): command - stm32n6x.ap0 configure -event gdb-flash-erase-start reset init
+Debug: 113 2 command.c:82 script_debug(): command - stm32n6x.ap0 cget -event gdb-flash-write-end
+Debug: 114 2 command.c:82 script_debug(): command - stm32n6x.ap0 configure -event gdb-flash-write-end reset halt
+Debug: 115 2 command.c:82 script_debug(): command - stm32n6x.ap0 cget -event gdb-attach
+Debug: 116 2 command.c:82 script_debug(): command - stm32n6x.ap0 configure -event gdb-attach halt 1000
+Debug: 117 2 command.c:82 script_debug(): command - stm32n6x.cpu cget -event gdb-flash-erase-start
+Debug: 118 2 command.c:82 script_debug(): command - stm32n6x.cpu configure -event gdb-flash-erase-start reset init
+Debug: 119 2 command.c:82 script_debug(): command - stm32n6x.cpu cget -event gdb-flash-write-end
+Debug: 120 2 command.c:82 script_debug(): command - stm32n6x.cpu configure -event gdb-flash-write-end reset halt
+Debug: 121 2 command.c:82 script_debug(): command - stm32n6x.cpu cget -event gdb-attach
+Debug: 122 2 command.c:82 script_debug(): command - stm32n6x.cpu configure -event gdb-attach halt 1000
+Debug: 123 2 target.c:1617 handle_target_init_command(): Initializing targets...
+Debug: 124 2 mem_ap.c:61 mem_ap_init_target(): [stm32n6x.ap0] mem_ap_init_target
+Debug: 125 2 semihosting_common.c:111 semihosting_common_init():  
+Debug: 126 2 stlink_usb.c:5120 stlink_dap_init(): stlink_dap_init()
+Debug: 127 2 stlink_usb.c:3732 stlink_open(): stlink_open
+Debug: 128 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x3744 serial: 003C00223335510735383531
+Debug: 129 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x3748 serial: 003C00223335510735383531
+Debug: 130 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x374b serial: 003C00223335510735383531
+Debug: 131 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x374d serial: 003C00223335510735383531
+Debug: 132 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x374e serial: 003C00223335510735383531
+Debug: 133 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x374f serial: 003C00223335510735383531
+Debug: 134 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x3752 serial: 003C00223335510735383531
+Debug: 135 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x3753 serial: 003C00223335510735383531
+Debug: 136 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x3754 serial: 003C00223335510735383531
+Debug: 137 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x3755 serial: 003C00223335510735383531
+Debug: 138 2 stlink_usb.c:3746 stlink_open(): transport: 4 vid: 0x0483 pid: 0x3757 serial: 003C00223335510735383531
+Info : 139 5 stlink_usb.c:1475 stlink_usb_version(): STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Debug: 140 5 stlink_usb.c:1696 stlink_usb_exit_mode(): MODE: 0x01
+Info : 141 5 stlink_usb.c:1507 stlink_usb_check_voltage(): Target voltage: 3.278243
+Debug: 142 5 stlink_usb.c:1764 stlink_usb_init_mode(): MODE: 0x01
+Debug: 143 5 stlink_usb.c:3130 stlink_dump_speed_map(): Supported clock speeds are:
+Debug: 144 5 stlink_usb.c:3133 stlink_dump_speed_map(): 24000 kHz
+Debug: 145 5 stlink_usb.c:3133 stlink_dump_speed_map(): 8000 kHz
+Debug: 146 5 stlink_usb.c:3133 stlink_dump_speed_map(): 3300 kHz
+Debug: 147 5 stlink_usb.c:3133 stlink_dump_speed_map(): 1000 kHz
+Debug: 148 5 stlink_usb.c:3133 stlink_dump_speed_map(): 200 kHz
+Debug: 149 5 stlink_usb.c:3133 stlink_dump_speed_map(): 50 kHz
+Debug: 150 5 stlink_usb.c:3133 stlink_dump_speed_map(): 5 kHz
+Debug: 151 7 stlink_usb.c:1824 stlink_usb_init_mode(): MODE: 0x02
+Debug: 152 7 stlink_usb.c:4127 stlink_usb_open_ap(): AP 0 enabled
+Debug: 153 7 stlink_usb.c:3820 stlink_open(): Using TAR autoincrement: 1024
+Debug: 154 7 adapter.c:222 adapter_khz_to_speed(): convert khz to adapter specific speed value
+Debug: 155 7 adapter.c:226 adapter_khz_to_speed(): have adapter set up
+Debug: 156 8 adapter.c:222 adapter_khz_to_speed(): convert khz to adapter specific speed value
+Debug: 157 8 adapter.c:226 adapter_khz_to_speed(): have adapter set up
+Info : 158 8 adapter.c:187 adapter_init(): clock speed 1000 kHz
+Debug: 159 8 openocd.c:133 handle_init_command(): Debug Adapter init complete
+Debug: 160 8 command.c:82 script_debug(): command - transport init
+Debug: 161 8 transport.c:274 handle_transport_init(): handle_transport_init
+Debug: 162 8 adi_v5_dapdirect.c:196 dapdirect_init(): dapdirect_init()
+Debug: 163 8 stlink_usb.c:5168 stlink_dap_reset(): stlink_dap_reset(0)
+Debug: 164 8 core.c:651 adapter_system_reset(): SRST line released
+Debug: 165 150 command.c:82 script_debug(): command - dap init
+Debug: 166 150 arm_dap.c:95 dap_init_all(): Initializing all DAPs ...
+Debug: 167 150 arm_dap.c:119 dap_init_all(): DAP stm32n6x.cpu configured by default to use ADIv5 protocol
+Debug: 168 150 stlink_usb.c:4197 stlink_dap_op_connect(): stlink_dap_op_connect(connect)
+Debug: 169 150 arm_adi_v5.c:791 dap_dp_init(): stm32n6x.dap
+Debug: 170 150 arm_adi_v5.c:824 dap_dp_init(): DAP: wait CDBGPWRUPACK
+Debug: 171 150 arm_adi_v5.h:683 dap_dp_poll_register(): DAP: poll 4, mask 0x20000000, value 0x20000000
+Debug: 172 151 arm_adi_v5.c:832 dap_dp_init(): DAP: wait CSYSPWRUPACK
+Debug: 173 151 arm_adi_v5.h:683 dap_dp_poll_register(): DAP: poll 4, mask 0x80000000, value 0x80000000
+Debug: 174 152 stlink_usb.c:2057 stlink_usb_idcode(): IDCODE: 0x6BA02477
+Info : 175 152 stlink_usb.c:4226 stlink_dap_op_connect(): SWD DPIDR 0x6ba02477
+Debug: 176 152 openocd.c:150 handle_init_command(): Examining targets...
+Debug: 177 152 target.c:686 target_examine_one(): [stm32n6x.ap0] Examination started
+Debug: 178 152 target.c:1805 target_call_event_callbacks(): target event 19 (examine-start) for core stm32n6x.ap0
+Debug: 179 152 arm_adi_v5.c:1226 dap_get_ap(): refcount AP#0x0 get 1
+Debug: 180 153 arm_adi_v5.c:943 mem_ap_init(): MEM_AP CFG: large data 0, long address 0, big-endian 0
+Debug: 181 153 target.c:1805 target_call_event_callbacks(): target event 21 (examine-end) for core stm32n6x.ap0
+Debug: 182 153 target.c:4638 target_handle_event(): target: stm32n6x.ap0 (mem_ap) event: 21 (examine-end) action: 
+    set _CHIPNAME [stm32n6x_get_chipname]
+    # Enable Trace Port and DBG Clock (uses more power)
+    # DBGMCU_CR |= DBGCLK_EN | TRACECLK_EN
+    stm32n6x_mmw $_CHIPNAME.ap0 0x44001004 0x00300000 0
+
+Debug: 183 153 command.c:82 script_debug(): command - target current
+Debug: 184 153 command.c:82 script_debug(): command - stm32n6x.ap0 read_memory 0x44001004 32 1
+Debug: 185 153 mem_ap.c:241 mem_ap_read_memory(): [stm32n6x.ap0] Reading memory at physical address 0x44001004; size 4; count 1
+Debug: 186 154 command.c:82 script_debug(): command - stm32n6x.ap0 mww 0x44001004 3145735
+Debug: 187 154 mem_ap.c:256 mem_ap_write_memory(): [stm32n6x.ap0] Writing memory at physical address 0x44001004; size 4; count 1
+Info : 188 154 target.c:702 target_examine_one(): [stm32n6x.ap0] Examination succeed
+Debug: 189 154 command.c:82 script_debug(): command - flash init
+Debug: 190 154 tcl.c:1490 handle_flash_init_command(): Initializing flash devices...
+Debug: 191 154 command.c:82 script_debug(): command - nand init
+Debug: 192 154 tcl.c:485 handle_nand_init_command(): Initializing NAND devices...
+Debug: 193 154 command.c:82 script_debug(): command - pld init
+Debug: 194 154 pld.c:337 handle_pld_init_command(): Initializing PLDs...
+Debug: 195 154 command.c:82 script_debug(): command - tpiu init
+Info : 196 154 gdb_server.c:3956 gdb_target_add_one(): [stm32n6x.ap0] gdb port disabled
+Info : 197 154 gdb_server.c:3963 gdb_target_add_one(): [stm32n6x.cpu] gdb port disabled
+Debug: 198 154 command.c:82 script_debug(): command - target names
+Debug: 199 154 command.c:82 script_debug(): command - target names
+Debug: 200 154 command.c:82 script_debug(): command - stm32n6x.ap0 cget -type
+Debug: 201 154 command.c:82 script_debug(): command - stm32n6x.cpu cget -type
+Debug: 202 155 command.c:82 script_debug(): command - stm32n6x.dap dpreg 0 0x1f
+Debug: 203 155 command.c:82 script_debug(): command - stm32n6x.dap apsel 1
+Debug: 204 155 command.c:82 script_debug(): command - stm32n6x.dap apcsw 0x0B000000 0x4F000000
+Debug: 205 155 arm_adi_v5.c:1236 dap_get_config_ap(): refcount AP#0x1 get_config 1
+Debug: 206 155 arm_adi_v5.c:1251 dap_put_ap(): refcount AP#0x1 put 0
+Debug: 207 155 command.c:82 script_debug(): command - stm32n6x.cpu arp_examine
+Debug: 208 155 arm_adi_v5.c:1226 dap_get_ap(): refcount AP#0x1 get 1
+Debug: 209 155 stlink_usb.c:4127 stlink_usb_open_ap(): AP 1 enabled
+Debug: 210 156 arm_adi_v5.c:943 mem_ap_init(): MEM_AP CFG: large data 0, long address 0, big-endian 0
+Debug: 211 157 stlink_usb.c:1102 stlink_usb_error_check(): STLINK_SWD_AP_FAULT
+Error: 212 158 arm_adi_v5.c:689 mem_ap_read(): Failed to read memory at 0x56008008
+Debug: 213 158 target.c:2576 target_read_u32(): address: 0xe000ed00 failed
+Debug: 214 158 command.c:464 jim_exec_command(): Command 'stm32n6x.cpu arp_examine' failed with error code -4
+User : 215 158 command.c:548 command_run_line(): 
+Debug: 216 158 breakpoints.c:330 breakpoint_remove_all_internal(): [stm32n6x.ap0] Delete all breakpoints
+Debug: 217 158 breakpoints.c:417 watchpoint_remove_all_internal(): [stm32n6x.ap0] Delete all watchpoints
+Debug: 218 158 mem_ap.c:71 mem_ap_deinit_target(): [stm32n6x.ap0] mem_ap_deinit_target
+Debug: 219 158 arm_adi_v5.c:1251 dap_put_ap(): refcount AP#0x0 put 0
+Debug: 220 158 target.c:2159 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 221 158 breakpoints.c:330 breakpoint_remove_all_internal(): [stm32n6x.cpu] Delete all breakpoints
+Debug: 222 158 breakpoints.c:417 watchpoint_remove_all_internal(): [stm32n6x.cpu] Delete all watchpoints
+Debug: 223 158 arm_adi_v5.c:1251 dap_put_ap(): refcount AP#0x1 put 0
+Debug: 224 158 target.c:2159 target_free_all_working_areas_restore(): freeing all working areas
+Debug: 225 158 stlink_usb.c:5160 stlink_dap_quit(): stlink_dap_quit()
+Debug: 226 159 stlink_usb.c:1696 stlink_usb_exit_mode(): MODE: 0x02

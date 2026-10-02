@@ -1,0 +1,55 @@
+DOCUMENT: m55_slothy.pdf PAGE: 2/46
+
+2 Fast and Clean: Auditable high-performance assembly via constraint solving
+1 Introduction
+Software optimization involves trade-offs, some affecting traditional metrics such as perfor-
+mance, code-size, and memory usage, others affecting softer metrics such as readability,
+maintainability, and verifiability. While the initial study of algorithms and implementa-
+tions for nascent computational problems typically focuses on the traditional metrics, it
+is the softer metrics that are equally important as implementations leave their home of
+research and step into the “real world”. Post-Quantum Cryptography (PQC) is a timely
+example: Implementations of PQC have been studied extensively in the past years for
+their core performance metrics. However, now that draft standards for the first winners
+of NIST’s Post-Quantum Cryptography standardization project [NIS16] are available
+[NIS23b, NIS23a, NIS23c] and the use of PQC becomes increasingly urgent, the soft met-
+rics become central: Are implementations understandable, maintainable, verifiable? This
+work aims to facilitate the transition of high-performance PQC implementations from
+research into practice.
+At the architectural and microarchitectural level, implementors often face the choice
+between handwritten assembly and compiled languages. This choice is a trade-off: While
+handwritten assembly typically yields highest performance, it also tends to be time-
+consuming to develop and difficult to read and maintain. Conversely, writing software in
+compiled languages, such as C, offers fast development times as well as clean and portable
+code, but performance is generally worse than that of handwritten assembly. The reason is
+simple: The use of compiled languages leaves a number of tasks to the compiler which are
+too complex for compilers to solve optimally, especially within their limited time budget.
+Solving those complex tasks manually is thus an opportunity for performance, but also a
+risk for laborious development with inscrutable results.
+Among the tasks taken care of by compilers are the following: First, identifying how
+the semantics of terms in the source language can be expressed through the instructions
+of the target machine language. For example, a C developer may simply write a%b for
+the reduction of a modulo b, but finding efficient algorithms to compute such modular
+reductions and expressing them in terms of the target architecture, are non-trivial questions
+left to the compiler (developers) this way. Second, once this instruction selection step is
+done, the tasks of register allocation and instruction scheduling. Continuing the example of
+modular reduction: An implementation of modular reduction via (say) Barrett reduction
+might have been provided for the target architecture, but if numerous such reductions
+need to be orchestrated alongside other code, finding appropriate instructions scheduling
+and register allocation strategies is a difficult problem on its own.
+Two popular approaches addressing the dilemma of choosing between handwritten
+assembly and compiled languages are the following: First, inline assembly allows devel-
+opers to force the use of a particular instruction sequence while leaving the allocation
+of input/output registers to the compiler. Second, extensions like the Arm C Language
+Extension (ACLE) use intrinsincs to expose architectural details such as SIMD instruc-
+tions into higher level languages. Both approaches give the programmer some control over
+instruction selection, but leave scheduling and/or register allocation to the compiler.
+Another approach is to replace or augment off-the-shelf compilation with custom tooling
+handling some of instruction selection, instruction scheduling or register allocation, or
+related tasks. For example, the qhasm tool [Ber] provides a customizable syntax frontend
+for assembly language which leaves control over instruction selection and scheduling in the
+hands of the developer, but takes care of register allocation. This allows the developer
+to effectively still write assembly, but using symbolic registers and a custom syntax,
+thereby achieving artifacts that can be more readable and maintainable than raw assembly.
+However, instruction scheduling remaining in the hands of the programmer is, again, both
+an opportunity for performance and an impediment to readability and fast development.
+In this work, we propose and implement a framework for assembly development in

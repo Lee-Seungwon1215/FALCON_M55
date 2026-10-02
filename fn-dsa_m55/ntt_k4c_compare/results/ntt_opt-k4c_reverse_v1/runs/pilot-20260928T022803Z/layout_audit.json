@@ -1,0 +1,46 @@
+{
+  "valid": true,
+  "elf_hashes": {
+    "ref": "73e141bac4b11576b39eff9d86bf454a451dddd45fd32d0c877842175172afab",
+    "ntt_opt": "32c52768fd73bdeb4a998138be19abd2f49cfb70c9877fa9404d3c140ed81256"
+  },
+  "fixed_addresses": {
+    "__compare_q_start": "0x10000400",
+    "__compare_mp_start": "0x10003400",
+    "__compare_common_text": "0x10005400",
+    "__compare_ntt_rodata_start": "0x30000a00",
+    "__compare_common_rodata": "0x30006a00",
+    "__text_region_end": "0x1001b654",
+    "__bss_start": "0x3000fbe0",
+    "_image_ram_end": "0x30037d20",
+    "sk": "0x30020420",
+    "pk": "0x3001fd00",
+    "sig": "0x3001f800",
+    "tmp": "0x30010be0",
+    "ntt_actual": "0x300103e0",
+    "ntt_oracle": "0x3000fbe0",
+    "fndsa_batch_cycles": "0x30020dd8",
+    "fndsa_progress": "0x30020dc0",
+    "z_main_stack": "0x30027d20"
+  },
+  "common_functions_fixed": 256,
+  "common_data_symbols_fixed": 146,
+  "used": {
+    "ref": {
+      "q_text": 2144,
+      "rns_text": 3576,
+      "ntt_rodata": 13624,
+      "itcm_reserved": 112212,
+      "dtcm_reserved": 228640
+    },
+    "ntt_opt": {
+      "q_text": 11140,
+      "rns_text": 6632,
+      "ntt_rodata": 21816,
+      "itcm_reserved": 112212,
+      "dtcm_reserved": 228640
+    }
+  },
+  "policy": "Identical reserved q-text, RNS-text and NTT-constant object slots; remaining code/data/buffers fixed.",
+  "limitation": "Changed object internal function and table offsets differ by implementation; this is not instruction-by-instruction address identity or a formal constant-time proof."
+}

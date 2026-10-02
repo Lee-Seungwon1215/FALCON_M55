@@ -1,0 +1,46 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 13/15
+
+Y. Kim et al.: Accelerating Falcon on ARMv8
+TABLE 3. Performance comparison of the NTT/FFT of Falcon on Jetson AGX Xavier.
+TABLE 4. Performance comparison of falcon on jetson AGX xavier.
+presented a parallel implementation that processes the oper-
+ations on 8 coefficients simultaneously. In addition, mem-
+ory accesses that may occur during NTT are minimized by
+proposing memory optimization paths for each security level.
+In the point-wise multiplication process, many multiplica-
+tions were processed at once using a parallel implementa-
+tion technique that maximized the use of the NEON engine.
+In the case of point-wise multiplication of NTT that processes
+8 coefficients at the same time, since integer-multiplication
+based on Montgomery reduction is included, the actual per-
+formance improvement rate is lower than that of the FFT
+algorithm.
+With these advantages, we achieved performance gains
+of 177/154% (NTT), 9/8% (Point-Wise multiplication),
+and 257/234% (InvNTT) in Falcon-512/1024, respectively.
+In FFT, the lowest level FPC functions are optimized using
+FP instruction and parallel implementation on NEON engine.
+In addition, like NTT, we presented memory optimization
+paths for each security level to minimize the memory access
+overheads that may occur in FFT. Through these contri-
+butions, performance improvements of 254/219% (FFT),
+11/10% (Point-Wise multiplication), and 282/267% (InvFFT)
+were achieved in Falcon-512/1024, respectively. As a result,
+it shows the superior performance of 250/228% in FFT-based
+multiplication and 210/118% in NTT-based multiplication
+of Falcon-512/1024 through the proposed optimization tech-
+niques compared to the reference implementation.
+C. PERFORMANCE ANALYSIS FOR OVERALL
+FUNCTIONS OF FALCON
+Table 4 shows the performance improvement for the
+full Falcon scheme. Through optimization implementa-
+tion, we achieved performance improvements of 15.1/18.1%
+(KeyGen), 16.5/17.1% (Sign), and 65.4/69.4% (Verify) in
+Falcon-512/1024, respectively. In Table 3, the performance
+improvement ratio for FFT/NTT implementations decreases
+as the security level increases due to the length of the
+polynomial, but in the case of the overall Falcon scheme,
+the performance improvement ratio increases as the security
+level increases. This is because there are various versions
+of FFT/NTT implementation in Falcon, and the number of
+44458 VOLUME 10, 2022

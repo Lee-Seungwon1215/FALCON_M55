@@ -1,0 +1,55 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 11/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 11
+4 Memory eﬃcient striding Toom-Cook
+In this section, we describe “striding” Toom-Cook multiplication. While not new – see
+e.g. [Ber01] – it does not appear to have been used in lattice-based cryptography before.
+Recall from Section 2.2.2 that using classical Toom-Cook k-way for large-degree multi-
+plication, the inputs in R[X] are lifted to the isomorphic ring R[X][Y]/(Xk
+−Y) via
+a0 + a1X+···+ an−2Xn−2 + an−1Xn−1
+= (a0···+ ak−1Xk−1) + (ak···+ a2k−1Xk−1)Y···+ (an−k···+ an−1Xk−1)Yr−1
+where r:= n
+k, before k-way Toom-Cook is applied to R′[Y]<r over the base ring R′
+= R[X].
+The problem with this approach is that even if, ultimately, we care about size-preserving
+multiplication in R[X]/(Xn + 1), the base multiplication in R[X]<k is length-doubling:
+The polynomial degree is too small for wraparound. This size-doubling during point
+multiplication in turn raises the memory usage.
+This can be improved by using a diﬀerent ring isomorphism, eﬀectively changing the
+arrangement of X and Y: We lift the polynomials from R[X] to R[Y][X]/(Xk
+−Y) as
+(a0 + akY +···+ a(r−1)kYr−1)X0 + (a1 + ak+1Y +···+ a(r−1)k+1Yr−1)X1 +···
+=
+(ai + ak+iY +···+ a(r−1)k+iYr−1)Xi
+i<k
+and apply k-way Toom-Cook to R′[X]<k and base ring R′
+= R[Y]<r. The point is: If
+our target ring is R[X]/(Xn + 1) = R[X]/(Xrk + 1), then because Y= Xk, our new
+base R′
+= R[Y] is in fact R[Y]/(Xr + 1), another negacyclic polynomial ring with size-
+preserving multiplication. In this way, the polynomial reduction can be moved to the point
+multiplication, significantly reducing memory usage of Toom-Cook multiplication. Another
+advantage is that the interpolation operates on smaller polynomials and is thus faster.
+Diﬀerenceinevaluation: StridingToom-Cook/Karatsubaevaluationdiﬀersfromclassical
+evaluation only through the memory access pattern, which is no longer contiguous but at
+stride k. In Section 5 and Section 6 we discuss how to overcome this with low performance-
+penalty on the Cortex-M4 and Cortex-M55 processors. Alternatively, one can permute the
+input upfront and thereby reduce striding evaluation to classical evaluation. It depends on
+the context whether this is feasible – we comment on the case of Saber below.
+Diﬀerences in interpolation: While classical interpolation gives ab= i<2k−1 ci(X)Yk
+with degX(ci) <2(n/k) and Y= Xn/k, striding interpolation gives ab= i<2k−1 ci(Y)Xk
+with degY(ci) <n/k and Y= Xk. Resolving the substitution Y= Xn/k in the classical
+context means overlapping the upper half of ci with the lower half of ci+1. Resolving the
+substitution Y= Xk in the striding context gives ab= i<k(ci(Xk) + Xkck+i(Xk))Xi
+–
+computing this thus involves a negacyclic rotation of ck+i and addition onto ck.
+4.1 Application: Saber
+Our primary interest in striding Toom-Cook/Karatsuba multiplication lies in its use for
+the Saber PQC scheme. We refer to [BMD+20] or the section pertaining to Toom-Cook
+multiplication in the supplementary material for details, but the important point is that the
+ring Z213 [X]/(X256 + 1) underlying Saber is amenable to iterated application of the striding
+method. Concretely, a striding Toom-Cook/Karatsuba based multiplication for Saber
+would use a hybrid of one layer of 4-way Toom-Cook to reduce from Z213 [X]/(X256 + 1)
+to Z213 [X]/(X64 + 1), one or two layers of Karatsuba to reduce from Z213 [X]/(X64 + 1)
+to Z213 [X]/(X{16,32}+ 1), and schoolbook multiplication.

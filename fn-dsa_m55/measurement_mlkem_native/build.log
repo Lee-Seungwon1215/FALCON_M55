@@ -1,0 +1,90 @@
+Loading Zephyr default modules (Zephyr base (cached)).
+-- Application: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app
+-- CMake version: 3.31.6
+-- Cache files will be written to: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/.cache
+-- Zephyr version: 4.4.1 (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1)
+-- Board: nucleo_n657x0_q, qualifiers: stm32n657xx
+-- Found toolchain: gnuarmemb (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi)
+-- Could NOT find Dtc (missing: DTC) (Required is at least version "1.4.6")
+Hint: The project() command has not yet been called.  It sets up system-specific search paths.
+-- Found BOARD.dts: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/boards/st/nucleo_n657x0_q/nucleo_n657x0_q.dts
+-- Found devicetree overlay: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/nucleo_n657x0_q.overlay
+-- Generated zephyr.dts: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/zephyr.dts
+-- Generated pickled edt: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/edt.pickle
+-- Generated devicetree_generated.h: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/include/generated/zephyr/devicetree_generated.h
+Parsing /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/Kconfig
+Loaded configuration '/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/.config'
+No change to configuration in '/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/.config'
+No change to Kconfig header in '/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/include/generated/zephyr/autoconf.h'
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/CMakeLists.txt:688 (message):
+  
+  ZEPHYR_BASE=/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1
+  doesn't appear to be a git repository, please specify
+  '-DBUILD_VERSION=<version>'
+
+
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/soc/st/stm32/stm32n6x/CMakeLists.txt:31 (message):
+  
+
+        Signing Image tool (STM32_SigningTool_CLI) is not available.
+        Signed image will not be generated.
+        You won't be able to run application on the board.
+        Refer to board documentation for more information.
+      
+
+
+-- Found gen_kobject_list: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/scripts/build/gen_kobject_list.py
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/CMakeLists.txt:1081 (message):
+  No SOURCES given to Zephyr library: drivers__console
+
+  Excluding target from build.
+
+
+-- Configuring done (4.3s)
+-- Generating done (0.2s)
+-- Build files have been written to: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build
+[1/143] Generating misc/generated/syscalls.json, misc/generated/struct_tags.json
+[2/9] Generating linker_zephyr_pre0.cmd
+[3/9] Building C object CMakeFiles/app.dir/benchmark.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/util.h:27,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/atomic.h:18,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/kernel_includes.h:25,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/kernel.h:17,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/benchmark.c:10:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/__assert.h:35:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   35 | void __printf_like(1, 2) assert_print(const char *fmt, ...);
+      | ^~~~
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/kernel_includes.h:35:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/printk.h:47:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   47 | __printf_like(1, 2) void printk(const char *fmt, ...);
+      | ^~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/printk.h:48:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   48 | __printf_like(1, 0) void vprintk(const char *fmt, va_list ap);
+      | ^~~~~~~~~~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/printk.h:73:41: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   73 |                                         const char *fmt, ...);
+      |                                         ^~~~~
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/printk.h:75:43: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   75 |                                           const char *fmt, va_list ap);
+      |                                           ^~~~~
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/ref/inner.h:6,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/benchmark.c:5:
+/Users/seungwon/FALCON/fn-dsa_m55/ref/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[4/9] Linking C static library app/libapp.a
+[5/9] Linking C executable zephyr/zephyr_pre0.elf
+[6/9] Generating linker.cmd
+[7/9] Generating isr_tables.c, isr_tables_vt.ld, isr_tables_swi.ld
+[8/9] Building C object zephyr/CMakeFiles/zephyr_final.dir/isr_tables.c.obj
+[9/9] Linking C executable zephyr/zephyr.elf
+Memory region         Used Size  Region Size  %age Used
+           FLASH:      148552 B       256 KB     56.67%
+             RAM:      160224 B       256 KB     61.12%
+        AXISRAM1:           0 B         2 MB      0.00%
+        AXISRAM2:           0 B       511 KB      0.00%
+            ITCM:           0 B       256 KB      0.00%
+            DTCM:           0 B       256 KB      0.00%
+  NUCLEO_AXISRAM:           0 B       192 KB      0.00%
+        IDT_LIST:           0 B        32 KB      0.00%
+Generating files from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/zephyr.elf for board: nucleo_n657x0_q/stm32n657xx

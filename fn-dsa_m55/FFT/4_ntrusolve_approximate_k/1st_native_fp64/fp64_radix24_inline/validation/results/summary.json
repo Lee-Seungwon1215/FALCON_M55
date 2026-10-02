@@ -1,0 +1,3308 @@
+{
+  "performance": [
+    {
+      "degree": 512,
+      "ref": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 5700700215,
+        "median": 48150560,
+        "min": 41158869,
+        "max": 124195710,
+        "mean": 57007002.15
+      },
+      "c": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 20973307699,
+        "median": 195532363,
+        "min": 188540673,
+        "max": 418959322,
+        "mean": 209733076.99
+      },
+      "old": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 21106460687,
+        "median": 196836545,
+        "min": 189844855,
+        "max": 421567686,
+        "mean": 211064606.87
+      },
+      "r1": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 19526161262,
+        "median": 181571878,
+        "min": 174580188,
+        "max": 391038352,
+        "mean": 195261612.62,
+        "cycle_reduction_vs_previous_percent": 7.487278177213986
+      },
+      "r2": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 18882658601,
+        "median": 175305031,
+        "min": 168313341,
+        "max": 378504658,
+        "mean": 188826586.01,
+        "cycle_reduction_vs_previous_percent": 3.295592269087355
+      },
+      "asm": {
+        "degree": 512,
+        "runs": 100,
+        "cycles": 18569403030,
+        "median": 172285714,
+        "min": 165294024,
+        "max": 372466024,
+        "mean": 185694030.3,
+        "cycle_reduction_vs_previous_percent": 1.6589590354792905
+      },
+      "final_reduction_vs_C_percent": 11.461733664044882,
+      "final_reduction_vs_old_asm_percent": 12.020289401541573,
+      "final_time_vs_fixed_ratio": 3.2573898520639895
+    },
+    {
+      "degree": 1024,
+      "ref": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 24337529554,
+        "median": 195772943,
+        "min": 139492971,
+        "max": 743361711,
+        "mean": 243375295.54
+      },
+      "c": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 65556851349,
+        "median": 589167784,
+        "min": 532887812,
+        "max": 1368389419,
+        "mean": 655568513.49
+      },
+      "old": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 65949589814,
+        "median": 593044184,
+        "min": 536764212,
+        "max": 1375997019,
+        "mean": 659495898.14
+      },
+      "r1": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 61658817275,
+        "median": 552000038,
+        "min": 495720066,
+        "max": 1290880163,
+        "mean": 616588172.75,
+        "cycle_reduction_vs_previous_percent": 6.5061398427214145
+      },
+      "r2": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 59798594749,
+        "median": 533870809,
+        "min": 477590837,
+        "max": 1254548011,
+        "mean": 597985947.49,
+        "cycle_reduction_vs_previous_percent": 3.016961090420134
+      },
+      "asm": {
+        "degree": 1024,
+        "runs": 100,
+        "cycles": 58966932612,
+        "median": 525960643,
+        "min": 469680671,
+        "max": 1237980759,
+        "mean": 589669326.12,
+        "cycle_reduction_vs_previous_percent": 1.3907720415351488
+      },
+      "final_reduction_vs_C_percent": 10.052219716773392,
+      "final_reduction_vs_old_asm_percent": 10.58787055642565,
+      "final_time_vs_fixed_ratio": 2.4228807809422253
+    }
+  ],
+  "stages": [
+    {
+      "stage": "r1",
+      "kernels": [
+        {
+          "case": 0,
+          "logn": 1,
+          "fixed_prepare": 358400,
+          "c_prepare": 468300,
+          "asm_prepare": 431000,
+          "fixed_reduce": 17500,
+          "c_reduce": 546500,
+          "asm_reduce": 483800,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 1,
+          "logn": 1,
+          "fixed_prepare": 358400,
+          "c_prepare": 468300,
+          "asm_prepare": 431000,
+          "fixed_reduce": 17500,
+          "c_reduce": 546500,
+          "asm_reduce": 483800,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 2,
+          "logn": 2,
+          "fixed_prepare": 736500,
+          "c_prepare": 1519500,
+          "asm_prepare": 1388900,
+          "fixed_reduce": 73200,
+          "c_reduce": 2379600,
+          "asm_reduce": 2152700,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 3,
+          "logn": 2,
+          "fixed_prepare": 736500,
+          "c_prepare": 1519500,
+          "asm_prepare": 1388900,
+          "fixed_reduce": 73200,
+          "c_reduce": 2379600,
+          "asm_reduce": 2152700,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 4,
+          "logn": 3,
+          "fixed_prepare": 1501200,
+          "c_prepare": 4179200,
+          "asm_prepare": 3805200,
+          "fixed_reduce": 198700,
+          "c_reduce": 7251800,
+          "asm_reduce": 6573400,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 5,
+          "logn": 3,
+          "fixed_prepare": 1501200,
+          "c_prepare": 4179200,
+          "asm_prepare": 3805200,
+          "fixed_reduce": 198700,
+          "c_reduce": 7251800,
+          "asm_reduce": 6573400,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 6,
+          "logn": 4,
+          "fixed_prepare": 3052900,
+          "c_prepare": 10618400,
+          "asm_prepare": 9643900,
+          "fixed_reduce": 495100,
+          "c_reduce": 19442800,
+          "asm_reduce": 17637100,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 7,
+          "logn": 4,
+          "fixed_prepare": 3052900,
+          "c_prepare": 10618400,
+          "asm_prepare": 9643900,
+          "fixed_reduce": 495100,
+          "c_reduce": 19442800,
+          "asm_reduce": 17637100,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 8,
+          "logn": 5,
+          "fixed_prepare": 6203700,
+          "c_prepare": 25739600,
+          "asm_prepare": 23337400,
+          "fixed_reduce": 1185000,
+          "c_reduce": 48723800,
+          "asm_reduce": 44214800,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 9,
+          "logn": 5,
+          "fixed_prepare": 6203700,
+          "c_prepare": 25739600,
+          "asm_prepare": 23337400,
+          "fixed_reduce": 1185000,
+          "c_reduce": 48723800,
+          "asm_reduce": 44214800,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 10,
+          "logn": 6,
+          "fixed_prepare": 12602900,
+          "c_prepare": 60470800,
+          "asm_prepare": 54760500,
+          "fixed_reduce": 2765300,
+          "c_reduce": 117089600,
+          "asm_reduce": 106276500,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 11,
+          "logn": 6,
+          "fixed_prepare": 12602900,
+          "c_prepare": 60470800,
+          "asm_prepare": 54760500,
+          "fixed_reduce": 2765300,
+          "c_reduce": 117089600,
+          "asm_reduce": 106276500,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 12,
+          "logn": 7,
+          "fixed_prepare": 25599300,
+          "c_prepare": 138914000,
+          "asm_prepare": 125682800,
+          "fixed_reduce": 6333200,
+          "c_reduce": 273434600,
+          "asm_reduce": 248218200,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 13,
+          "logn": 7,
+          "fixed_prepare": 25599300,
+          "c_prepare": 138914000,
+          "asm_prepare": 125682800,
+          "fixed_reduce": 6333200,
+          "c_reduce": 273434600,
+          "asm_reduce": 248218200,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 14,
+          "logn": 8,
+          "fixed_prepare": 51990900,
+          "c_prepare": 313765200,
+          "asm_prepare": 283715700,
+          "fixed_reduce": 14289900,
+          "c_reduce": 625357200,
+          "asm_reduce": 567749500,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 15,
+          "logn": 8,
+          "fixed_prepare": 51990900,
+          "c_prepare": 313765200,
+          "asm_prepare": 283715700,
+          "fixed_reduce": 14289900,
+          "c_reduce": 625357200,
+          "asm_reduce": 567749500,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 16,
+          "logn": 9,
+          "fixed_prepare": 105574500,
+          "c_prepare": 699400400,
+          "asm_prepare": 632704400,
+          "fixed_reduce": 31851400,
+          "c_reduce": 1407673400,
+          "asm_reduce": 1278193600,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 17,
+          "logn": 9,
+          "fixed_prepare": 105574500,
+          "c_prepare": 699400400,
+          "asm_prepare": 632704400,
+          "fixed_reduce": 31851400,
+          "c_reduce": 1407673400,
+          "asm_reduce": 1278193600,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 18,
+          "logn": 2,
+          "fixed_prepare": 736500,
+          "c_prepare": 1519500,
+          "asm_prepare": 1388900,
+          "fixed_reduce": 73200,
+          "c_reduce": 2379600,
+          "asm_reduce": 2152700,
+          "bitexact": "PASS"
+        }
+      ],
+      "differential": {
+        "random_pairs": 1000000,
+        "edge_pairs": 36864,
+        "checksum": "c665dcb55f68554d",
+        "result": 0
+      },
+      "kat": 300,
+      "FFT_coefficient_positions": 81840,
+      "mul": [
+        {
+          "backend": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6404
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            353540
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            305668
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "CT_ops": [
+        {
+          "op": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            307972
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "op": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            53252
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "op": 2,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            82692
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "op": 3,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            162820
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "CT_FFT": [
+        {
+          "backend": 0,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            12
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            34
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            233
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            266
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            720
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            827
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1903
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2194
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            4720
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5448
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            11289
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            13026
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            26330
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            30352
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            60251
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            69374
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            135804
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            156188
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            302365
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            347386
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            21
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            70
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5923
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            7138
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            23170
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            27891
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            68837
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            82686
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            182548
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            218881
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            454755
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            544508
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1088770
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1302263
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2536033
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            3030802
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5789056
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6913965
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            13012127
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            15532488
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            18
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            16
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5360
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6578
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            20924
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            25651
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            62103
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            75965
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            164594
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            200955
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            409873
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            499685
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            981056
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1194671
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2284703
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2779721
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5214590
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6340003
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            11719581
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            14240957
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "observed_input_minima_equal": true
+    },
+    {
+      "stage": "r2",
+      "kernels": [
+        {
+          "case": 0,
+          "logn": 1,
+          "fixed_prepare": 358400,
+          "c_prepare": 468900,
+          "asm_prepare": 432400,
+          "fixed_reduce": 16900,
+          "c_reduce": 547100,
+          "asm_reduce": 485000,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 1,
+          "logn": 1,
+          "fixed_prepare": 358400,
+          "c_prepare": 468900,
+          "asm_prepare": 432400,
+          "fixed_reduce": 16900,
+          "c_reduce": 547100,
+          "asm_reduce": 485000,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 2,
+          "logn": 2,
+          "fixed_prepare": 737300,
+          "c_prepare": 1522600,
+          "asm_prepare": 1392300,
+          "fixed_reduce": 72300,
+          "c_reduce": 2380600,
+          "asm_reduce": 2153300,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 3,
+          "logn": 2,
+          "fixed_prepare": 737300,
+          "c_prepare": 1522600,
+          "asm_prepare": 1392300,
+          "fixed_reduce": 72300,
+          "c_reduce": 2380600,
+          "asm_reduce": 2153300,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 4,
+          "logn": 3,
+          "fixed_prepare": 1503900,
+          "c_prepare": 4188100,
+          "asm_prepare": 3764400,
+          "fixed_reduce": 197100,
+          "c_reduce": 7253400,
+          "asm_reduce": 6473400,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 5,
+          "logn": 3,
+          "fixed_prepare": 1503900,
+          "c_prepare": 4188100,
+          "asm_prepare": 3764400,
+          "fixed_reduce": 197100,
+          "c_reduce": 7253400,
+          "asm_reduce": 6473400,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 6,
+          "logn": 4,
+          "fixed_prepare": 3059000,
+          "c_prepare": 10640600,
+          "asm_prepare": 9419600,
+          "fixed_reduce": 492100,
+          "c_reduce": 19445200,
+          "asm_reduce": 17136700,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 7,
+          "logn": 4,
+          "fixed_prepare": 3059000,
+          "c_prepare": 10640600,
+          "asm_prepare": 9419600,
+          "fixed_reduce": 492100,
+          "c_reduce": 19445200,
+          "asm_reduce": 17136700,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 8,
+          "logn": 5,
+          "fixed_prepare": 6216400,
+          "c_prepare": 25792300,
+          "asm_prepare": 22555200,
+          "fixed_reduce": 1179200,
+          "c_reduce": 48727000,
+          "asm_reduce": 42514800,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 9,
+          "logn": 5,
+          "fixed_prepare": 6216400,
+          "c_prepare": 25792300,
+          "asm_prepare": 22555200,
+          "fixed_reduce": 1179200,
+          "c_reduce": 48727000,
+          "asm_reduce": 42514800,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 10,
+          "logn": 6,
+          "fixed_prepare": 12629000,
+          "c_prepare": 60592800,
+          "asm_prepare": 52480000,
+          "fixed_reduce": 2753900,
+          "c_reduce": 117092800,
+          "asm_reduce": 101379300,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 11,
+          "logn": 6,
+          "fixed_prepare": 12629000,
+          "c_prepare": 60592800,
+          "asm_prepare": 52480000,
+          "fixed_reduce": 2753900,
+          "c_reduce": 117092800,
+          "asm_reduce": 101379300,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 12,
+          "logn": 7,
+          "fixed_prepare": 25653200,
+          "c_prepare": 139191700,
+          "asm_prepare": 119640000,
+          "fixed_reduce": 6310600,
+          "c_reduce": 273434600,
+          "asm_reduce": 235330200,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 13,
+          "logn": 7,
+          "fixed_prepare": 25653200,
+          "c_prepare": 139191700,
+          "asm_prepare": 119640000,
+          "fixed_reduce": 6310600,
+          "c_reduce": 273434600,
+          "asm_reduce": 235330200,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 14,
+          "logn": 8,
+          "fixed_prepare": 52103000,
+          "c_prepare": 314389000,
+          "asm_prepare": 268623500,
+          "fixed_reduce": 14244900,
+          "c_reduce": 625344400,
+          "asm_reduce": 535686700,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 15,
+          "logn": 8,
+          "fixed_prepare": 52103000,
+          "c_prepare": 314389000,
+          "asm_prepare": 268623500,
+          "fixed_reduce": 14244900,
+          "c_reduce": 625344400,
+          "asm_reduce": 535686700,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 16,
+          "logn": 9,
+          "fixed_prepare": 105808800,
+          "c_prepare": 700786300,
+          "asm_prepare": 596526500,
+          "fixed_reduce": 31761600,
+          "c_reduce": 1407622200,
+          "asm_reduce": 1201393000,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 17,
+          "logn": 9,
+          "fixed_prepare": 105808800,
+          "c_prepare": 700786300,
+          "asm_prepare": 596526500,
+          "fixed_reduce": 31761600,
+          "c_reduce": 1407622200,
+          "asm_reduce": 1201393000,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 18,
+          "logn": 2,
+          "fixed_prepare": 737300,
+          "c_prepare": 1522600,
+          "asm_prepare": 1392300,
+          "fixed_reduce": 72300,
+          "c_reduce": 2380600,
+          "asm_reduce": 2153300,
+          "bitexact": "PASS"
+        }
+      ],
+      "differential": {
+        "random_pairs": 1000000,
+        "edge_pairs": 36864,
+        "checksum": "c665dcb55f68554d",
+        "result": 0
+      },
+      "kat": 300,
+      "FFT_coefficient_positions": 81840,
+      "mul": [
+        {
+          "backend": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6404
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            353540
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            305668
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "CT_ops": [
+        {
+          "op": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            307972
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "op": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            53252
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "op": 2,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            82692
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "op": 3,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            162820
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "CT_FFT": [
+        {
+          "backend": 0,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            12
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            34
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            233
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            265
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            720
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            825
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1903
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2190
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            4720
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5440
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            11289
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            13010
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            26330
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            30320
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            60251
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            69310
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            135804
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            156060
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            302365
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            347130
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            21
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            70
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5925
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            7138
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            23178
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            27891
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            68861
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            82686
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            182612
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            218881
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            454915
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            544508
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1089154
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1302263
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2536929
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            3030802
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5791104
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6913965
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            13016735
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            15532488
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            18
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            16
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5352
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6571
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            20420
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            25115
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            59636
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            73353
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            156256
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            192155
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            385900
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            474437
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            918024
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1128383
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2127972
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2615065
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            4839296
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5946035
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            10844828
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            13323213
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "observed_input_minima_equal": true
+    },
+    {
+      "stage": "asm",
+      "kernels": [
+        {
+          "case": 0,
+          "logn": 1,
+          "fixed_prepare": 358100,
+          "c_prepare": 469300,
+          "asm_prepare": 382100,
+          "fixed_reduce": 17000,
+          "c_reduce": 545200,
+          "asm_reduce": 473000,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 1,
+          "logn": 1,
+          "fixed_prepare": 358100,
+          "c_prepare": 469300,
+          "asm_prepare": 382100,
+          "fixed_reduce": 17000,
+          "c_reduce": 545200,
+          "asm_reduce": 473000,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 2,
+          "logn": 2,
+          "fixed_prepare": 736100,
+          "c_prepare": 1522300,
+          "asm_prepare": 1275500,
+          "fixed_reduce": 72400,
+          "c_reduce": 2377000,
+          "asm_reduce": 2108200,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 3,
+          "logn": 2,
+          "fixed_prepare": 736100,
+          "c_prepare": 1522300,
+          "asm_prepare": 1275500,
+          "fixed_reduce": 72400,
+          "c_reduce": 2377001,
+          "asm_reduce": 2108200,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 4,
+          "logn": 3,
+          "fixed_prepare": 1500500,
+          "c_prepare": 4184400,
+          "asm_prepare": 3499500,
+          "fixed_reduce": 197200,
+          "c_reduce": 7246400,
+          "asm_reduce": 6339600,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 5,
+          "logn": 3,
+          "fixed_prepare": 1500500,
+          "c_prepare": 4184400,
+          "asm_prepare": 3499500,
+          "fixed_reduce": 197200,
+          "c_reduce": 7246400,
+          "asm_reduce": 6339600,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 6,
+          "logn": 4,
+          "fixed_prepare": 3051400,
+          "c_prepare": 10628400,
+          "asm_prepare": 8829400,
+          "fixed_reduce": 492200,
+          "c_reduce": 19431400,
+          "asm_reduce": 16782100,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 7,
+          "logn": 4,
+          "fixed_prepare": 3051400,
+          "c_prepare": 10628400,
+          "asm_prepare": 8829400,
+          "fixed_reduce": 492200,
+          "c_reduce": 19431401,
+          "asm_reduce": 16782100,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 8,
+          "logn": 5,
+          "fixed_prepare": 6200600,
+          "c_prepare": 25759200,
+          "asm_prepare": 21256100,
+          "fixed_reduce": 1179300,
+          "c_reduce": 48699600,
+          "asm_reduce": 41632200,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 9,
+          "logn": 5,
+          "fixed_prepare": 6200600,
+          "c_prepare": 25759200,
+          "asm_prepare": 21256100,
+          "fixed_reduce": 1179300,
+          "c_reduce": 48699601,
+          "asm_reduce": 41632200,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 10,
+          "logn": 6,
+          "fixed_prepare": 12597000,
+          "c_prepare": 60509600,
+          "asm_prepare": 49646400,
+          "fixed_reduce": 2754000,
+          "c_reduce": 117038202,
+          "asm_reduce": 99268300,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 11,
+          "logn": 6,
+          "fixed_prepare": 12597000,
+          "c_prepare": 60509600,
+          "asm_prepare": 49646400,
+          "fixed_reduce": 2754000,
+          "c_reduce": 117038201,
+          "asm_reduce": 99268300,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 12,
+          "logn": 7,
+          "fixed_prepare": 25589000,
+          "c_prepare": 138991200,
+          "asm_prepare": 113503900,
+          "fixed_reduce": 6310700,
+          "c_reduce": 273325604,
+          "asm_reduce": 230418000,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 13,
+          "logn": 7,
+          "fixed_prepare": 25589000,
+          "c_prepare": 138991200,
+          "asm_prepare": 113503900,
+          "fixed_reduce": 6310700,
+          "c_reduce": 273325603,
+          "asm_reduce": 230418000,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 14,
+          "logn": 8,
+          "fixed_prepare": 51974600,
+          "c_prepare": 313919200,
+          "asm_prepare": 255398200,
+          "fixed_reduce": 14245000,
+          "c_reduce": 625126600,
+          "asm_reduce": 524482300,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 15,
+          "logn": 8,
+          "fixed_prepare": 51974600,
+          "c_prepare": 313919200,
+          "asm_prepare": 255398200,
+          "fixed_reduce": 14245000,
+          "c_reduce": 625126612,
+          "asm_reduce": 524482300,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 16,
+          "logn": 9,
+          "fixed_prepare": 105552200,
+          "c_prepare": 699708000,
+          "asm_prepare": 567941300,
+          "fixed_reduce": 31761700,
+          "c_reduce": 1407186828,
+          "asm_reduce": 1176206400,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 17,
+          "logn": 9,
+          "fixed_prepare": 105552200,
+          "c_prepare": 699708000,
+          "asm_prepare": 567941300,
+          "fixed_reduce": 31761700,
+          "c_reduce": 1407186825,
+          "asm_reduce": 1176206400,
+          "bitexact": "PASS"
+        },
+        {
+          "case": 18,
+          "logn": 2,
+          "fixed_prepare": 736100,
+          "c_prepare": 1522300,
+          "asm_prepare": 1275500,
+          "fixed_reduce": 72400,
+          "c_reduce": 2377000,
+          "asm_reduce": 2108200,
+          "bitexact": "PASS"
+        }
+      ],
+      "differential": {
+        "random_pairs": 1000000,
+        "edge_pairs": 36864,
+        "checksum": "c665dcb55f68554d",
+        "result": 0
+      },
+      "kat": 300,
+      "FFT_coefficient_positions": 81840,
+      "mul": [
+        {
+          "backend": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6404
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            353540
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            299012
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "CT_ops": [
+        {
+          "op": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            307972
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "op": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            53252
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "op": 2,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            82692
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "op": 3,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            162820
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "CT_FFT": [
+        {
+          "backend": 0,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            12
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            34
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            233
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            265
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            720
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            825
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1903
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2190
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            4720
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5440
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            11289
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            13010
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            26330
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            30320
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 0,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            60251
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            69310
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            135804
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            156060
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            302365
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 0,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            347130
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            21
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            70
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5925
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            7138
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            23178
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            27891
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            68861
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 1,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            82686
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            182612
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            218881
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            454915
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            544508
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1089154
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1302263
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2536929
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            3030802
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5791104
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6913965
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            13016735
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 1,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            15532488
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 1,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            18
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 1,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            16
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 2,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5223
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 2,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            6489
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 3,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            19905
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 3,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            24771
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 4,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            58102
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 4,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            72299
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 5,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            152191
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 5,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            189311
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 6,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            375788
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 6,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            467275
+          ],
+          "maximum_within_class_span": 0
+        },
+        {
+          "backend": 2,
+          "logn": 7,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            893849
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 7,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            1111111
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 8,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2071734
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 8,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            2574627
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 9,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            4711059
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 9,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            5853375
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 10,
+          "inverse": 0,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            10556848
+          ],
+          "maximum_within_class_span": 1
+        },
+        {
+          "backend": 2,
+          "logn": 10,
+          "inverse": 1,
+          "input_classes": 20,
+          "distinct_input_minima": [
+            13114331
+          ],
+          "maximum_within_class_span": 1
+        }
+      ],
+      "observed_input_minima_equal": true
+    }
+  ],
+  "final_profile": [
+    {
+      "degree": 512,
+      "kind": 0,
+      "calls": 879,
+      "cycles_per_key": 4720999.47
+    },
+    {
+      "degree": 512,
+      "kind": 1,
+      "calls": 92174,
+      "cycles_per_key": 129682802.06
+    },
+    {
+      "degree": 1024,
+      "kind": 0,
+      "calls": 1107,
+      "cycles_per_key": 10608474.07
+    },
+    {
+      "degree": 1024,
+      "kind": 1,
+      "calls": 251354,
+      "cycles_per_key": 351020764.2
+    }
+  ],
+  "memory": {
+    "ref-perf": {
+      "reserved": 65536,
+      "untouched_low": 56048,
+      "observed_used": 9488,
+      "FLASH_region_bytes": 101780,
+      "RAM_region_bytes": 220296
+    },
+    "c-perf": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696,
+      "FLASH_region_bytes": 106560,
+      "RAM_region_bytes": 220296
+    },
+    "old-perf": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696,
+      "FLASH_region_bytes": 106508,
+      "RAM_region_bytes": 220328
+    },
+    "r1-perf": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696,
+      "FLASH_region_bytes": 106584,
+      "RAM_region_bytes": 220296
+    },
+    "r2-perf": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696,
+      "FLASH_region_bytes": 107392,
+      "RAM_region_bytes": 220296
+    },
+    "asm-perf": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696,
+      "FLASH_region_bytes": 108896,
+      "RAM_region_bytes": 220296
+    },
+    "r1-kat": {
+      "reserved": 65536,
+      "untouched_low": 47360,
+      "observed_used": 18176
+    },
+    "r2-kat": {
+      "reserved": 65536,
+      "untouched_low": 47360,
+      "observed_used": 18176
+    },
+    "kat": {
+      "reserved": 65536,
+      "untouched_low": 47360,
+      "observed_used": 18176
+    },
+    "asm-profile": {
+      "reserved": 65536,
+      "untouched_low": 46840,
+      "observed_used": 18696
+    }
+  },
+  "machine": [
+    {
+      "group": "c",
+      "functions": [
+        {
+          "name": "fndsa_fp64e_mul",
+          "present": true,
+          "instructions": 99,
+          "vcvt": 26,
+          "FP64_ops": 76,
+          "calls": []
+        },
+        {
+          "name": "fp64e_mul24_prepared",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul_prepared",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fndsa_vect_FFT_fp64_exact",
+          "present": true,
+          "instructions": 279,
+          "vcvt": 40,
+          "FP64_ops": 124,
+          "calls": [
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        },
+        {
+          "name": "fndsa_vect_iFFT_fp64_exact",
+          "present": true,
+          "instructions": 377,
+          "vcvt": 84,
+          "FP64_ops": 221,
+          "calls": [
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        }
+      ],
+      "stack_usage": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/build/c-perf/generated/kgen_ntru.c:500:1:solve_NTRU_intermediate\t16592\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact/kgen_fxp.c:1248:1:fndsa_fp64e_mul\t144\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact/kgen_fxp.c:1418:1:fndsa_vect_FFT_fp64_exact\t424\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact/kgen_fxp.c:1436:1:fndsa_vect_iFFT_fp64_exact\t336\tstatic"
+      ]
+    },
+    {
+      "group": "old",
+      "functions": [
+        {
+          "name": "fndsa_fp64e_mul",
+          "present": true,
+          "instructions": 105,
+          "vcvt": 26,
+          "FP64_ops": 84,
+          "calls": []
+        },
+        {
+          "name": "fp64e_mul24_prepared",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul_prepared",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fndsa_vect_FFT_fp64_exact",
+          "present": true,
+          "instructions": 273,
+          "vcvt": 40,
+          "FP64_ops": 123,
+          "calls": [
+            "1000a31c <fndsa_fp64e_mul>",
+            "1000a31c <fndsa_fp64e_mul>",
+            "1000a31c <fndsa_fp64e_mul>"
+          ]
+        },
+        {
+          "name": "fndsa_vect_iFFT_fp64_exact",
+          "present": true,
+          "instructions": 375,
+          "vcvt": 84,
+          "FP64_ops": 214,
+          "calls": [
+            "1000a31c <fndsa_fp64e_mul>",
+            "1000a31c <fndsa_fp64e_mul>",
+            "1000a31c <fndsa_fp64e_mul>"
+          ]
+        }
+      ],
+      "stack_usage": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/build/old-perf/generated/kgen_ntru.c:500:1:solve_NTRU_intermediate\t16592\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/kgen_fxp.c:1248:1:fndsa_fp64e_mul\t120\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/kgen_fxp.c:1535:1:fndsa_vect_FFT_fp64_exact\t392\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_kat_exact_inlineasm/kgen_fxp.c:1553:1:fndsa_vect_iFFT_fp64_exact\t320\tstatic"
+      ]
+    },
+    {
+      "group": "r1",
+      "functions": [
+        {
+          "name": "fndsa_fp64e_mul",
+          "present": true,
+          "instructions": 99,
+          "vcvt": 26,
+          "FP64_ops": 73,
+          "calls": []
+        },
+        {
+          "name": "fp64e_mul24_prepared",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul_prepared",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fndsa_vect_FFT_fp64_exact",
+          "present": true,
+          "instructions": 279,
+          "vcvt": 40,
+          "FP64_ops": 124,
+          "calls": [
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        },
+        {
+          "name": "fndsa_vect_iFFT_fp64_exact",
+          "present": true,
+          "instructions": 377,
+          "vcvt": 84,
+          "FP64_ops": 221,
+          "calls": [
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>",
+            "100064d0 <fndsa_fp64e_mul>"
+          ]
+        }
+      ],
+      "stack_usage": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/build/r1-perf/generated/kgen_ntru.c:500:1:solve_NTRU_intermediate\t16592\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24/kgen_fxp.c:1314:1:fndsa_fp64e_mul\t144\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24/kgen_fxp.c:1466:1:fndsa_vect_FFT_fp64_exact\t424\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24/kgen_fxp.c:1484:1:fndsa_vect_iFFT_fp64_exact\t336\tstatic"
+      ]
+    },
+    {
+      "group": "r2",
+      "functions": [
+        {
+          "name": "fndsa_fp64e_mul",
+          "present": true,
+          "instructions": 99,
+          "vcvt": 26,
+          "FP64_ops": 73,
+          "calls": []
+        },
+        {
+          "name": "fp64e_mul24_prepared",
+          "present": true,
+          "instructions": 84,
+          "vcvt": 20,
+          "FP64_ops": 59,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul_prepared",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fndsa_vect_FFT_fp64_exact",
+          "present": true,
+          "instructions": 321,
+          "vcvt": 56,
+          "FP64_ops": 154,
+          "calls": [
+            "10006120 <fp64e_mul24_prepared>",
+            "10006120 <fp64e_mul24_prepared>",
+            "10006120 <fp64e_mul24_prepared>"
+          ]
+        },
+        {
+          "name": "fndsa_vect_iFFT_fp64_exact",
+          "present": true,
+          "instructions": 419,
+          "vcvt": 101,
+          "FP64_ops": 251,
+          "calls": [
+            "10006120 <fp64e_mul24_prepared>",
+            "10006120 <fp64e_mul24_prepared>",
+            "10006120 <fp64e_mul24_prepared>"
+          ]
+        }
+      ],
+      "stack_usage": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/build/r2-perf/generated/kgen_ntru.c:500:1:solve_NTRU_intermediate\t16592\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_twiddle/kgen_fxp.c:1472:1:fp64e_mul24_prepared\t120\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_twiddle/kgen_fxp.c:1314:1:fndsa_fp64e_mul\t144\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_twiddle/kgen_fxp.c:1496:1:fndsa_vect_FFT_fp64_exact\t448\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_twiddle/kgen_fxp.c:1515:1:fndsa_vect_iFFT_fp64_exact\t368\tstatic"
+      ]
+    },
+    {
+      "group": "asm",
+      "functions": [
+        {
+          "name": "fndsa_fp64e_mul",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_mul24_prepared",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul",
+          "present": false,
+          "instructions": 0,
+          "vcvt": 0,
+          "FP64_ops": 0,
+          "calls": []
+        },
+        {
+          "name": "fp64e_cmul_prepared",
+          "present": true,
+          "instructions": 313,
+          "vcvt": 76,
+          "FP64_ops": 231,
+          "calls": []
+        },
+        {
+          "name": "fndsa_vect_FFT_fp64_exact",
+          "present": true,
+          "instructions": 223,
+          "vcvt": 40,
+          "FP64_ops": 100,
+          "calls": [
+            "10006120 <fp64e_cmul_prepared>"
+          ]
+        },
+        {
+          "name": "fndsa_vect_iFFT_fp64_exact",
+          "present": true,
+          "instructions": 347,
+          "vcvt": 85,
+          "FP64_ops": 196,
+          "calls": [
+            "10006120 <fp64e_cmul_prepared>"
+          ]
+        }
+      ],
+      "stack_usage": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/build/asm-perf/generated/kgen_ntru.c:500:1:solve_NTRU_intermediate\t16592\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/kgen_fxp.c:1321:1:fndsa_fp64e_mul\t144\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/kgen_fxp.c:1503:1:fndsa_vect_FFT_fp64_exact\t280\tstatic",
+        "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/kgen_fxp.c:1522:1:fndsa_vect_iFFT_fp64_exact\t280\tstatic"
+      ]
+    }
+  ],
+  "model": {
+    "result": "PASS",
+    "random_pairs": 1000000,
+    "edge_pairs": 36864,
+    "checksum": "c665dcb55f68554d",
+    "maximum_observed_column": 562949903089664,
+    "caveat": "Arithmetic model, not host execution/sanitization of Arm assembly.",
+    "model_sha256": "f60fca1c7ede75f7338aa42e24e202e8d48e68d1a11bd68431e7e9f7537d774c"
+  },
+  "changed_crypto_files": {
+    "r1": [
+      "kgen_fxp.c"
+    ],
+    "r2": [
+      "kgen_fxp.c"
+    ],
+    "asm": [
+      "kgen_fxp.c"
+    ]
+  },
+  "original_sources_preserved": true,
+  "key_signature_digest_matches": 200,
+  "runs": {
+    "r1-kernels": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/r1-kernels/20260922T064225Z",
+      "elf_sha256": "be11b17d8e1268997fc9643705403bc631ea5d0ffd90f81af47f13969a280a81",
+      "raw_sha256": "762fb498b1ee25888647c7a3e66e554efd132aa24e604014e6e825f3c28de7c5"
+    },
+    "r1-kat": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/r1-kat/20260922T064422Z",
+      "elf_sha256": "3b9e7632be5be78070a7558d5a9e90111d995f86ec781f04bf433b34f4bc6080",
+      "raw_sha256": "c3b88c8d4bb38be5ff36cea07e9f044ca50c91a31ca200c8069a5576de03efbb"
+    },
+    "r1-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/r1-perf/20260922T064617Z",
+      "elf_sha256": "afa7241cb6e2a4e727e12e0278c25c727c059681b16661fa68ff35d7432efb93",
+      "raw_sha256": "975d946aef02e1c5805c95a9ce22b129ef11e18e2a29126f310ab669264fe678"
+    },
+    "r2-kernels": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/r2-kernels/20260922T064810Z",
+      "elf_sha256": "5139b32487d7e5825bd5e807711c14afff6c963c114959dc4d96438420c11de3",
+      "raw_sha256": "e0eeca4c3e6d31245aa14e4c6d97f62eb78ebb9aa92ac0dbfd0bc60ef66a75c5"
+    },
+    "r2-kat": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/r2-kat/20260922T064932Z",
+      "elf_sha256": "33e7fb9ff7fe41d4dfaee3e59bb70f85006f4e785f43e1908dc973391329456c",
+      "raw_sha256": "21d6770f29ad0725934e4f65ad0db4f49c48dd112551149bfec0c8e07cbd263f"
+    },
+    "r2-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/r2-perf/20260922T065123Z",
+      "elf_sha256": "58b280d7802c7405bcdd30e214c5cc1698e4e29911ea9beafa4dc4e8e8365ff1",
+      "raw_sha256": "db260c28965367e230f5f2966477c356add7edfd6132e458a6cf70a37bcdcf15"
+    },
+    "kernels": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/kernels/20260922T065314Z",
+      "elf_sha256": "dbee684fd82b925106736962299ea1eaad788ce9ec3ff023945c5af864033a32",
+      "raw_sha256": "4532f568fb4faa0ff18b606beed34dce501b89950211b4bd88db80c4526f301f"
+    },
+    "kat": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/kat/20260922T065434Z",
+      "elf_sha256": "bc81c1f538633351e9a5020a986de1692b71d0027b863620cf5dec469fe10165",
+      "raw_sha256": "d7eeb9e1dc648f2d109001c87cd3d812b143a670b6788222ab4aede5886a5a26"
+    },
+    "asm-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/asm-perf/20260922T065624Z",
+      "elf_sha256": "346212318b911066d1505871233f1e3bda653e81b01794bb057b5cbb3bd5887c",
+      "raw_sha256": "3b546aa3970d475afd89a6433437c254511653070d6107a0268b3e30dbba06bc"
+    },
+    "asm-profile": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/asm-profile/20260922T065813Z",
+      "elf_sha256": "cdef2d74a533feedf689a5af0f22d9ac43851c8e2f93f8fadbeea29f674cdc0d",
+      "raw_sha256": "c9e1ad1feba8eb4bab5edc8cf468fa2fa22abe15694247c259874a91a1759b80"
+    },
+    "ref-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/ref-perf/20260922T070002Z",
+      "elf_sha256": "7a5e40769b86f3145ed7f40387af7f3a7063e9c1b6a95a9c2cd264d85daa5231",
+      "raw_sha256": "332e869b146e71f88341416c9df76b1ea223b976490ce19443b9a0e2e799b882"
+    },
+    "c-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/c-perf/20260922T070050Z",
+      "elf_sha256": "f0b16625292b8bbde9bb8f9a8a35e5493165fecedb2bb7037bdcdd7afdb8b1a7",
+      "raw_sha256": "bea767310840040969d070c0265a0fb64ba51c91d9705593e0b9000f0f3422d3"
+    },
+    "old-perf": {
+      "run_dir": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_radix24_inline/validation/results/old-perf/20260922T070250Z",
+      "elf_sha256": "325ffdfe1f69477f748b90a4e86c163e926a4c2d083bd2f2e5005e296f339069",
+      "raw_sha256": "8e6e0709cc767213bf18fdc4312f09b3d39cfe28ab8459410a57e7da474ec90a"
+    }
+  },
+  "caveats": [
+    "One 100-seed batch per full-perf group; no confidence interval.",
+    "Same memory policy, not identical function addresses.",
+    "Primitive wrapper timings include conversion, loop, call and sink.",
+    "Observed constant-time tests are not a complete proof or power/EM analysis.",
+    "No host sanitizer coverage is claimed for Arm inline assembly.",
+    "R1 also changes allocation/scheduling versus old ASM; no isolated causal attribution to product count."
+  ]
+}

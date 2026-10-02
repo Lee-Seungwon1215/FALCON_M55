@@ -1,0 +1,55 @@
+DOCUMENT: plantard.pdf PAGE: 16/24
+
+16 Improved Plantard Arithmetic for Lattice-based Cryptography
+better 4-layer merging strategy is adopted in NTTRU. Besides, for the implementation
+of NTTRU and Kyber with the 3-layer merging strategy, we use CT butterflies in NTT
+and GS butterflies in INTT. As for the Kyber implementation with the 4-layer merging
+strategy, the CT butterflies are adopted in both NTT and INTT, similar to [AHKS22].
+4.2.3 Lazy Reduction
+To better illustrate the improvements the improved Plantard arithmetic brings to both
+CT and GS butterflies, we only discuss the lazy reduction strategies for the NTT with
+CT butterflies and INTT with GS butterflies here. When Montgomery arithmetic is
+applied to NTT and INTT, all of the coefficients will grow by q after each layer of NTT,
+while half of the coefficients will double after each layer of INTT. The well-known lazy
+reduction technique can minimize the number of modular reductions in NTT/INTT, which
+is mainly determined by the input range of the modular multiplication. Compared with
+the Montgomery arithmetic, the output range of the improved Plantard arithmetic is
+halved, while the input range of the improved Plantard reduction (Algorithm 13) is about
+2α times larger than Montgomery reduction (i.e., the reduction version Algorithm 12).
+Therefore, applying the improved Plantard arithmetic in NTT/INTT can halve/decrease
+the growing rate of coefficients compared with the one that uses Montgomery arithmetic,
+thus enabling better lazy reduction strategies.
+CT Butterfly. Specifically, for the modulus q = 3329 (9q < 2l−1 < 10q) in Kyber,
+the forward NTT has 7 layers of butterflies. Therefore, the 7 layers of butterflies that
+use Montgomery multiplication will expand all of the 256 coefficients by 7q. Therefore,
+at least one modular reduction is required to reduce the 256 coefficients to perform the
+follow-up base multiplication. On the contrary, when applying Plantard multiplication,
+the coefficients only grow by 3.5q in 7 layers. Since the inputs of NTT are always smaller
+than q, 4.5q lies in the modular multiplication input range [−q2α,q2α] of Kyber (α=3 for
+Kyber). Therefore, the output coefficients of NTT with Plantard multiplication can be
+directly used in the base multiplication without modular reduction.
+It should be noted that the coefficient expansion would have a bigger effect on schemes
+with bigger modulus like NewHope [ADPS16] and NTTRU [LS19]. As for the modulus
+q = 7681 (4q < 2l−1 < 5q) in NTTRU, all of the 768 coefficients need one modular
+reduction after every three layers of butterflies when Montgomery multiplication is used.
+Since the forward NTT in NTTRU has 8 layers of butterflies, we need two modular
+reductions after the third and sixth layers of butterflies. The last two layers of butterflies
+will produce coefficients smaller than 3q. These coefficients cannot be directly used in
+Montgomery multiplication because (3q)2 = 9q2, which is out of the input range of q2l−1
+.
+Therefore, the forward NTT implemented with Montgomery arithmetic in NTTRU needs
+three modular reductions for 768 coefficients. However, when using the improved Plantard
+multiplication in NTTRU, we only need one modular reduction for 768 coefficients after
+the seventh-layer butterflies. The final layer of butterflies only expand the coefficients up to
+1q, which lies in the input range of [−q2α,q2α] (α= 2 for NTTRU), and these coefficients
+can be directly used in the base multiplication. In sum, two modular reductions for 768
+coefficients are saved compared with the implementation that uses Montgomery arithmetic,
+which fully illustrates the benefits of a larger input range and smaller output range of our
+method.
+GS Butterfly. As for the INTT with GS butterflies in Kyber, the advantages of applying
+the Plantard arithmetic are twofold. First, the maximum input value of INTT is halved
+after the matrix-vector multiplication (i.e., Step 6 of Algorithm 2). If one uses Montgomery
+arithmetic in the matrix-vector multiplication, the coefficients produced in this process
+would be smaller than 2q,3q, and 4qfor Kyber512, Kyber768, and Kyber1024, respectively.
+Therefore, one modular reduction of coefficients is required after the first and second layers
+of butterflies in INTT for Kyber768/Kyber1024 and Kyber512, respectively. In our case,

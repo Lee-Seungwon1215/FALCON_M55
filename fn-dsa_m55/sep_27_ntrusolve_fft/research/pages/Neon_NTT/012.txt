@@ -1,0 +1,81 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 12/38
+
+12 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 7 Montgomery multiplication via doubling, abstract view
+Require: N odd modulus, R= 2n >N
+Require: a,b∈Z representative mod N with |a|,|b|<R.
+Require: Precomputed T= N−1
+∈ZR.
+Ensure: mont+
+N(a,b) representative of abR−1 ∈ZN satisfying |mont+
+N(a,b)|≤|a||b|
+2n + N
+2.
+1: z← 2ab
+R
+2: k←abT mod±R
+3: c← 2kN
+R
+4: mont±
+N(z) ←z−c
+2
+Algorithm 8 Montgomery multiplication via rounding, abstract view
+Require: N odd modulus, R= 2n >N
+Require: a,b∈Z representative mod N with |a|,|b|< R
+2 , s.t. a or b is odd.
+Require: Precomputed T=−N−1
+∈ZR.
+Ensure: mont+
+N(a,b) representative of abR−1 ∈ZN satisfying |mont+
+N(a,b)|≤|a||b|
+2n + N
+2.
+1: z← 2ab
+R
+2: k←abT mod±R
+3: c← 2kN
+R
+4: mont±
+N(z) ←z+c
+2
+3.1.3 Montgomery multiplication via doubling
+Because of the doubling inherent in many fixed point instructions, the variant of Mont-
+gomery multiplication described in Algorithm 7 will be useful.
+Proposition 3. Algorithm 7 is correct.
+Proof. By construction, ab−kN is divisible by R. Hence, so is 2ab−2kN, and we get
+2ab
+R−
+2kN
+R = 2(ab−kN)
+R = 2 ab
+R−
+kN
+R. Algorithm 7 thus yields the same result as
+Montgomery multiplication.
+3.1.4 Montgomery multiplication via rounding
+As first pointed out by Seiler in [Sei18] and mentioned in Section 2.4.2, single-width
+Montgomery multiplication Algorithm 5 breaks when trying to use addition instead of
+subtraction in the final step, because of a carry-in from low half to high half. Algorithm 8
+presents a remedy using rounding. Note the assumption that one of the inputs is odd.
+Proposition 4. Algorithm 8 is correct.
+Proof. Since we use−N−1
+∈ ZR instead of N−1
+∈ ZR, we have ab=−kN in ZR.
+Assuming ab̸= 2n−1
+, Fact 1 therefore implies ab mod±R=−(kN mod±R), and hence
+2ab
+R +
+2kN
+R=
+2ab−(ab mod±R) + 2kN−(kN mod±R)
+2(ab−kN)
+R=
+.
+R
+The result of Algorithm 8 therefore equals that of ordinary Montgomery multiplication.
+It remains to be justified why ab̸= 2n−1, which involves the assumption that either a
+or b are odd: If, say, b is odd, then ab= 2n−1 implies a= 2n−1, hence |a|≤2n−1 =
+R
+2 ,
+contradicting the assumption that |a|,|b|< R
+2.

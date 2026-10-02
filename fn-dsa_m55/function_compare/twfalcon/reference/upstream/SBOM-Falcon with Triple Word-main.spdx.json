@@ -1,0 +1,81 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "creationInfo": {
+    "created": "2025-11-13T13:24:48Z",
+    "creators": [
+      "Organization: NXP"
+    ],
+    "licenseListVersion": "3.20"
+  },
+  "name": "Falcon with Triple Word-main",
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://nxp.com/spdx/fe2d94ef-3490-4fd9-a180-4c6e570bfa09",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-package-9bc66079-eabf-49d5-b28b-aaf50ea9b532",
+      "name": "mupq/pqm4",
+      "versionInfo": "SignatureRound1",
+      "licenseConcluded": "CC0-1.0",
+      "licenseDeclared": "MIT",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: mupq",
+      "supplier": "NOASSERTION",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceLocator": "pkg:github/mupq/pqm4@SignatureRound1",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "OTHER",
+          "referenceLocator": "7b43540c-b150-475c-a733-e8425a1b442f",
+          "referenceType": "BlackDuck-ComponentOrigin"
+        }
+      ],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-cf523d16-c3c5-411a-ae86-024ec157fdd3",
+      "name": "fn-dsa",
+      "versionInfo": "0.3.0",
+      "licenseConcluded": "Unlicense",
+      "licenseDeclared": "Unlicense",
+      "homepage": "https://crates.io/crates/fn-dsa",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: fn-dsa",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-fe2d94ef-3490-4fd9-a180-4c6e570bfa09",
+      "name": "Falcon with Triple Word",
+      "versionInfo": "main",
+      "licenseConcluded": "(MIT)",
+      "licenseDeclared": "(MIT)",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: Falcon with Triple Word",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-package-fe2d94ef-3490-4fd9-a180-4c6e570bfa09",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-9bc66079-eabf-49d5-b28b-aaf50ea9b532"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-fe2d94ef-3490-4fd9-a180-4c6e570bfa09",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-cf523d16-c3c5-411a-ae86-024ec157fdd3"
+    },
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-package-fe2d94ef-3490-4fd9-a180-4c6e570bfa09"
+    }
+  ]
+}

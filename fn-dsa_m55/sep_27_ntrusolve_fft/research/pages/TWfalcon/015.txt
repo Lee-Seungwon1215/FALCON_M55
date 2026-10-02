@@ -1,0 +1,38 @@
+DOCUMENT: TWfalcon.pdf PAGE: 15/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 15
+The ℓ values, derived from the private key, correspond to L10 in the LDL∗decomposi-
+tion:
+g∗G+ f∗F
+ℓ= L10 =
+|g|2 + |f|2.
+While their exact range is complex to analyze, they are ultimately tied to the distributions
+of f and g and do not grow excessively.
+Due to the recursive, left-to-right tree structure, sampled values on the right are
+involved more arithmetic operations, resulting in a wider range for µ. To still give a
+confident range of µ values, 10,000 Falcon signature operations were run. The resulting
+distribution is shown in Figure 5.
+Figure 5: Range of µ from 10,000 Falcon-1024 runs.
+The figure shows that µ is tightly concentrated around zero, with rare, moderate-size
+outliers. Across 10,000 Falcon-1024 signature runs, comprising 10.24 million leaves, and
+thus µ values, the smallest observed µ was−3396.7 and the largest 3405.6. Consistent
+with how µ is formed, as discussed in this section, most values are small: 56.08% lie in
+[−100,100], and 97.76% in [−1000,1000]. These ranges are orders of magnitude below
+[−223
+,223] = [−8 388 608,8 388 608]. The observed maximum is over 2400 times smaller
+than 223. From this test and the previous analysis, we can conclude that the probability
+of |µ|exceeding 223 is negligible, justifying the use of more efficient rounding algorithms.
+4.2.2 Input Conversion
+[Por25a, Por25b] used the function fpr_of(int i) to convert an integer i into a floating-
+point value. Internally, this function computes i·2x, but always for x= 0. This can be done
+more efficiently by ignoring x. To determine whether a simple and efficient implementation
+of fpr_of is sufficient, the input range should stay within [2−24
+,224], the range of integer
+values that can be exactly represented in single-precision floating-point format.
+Inputs of this function are either proportional to the value of z0 from BaseSam-
+pler [PFH+22, Algorithm 12], which is always in the range [0,18], or to the value of µ,
+which is sufficiently small. Other inputs are 8-bit and 16-bit integers, and the value sfrom
+BerExp [PFH+22, Algorithm 14]. In the latest optimized implementation, the variable
+is treated as always being less than 64, since the probability of it exceeding this value is
+negligible [Por25a].

@@ -1,0 +1,906 @@
+{
+  "B": {
+    "folder": "4.2_ntrusolve_q32fpq32",
+    "logs": {
+      "kat": {
+        "path": "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/results/kat/20260927T064834Z",
+        "errors": [],
+        "elf_sha256": "6d20703db12ad40881e246cb39f41d21b0c7f5e5496e714d0c0cf0c4eb6f9335"
+      },
+      "extra": {
+        "path": "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/results/extra/20260927T064555Z",
+        "errors": [],
+        "elf_sha256": "2ddfa3518b5481102463ff1a962910ec64171f3841bce0e28bd3d22bf1cede6c"
+      },
+      "sigkat": {
+        "path": "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/results/sigkat/20260927T064927Z",
+        "errors": [],
+        "elf_sha256": "66202a73bddfcf9bd8725fd91bc7cba73abd7b843631b7d09f646c7b5e2c142d"
+      },
+      "keygen_current": {
+        "path": "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/results/keygen_current/20260927T064938Z",
+        "errors": [],
+        "elf_sha256": "1dc5bbc86729f280e7fc248b8bea3d97add96db7f9569a21b1d66bb3ea7deaa2"
+      },
+      "kernels": {
+        "path": "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/results/kernels/20260927T065029Z",
+        "errors": [],
+        "elf_sha256": "02887b6abbd446b077ee370d635a16429592ffc60c6b36189fc6d09f38b50e41"
+      },
+      "q32timing": {
+        "path": "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/results/q32timing/20260927T065813Z",
+        "errors": [],
+        "elf_sha256": "bf9474fa1a63c77288f73fb15ba348fcc7607d4c76102c6d2825d66ca7b39aea"
+      }
+    },
+    "keygen": [
+      {
+        "degree": 512,
+        "calls": 100,
+        "total": 7093838801,
+        "median_lo": 62322130,
+        "median_hi": 62570049,
+        "min": 56922737,
+        "max": 145768125
+      },
+      {
+        "degree": 1024,
+        "calls": 100,
+        "total": 27187729973,
+        "median_lo": 222539880,
+        "median_hi": 222558528,
+        "min": 178225514,
+        "max": 725524129
+      }
+    ],
+    "kernels": [
+      {
+        "logn": 9,
+        "op": 0,
+        "backend": 0,
+        "calls": 100,
+        "total": 103513202,
+        "min": 1035132,
+        "max": 1035133,
+        "diff": 0,
+        "kdiff": 0,
+        "max_lsb": 0
+      },
+      {
+        "logn": 9,
+        "op": 0,
+        "backend": 1,
+        "calls": 100,
+        "total": 188967303,
+        "min": 1889673,
+        "max": 1889674,
+        "diff": 0,
+        "kdiff": 0,
+        "max_lsb": 0
+      },
+      {
+        "logn": 9,
+        "op": 1,
+        "backend": 0,
+        "calls": 100,
+        "total": 28680600,
+        "min": 286806,
+        "max": 286806,
+        "diff": 0,
+        "kdiff": 0,
+        "max_lsb": 0
+      },
+      {
+        "logn": 9,
+        "op": 1,
+        "backend": 1,
+        "calls": 100,
+        "total": 130306002,
+        "min": 1303060,
+        "max": 1303061,
+        "diff": 37819,
+        "kdiff": 393,
+        "max_lsb": 4
+      },
+      {
+        "logn": 9,
+        "op": 2,
+        "backend": 0,
+        "calls": 100,
+        "total": 129887202,
+        "min": 1298872,
+        "max": 1298873,
+        "diff": 0,
+        "kdiff": 0,
+        "max_lsb": 0
+      },
+      {
+        "logn": 9,
+        "op": 2,
+        "backend": 1,
+        "calls": 100,
+        "total": 151055204,
+        "min": 1510552,
+        "max": 1510553,
+        "diff": 37675,
+        "kdiff": 0,
+        "max_lsb": 4
+      },
+      {
+        "logn": 10,
+        "op": 0,
+        "backend": 0,
+        "calls": 100,
+        "total": 209878201,
+        "min": 2098782,
+        "max": 2098783,
+        "diff": 0,
+        "kdiff": 0,
+        "max_lsb": 0
+      },
+      {
+        "logn": 10,
+        "op": 0,
+        "backend": 1,
+        "calls": 100,
+        "total": 379808905,
+        "min": 3798089,
+        "max": 3798090,
+        "diff": 0,
+        "kdiff": 0,
+        "max_lsb": 0
+      },
+      {
+        "logn": 10,
+        "op": 1,
+        "backend": 0,
+        "calls": 100,
+        "total": 63394201,
+        "min": 633942,
+        "max": 633943,
+        "diff": 0,
+        "kdiff": 0,
+        "max_lsb": 0
+      },
+      {
+        "logn": 10,
+        "op": 1,
+        "backend": 1,
+        "calls": 100,
+        "total": 264545003,
+        "min": 2645450,
+        "max": 2645451,
+        "diff": 75899,
+        "kdiff": 669,
+        "max_lsb": 4
+      },
+      {
+        "logn": 10,
+        "op": 2,
+        "backend": 0,
+        "calls": 100,
+        "total": 268661803,
+        "min": 2686618,
+        "max": 2686619,
+        "diff": 0,
+        "kdiff": 0,
+        "max_lsb": 0
+      },
+      {
+        "logn": 10,
+        "op": 2,
+        "backend": 1,
+        "calls": 100,
+        "total": 307937406,
+        "min": 3079374,
+        "max": 3079375,
+        "diff": 75514,
+        "kdiff": 0,
+        "max_lsb": 4
+      }
+    ],
+    "k_difference_total": 1440,
+    "point_k_diff_total": 1440,
+    "timing": [
+      {
+        "logn": 4,
+        "op": 0,
+        "mean_min": 51683.0,
+        "mean_max": 51683.0,
+        "min": 51683,
+        "max": 51683
+      },
+      {
+        "logn": 4,
+        "op": 1,
+        "mean_min": 30544.0,
+        "mean_max": 30544.0,
+        "min": 30544,
+        "max": 30544
+      },
+      {
+        "logn": 4,
+        "op": 2,
+        "mean_min": 35246.0,
+        "mean_max": 35246.0,
+        "min": 35246,
+        "max": 35246
+      },
+      {
+        "logn": 9,
+        "op": 0,
+        "mean_min": 1652027.02,
+        "mean_max": 1652027.03,
+        "min": 1652027,
+        "max": 1652028
+      },
+      {
+        "logn": 9,
+        "op": 1,
+        "mean_min": 975424.01,
+        "mean_max": 975424.01,
+        "min": 975424,
+        "max": 975425
+      },
+      {
+        "logn": 9,
+        "op": 2,
+        "mean_min": 1126198.01,
+        "mean_max": 1126198.02,
+        "min": 1126198,
+        "max": 1126199
+      },
+      {
+        "logn": 10,
+        "op": 0,
+        "mean_min": 3303995.04,
+        "mean_max": 3303995.04,
+        "min": 3303995,
+        "max": 3303996
+      },
+      {
+        "logn": 10,
+        "op": 1,
+        "mean_min": 1950784.02,
+        "mean_max": 1950784.03,
+        "min": 1950784,
+        "max": 1950785
+      },
+      {
+        "logn": 10,
+        "op": 2,
+        "mean_min": 2252342.02,
+        "mean_max": 2252342.03,
+        "min": 2252342,
+        "max": 2252343
+      }
+    ]
+  },
+  "C": {
+    "folder": "4.3_ntrusolve_intfpint",
+    "logs": {
+      "kat": {
+        "path": "fn-dsa_m55/FFT/4.3_ntrusolve_intfpint/validation/results/kat/20260927T065146Z",
+        "errors": [],
+        "elf_sha256": "29e41a94f4e81aeb7e9fd6a6231649561145f01c1162c67ea4645f735ec6838e"
+      },
+      "extra": {
+        "path": "fn-dsa_m55/FFT/4.3_ntrusolve_intfpint/validation/results/extra/20260927T064707Z",
+        "errors": [],
+        "elf_sha256": "94d57c27008d40b379d994ca8aa651efa863288526081164037a5543d4e11f68"
+      },
+      "sigkat": {
+        "path": "fn-dsa_m55/FFT/4.3_ntrusolve_intfpint/validation/results/sigkat/20260927T065240Z",
+        "errors": [],
+        "elf_sha256": "a2887b286b781d41400c66c9c88da6b28cac2798c3e50b6959ae788703db702c"
+      },
+      "keygen_current": {
+        "path": "fn-dsa_m55/FFT/4.3_ntrusolve_intfpint/validation/results/keygen_current/20260927T065252Z",
+        "errors": [],
+        "elf_sha256": "d35fa5cdecbae88a9d75842cb39529c2c0d460c78828dc4ab48f6fe88bdc1f3e"
+      },
+      "ds": {
+        "path": "fn-dsa_m55/FFT/4.3_ntrusolve_intfpint/validation/results/ds/20260927T065343Z",
+        "errors": [],
+        "elf_sha256": "f4dab0eb4129bcf53a55651b03741e4262b519b7dc7865aaea1cea0a303e2e37"
+      },
+      "q32timing": {
+        "path": "fn-dsa_m55/FFT/4.3_ntrusolve_intfpint/validation/results/q32timing/20260927T065707Z",
+        "errors": [],
+        "elf_sha256": "eecfbaf47a56bfc7ce6888b06b6c45d5ec1a6fe9002aeb8e874308e9b3d7c2d9"
+      }
+    },
+    "keygen": [
+      {
+        "degree": 512,
+        "calls": 100,
+        "total": 7293852549,
+        "median_lo": 64264131,
+        "median_hi": 64512044,
+        "min": 58864954,
+        "max": 149653192
+      },
+      {
+        "degree": 1024,
+        "calls": 100,
+        "total": 27675618403,
+        "median_lo": 227276309,
+        "median_hi": 227293902,
+        "min": 182960879,
+        "max": 730352466
+      }
+    ],
+    "kernels": [
+      {
+        "logn": 9,
+        "op": 0,
+        "backend": 0,
+        "calls": 100,
+        "total": 12591901,
+        "min": 125919,
+        "max": 125920,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 0,
+        "backend": 1,
+        "calls": 100,
+        "total": 8977101,
+        "min": 89771,
+        "max": 89772,
+        "differences": 51091,
+        "max_lsb_ceil": 77,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 1,
+        "backend": 0,
+        "calls": 100,
+        "total": 14334200,
+        "min": 143342,
+        "max": 143342,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 1,
+        "backend": 1,
+        "calls": 100,
+        "total": 9778300,
+        "min": 97783,
+        "max": 97783,
+        "differences": 50996,
+        "max_lsb_ceil": 5,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 2,
+        "backend": 0,
+        "calls": 100,
+        "total": 90911101,
+        "min": 909111,
+        "max": 909112,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 2,
+        "backend": 1,
+        "calls": 100,
+        "total": 174651703,
+        "min": 1746517,
+        "max": 1746518,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 3,
+        "backend": 0,
+        "calls": 100,
+        "total": 1746900,
+        "min": 17469,
+        "max": 17469,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 3,
+        "backend": 1,
+        "calls": 100,
+        "total": 106223802,
+        "min": 1062238,
+        "max": 1062239,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 4,
+        "backend": 0,
+        "calls": 100,
+        "total": 4215200,
+        "min": 42152,
+        "max": 42152,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 4,
+        "backend": 1,
+        "calls": 100,
+        "total": 8342000,
+        "min": 83420,
+        "max": 83420,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 5,
+        "backend": 0,
+        "calls": 100,
+        "total": 464200,
+        "min": 4642,
+        "max": 4642,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 9,
+        "op": 5,
+        "backend": 1,
+        "calls": 100,
+        "total": 7201300,
+        "min": 72013,
+        "max": 72013,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 0,
+        "backend": 0,
+        "calls": 100,
+        "total": 28038501,
+        "min": 280385,
+        "max": 280386,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 0,
+        "backend": 1,
+        "calls": 100,
+        "total": 19849201,
+        "min": 198492,
+        "max": 198493,
+        "differences": 102184,
+        "max_lsb_ceil": 141,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 1,
+        "backend": 0,
+        "calls": 100,
+        "total": 31847600,
+        "min": 318476,
+        "max": 318476,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 1,
+        "backend": 1,
+        "calls": 100,
+        "total": 21614100,
+        "min": 216141,
+        "max": 216141,
+        "differences": 102197,
+        "max_lsb_ceil": 5,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 2,
+        "backend": 0,
+        "calls": 100,
+        "total": 181816702,
+        "min": 1818167,
+        "max": 1818168,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 2,
+        "backend": 1,
+        "calls": 100,
+        "total": 349294906,
+        "min": 3492949,
+        "max": 3492950,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 3,
+        "backend": 0,
+        "calls": 100,
+        "total": 3487700,
+        "min": 34877,
+        "max": 34877,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 3,
+        "backend": 1,
+        "calls": 100,
+        "total": 212438203,
+        "min": 2124382,
+        "max": 2124383,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 4,
+        "backend": 0,
+        "calls": 100,
+        "total": 8413600,
+        "min": 84136,
+        "max": 84136,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 4,
+        "backend": 1,
+        "calls": 100,
+        "total": 16662000,
+        "min": 166620,
+        "max": 166620,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 5,
+        "backend": 0,
+        "calls": 100,
+        "total": 925000,
+        "min": 9250,
+        "max": 9250,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      },
+      {
+        "logn": 10,
+        "op": 5,
+        "backend": 1,
+        "calls": 100,
+        "total": 14394900,
+        "min": 143949,
+        "max": 143949,
+        "differences": 0,
+        "max_lsb_ceil": 0,
+        "invalid": 0
+      }
+    ],
+    "segments": [
+      {
+        "logn": 4,
+        "backend": 0,
+        "calls": 100,
+        "total": 3769500,
+        "min": 37695,
+        "max": 37695,
+        "k_differences": 0
+      },
+      {
+        "logn": 4,
+        "backend": 1,
+        "calls": 100,
+        "total": 10045300,
+        "min": 100453,
+        "max": 100453,
+        "k_differences": 0
+      },
+      {
+        "logn": 5,
+        "backend": 0,
+        "calls": 100,
+        "total": 7766100,
+        "min": 77661,
+        "max": 77661,
+        "k_differences": 0
+      },
+      {
+        "logn": 5,
+        "backend": 1,
+        "calls": 100,
+        "total": 20160300,
+        "min": 201603,
+        "max": 201603,
+        "k_differences": 0
+      },
+      {
+        "logn": 6,
+        "backend": 0,
+        "calls": 100,
+        "total": 16029500,
+        "min": 160295,
+        "max": 160295,
+        "k_differences": 0
+      },
+      {
+        "logn": 6,
+        "backend": 1,
+        "calls": 100,
+        "total": 40561801,
+        "min": 405618,
+        "max": 405619,
+        "k_differences": 0
+      },
+      {
+        "logn": 7,
+        "backend": 0,
+        "calls": 100,
+        "total": 33106500,
+        "min": 331065,
+        "max": 331065,
+        "k_differences": 0
+      },
+      {
+        "logn": 7,
+        "backend": 1,
+        "calls": 100,
+        "total": 81722401,
+        "min": 817224,
+        "max": 817225,
+        "k_differences": 0
+      },
+      {
+        "logn": 8,
+        "backend": 0,
+        "calls": 100,
+        "total": 68370701,
+        "min": 683707,
+        "max": 683708,
+        "k_differences": 0
+      },
+      {
+        "logn": 8,
+        "backend": 1,
+        "calls": 100,
+        "total": 164772402,
+        "min": 1647724,
+        "max": 1647725,
+        "k_differences": 0
+      },
+      {
+        "logn": 9,
+        "backend": 0,
+        "calls": 100,
+        "total": 141129302,
+        "min": 1411293,
+        "max": 1411294,
+        "k_differences": 0
+      },
+      {
+        "logn": 9,
+        "backend": 1,
+        "calls": 100,
+        "total": 332343604,
+        "min": 3323436,
+        "max": 3323437,
+        "k_differences": 0
+      },
+      {
+        "logn": 10,
+        "backend": 0,
+        "calls": 100,
+        "total": 291116703,
+        "min": 2911167,
+        "max": 2911168,
+        "k_differences": 0
+      },
+      {
+        "logn": 10,
+        "backend": 1,
+        "calls": 100,
+        "total": 670442008,
+        "min": 6704420,
+        "max": 6704421,
+        "k_differences": 0
+      }
+    ],
+    "round": [
+      {
+        "count": 18576,
+        "differences": 0
+      }
+    ],
+    "timing": [
+      {
+        "logn": 4,
+        "op": 0,
+        "mean_min": 51683.0,
+        "mean_max": 51683.0,
+        "min": 51683,
+        "max": 51683
+      },
+      {
+        "logn": 4,
+        "op": 1,
+        "mean_min": 30544.0,
+        "mean_max": 30544.01,
+        "min": 30544,
+        "max": 30545
+      },
+      {
+        "logn": 4,
+        "op": 2,
+        "mean_min": 35246.0,
+        "mean_max": 35246.0,
+        "min": 35246,
+        "max": 35246
+      },
+      {
+        "logn": 9,
+        "op": 0,
+        "mean_min": 1652027.02,
+        "mean_max": 1652027.03,
+        "min": 1652027,
+        "max": 1652028
+      },
+      {
+        "logn": 9,
+        "op": 1,
+        "mean_min": 975424.01,
+        "mean_max": 975424.01,
+        "min": 975424,
+        "max": 975425
+      },
+      {
+        "logn": 9,
+        "op": 2,
+        "mean_min": 1126198.01,
+        "mean_max": 1126198.02,
+        "min": 1126198,
+        "max": 1126199
+      },
+      {
+        "logn": 10,
+        "op": 0,
+        "mean_min": 3303995.04,
+        "mean_max": 3303995.04,
+        "min": 3303995,
+        "max": 3303996
+      },
+      {
+        "logn": 10,
+        "op": 1,
+        "mean_min": 1950784.02,
+        "mean_max": 1950784.03,
+        "min": 1950784,
+        "max": 1950785
+      },
+      {
+        "logn": 10,
+        "op": 2,
+        "mean_min": 2252342.02,
+        "mean_max": 2252342.03,
+        "min": 2252342,
+        "max": 2252343
+      }
+    ]
+  },
+  "baselines": {
+    "4.1": {
+      "path": "fn-dsa_m55/FFT/4.1_ntrusolve/validation/results/keygen_current/20260927T065517Z",
+      "errors": [],
+      "keygen": [
+        {
+          "degree": 512,
+          "calls": 100,
+          "total": 5427228372,
+          "median_lo": 46137313,
+          "median_hi": 46387728,
+          "min": 40748012,
+          "max": 113356112
+        },
+        {
+          "degree": 1024,
+          "calls": 100,
+          "total": 23088752713,
+          "median_lo": 182654080,
+          "median_hi": 182656654,
+          "min": 138640106,
+          "max": 684462875
+        }
+      ]
+    },
+    "ntt_opt": {
+      "path": "fn-dsa_m55/FFT/4.1_ntrusolve/validation/results/keygen_ntt/20260927T055322Z",
+      "errors": [],
+      "keygen": [
+        {
+          "degree": 512,
+          "calls": 100,
+          "total": 5695125287,
+          "median_lo": 47963336,
+          "median_hi": 48107079,
+          "min": 41141129,
+          "max": 123997002
+        },
+        {
+          "degree": 1024,
+          "calls": 100,
+          "total": 24315742906,
+          "median_lo": 194743160,
+          "median_hi": 195545151,
+          "min": 139461823,
+          "max": 742399090
+        }
+      ]
+    },
+    "M55_ref": {
+      "path": "fn-dsa_m55/FFT/4.1_ntrusolve/validation/results/keygen_ref/20260927T055915Z",
+      "errors": [],
+      "keygen": [
+        {
+          "degree": 512,
+          "calls": 100,
+          "total": 6273824407,
+          "median_lo": 53491778,
+          "median_hi": 53588857,
+          "min": 46436886,
+          "max": 135545997
+        },
+        {
+          "degree": 1024,
+          "calls": 100,
+          "total": 26171642965,
+          "median_lo": 212640021,
+          "median_hi": 213293684,
+          "min": 155582023,
+          "max": 769576501
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "decision": "REJECT for performance; exact-output experimental hybrid, not pure double FFT",
+  "performance": [
+    {
+      "kind": "whole_keygen",
+      "degree": 512,
+      "baseline_mean": 57007002.2,
+      "compat_mean": 79173946.18,
+      "slowdown": 1.388845986011171,
+      "cycle_increase_percent": 38.884598601117105
+    },
+    {
+      "kind": "prepare",
+      "degree": 512,
+      "baseline_mean": 1083009.8,
+      "compat_mean": 1763455.1,
+      "slowdown": 1.628290990533973,
+      "cycle_increase_percent": 62.82909905339731
+    },
+    {
+      "kind": "repeat",
+      "degree": 512,
+      "baseline_mean": 4738595.99,
+      "compat_mean": 26128961.83,
+      "slowdown": 5.51407249850815,
+      "cycle_increase_percent": 451.407249850815
+    },
+    {
+      "kind": "approximate_k_total",
+      "degree": 512,
+      "baseline_mean": 5821605.79,
+      "compat_mean": 27892416.93,
+      "slowdown": 4.791189567990312,
+      "cycle_increase_percent": 379.1189567990312
+    },
+    {
+      "kind": "whole_keygen",
+      "degree": 1024,
+      "baseline_mean": 243375295.54,
+      "compat_mean": 303080043.1,
+      "slowdown": 1.2453196715283996,
+      "cycle_increase_percent": 24.53196715283996
+    },
+    {
+      "kind": "prepare",
+      "degree": 1024,
+      "baseline_mean": 2201665.75,
+      "compat_mean": 3784561.08,
+      "slowdown": 1.7189535150828412,
+      "cycle_increase_percent": 71.89535150828412
+    },
+    {
+      "kind": "repeat",
+      "degree": 1024,
+      "baseline_mean": 13437443.83,
+      "compat_mean": 71327704.16,
+      "slowdown": 5.308130405037012,
+      "cycle_increase_percent": 430.81304050370125
+    },
+    {
+      "kind": "approximate_k_total",
+      "degree": 1024,
+      "baseline_mean": 15639109.58,
+      "compat_mean": 75112265.24,
+      "slowdown": 4.802847940656222,
+      "cycle_increase_percent": 380.28479406562224
+    }
+  ],
+  "timing": [
+    {
+      "op": 0,
+      "input_classes": 34,
+      "batch_repeats": 256,
+      "min_cycles": 5893,
+      "max_batch_jitter": 0
+    },
+    {
+      "op": 1,
+      "input_classes": 34,
+      "batch_repeats": 256,
+      "min_cycles": 77317,
+      "max_batch_jitter": 1
+    }
+  ],
+  "kernels": [
+    {
+      "case": 0,
+      "logn": 1,
+      "old_prepare": 359000,
+      "new_prepare": 359000,
+      "old_repeat": 17000,
+      "new_repeat": 110600
+    },
+    {
+      "case": 1,
+      "logn": 1,
+      "old_prepare": 359000,
+      "new_prepare": 359000,
+      "old_repeat": 17000,
+      "new_repeat": 110600
+    },
+    {
+      "case": 2,
+      "logn": 2,
+      "old_prepare": 735100,
+      "new_prepare": 827200,
+      "old_repeat": 68900,
+      "new_repeat": 431100
+    },
+    {
+      "case": 3,
+      "logn": 2,
+      "old_prepare": 735100,
+      "new_prepare": 827200,
+      "old_repeat": 68900,
+      "new_repeat": 431100
+    },
+    {
+      "case": 4,
+      "logn": 3,
+      "old_prepare": 1490700,
+      "new_prepare": 1844800,
+      "old_repeat": 184600,
+      "new_repeat": 1243900
+    },
+    {
+      "case": 5,
+      "logn": 3,
+      "old_prepare": 1490700,
+      "new_prepare": 1844800,
+      "old_repeat": 184600,
+      "new_repeat": 1243901
+    },
+    {
+      "case": 6,
+      "logn": 4,
+      "old_prepare": 3021000,
+      "new_prepare": 4070000,
+      "old_repeat": 457100,
+      "new_repeat": 3247900
+    },
+    {
+      "case": 7,
+      "logn": 4,
+      "old_prepare": 3021000,
+      "new_prepare": 4070000,
+      "old_repeat": 457100,
+      "new_repeat": 3247900
+    },
+    {
+      "case": 8,
+      "logn": 5,
+      "old_prepare": 6123200,
+      "new_prepare": 8903600,
+      "old_repeat": 1090700,
+      "new_repeat": 8019200
+    },
+    {
+      "case": 9,
+      "logn": 5,
+      "old_prepare": 6123200,
+      "new_prepare": 8903600,
+      "old_repeat": 1090700,
+      "new_repeat": 8019201
+    },
+    {
+      "case": 10,
+      "logn": 6,
+      "old_prepare": 12414200,
+      "new_prepare": 19340400,
+      "old_repeat": 2541500,
+      "new_repeat": 19094900
+    },
+    {
+      "case": 11,
+      "logn": 6,
+      "old_prepare": 12414200,
+      "new_prepare": 19340401,
+      "old_repeat": 2541500,
+      "new_repeat": 19094899
+    },
+    {
+      "case": 12,
+      "logn": 7,
+      "old_prepare": 25172801,
+      "new_prepare": 41756401,
+      "old_repeat": 5816699,
+      "new_repeat": 44318999
+    },
+    {
+      "case": 13,
+      "logn": 7,
+      "old_prepare": 25172800,
+      "new_prepare": 41756401,
+      "old_repeat": 5816700,
+      "new_repeat": 44318999
+    },
+    {
+      "case": 14,
+      "logn": 8,
+      "old_prepare": 51046600,
+      "new_prepare": 89676402,
+      "old_repeat": 13120701,
+      "new_repeat": 100919098
+    },
+    {
+      "case": 15,
+      "logn": 8,
+      "old_prepare": 51046600,
+      "new_prepare": 89676401,
+      "old_repeat": 13120700,
+      "new_repeat": 100919102
+    },
+    {
+      "case": 16,
+      "logn": 9,
+      "old_prepare": 103510802,
+      "new_prepare": 191695602,
+      "old_repeat": 29242298,
+      "new_repeat": 226429601
+    },
+    {
+      "case": 17,
+      "logn": 9,
+      "old_prepare": 103510801,
+      "new_prepare": 191695603,
+      "old_repeat": 29242300,
+      "new_repeat": 226429599
+    },
+    {
+      "case": 18,
+      "logn": 2,
+      "old_prepare": 735100,
+      "new_prepare": 827200,
+      "old_repeat": 68900,
+      "new_repeat": 431100
+    }
+  ],
+  "board_kat": "300/300",
+  "matching_key_signature_digests": 200,
+  "source": {
+    "kgen_fxp.c": "994c3bd082ce577d60fa5102b544c6350dbfef9068f7cb865ad9d94f55ab838d",
+    "kgen_inner.h": "991090bdcebc279324e3b01d3aa73f851920a03559ef5eca3d9c4dd3985eeddf",
+    "kgen_ntru.c": "427c69d2ccdbfddd7884a0ecdf44511949452fed54aa77bacf4a5ba2c1adabc9"
+  },
+  "runs": {
+    "ref-perf": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_q32_compat/validation/results/ref-perf/20260918T081252Z",
+    "compat-perf": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_q32_compat/validation/results/compat-perf/20260918T081340Z",
+    "ref-profile": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_q32_compat/validation/results/ref-profile/20260918T081439Z",
+    "compat-profile": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_q32_compat/validation/results/compat-profile/20260918T081528Z",
+    "kat": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_q32_compat/validation/results/kat/20260918T081118Z",
+    "kernels": "/Users/seungwon/FALCON/fn-dsa_m55/FFT/4_ntrusolve_approximate_k/1st_native_fp64/fp64_q32_compat/validation/results/kernels/20260918T081002Z"
+  },
+  "preserved": "baseline, original native FP64, previous hybrid_fixed_div root C/H/S hashes verified"
+}

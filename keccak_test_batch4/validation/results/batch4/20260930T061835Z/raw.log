@@ -1,0 +1,436 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 56947
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :56947 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x1000bb94
+hbreak *0x1000ee24
+set $early_fault_bp = $bpnum
+jump *0x1000ee39
+if $pc != 0x1000bb94
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpamf5_ock/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x1000bb44
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x1000ee24
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 56947
+Info : Listening on port 56947 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/56947
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x1800350e msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+BENCH_BEGIN independent_batch4 work=126784 max_need=126783
+BENCH_HW cpu=800000000 ccr=00000611 itcm=00000049 dtcm=00000049 control=00000099 fpscr=00040000
+CHECK streams=PASS prefix_blocks=0,1,2,7,112 tails=1..7 retry_counters=1..26
+BATCH n=512 blocks=32 sample=0 original4=43365594 batch4=43080885 exact=4/4
+BATCH n=512 blocks=32 sample=1 original4=43248899 batch4=42963940 exact=4/4
+BATCH n=512 blocks=32 sample=2 original4=43320205 batch4=43035754 exact=4/4
+BATCH n=512 blocks=32 sample=3 original4=43267621 batch4=42982736 exact=4/4
+BATCH n=512 blocks=32 sample=4 original4=42940182 batch4=42654189 exact=4/4
+BATCH n=512 blocks=32 sample=5 original4=43240631 batch4=42955907 exact=4/4
+BATCH n=512 blocks=32 sample=6 original4=42954615 batch4=42668433 exact=4/4
+BATCH n=512 blocks=32 sample=7 original4=42963325 batch4=42677157 exact=4/4
+BATCH n=512 blocks=32 sample=8 original4=43247466 batch4=42962558 exact=4/4
+BATCH n=512 blocks=32 sample=9 original4=43080491 batch4=42794847 exact=4/4
+BATCH n=512 blocks=32 sample=10 original4=43331578 batch4=43046996 exact=4/4
+BATCH n=512 blocks=32 sample=11 original4=43351118 batch4=43066517 exact=4/4
+BATCH n=512 blocks=32 sample=12 original4=43319589 batch4=43035113 exact=4/4
+BATCH n=512 blocks=32 sample=13 original4=43134001 batch4=42848804 exact=4/4
+BATCH n=512 blocks=32 sample=14 original4=43287135 batch4=43002349 exact=4/4
+BATCH n=512 blocks=32 sample=15 original4=43293660 batch4=43008977 exact=4/4
+BATCH n=512 blocks=32 sample=16 original4=43409147 batch4=43124847 exact=4/4
+BATCH n=512 blocks=32 sample=17 original4=42982339 batch4=42696611 exact=4/4
+BATCH n=512 blocks=32 sample=18 original4=43267155 batch4=42982322 exact=4/4
+BATCH n=512 blocks=32 sample=19 original4=43328111 batch4=43043492 exact=4/4
+BATCH n=512 blocks=32 sample=20 original4=43430574 batch4=43146519 exact=4/4
+BATCH n=512 blocks=32 sample=21 original4=43221303 batch4=42936183 exact=4/4
+BATCH n=512 blocks=32 sample=22 original4=43247487 batch4=42962678 exact=4/4
+BATCH n=512 blocks=32 sample=23 original4=43227531 batch4=42942234 exact=4/4
+BATCH n=512 blocks=32 sample=24 original4=43036044 batch4=42750442 exact=4/4
+BATCH n=512 blocks=32 sample=25 original4=43227046 batch4=42941963 exact=4/4
+BATCH n=512 blocks=32 sample=26 original4=43268035 batch4=42983163 exact=4/4
+BATCH n=512 blocks=32 sample=27 original4=43384198 batch4=43099733 exact=4/4
+BATCH n=512 blocks=32 sample=28 original4=43133552 batch4=42848202 exact=4/4
+BATCH n=512 blocks=32 sample=29 original4=43291628 batch4=43006879 exact=4/4
+BATCH n=512 blocks=32 sample=30 original4=43154138 batch4=42868978 exact=4/4
+BATCH n=512 blocks=32 sample=31 original4=43215084 batch4=42930157 exact=4/4
+BATCH n=512 blocks=64 sample=0 original4=43365593 batch4=42793120 exact=4/4
+BATCH n=512 blocks=64 sample=1 original4=43248899 batch4=42676062 exact=4/4
+BATCH n=512 blocks=64 sample=2 original4=43320205 batch4=42748031 exact=4/4
+BATCH n=512 blocks=64 sample=3 original4=43267621 batch4=42694911 exact=4/4
+BATCH n=512 blocks=64 sample=4 original4=42940183 batch4=42366396 exact=4/4
+BATCH n=512 blocks=64 sample=5 original4=43240631 batch4=42667947 exact=4/4
+BATCH n=512 blocks=64 sample=6 original4=42954615 batch4=42380782 exact=4/4
+BATCH n=512 blocks=64 sample=7 original4=42963325 batch4=42389415 exact=4/4
+BATCH n=512 blocks=64 sample=8 original4=43247465 batch4=42674865 exact=4/4
+BATCH n=512 blocks=64 sample=9 original4=43080491 batch4=42507149 exact=4/4
+BATCH n=512 blocks=64 sample=10 original4=43331578 batch4=42759243 exact=4/4
+BATCH n=512 blocks=64 sample=11 original4=43351118 batch4=42778716 exact=4/4
+BATCH n=512 blocks=64 sample=12 original4=43319590 batch4=42747290 exact=4/4
+BATCH n=512 blocks=64 sample=13 original4=43134000 batch4=42561049 exact=4/4
+BATCH n=512 blocks=64 sample=14 original4=43287135 batch4=42714594 exact=4/4
+BATCH n=512 blocks=64 sample=15 original4=43293660 batch4=42721171 exact=4/4
+BATCH n=512 blocks=64 sample=16 original4=43409147 batch4=42837078 exact=4/4
+BATCH n=512 blocks=64 sample=17 original4=42982339 batch4=42408876 exact=4/4
+BATCH n=512 blocks=64 sample=18 original4=43267155 batch4=42694595 exact=4/4
+BATCH n=512 blocks=64 sample=19 original4=43328111 batch4=42755750 exact=4/4
+BATCH n=512 blocks=64 sample=20 original4=43430575 batch4=42858696 exact=4/4
+BATCH n=512 blocks=64 sample=21 original4=43221302 batch4=42648267 exact=4/4
+BATCH n=512 blocks=64 sample=22 original4=43247487 batch4=42674788 exact=4/4
+BATCH n=512 blocks=64 sample=23 original4=43227531 batch4=42654615 exact=4/4
+BATCH n=512 blocks=64 sample=24 original4=43036044 batch4=42462647 exact=4/4
+BATCH n=512 blocks=64 sample=25 original4=43227046 batch4=42654120 exact=4/4
+BATCH n=512 blocks=64 sample=26 original4=43268035 batch4=42695168 exact=4/4
+BATCH n=512 blocks=64 sample=27 original4=43384198 batch4=42811997 exact=4/4
+BATCH n=512 blocks=64 sample=28 original4=43133553 batch4=42560422 exact=4/4
+BATCH n=512 blocks=64 sample=29 original4=43291627 batch4=42718863 exact=4/4
+BATCH n=512 blocks=64 sample=30 original4=43154138 batch4=42581201 exact=4/4
+BATCH n=512 blocks=64 sample=31 original4=43215084 batch4=42642270 exact=4/4
+BATCH n=512 blocks=112 sample=0 original4=43365593 batch4=42361436 exact=4/4
+BATCH n=512 blocks=112 sample=1 original4=43248899 batch4=42244361 exact=4/4
+BATCH n=512 blocks=112 sample=2 original4=43320205 batch4=42316422 exact=4/4
+BATCH n=512 blocks=112 sample=3 original4=43267620 batch4=42263071 exact=4/4
+BATCH n=512 blocks=112 sample=4 original4=42940183 batch4=41934462 exact=4/4
+BATCH n=512 blocks=112 sample=5 original4=43240631 batch4=42236140 exact=4/4
+BATCH n=512 blocks=112 sample=6 original4=42954615 batch4=41948853 exact=4/4
+BATCH n=512 blocks=112 sample=7 original4=42963326 batch4=41957502 exact=4/4
+BATCH n=512 blocks=112 sample=8 original4=43247465 batch4=42243284 exact=4/4
+BATCH n=512 blocks=112 sample=9 original4=43080491 batch4=42075483 exact=4/4
+BATCH n=512 blocks=112 sample=10 original4=43331578 batch4=42327464 exact=4/4
+BATCH n=512 blocks=112 sample=11 original4=43351118 batch4=42346887 exact=4/4
+BATCH n=512 blocks=112 sample=12 original4=43319590 batch4=42315463 exact=4/4
+BATCH n=512 blocks=112 sample=13 original4=43134000 batch4=42128992 exact=4/4
+BATCH n=512 blocks=112 sample=14 original4=43287135 batch4=42282861 exact=4/4
+BATCH n=512 blocks=112 sample=15 original4=43293660 batch4=42289064 exact=4/4
+BATCH n=512 blocks=112 sample=16 original4=43409146 batch4=42405049 exact=4/4
+BATCH n=512 blocks=112 sample=17 original4=42982339 batch4=41977071 exact=4/4
+BATCH n=512 blocks=112 sample=18 original4=43267155 batch4=42262795 exact=4/4
+BATCH n=512 blocks=112 sample=19 original4=43328111 batch4=42323940 exact=4/4
+BATCH n=512 blocks=112 sample=20 original4=43430575 batch4=42426808 exact=4/4
+BATCH n=512 blocks=112 sample=21 original4=43221302 batch4=42216351 exact=4/4
+BATCH n=512 blocks=112 sample=22 original4=43247487 batch4=42242866 exact=4/4
+BATCH n=512 blocks=112 sample=23 original4=43227531 batch4=42222489 exact=4/4
+BATCH n=512 blocks=112 sample=24 original4=43036044 batch4=42030698 exact=4/4
+BATCH n=512 blocks=112 sample=25 original4=43227046 batch4=42222075 exact=4/4
+BATCH n=512 blocks=112 sample=26 original4=43268035 batch4=42263063 exact=4/4
+BATCH n=512 blocks=112 sample=27 original4=43384198 batch4=42379971 exact=4/4
+BATCH n=512 blocks=112 sample=28 original4=43133552 batch4=42128569 exact=4/4
+BATCH n=512 blocks=112 sample=29 original4=43291627 batch4=42287039 exact=4/4
+BATCH n=512 blocks=112 sample=30 original4=43154138 batch4=42149419 exact=4/4
+BATCH n=512 blocks=112 sample=31 original4=43215084 batch4=42210234 exact=4/4
+BATCH n=1024 blocks=32 sample=0 original4=90125515 batch4=89839759 exact=4/4
+BATCH n=1024 blocks=32 sample=1 original4=90397369 batch4=90112627 exact=4/4
+BATCH n=1024 blocks=32 sample=2 original4=90225797 batch4=89940355 exact=4/4
+BATCH n=1024 blocks=32 sample=3 original4=90119349 batch4=89833586 exact=4/4
+BATCH n=1024 blocks=32 sample=4 original4=90143818 batch4=89858380 exact=4/4
+BATCH n=1024 blocks=32 sample=5 original4=90289175 batch4=90003886 exact=4/4
+BATCH n=1024 blocks=32 sample=6 original4=89814311 batch4=89527234 exact=4/4
+BATCH n=1024 blocks=32 sample=7 original4=90257426 batch4=89972183 exact=4/4
+BATCH n=1024 blocks=32 sample=8 original4=89977039 batch4=89690864 exact=4/4
+BATCH n=1024 blocks=32 sample=9 original4=90204300 batch4=89918900 exact=4/4
+BATCH n=1024 blocks=32 sample=10 original4=90469529 batch4=90185061 exact=4/4
+BATCH n=1024 blocks=32 sample=11 original4=90473611 batch4=90189318 exact=4/4
+BATCH n=1024 blocks=32 sample=12 original4=90251341 batch4=89965854 exact=4/4
+BATCH n=1024 blocks=32 sample=13 original4=90026001 batch4=89739902 exact=4/4
+BATCH n=1024 blocks=32 sample=14 original4=90395079 batch4=90110130 exact=4/4
+BATCH n=1024 blocks=32 sample=15 original4=90523863 batch4=90239759 exact=4/4
+BATCH n=1024 blocks=32 sample=16 original4=90421944 batch4=90137411 exact=4/4
+BATCH n=1024 blocks=32 sample=17 original4=89911433 batch4=89624802 exact=4/4
+BATCH n=1024 blocks=32 sample=18 original4=90532714 batch4=90248364 exact=4/4
+BATCH n=1024 blocks=32 sample=19 original4=90462254 batch4=90177689 exact=4/4
+BATCH n=1024 blocks=32 sample=20 original4=90217038 batch4=89931798 exact=4/4
+BATCH n=1024 blocks=32 sample=21 original4=90231063 batch4=89945782 exact=4/4
+BATCH n=1024 blocks=32 sample=22 original4=90008612 batch4=89722434 exact=4/4
+BATCH n=1024 blocks=32 sample=23 original4=90284763 batch4=89999542 exact=4/4
+BATCH n=1024 blocks=32 sample=24 original4=89994347 batch4=89707938 exact=4/4
+BATCH n=1024 blocks=32 sample=25 original4=90108643 batch4=89822960 exact=4/4
+BATCH n=1024 blocks=32 sample=26 original4=89971451 batch4=89685183 exact=4/4
+BATCH n=1024 blocks=32 sample=27 original4=90430968 batch4=90146342 exact=4/4
+BATCH n=1024 blocks=32 sample=28 original4=90368302 batch4=90083480 exact=4/4
+BATCH n=1024 blocks=32 sample=29 original4=90222662 batch4=89937051 exact=4/4
+BATCH n=1024 blocks=32 sample=30 original4=90268904 batch4=89983444 exact=4/4
+BATCH n=1024 blocks=32 sample=31 original4=90620461 batch4=90336735 exact=4/4
+BATCH n=1024 blocks=64 sample=0 original4=90125515 batch4=89551931 exact=4/4
+BATCH n=1024 blocks=64 sample=1 original4=90397369 batch4=89824847 exact=4/4
+BATCH n=1024 blocks=64 sample=2 original4=90225797 batch4=89652608 exact=4/4
+BATCH n=1024 blocks=64 sample=3 original4=90119349 batch4=89545837 exact=4/4
+BATCH n=1024 blocks=64 sample=4 original4=90143818 batch4=89570560 exact=4/4
+BATCH n=1024 blocks=64 sample=5 original4=90289175 batch4=89716100 exact=4/4
+BATCH n=1024 blocks=64 sample=6 original4=89814311 batch4=89239363 exact=4/4
+BATCH n=1024 blocks=64 sample=7 original4=90257426 batch4=89684272 exact=4/4
+BATCH n=1024 blocks=64 sample=8 original4=89977039 batch4=89403173 exact=4/4
+BATCH n=1024 blocks=64 sample=9 original4=90204300 batch4=89630829 exact=4/4
+BATCH n=1024 blocks=64 sample=10 original4=90469529 batch4=89897238 exact=4/4
+BATCH n=1024 blocks=64 sample=11 original4=90473611 batch4=89901618 exact=4/4
+BATCH n=1024 blocks=64 sample=12 original4=90251341 batch4=89678066 exact=4/4
+BATCH n=1024 blocks=64 sample=13 original4=90026001 batch4=89451960 exact=4/4
+BATCH n=1024 blocks=64 sample=14 original4=90395079 batch4=89822796 exact=4/4
+BATCH n=1024 blocks=64 sample=15 original4=90523863 batch4=89951988 exact=4/4
+BATCH n=1024 blocks=64 sample=16 original4=90421944 batch4=89849634 exact=4/4
+BATCH n=1024 blocks=64 sample=17 original4=89911433 batch4=89336846 exact=4/4
+BATCH n=1024 blocks=64 sample=18 original4=90532714 batch4=89960495 exact=4/4
+BATCH n=1024 blocks=64 sample=19 original4=90462254 batch4=89889846 exact=4/4
+BATCH n=1024 blocks=64 sample=20 original4=90217038 batch4=89643805 exact=4/4
+BATCH n=1024 blocks=64 sample=21 original4=90231063 batch4=89657965 exact=4/4
+BATCH n=1024 blocks=64 sample=22 original4=90008612 batch4=89434621 exact=4/4
+BATCH n=1024 blocks=64 sample=23 original4=90284763 batch4=89712013 exact=4/4
+BATCH n=1024 blocks=64 sample=24 original4=89994347 batch4=89420071 exact=4/4
+BATCH n=1024 blocks=64 sample=25 original4=90108643 batch4=89535074 exact=4/4
+BATCH n=1024 blocks=64 sample=26 original4=89971451 batch4=89397287 exact=4/4
+BATCH n=1024 blocks=64 sample=27 original4=90430968 batch4=89858626 exact=4/4
+BATCH n=1024 blocks=64 sample=28 original4=90368302 batch4=89795595 exact=4/4
+BATCH n=1024 blocks=64 sample=29 original4=90222662 batch4=89649574 exact=4/4
+BATCH n=1024 blocks=64 sample=30 original4=90268904 batch4=89695707 exact=4/4
+BATCH n=1024 blocks=64 sample=31 original4=90620461 batch4=90048928 exact=4/4
+BATCH n=1024 blocks=112 sample=0 original4=90125515 batch4=89120091 exact=4/4
+BATCH n=1024 blocks=112 sample=1 original4=90397369 batch4=89393023 exact=4/4
+BATCH n=1024 blocks=112 sample=2 original4=90225797 batch4=89220739 exact=4/4
+BATCH n=1024 blocks=112 sample=3 original4=90119349 batch4=89114144 exact=4/4
+BATCH n=1024 blocks=112 sample=4 original4=90143818 batch4=89138884 exact=4/4
+BATCH n=1024 blocks=112 sample=5 original4=90289175 batch4=89284496 exact=4/4
+BATCH n=1024 blocks=112 sample=6 original4=89814311 batch4=88807482 exact=4/4
+BATCH n=1024 blocks=112 sample=7 original4=90257426 batch4=89251967 exact=4/4
+BATCH n=1024 blocks=112 sample=8 original4=89977039 batch4=88971180 exact=4/4
+BATCH n=1024 blocks=112 sample=9 original4=90204300 batch4=89199026 exact=4/4
+BATCH n=1024 blocks=112 sample=10 original4=90469529 batch4=89465460 exact=4/4
+BATCH n=1024 blocks=112 sample=11 original4=90473611 batch4=89469610 exact=4/4
+BATCH n=1024 blocks=112 sample=12 original4=90251341 batch4=89246160 exact=4/4
+BATCH n=1024 blocks=112 sample=13 original4=90026001 batch4=89020026 exact=4/4
+BATCH n=1024 blocks=112 sample=14 original4=90395079 batch4=89391055 exact=4/4
+BATCH n=1024 blocks=112 sample=15 original4=90523863 batch4=89520116 exact=4/4
+BATCH n=1024 blocks=112 sample=16 original4=90421944 batch4=89417625 exact=4/4
+BATCH n=1024 blocks=112 sample=17 original4=89911433 batch4=88904894 exact=4/4
+BATCH n=1024 blocks=112 sample=18 original4=90532714 batch4=89528537 exact=4/4
+BATCH n=1024 blocks=112 sample=19 original4=90462254 batch4=89457846 exact=4/4
+BATCH n=1024 blocks=112 sample=20 original4=90217038 batch4=89212229 exact=4/4
+BATCH n=1024 blocks=112 sample=21 original4=90231063 batch4=89226114 exact=4/4
+BATCH n=1024 blocks=112 sample=22 original4=90008612 batch4=89002931 exact=4/4
+BATCH n=1024 blocks=112 sample=23 original4=90284763 batch4=89280136 exact=4/4
+BATCH n=1024 blocks=112 sample=24 original4=89994347 batch4=88988039 exact=4/4
+BATCH n=1024 blocks=112 sample=25 original4=90108643 batch4=89103349 exact=4/4
+BATCH n=1024 blocks=112 sample=26 original4=89971451 batch4=88965323 exact=4/4
+BATCH n=1024 blocks=112 sample=27 original4=90430968 batch4=89426784 exact=4/4
+BATCH n=1024 blocks=112 sample=28 original4=90368302 batch4=89363532 exact=4/4
+BATCH n=1024 blocks=112 sample=29 original4=90222662 batch4=89217451 exact=4/4
+BATCH n=1024 blocks=112 sample=30 original4=90268904 batch4=89263833 exact=4/4
+BATCH n=1024 blocks=112 sample=31 original4=90620461 batch4=89617182 exact=4/4
+CHECK signatures=PASS exact=816 verified=816 rejected=1632 keys=8
+CHECK api=PASS mixed_degrees=PASS single=PASS short_buffer=PASS null_seed=PASS clear=PASS
+BENCH_DONE result=0 total_exact=828 total_rejected=1656
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x1800350e in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1397c lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xe39c lma 0x30000980
+Loading section datas, size 0x4c lma 0x3000ed20
+Loading section device_states, size 0x2c lma 0x3000ed6c
+Loading section k_mutex_area, size 0x14 lma 0x3000ed98
+Loading section .last_section, size 0x4 lma 0x3000edac
+Start address 0x1000ee38, load size 141900
+Transfer rate: 549 KB/sec, 6169 bytes/write.
+Temporary breakpoint 1 at 0x1000bb94: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x1000ee24: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpamf5_ock/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x1000bb44: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x1000ee24: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984631            9979441
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x300374a0          805532832
+r8             0x300000d0          805306576
+r9             0x3003f5e0          805565920
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3003f590          0x3003f590 <z_main_stack+32688>
+lr             0x1000bb8b          268483467
+pc             0x1000bb44          0x1000bb44 <nucleo_test_breakpoint>
+xpsr           0x9030000           151191552
+fpscr          0x40010             262160
+msp            0x300374a0          0x300374a0 <z_idle_stacks>
+psp            0x3003f590          0x3003f590 <z_main_stack+32688>
+vpr            0xfcfc              [ P0=64764 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x300374a0          0x300374a0 <z_idle_stacks>
+psp_s          0x3003f590          0x3003f590 <z_main_stack+32688>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30036ca0          0x30036ca0 <z_interrupt_stacks>
+psplim_s       0x300375e0          0x300375e0 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xfcfc              -772
+0x3003f590 <z_main_stack+32688>:	0x00000000	0x1000bba7	0x00000000	0x1001256f
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x300374a0
+PSP=0x3003f590
+LR=0x1000bb8b
+PC=0x1000bb44
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x300374a0 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x300374b0 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

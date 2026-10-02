@@ -1,0 +1,21 @@
+0x080113f4 in ?? ()
+Unable to match requested speed 500 kHz, using 480 kHz
+Unable to match requested speed 500 kHz, using 480 kHz
+[stm32l4x.cpu] halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080113f4 msp: 0x200a0000
+Loading section .isr_vector, size 0x1bc lma 0x20000000
+Loading section .text, size 0xd544 lma 0x200001c0
+Loading section .rodata, size 0xb8a0 lma 0x2000d720
+Loading section .init_array, size 0x4 lma 0x20018fc0
+Loading section .fini_array, size 0x4 lma 0x20018fc4
+Loading section .data, size 0xc lma 0x20018fc8
+Start address 0x2000c9e8, load size 102324
+Transfer rate: 32 KB/sec, 9302 bytes/write.
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+platform_finish () at platform_m4.c:65
+65	    __BKPT(0);
+FNDSA_JSON_BEGIN
+{"state":1611464704,"error":0,"profile_error":0,"core_clock_hz":120000000,"cpuid":1091551809,"device_id":270492784,"cache_control":1541,"fingerprint":567370050,"operations":[{"calls":10,"total_cycles":976206480,"minimum_cycles":85811555,"maximum_cycles":133336577,"cycles":[3600,45863872,429530,0,0,126071040,0,12611032,147732812,3394606,0,438386083,148823411,0,0,15925550,0,0,36964944,0,0],"entries":[0,1216,40,0,0,16866,0,98,47343,10,0,11,1504,0,0,151,0,0,36,0,0]},{"calls":100,"total_cycles":7155597608,"minimum_cycles":70880090,"maximum_cycles":72198658,"cycles":[72900,610600513,19610538,8546946,1161300,0,1952155000,156871800,0,0,16560800,0,0,3159423000,458647932,0,106242833,289358246,2414800,373931000,0],"entries":[0,16189,800,100,100,0,700,1200,0,0,100,0,0,25600,102400,0,177367,177367,300,100,0]},{"calls":100,"total_cycles":118840400,"minimum_cycles":1188404,"maximum_cycles":1188404,"cycles":[33300,64118900,4458400,8815900,6383200,0,0,26553800,0,0,0,0,0,0,0,0,0,0,1902400,0,6574500],"entries":[0,1700,200,100,200,0,0,200,0,0,0,0,0,0,0,0,0,0,300,0,100]}]}
+FNDSA_JSON_END
+[Inferior 1 (Remote target) detached]

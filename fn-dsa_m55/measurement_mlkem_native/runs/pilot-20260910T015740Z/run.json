@@ -1,0 +1,42 @@
+{
+  "started_utc": "2026-09-10T01:57:40.389347+00:00",
+  "mode": "pilot",
+  "elf_sha256": "ad24775cea0eaf2e015af8ec2fe87e5f739a8d29c9c7c445479b89317f954014",
+  "command": [
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python",
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/exec_with_tcm_init.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build-dtcm/zephyr/zephyr.elf",
+    "--pilot"
+  ],
+  "loader_mode": "upstream",
+  "loader_helper_sha256": "f14d6bb43dffec2128d598b094fbd7ce3d1bddeeb899487d67e24c8ffc0a8088",
+  "loader_adapter_sha256": "b263f5c9c33ed1db9f0b35a7f82b1494c945eea6c4df400f0461072c3720745f",
+  "probe": "003C00223335510735383531",
+  "environment": {
+    "GDB_PORT": "3349",
+    "OPENOCD": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd",
+    "OPENOCD_SPEED": "8000",
+    "SWO_TRACECLK": "100000000",
+    "SWO_PIN_FREQ": "1000000",
+    "GDB": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gdb",
+    "NM": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-nm",
+    "READELF": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-readelf",
+    "OPENOCD_SCRIPTS": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts",
+    "OPENOCD_TARGET": "target/stm32n6x.cfg",
+    "OPENOCD_INTERFACE": "interface/stlink.cfg"
+  },
+  "source_manifest_sha256": "0b52052da38f806fd9bdd9bc0b34ecac21caf6e2cf13b54f3aa7a753cf18e376",
+  "host_expected_log_sha256": "fddd33e48b283c54df32f6c8333f135e9b6b7fc05ef7934b1204f621d4a28825",
+  "ended_utc": "2026-09-10T01:57:43.020003+00:00",
+  "returncode": 1,
+  "valid": false,
+  "host_digests_match": false,
+  "measurement_validation_errors": [
+    "missing/duplicate/unexpected BATCH coordinates",
+    "missing/unexpected SUMMARY coordinates",
+    "missing/incorrect benchmark mode or counts"
+  ],
+  "samples": [],
+  "raw_log_sha256": "47e934af02e331dc0cc9df21eaf42741ae0f3ef82db7c552a0beb35d38e9523b"
+}

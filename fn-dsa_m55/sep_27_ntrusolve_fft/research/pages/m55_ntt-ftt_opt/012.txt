@@ -1,0 +1,49 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 12/29
+
+12 Polynomial multiplication on embedded vector architectures
+The polynomials used in Saber are generated from packed data on a per-coeﬃcients
+level. We expect that it possible to merge the upfront permutation of the input into the
+key generation process with small negligible penalty, thereby reducing the evaluation step
+to classical Toom-Cook/Karatsuba, but leave exploring the details for future work.
+5 Implementation: Cortex-M4
+In this section, we describe the implementation aspects of the striding version of Toom-Cook
+and Karatsuba on Cortex-M4 processors.
+5.1 Toom-Cook/Karatsuba
+As explained in Section 4, there are two fundamental diﬀerences between the classical and
+the striding variants of Toom-Cook multiplication: The access pattern to the coeﬃcients
+of the operands and the memory expansion of the products. The sequence of arithmetic
+operations performed during evaluation and interpolation is the same for both variants.
+The read accesses occur during the evaluation and are performed with oﬀset 64 for
+the classical Toom-Cook whereas 4 consecutive coeﬃcients at a time are required for the
+striding version. Although the access pattern of the striding variant is more regular, this
+is an issue for exploiting the DSP extensions to carry out two operations on halfword
+registers in parallel. To circumvent this problem, the polynomials can be stored with a
+custom memory layout, in which case the complexity is moved to the packing operation,
+or the coeﬃcients of the polynomial can be packed with an oﬀset of 4 after being loaded
+into the register. Since we implement the entire multiplication we opt for the latter.
+The instruction overhead is equal to the number of word loads, eﬀectively as if we only
+performed halfword loads.
+The write operations happen during interpolation, when the result is computed from
+the weighted polynomials. Here, the striding version has an advantage since it iterates half
+the times of the classical due to the non expansion of the products. Additionally, since the
+coeﬃcients of the result are generated consecutively, the write operations can be simplified
+to 4 per iteration instead of 7. In addition to this simplification of the interpolation, the
+non expansion of the products in the striding version allows for a halving in the memory
+requirements to store all the weighted polynomials, i.e., a saving of 896 bytes.
+The diﬀerences in the implementation of the striding version of Karatsuba with respect
+to the classical Karatsuba are equivalent to Toom-Cook. There is an overhead in the
+instruction count due to the sequential access pattern to the coeﬃcients of the polynomial
+during evaluation, and the counterpart during interpolation if one wants to exploit the
+single instruction multiple data capabilities of Cortex-M4 processors. However, the non
+expansion of the polynomial degree after the multiplication is more beneficial than in
+the case of Toom-Cook. In particular, if Karatsuba is applied recursively the memory
+utilization can be kept constant by re-utilizing the memory allocated to store the operands
+after the evaluation is performed.
+5.2 Schoolbook multiplication
+It has been shown in [KMRV18,KRS19] that schoolbook multiplication has the highest
+impact in the performance of polynomial multiplication. We follow the divide and conquer
+approach of [KRS19] to decompose the schoolbook multiplication into smaller multiplica-
+tions that can be performed without fetching extra coeﬃcients from memory and aiming to
+use the multiply and accumulate instructions. Moreover, to avoid length doubling, we need
+to perform a negacyclic convolution in-place. This is a challenge because the DSP exten-
+sions of Cortex-M4 processors oﬀer a wide range of multiply and accumulate instructions

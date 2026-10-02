@@ -1,0 +1,60 @@
+DOCUMENT: falcon_m7.pdf PAGE: 22/22
+
+22 James Howe and Bas Westerbaan
+B The Falcon signature scheme
+The Falcon signature scheme is provided in Algorithm 2. The algorithms inside
+these procedures have been omitted for space, but the reader can refer to the
+specifications for more details [PFH+20].
+Algorithm 2: The Falcon signature scheme [PFH+20].
+1
+FFT(c) ⊙FFT(f ))
+q
+1 Procedure KeyGen(ϕ,q)
+2 f, g, F, G ←NTRUGen(ϕ, q)
+3 B ← g−f
+G−F
+4ˆ
+B ←FFT(B)
+5 G ←ˆ
+B ×ˆ
+B∗
+6 T ←ﬀLDL∗(G)
+7 for each leaf of T do
+8 leaf.value ←σ/√leaf.value
+9 end
+ˆ
+10 sk ←(
+B, T)
+11 h ←gf−1 mod q
+12 pk ←h
+13 return (sk, pk)
+14
+1 Procedure Sign(m, sk, ⌊β2⌋)
+2 r ←{0, 1}320 uniformly
+3 c ←HashToPoint(r∥m, q, n)
+4 t ←(−
+1
+FFT(c) ⊙FFT(F ),−
+q
+5 do
+6 do
+7 z ←ﬀSamplingn(t, T)
+ˆ
+8 s = (t−z)
+B
+9 while ∥s∥2 > ⌊β2⌋
+10 (s1, s2) ←invFFT(s)
+11 s ←Compress(s2, 8·sbytelen−328)
+12 while s = ⊥
+13 return sig = (r, s)
+14
+1 Procedure Verify(m, sig, pk, ⌊β2⌋))
+2 c ←HashToPoint(r∥m, q, n)
+3 s2 ←Decompress(s, 8·sbytelen−328)
+4 if (s2 = ⊥) then
+5 Reject
+6 s1 ←c−s2h mod q
+7 if ∥(s1, s2)∥2 ≤⌊β2⌋then
+8 Accept
+9 else
+10 Reject

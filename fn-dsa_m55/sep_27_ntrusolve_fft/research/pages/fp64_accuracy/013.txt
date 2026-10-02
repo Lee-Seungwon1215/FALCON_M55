@@ -1,0 +1,38 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 13/18
+
+Formal Verification of Emulated Floating-Point Arithmetic in Falcon 13
+Comparisons to [Por19]. Intheemulatedfloating-pointmultiplicationsinFalcon
+by [Por19], since the program does not handle infinities, one has to verify the
+correctness within a certain input range avoiding infinity outputs. The former
+forbids us to argue the correctness of the full range of zeros and normal floating-
+point values.
+In addition, we also implement an emulated floating-point multiplication in
+Jasmin essentially following the more readable (but slower) C reference imple-
+mentation. In the follow-up section, we explain how to verify the equivalences of
+emulated floating-point multiplication implementations.
+5.2 Equivalence Proofs in CryptoLine
+We start with our CryptoLine model used for range-checking and add more
+annotations. Essentially, the majority of the effort is still about verifying the
+multi-limb arithmetic and transferring its correctness to the SMT solver. In
+principle, whenever we issue a multiplication, we prove its correctness in the
+computer algebra system, and add the corresponding boolean identities to the
+SMT solver. We apply the idea to proving the equivalence of our CryptoLine
+model and our assembly implementation, and the equivalence of our CryptoLine
+modelandourJasminimplementation.SeeTable2foranoverviewofverification
+time of the equivalences. Since equivalence is transitive, we have an equivalence
+betweenourassemblyoptimizedimplementationandourJasminimplementation
+where the former is more optimized and the latter is more readable.
+Table 2: Verification time of equivalence proofs between Armv7-M implementa-
+tions and our CryptoLine model.
+Programming langauge Verification time (in seconds)
+Floating-point addition
+Jasmin 53.946560
+Assembly 59.863976
+Floating-point multiplication
+Jasmin 57.108668
+Assembly 5.333913
+6 Discussions
+6.1 How the Discrepancy was Found?
+The core of this paper is about modeling floating-point addition, subtraction,
+and multiplication with the domain specific language CryptoLine, and its ap-
+plication in proving the lower bound and upper bound of non-zero intermediate

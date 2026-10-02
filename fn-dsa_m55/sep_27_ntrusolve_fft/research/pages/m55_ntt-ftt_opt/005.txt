@@ -1,0 +1,80 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 5/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 5
+R′[Y]<2k−1 via 2k−1 multiplications of elements in R′and substitute Y= Xn/k afterwards.
+Ultimately, this computes a degree-n product via 2k−1 products of degree n/k.
+Toom-Cook and Karatsuba can be combined. E.g., one layer of 4-way Toom-Cook and
+two layers of Karatsuba reduce a degree-16n product to 63 degree-n products.
+2.2.3 Number Theoretic Transform
+The Number Theoretic Transform (NTT) instantiates the “multiplication by evaluation”
+blueprint with R= Fq for a prime qwith n|q−1. Then, it is known that Fq has a primitive
+n-th root of unity ζn, and that Xn
+−1 = i(X−ζi
+n), and evα is an isomorphism
+NTT : Fq[X]/(Xn
+−1) f→(f(1),f(ζ),...,f(ζn−1 )) −−−−−−−−−−−−−−−−−−−→Fn
+q.
+If n= 2k, then NTT can be computed iteratively as indicated in the following figure:
+Fq[X]/(Xn
+−ζn
+n)
+Fq[X]/(Xn/2
+−ζ1(n/2)
+n )
+Fq[X]/(Xn/2
+−ζ0(n/2)
+n )
+Fq[X]/(Xn/4
+−ζ1(n/4)
+n ) Fq[X]/(Xn/4
+−ζ3(n/4)
+n )
+Fq[X]/(Xn/4
+−ζ2(n/4
+n ) Fq[X]/(Xn/4
+−ζ0(n/4)
+n )
+Here, the k-th entry from the right in the i-th layer is Fq[X]/(Xn/2i
+−ζrevi (k)(n/2i )
+n ), where
+revi is the bit-reversal on i+ 1 bits. For example, rev1(2) = rev1(0b10) = 0b01 = 1.
+ThisstrategyisakintotheCooley-TukeyalgorithmfortheFFTandachievescomplexity
+nlog2(n). Since NTT is a ring isomorphism, we can compute the product of a,b ∈
+Fq[X]/(Xn
+−1) as NTT−1(NTT(a)◦NTT(b)), where ◦is pointwise multiplication in Fn
+q.
+We consider the NTT from an implementation view. Every transition is of the form
+R[X]/(X2n
+−α2) →R[X]/(Xn
+−α) ×R[X]/(Xn + α).
+In terms of the standard monomial basis, R[X]/(X2n
+−α2) →R[X]/(Xn
+−α) is given by
+f0 + Xnf1 →f0 + αf1, while R[X]/(X2n
+−α2) →R[X]/(Xn
+−α) is given by f0 + Xnf1 →
+f0−αf1. The transformation (a,b) →(a+ ζb,a−ζb) is called a Cooley-Tukey (CT)
+butterfly. The Gentleman-Sande (GS) butterfly (a,b) →(a+ b,ζ−1(a−b)) reverses the
+Cooley-Tukey butterfly up to 1
+2 . The CT and GS are central primitives to implement for
+an NTT-based polynomial multiplication; the third is point-wise multiplication in Fq.
+2.3 Modular Arithmetic in Fq
+We briefly recall two prominent algorithms in the context of modular multiplication:
+Barrett reduction and Montgomery multiplication.
+The central problem is as follows: Given a modulus n∈Z and a “large” a∈Z, find
+“small” representatives of a modulo n. Two choices stand out: Firstly, the canonical
+unsigned representative a mod+ n is the unique representative of a modulo n in the
+interval {0,1,...,n−1}. Secondly, the canonical signed representative a mod±n is the
+unique representative of a modulo n in the interval {−n
+2 ,−
+n
+2 + 1,...,
+n
+2 }. These
+can naïvely be calculated as a mod±n= a−n a
+n
+and a mod+ n= a−n a
+n , but such
+an approach is inacceptable from a performance perspective since division by nis expensive
+in general. Barrett and Montgomery reduction are two ways around this by trading the
+division by n for a division by a 2-power, which can be cheaply implemented as a bitshift.

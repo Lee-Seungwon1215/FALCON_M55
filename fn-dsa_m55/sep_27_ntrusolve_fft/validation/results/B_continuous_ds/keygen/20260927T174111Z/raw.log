@@ -1,0 +1,442 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 52722
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :52722 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10012fb4
+hbreak *0x10016244
+set $early_fault_bp = $bpnum
+jump *0x10016259
+if $pc != 0x10012fb4
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpoqt6_4bq/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10012f48
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x10016244
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 52722
+Info : Listening on port 52722 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/52722
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+KEYGEN_HW cpu=800000000 cycle_hz=800000000 fpscr=00040000 ccr=00000611 tcm=00000099 irq_mask=0 calls=100 warmups=3
+KEYGEN_PERF degree=512 index=0 cycles=75869850 match=1 equation=PASS keyhash=06e7b07822bd3e24f7ce2718f28a19d8c295dbb36a1a4f36aecf69068f811a1b
+KEYGEN_PERF degree=512 index=1 cycles=46113216 match=1 equation=PASS keyhash=19c56d3f58260285ae26ed73f92a2867af963b4f9dcfb0cfdb958f14761a06bd
+KEYGEN_PERF degree=512 index=2 cycles=57751208 match=1 equation=PASS keyhash=f864b56172af32d808d3d90b0046b801de4ea9e4b737d41badd389b2b293f5c4
+KEYGEN_PERF degree=512 index=3 cycles=41853585 match=1 equation=PASS keyhash=5f84556357ac61fcd5d33819ced59eefdaadac79284be0374971fdf271347536
+KEYGEN_PERF degree=512 index=4 cycles=68863466 match=1 equation=PASS keyhash=96c3eeb5ef0c5801898967a3ebf4783b2f2dd7ed3868e978f1f5a88ec3da4abe
+KEYGEN_PERF degree=512 index=5 cycles=61135938 match=1 equation=PASS keyhash=17596d7ebd7cbb9aaece1c8bdfca52bbf7197b9d9ea2621c9fedd854a7f840b4
+KEYGEN_PERF degree=512 index=6 cycles=50079553 match=1 equation=PASS keyhash=023de09fb74dd3558ee0c672d0e6f6f18a94bb6ff5b00c8d41c045fdfc328968
+KEYGEN_PERF degree=512 index=7 cycles=62717357 match=1 equation=PASS keyhash=b1fe68cf9855d85d33e14cde9940f05017a7c09ab035b88c613e66e783478728
+KEYGEN_PERF degree=512 index=8 cycles=60845579 match=1 equation=PASS keyhash=2956d6925cccf871639b1e897765206aa53e665d764df551d38138f906a98dfc
+KEYGEN_PERF degree=512 index=9 cycles=48128003 match=1 equation=PASS keyhash=19dd83af1e74899b98e5d3a8e028cbed646c6d9e4ab1165501fb068478b588f4
+KEYGEN_PERF degree=512 index=10 cycles=41853367 match=1 equation=PASS keyhash=b182df6d9d87da1013dc74a0770c9270424074c7af0e7351dba0b224108eb73d
+KEYGEN_PERF degree=512 index=11 cycles=64523019 match=1 equation=PASS keyhash=572764bf3408ffb01de09f45a1fb0bd69871967ede78d549bbf6cb2699fcdb52
+KEYGEN_PERF degree=512 index=12 cycles=46477170 match=1 equation=PASS keyhash=c783e52db5d0c97135b991c9667a93c5801d8802afafb9462ac4fce2b1567a4f
+KEYGEN_PERF degree=512 index=13 cycles=41853716 match=1 equation=PASS keyhash=9db6eb19ea94ffbd64fc7042c4491b786cd5e73c6d46954c93dc2e43cd02a44e
+KEYGEN_PERF degree=512 index=14 cycles=47204473 match=1 equation=PASS keyhash=e25f556a18114625b10be10e75a56d28b3f993598c0f220c3c74652293340377
+KEYGEN_PERF degree=512 index=15 cycles=80669406 match=1 equation=PASS keyhash=83cbe640c2b547d19c520427529867ebac0597710fe54541e309e0fc5595c10b
+KEYGEN_PERF degree=512 index=16 cycles=53840136 match=1 equation=PASS keyhash=a9302eb08147118e63e5f09b6191cfdbbdea73ccb38d86c0b8fc479a8bf71090
+KEYGEN_PERF degree=512 index=17 cycles=86236751 match=1 equation=PASS keyhash=67874604ee0324d7f684a93076dfd233bdc223cf61626edf7c0e59ab5457177f
+KEYGEN_PERF degree=512 index=18 cycles=47932468 match=1 equation=PASS keyhash=05ae2e0dfa25fc86e4b64c0ecc8f5caefad255580d1334a8fa78ad44cfde84d3
+KEYGEN_PERF degree=512 index=19 cycles=44693438 match=1 equation=PASS keyhash=6f8e03c06a0dcf396edc55b2b3c656823e78ded87b73cb42183dd3a9511acbd0
+KEYGEN_PERF degree=512 index=20 cycles=50494739 match=1 equation=PASS keyhash=bc296adb84dbea41edc5d0d207b1be42de9dd2e6f2053808555574c43e408ac1
+KEYGEN_PERF degree=512 index=21 cycles=71669976 match=1 equation=PASS keyhash=182ffdcccd8c3fdd1b5c3e3c777694a6f38d91807a03b071d3333f109c7db3c8
+KEYGEN_PERF degree=512 index=22 cycles=71091167 match=1 equation=PASS keyhash=fd13473234eb5742df7b5ecc9e45d128ab74fc8bc974db2d912da74f1e805e10
+KEYGEN_PERF degree=512 index=23 cycles=45420831 match=1 equation=PASS keyhash=0473328cdb524e08a4b27373bb3134212922d09909c3b16f23735583b6dd29ed
+KEYGEN_PERF degree=512 index=24 cycles=55772378 match=1 equation=PASS keyhash=c77bf062458cf790166e8c6bd9ed6223473ff47cf578c657727101f31d66021e
+KEYGEN_PERF degree=512 index=25 cycles=56099074 match=1 equation=PASS keyhash=d8bf83c8914bfff54f0130392fde2bdf7bba40be3e871ef271422352c67005d8
+KEYGEN_PERF degree=512 index=26 cycles=49679551 match=1 equation=PASS keyhash=30ec40b8ab1ea41011e95c46bff40abfc0994a48e9783974df536a48c260b8b2
+KEYGEN_PERF degree=512 index=27 cycles=41853599 match=1 equation=PASS keyhash=e4adadf61a7b40a3bc2c13d85c0530b1b85ddbbd97823eeb9a0adf3accf272e2
+KEYGEN_PERF degree=512 index=28 cycles=42217773 match=1 equation=PASS keyhash=46c415c5de3a87e1476c5e94393a5de0a0fbcb2085f88c2866fdddd8b6ab3572
+KEYGEN_PERF degree=512 index=29 cycles=42217423 match=1 equation=PASS keyhash=9b299ce70ff71354f7acdbc1c43b8c7189c127aa6059cade3508f62fe11ddc3d
+KEYGEN_PERF degree=512 index=30 cycles=49351798 match=1 equation=PASS keyhash=2d69c1824f51c1fb2eb5a46f7e11c1414fe3dd6f0f244347babb34932dd9db94
+KEYGEN_PERF degree=512 index=31 cycles=41854898 match=1 equation=PASS keyhash=c9db929fa4921435766117a4c8417b19abac5f5c048417c90955b8a5f6c12a54
+KEYGEN_PERF degree=512 index=32 cycles=46147432 match=1 equation=PASS keyhash=b701a0462a52710ec2f2f553e620cae07f5869584a0c5075f17c0006c6d6cdf4
+KEYGEN_PERF degree=512 index=33 cycles=41854550 match=1 equation=PASS keyhash=f684c28be4acb7f75c9bff74194d38adacfa804b16478076128b8a9759335cb8
+KEYGEN_PERF degree=512 index=34 cycles=42218836 match=1 equation=PASS keyhash=483162bcf4fd986ea6c1b84c6b4e75d84efe80e4e7833b4509bf00eb9c098108
+KEYGEN_PERF degree=512 index=35 cycles=75851802 match=1 equation=PASS keyhash=53f591d4df1547254e5196858a562e55a488caac3a1ce12e6dbfdb5da272c99a
+KEYGEN_PERF degree=512 index=36 cycles=48819348 match=1 equation=PASS keyhash=97fa4e393f70962d62f13ce162f605b7f26b1d57dc561ff0aa490970bfc80b9f
+KEYGEN_PERF degree=512 index=37 cycles=45421439 match=1 equation=PASS keyhash=ed2ddfe601e2c05ea22401035aa9ad5ab0a7676aa37eef83b25d111cc5ddda66
+KEYGEN_PERF degree=512 index=38 cycles=44377465 match=1 equation=PASS keyhash=d73526deb2d55e024c6b3a6da68ad72340a2553fc79b93480336c5ac8d591508
+KEYGEN_PERF degree=512 index=39 cycles=46113001 match=1 equation=PASS keyhash=8189395a0ec2f517090ee63dda57f758fc91c5ede14a6b7180651e9b0b9e7040
+KEYGEN_PERF degree=512 index=40 cycles=42763168 match=1 equation=PASS keyhash=ab7f962a40d8b9fd13699b848a09f6daf0ed048ed33f609cd1ad2c0eb6709366
+KEYGEN_PERF degree=512 index=41 cycles=42218491 match=1 equation=PASS keyhash=13d912404d9ca03625b1637cf6676b0c1e31b63f8c920829c34ae375788bf327
+KEYGEN_PERF degree=512 index=42 cycles=44365116 match=1 equation=PASS keyhash=3d6659fb962b62cef84628fc2e100047675b5817bae68c80337c214d803207b8
+KEYGEN_PERF degree=512 index=43 cycles=108079150 match=1 equation=PASS keyhash=51440fcba344b3b4e5b0fb73702d7c3bdb252099b69bb340dec93b4e3a8672b0
+KEYGEN_PERF degree=512 index=44 cycles=44872417 match=1 equation=PASS keyhash=a5cfb2bdf7ef65f21277b3bdffc7cf56d7eba1a988be97f28a75d446e0670463
+KEYGEN_PERF degree=512 index=45 cycles=125421644 match=1 equation=PASS keyhash=8231635835299ac06852d6f89402eb20fd3c8172fcc4c4e2ea7256a763b2e7fe
+KEYGEN_PERF degree=512 index=46 cycles=78705782 match=1 equation=PASS keyhash=8925ad6413697b7c70bcc571e527c761599045e4d7cf2300b462c389e86610e8
+KEYGEN_PERF degree=512 index=47 cycles=62011379 match=1 equation=PASS keyhash=324760d9b262c6bc75523a47f78dc6f2080076930fe298dc3be8e3895e3f98b4
+KEYGEN_PERF degree=512 index=48 cycles=56499466 match=1 equation=PASS keyhash=e6cf9e994fb55b4b916356a06bcb7191066cd5c156d1e752837b6c7ca9e76164
+KEYGEN_PERF degree=512 index=49 cycles=61719174 match=1 equation=PASS keyhash=f28950a1bf1003b2a3f99a461b8ad39418af6e57c4ea1be43e75ad59f65fac66
+KEYGEN_PERF degree=512 index=50 cycles=97916659 match=1 equation=PASS keyhash=2830ccc46c1a032634c8ae869bfc4c6cd5cbce2901216d224c36790e46948ae9
+KEYGEN_PERF degree=512 index=51 cycles=44002105 match=1 equation=PASS keyhash=f5fe3638bdb750ae168601e145694d7400184fe950b52162c3d37c702e26a67e
+KEYGEN_PERF degree=512 index=52 cycles=80452140 match=1 equation=PASS keyhash=1eb326179faf022ce351771045e5b091559b439f21a38bad3cf1e64140aa285f
+KEYGEN_PERF degree=512 index=53 cycles=64121382 match=1 equation=PASS keyhash=01a42c43f8271e446d4db30c447789f933b0a56b6d596e7e97a8846a69f2a9bc
+KEYGEN_PERF degree=512 index=54 cycles=72034405 match=1 equation=PASS keyhash=874679731bacffb870e49a4a2e8914df5662948dc38ae100272ec65d9f0715d9
+KEYGEN_PERF degree=512 index=55 cycles=53625194 match=1 equation=PASS keyhash=7549acc6b35f94958f3e9c68454a4c6f436abb8611f065563b8f36fdb6e8d6a2
+KEYGEN_PERF degree=512 index=56 cycles=67047353 match=1 equation=PASS keyhash=cb89810ebbf21e4650fb01860d36df7485105bd49954987e5697162f3c43f7de
+KEYGEN_PERF degree=512 index=57 cycles=68796628 match=1 equation=PASS keyhash=6a9df15d00de0b73c6b55eb37abc5de960d442d4756283722b61ade753ce4468
+KEYGEN_PERF degree=512 index=58 cycles=94223488 match=1 equation=PASS keyhash=0b4cc19175d0f0e3e387f429cea2d95a2dbc3ee4c84da993020ecd448491aa67
+KEYGEN_PERF degree=512 index=59 cycles=45421554 match=1 equation=PASS keyhash=b16e691ba12960416b19e8f8ad70d6c98053624b721a2e1dccb74d564142a661
+KEYGEN_PERF degree=512 index=60 cycles=44001992 match=1 equation=PASS keyhash=bc8d14c53f0cfe95970e868f7c9e4f7ce906871d39b42bc6df69e42cdc807146
+KEYGEN_PERF degree=512 index=61 cycles=70143260 match=1 equation=PASS keyhash=b29637226dc954984ecd9c231120863827153450a4f3b0dc05f55679e6ff4f59
+KEYGEN_PERF degree=512 index=62 cycles=43638282 match=1 equation=PASS keyhash=eb2929a2a572703101064ab56ce2d0586f7d9e6ec589d71592dc32fe0d973267
+KEYGEN_PERF degree=512 index=63 cycles=44691793 match=1 equation=PASS keyhash=4afe6dcfaa05db5291f6be9e45b37c51cc724a5fe47bb8b3f474b4146a020bde
+KEYGEN_PERF degree=512 index=64 cycles=42581595 match=1 equation=PASS keyhash=7477d923aec51266be904f75fb95a875a7d6a46e7bd586e89f9ce3e5903b83a0
+KEYGEN_PERF degree=512 index=65 cycles=49352029 match=1 equation=PASS keyhash=4b52c8eb51ac89c222fbac4b0b0f8b006d1be00fc4842618f34233de42bae991
+KEYGEN_PERF degree=512 index=66 cycles=45783610 match=1 equation=PASS keyhash=aeeba1fdf5f65f8cffc9adef5feaf48b995d73b0df3ec8ddb49b9ccb96d81a55
+KEYGEN_PERF degree=512 index=67 cycles=49731239 match=1 equation=PASS keyhash=daaea23330536c48f27ade76e343198527c69b4fccc9906918b9a822b56ca35e
+KEYGEN_PERF degree=512 index=68 cycles=85102981 match=1 equation=PASS keyhash=0f61ee467f4e84b20adf23290394b8104abe9af5f56748914ecf6a6c120fc76b
+KEYGEN_PERF degree=512 index=69 cycles=48624265 match=1 equation=PASS keyhash=78e0362d1268ba2391ef4e3b9b9955a5f0b2f401de0b18413b5c37810f560e9b
+KEYGEN_PERF degree=512 index=70 cycles=43639093 match=1 equation=PASS keyhash=87dfb3dae911d4c63adf001a595821b10ae116d5273ef8e16a6365ad52045620
+KEYGEN_PERF degree=512 index=71 cycles=44001759 match=1 equation=PASS keyhash=2760b3a83cf26f860a1ee1febd67e4d72a8b69ceac219d1a04ddd6d13ca5685a
+KEYGEN_PERF degree=512 index=72 cycles=45057269 match=1 equation=PASS keyhash=e523cbe20b363a319c5789e63610b12bcc164d9e7b5cc9ecdfc1a3f4ad61e088
+KEYGEN_PERF degree=512 index=73 cycles=44692141 match=1 equation=PASS keyhash=8e839ecb9cda530197e8028d7c90a75c57b4ad5148339f0bb84064f615ea4638
+KEYGEN_PERF degree=512 index=74 cycles=53905807 match=1 equation=PASS keyhash=2c828084976111a675646447c6383aa0cf1177a40e35bae75158f3b897fad205
+KEYGEN_PERF degree=512 index=75 cycles=62739636 match=1 equation=PASS keyhash=06dabad19140a9bcd7cd9163a8677cf55b52ef212c6a9e6c81582d21a61621ce
+KEYGEN_PERF degree=512 index=76 cycles=41854551 match=1 equation=PASS keyhash=80b3dc1e1af87c50aa91953415e2872ed2829115aeb8a4c498a6eea9464eef38
+KEYGEN_PERF degree=512 index=77 cycles=70479769 match=1 equation=PASS keyhash=993fd75122abb21ee62854fcb973bd601c34176cf704d80d8c3f355b89d951ff
+KEYGEN_PERF degree=512 index=78 cycles=108246241 match=1 equation=PASS keyhash=bdd13dfea58baa11f6a7f78acd2d2ed763fea65fb9f31168aa2173fa5f41621e
+KEYGEN_PERF degree=512 index=79 cycles=50641392 match=1 equation=PASS keyhash=ea29a45fa0e451998c1efe1cfe4e94f168730bbdadbc88d1cdcf19a4db8b4993
+KEYGEN_PERF degree=512 index=80 cycles=80808769 match=1 equation=PASS keyhash=c41a1309d1c01949217608ca3104421cd2b38121b66946e690c88d6efc803b31
+KEYGEN_PERF degree=512 index=81 cycles=43272813 match=1 equation=PASS keyhash=9d72d78f68b783ac3c59826283fe9bc0d220bc0180026216e5bf06cf7b9eebd3
+KEYGEN_PERF degree=512 index=82 cycles=41853481 match=1 equation=PASS keyhash=cb6641d7117387676095f865b7b976ff4616137bcab1d45d3da53cd8b1749eca
+KEYGEN_PERF degree=512 index=83 cycles=54680215 match=1 equation=PASS keyhash=e640f850da9106de07f36f86d7d01cf1fa81ca4c03f79eb0aca0de1dafd34275
+KEYGEN_PERF degree=512 index=84 cycles=47895574 match=1 equation=PASS keyhash=6111b0c5776a96f014cd67f0c5678c4e57fc23b30a5e65199eb43de12c0bde61
+KEYGEN_PERF degree=512 index=85 cycles=47240558 match=1 equation=PASS keyhash=c34b09d53a268ade29ac067062116a6a90fb24298db0d3547d82aa0779d86a93
+KEYGEN_PERF degree=512 index=86 cycles=93657094 match=1 equation=PASS keyhash=f4746a3d5d80ffa8d2c7e45baae3e5264bb9fd1b4bf3c8c700d38917de86e746
+KEYGEN_PERF degree=512 index=87 cycles=110682360 match=1 equation=PASS keyhash=495987c5bb3f9ba1867070d969ef46e07d2c29a2df774513279c9cc5b3aecf70
+KEYGEN_PERF degree=512 index=88 cycles=45784797 match=1 equation=PASS keyhash=e21bf3ff9d66817f59c6545d6f734915b564e6c0b2f75afb539c44b21eac2420
+KEYGEN_PERF degree=512 index=89 cycles=45785261 match=1 equation=PASS keyhash=14e54a71fa569da57c82a20003d9ac8f0154683f58a1db8c3f7a1818eb336fff
+KEYGEN_PERF degree=512 index=90 cycles=66993447 match=1 equation=PASS keyhash=30b1485235a9276a5442a921c3bcd602cb64f2a04e9455603588b89bb69b74f3
+KEYGEN_PERF degree=512 index=91 cycles=43272578 match=1 equation=PASS keyhash=f60516ce3b91e1086b21da76b5a1fa312cd80c0ae7f83b88d2a10868b92e9bc3
+KEYGEN_PERF degree=512 index=92 cycles=43310425 match=1 equation=PASS keyhash=9d8320ab6b2e60adb7d1eff82c204d0f84f922fc4abf0f546601bc3a38501bb1
+KEYGEN_PERF degree=512 index=93 cycles=47604497 match=1 equation=PASS keyhash=7d555f2aeaa26f66d17a2841a869308f543642079c48edfb5755cedeb9b4395e
+KEYGEN_PERF degree=512 index=94 cycles=48259864 match=1 equation=PASS keyhash=ee1d1cbbcf57332daa432a64257fb64c67fc87c8cc6b163bb1d7cc020433aa5a
+KEYGEN_PERF degree=512 index=95 cycles=41854668 match=1 equation=PASS keyhash=6221546f6c800ed4b2ae52afd0a34369a80ee2322164b3a50ae7ab177e4e4ffd
+KEYGEN_PERF degree=512 index=96 cycles=48675617 match=1 equation=PASS keyhash=0fc68d598fdc00c2b8cdc153defc3a376e96fc7fe6170a6c0d45eb221a29bce9
+KEYGEN_PERF degree=512 index=97 cycles=105713415 match=1 equation=PASS keyhash=b42007784bd198dc514c5b319f714c35779ff913a1c17f6ac38e10f84e107059
+KEYGEN_PERF degree=512 index=98 cycles=89417967 match=1 equation=PASS keyhash=838002aa47afc490e6361d9a7f824b16bf55791421494a1fd2f0b47172e18964
+KEYGEN_PERF degree=512 index=99 cycles=42218838 match=1 equation=PASS keyhash=f14a4562103cad5b96b83f8c8c4df406611b1aebfc2c8c9f1a5e6bc16b832b7c
+KEYGEN_SUMMARY degree=512 calls=100 total=5769356416 median_lo=48675617 median_hi=48819348 min=41853367 max=125421644
+KEYGEN_PERF degree=1024 index=0 cycles=164879424 match=1 equation=PASS keyhash=15ae7e7513e5eb6ad7ac422ebd5819d525c92d2535a0d5fc4401e6577db1c56f
+KEYGEN_PERF degree=1024 index=1 cycles=141391893 match=1 equation=PASS keyhash=c0478abb9628138235fbde4489edf7914184660bc3297a60bf2670329adb5fb8
+KEYGEN_PERF degree=1024 index=2 cycles=319074930 match=1 equation=PASS keyhash=eea8992148cd4fad4565e16c396187ffb838b54c0bce02a05fe5f969a5b4ff09
+KEYGEN_PERF degree=1024 index=3 cycles=515723999 match=1 equation=PASS keyhash=65f5e5d37380b57a36827bd2c3837af13dfcb8c708d03ba75d952a6519842b85
+KEYGEN_PERF degree=1024 index=4 cycles=260986504 match=1 equation=PASS keyhash=d724e6510cfcdfc6b845c71f0297beaec9aac65b6fe9ba52d3e20be3f6ca7526
+KEYGEN_PERF degree=1024 index=5 cycles=168981730 match=1 equation=PASS keyhash=5898eb8a53f99d1a3dac46cbaae9c35573c85cba4659107099b7ee9505ae8553
+KEYGEN_PERF degree=1024 index=6 cycles=141392479 match=1 equation=PASS keyhash=ff3d35c4b2b20f98096022cd0ead7735b2c44abbe70b8aed1842ca6dfcc4cf8e
+KEYGEN_PERF degree=1024 index=7 cycles=289465519 match=1 equation=PASS keyhash=8314f6b0c2e08482ee4a85ee05f4a16fef4a900e04af9dfe0deeba80144fe462
+KEYGEN_PERF degree=1024 index=8 cycles=286883725 match=1 equation=PASS keyhash=e67d9ae7b95a58f63a80550c8a1edce3f05ab9536fd7d87e557b1b3cf8f24868
+KEYGEN_PERF degree=1024 index=9 cycles=148628911 match=1 equation=PASS keyhash=ad35aa069bb84b701ebed9b855a03bf855b0de38dfa4be5bd24efb0d8f883757
+KEYGEN_PERF degree=1024 index=10 cycles=264469190 match=1 equation=PASS keyhash=b79bfaec58977194c2ceaa9104ba95deff9e8374a3b99ded735bdf22f0175fa2
+KEYGEN_PERF degree=1024 index=11 cycles=191778248 match=1 equation=PASS keyhash=fe926c7d7f217d18150c690d2800dac2978dc2521d610c7460ff6bb84612fb3a
+KEYGEN_PERF degree=1024 index=12 cycles=431899498 match=1 equation=PASS keyhash=88d4ae5ac89505b514516715a33c92855744a37a23c08073dc1facc7e66d9d8f
+KEYGEN_PERF degree=1024 index=13 cycles=297634839 match=1 equation=PASS keyhash=d526905b920a401fc564d18ebdaf316b3c6a9368163293a19b8b70a89909843b
+KEYGEN_PERF degree=1024 index=14 cycles=354613109 match=1 equation=PASS keyhash=8f908220d528e26119511d4ce4883cb75b545ae84a13f94bd3df57bd1b4bc7ef
+KEYGEN_PERF degree=1024 index=15 cycles=184914348 match=1 equation=PASS keyhash=c7a9c34645f5ee98c52978ce67fe6dc791872626ae48834b52038d748cc787f4
+KEYGEN_PERF degree=1024 index=16 cycles=179727994 match=1 equation=PASS keyhash=6a5ee41d9d6a9dc1e83362f669131d5a00e36c0dfd09a07a39a4e61107fee9ec
+KEYGEN_PERF degree=1024 index=17 cycles=142778601 match=1 equation=PASS keyhash=f5121d149ff68abf2e7d1842182258e02c85d59b1932d05c698df534f9d17f5e
+KEYGEN_PERF degree=1024 index=18 cycles=194867651 match=1 equation=PASS keyhash=f4bf0276fbda222c187253603fe3cd21d59434e0ba4ea1696901ee64d8c4fa21
+KEYGEN_PERF degree=1024 index=19 cycles=189681986 match=1 equation=PASS keyhash=9ceb322ce444cc0ad5a1ddba72bc036f5a82323549ee0157ad56ea39bb7ab305
+KEYGEN_PERF degree=1024 index=20 cycles=196673897 match=1 equation=PASS keyhash=75ca166a5e19b09c627cf10e5054f822577a75ec71e07af23ca86860e5324880
+KEYGEN_PERF degree=1024 index=21 cycles=552689680 match=1 equation=PASS keyhash=75a21624d4426285126c252cf26e6476fc652750968ac8adc2a60bc76e0b5e0e
+KEYGEN_PERF degree=1024 index=22 cycles=184163689 match=1 equation=PASS keyhash=9e0ecb0b36f518736ed2ec5402ec8cb96cae755fe8c3eb3988465d097703b64c
+KEYGEN_PERF degree=1024 index=23 cycles=160706131 match=1 equation=PASS keyhash=f974160b914dbbf4ede91be3fda437bf2d179018f7daf862b097a2e224b010d4
+KEYGEN_PERF degree=1024 index=24 cycles=142085349 match=1 equation=PASS keyhash=eabb91ea80adfa273b199418c7ec56aa5b9d8e3c63e91869952ab97aceb2f31b
+KEYGEN_PERF degree=1024 index=25 cycles=503814778 match=1 equation=PASS keyhash=75a01c03fca7849c25ce20a37a224703552dd154318a504a2c375550d28c99de
+KEYGEN_PERF degree=1024 index=26 cycles=166070764 match=1 equation=PASS keyhash=f6531ee5c67dc6fa635abeaaa045ad568f6c23fa9fdc3b4b8cae3ef9a07af3cf
+KEYGEN_PERF degree=1024 index=27 cycles=176218172 match=1 equation=PASS keyhash=d02c3138fd7ecabe1e74a43c6a1ca5ce3c22c45c2c8c06867eac95bdad27b66c
+KEYGEN_PERF degree=1024 index=28 cycles=160705740 match=1 equation=PASS keyhash=f766961b5d838fbd54facceb318ad05b0d07a036191f361587875cefda1e34a1
+KEYGEN_PERF degree=1024 index=29 cycles=142779275 match=1 equation=PASS keyhash=b9d30d6bb28452e77202864260d0df73471e59df284ac5f9069dddf90e308b36
+KEYGEN_PERF degree=1024 index=30 cycles=148630086 match=1 equation=PASS keyhash=0bbcdbc5c136d27894723d4f079c5f82892be388dbaa034e67ef796dc03a6675
+KEYGEN_PERF degree=1024 index=31 cycles=150753402 match=1 equation=PASS keyhash=cef9bd4951e0c5d9d72a9064c85935695a4e232fd02a5f5ed6394ecb7aaecc54
+KEYGEN_PERF degree=1024 index=32 cycles=147799205 match=1 equation=PASS keyhash=a7ebce4fa13112210c5c3f7f345bcf0a88efbc3331f7e91350baf81867265403
+KEYGEN_PERF degree=1024 index=33 cycles=242923396 match=1 equation=PASS keyhash=5b340c34813a04c7a8a10dcaa6b3eb506c78725e6a84b664bbbd117a15e5aa2a
+KEYGEN_PERF degree=1024 index=34 cycles=384837059 match=1 equation=PASS keyhash=d3d6d0d2590462a5d6060f9fb0827e331a1295a7b54fa151ac1275489ab2d025
+KEYGEN_PERF degree=1024 index=35 cycles=151418147 match=1 equation=PASS keyhash=16822880c1a0e18ff6759cc5019b186a077a84443c9aade05fed4f08a281b62d
+KEYGEN_PERF degree=1024 index=36 cycles=301039563 match=1 equation=PASS keyhash=a4c70ba684a81463c1082c9a547d41c1a80025cf895714a7bc6f631dc5c87d1c
+KEYGEN_PERF degree=1024 index=37 cycles=197475875 match=1 equation=PASS keyhash=54874fa1eef491d70d6a17e4ee340ad45372fa0fac7a0521c9d98fe9bd90286b
+KEYGEN_PERF degree=1024 index=38 cycles=281414110 match=1 equation=PASS keyhash=81c2a83a9059e98d7546e6c36c3b70dc4b06057701ded71e3414a8ce5df9bc0a
+KEYGEN_PERF degree=1024 index=39 cycles=164323727 match=1 equation=PASS keyhash=b88b2743e7e176d79dae961e9b242a1234309019ffe0010daa9517ed2b04a716
+KEYGEN_PERF degree=1024 index=40 cycles=249090709 match=1 equation=PASS keyhash=1f3036df08e4d1c3fd4eb0e0c66ae564669bd15ae13d0a472cbdf0366ca70a50
+KEYGEN_PERF degree=1024 index=41 cycles=155064438 match=1 equation=PASS keyhash=bf29154c15e8043ed175f71707fb8ab0e32386b5735a5ee3cbdedeaafb9b33b6
+KEYGEN_PERF degree=1024 index=42 cycles=168858341 match=1 equation=PASS keyhash=94af0d0f3f21e51933900b7a652e1a5ef4421f2f1dda96d81376343e29de431b
+KEYGEN_PERF degree=1024 index=43 cycles=153453381 match=1 equation=PASS keyhash=a199293153f660df3fe30a7a34d5b699d9812dcc831860b2adfde4c89a8d9694
+KEYGEN_PERF degree=1024 index=44 cycles=227272603 match=1 equation=PASS keyhash=e52b8dbc07e508fdd58182e7f26fca0c1cbf61c94b208d99877e8f9ce6b31926
+KEYGEN_PERF degree=1024 index=45 cycles=214990289 match=1 equation=PASS keyhash=f0e038064303c3686e26bd88c33bbc8f24820e8aeafe0c3657114d84b6efd2fc
+KEYGEN_PERF degree=1024 index=46 cycles=270206490 match=1 equation=PASS keyhash=a519e434b67d12d4660cda207e00e96866fa4d613889defda69470215fbd3c17
+KEYGEN_PERF degree=1024 index=47 cycles=471244545 match=1 equation=PASS keyhash=84f12c196aa091b692e40419573195c8eee18ff5b6dd37112233b7404abcef8a
+KEYGEN_PERF degree=1024 index=48 cycles=167140299 match=1 equation=PASS keyhash=fc84b96c2acd77b2b83a13f0a671d90ee2567b222c15c1f7f30a9f37b3eb74dc
+KEYGEN_PERF degree=1024 index=49 cycles=181116925 match=1 equation=PASS keyhash=7dfd68bfaa165831b03e29c6193652788657c5a12833cd902f9022affbca0074
+KEYGEN_PERF degree=1024 index=50 cycles=260607353 match=1 equation=PASS keyhash=ffa14df8018989c44f0e47d960536f72241ccd46bee2001601f01ab07f3f2fb1
+KEYGEN_PERF degree=1024 index=51 cycles=324236081 match=1 equation=PASS keyhash=0ca5a54e37fb6ee9728f0e947e338c76ca0efddda5ac2f7e0e36f1cfbb3c89f1
+KEYGEN_PERF degree=1024 index=52 cycles=205630152 match=1 equation=PASS keyhash=24a1f8d4bb37dc804db1f6bd3e49d8143e02d41e49257005b8393a37b2a19f1f
+KEYGEN_PERF degree=1024 index=53 cycles=150167533 match=1 equation=PASS keyhash=a93e54a5a617495683509b59c18ab24c7a45239283148003fbb3f7674387ea76
+KEYGEN_PERF degree=1024 index=54 cycles=172838012 match=1 equation=PASS keyhash=0d6e53d9383e009b5de3076c9561e14eaf0ef9a7f49debfd76374bdfad704455
+KEYGEN_PERF degree=1024 index=55 cycles=228505606 match=1 equation=PASS keyhash=72e67d5d737be0fd2c58f2c74566f6cba357978f338d180310d2298f263b4dca
+KEYGEN_PERF degree=1024 index=56 cycles=584465192 match=1 equation=PASS keyhash=ebb98c5f162040e29ae19e83d346d0a6731529b054ca4f86816f04099d0376e9
+KEYGEN_PERF degree=1024 index=57 cycles=141392398 match=1 equation=PASS keyhash=4222dea24aa0d1a5b7c9762265428e4870fae09de2d79e272aca360720155154
+KEYGEN_PERF degree=1024 index=58 cycles=251191552 match=1 equation=PASS keyhash=a2df67414c39e20134088e5e9cfb9e65e2ce9610e3f162a102f224ab634ca92c
+KEYGEN_PERF degree=1024 index=59 cycles=156239805 match=1 equation=PASS keyhash=333e2c5ec307120fa0c326bbf0368ae2abf1ed3c0b8b3a35f7b953f44d30567d
+KEYGEN_PERF degree=1024 index=60 cycles=193314918 match=1 equation=PASS keyhash=035e6ade13bc573461d545bb324e3ecf0d82a845a1803185bfc983336279d6cb
+KEYGEN_PERF degree=1024 index=61 cycles=241375101 match=1 equation=PASS keyhash=d68a903bb156b5189a3f1c927e4c2cbbbb98f3fc5269505d94c8822ec6b6967b
+KEYGEN_PERF degree=1024 index=62 cycles=172535465 match=1 equation=PASS keyhash=58a4bad17a5ee59f0f37ee24128f98cafbd4d13ca0b1542a2c85e977d6da283f
+KEYGEN_PERF degree=1024 index=63 cycles=337388512 match=1 equation=PASS keyhash=dc61738896354b10cbce91bb2eb9b3bfac99e23201375ac0d2104b9282a6997a
+KEYGEN_PERF degree=1024 index=64 cycles=201210456 match=1 equation=PASS keyhash=f87a10ac79b57c12c35660db4286464f238566515a57995ba3ad5c406f25fcb7
+KEYGEN_PERF degree=1024 index=65 cycles=458081794 match=1 equation=PASS keyhash=94f23d5da25d9e6634a7fa7ff8a919fc771d5fc08825144fceb0cf96343872e5
+KEYGEN_PERF degree=1024 index=66 cycles=142085266 match=1 equation=PASS keyhash=8f747657a9eb0c45eb518443fb10b1aedb5ccb2998e1eab6cc68a7b5171524de
+KEYGEN_PERF degree=1024 index=67 cycles=311720825 match=1 equation=PASS keyhash=e4b149213f551850afb065f361018104548db7d3efde181f6b7ec34431468016
+KEYGEN_PERF degree=1024 index=68 cycles=156724511 match=1 equation=PASS keyhash=874d9240b1174c6bb30095c7b3ac70b9d9eb4eb3d29cd1e2584430143fb95446
+KEYGEN_PERF degree=1024 index=69 cycles=190015365 match=1 equation=PASS keyhash=dc23c2e6ab606283f0332592df97ab97205106239717ab75b82a03251a0fb2f5
+KEYGEN_PERF degree=1024 index=70 cycles=462069738 match=1 equation=PASS keyhash=67516d42eba6be73822b08c70211d6d23b4e15c354bf1da20ca10608c25c3e21
+KEYGEN_PERF degree=1024 index=71 cycles=150860089 match=1 equation=PASS keyhash=641b6457e7ba2e37267a7515a78ef818472d1bfb25f0205e9ab025e0fb1262a8
+KEYGEN_PERF degree=1024 index=72 cycles=216099270 match=1 equation=PASS keyhash=7a59d10da84aab5b64509000a206c6cf1b11befab987c25ae53d5419acccb4cb
+KEYGEN_PERF degree=1024 index=73 cycles=149683198 match=1 equation=PASS keyhash=73851e2c6e9a2314cb05e5482650f610b5e0f56e919a0c7eea25cbac649ee190
+KEYGEN_PERF degree=1024 index=74 cycles=441058437 match=1 equation=PASS keyhash=cb86d22d5c4c042a3ce06bd54c710a8eb164aa2fa4f5803e25765c391679f467
+KEYGEN_PERF degree=1024 index=75 cycles=156630490 match=1 equation=PASS keyhash=0cf95182e79f347dcca8863df772c5d322a4683dd2c650893df4cb699c3cb503
+KEYGEN_PERF degree=1024 index=76 cycles=433450173 match=1 equation=PASS keyhash=4e6d72025dcef708ade579571329708b00f421c38b00dae546a8f9188bc271e3
+KEYGEN_PERF degree=1024 index=77 cycles=231236701 match=1 equation=PASS keyhash=09bc79bf1da15b3f2c50c4120cce41c2df88e0dae905d29bb6cdbeb755505559
+KEYGEN_PERF degree=1024 index=78 cycles=192274667 match=1 equation=PASS keyhash=785a9a49acd2c5f5ec36f7da98583bd2a1950c19ddec2cb7d6f598ed76d29266
+KEYGEN_PERF degree=1024 index=79 cycles=267975867 match=1 equation=PASS keyhash=f286326cde457daae26f5da58538086333607fcec461eea0b7942c99ae68681c
+KEYGEN_PERF degree=1024 index=80 cycles=245095247 match=1 equation=PASS keyhash=1527192aecabc3fa7e0a3b7f1456b6a06dfb10e1db4f4a7fe91a0d691a0f3330
+KEYGEN_PERF degree=1024 index=81 cycles=570092818 match=1 equation=PASS keyhash=e30130253c0904047b12897fd311f2c4b3eceb63940a57f7a6fb6bdf436baa36
+KEYGEN_PERF degree=1024 index=82 cycles=239609103 match=1 equation=PASS keyhash=b2334dabbf9f7a39ff1a4dc42dd03a1a17f1899edc4bc25fd39a2264c46e2f04
+KEYGEN_PERF degree=1024 index=83 cycles=270231306 match=1 equation=PASS keyhash=399efbd912230fa4c205a04f8db6c3e7b4000f2b5091b032bd7b634e2475e135
+KEYGEN_PERF degree=1024 index=84 cycles=744401830 match=1 equation=PASS keyhash=080a6dd29edfeaac394fd21a851fc83248f6c56383ed2b18d70546f63af8d909
+KEYGEN_PERF degree=1024 index=85 cycles=147090998 match=1 equation=PASS keyhash=d2845335a51f20f39aa8b8644e47df6f4c5c1aaecd0a6f7ae2a92c11def9d9a8
+KEYGEN_PERF degree=1024 index=86 cycles=152955203 match=1 equation=PASS keyhash=631dc51a18cbda666578878e7d1d372e8e34903dcab282490f05bc74f5a82ceb
+KEYGEN_PERF degree=1024 index=87 cycles=154703021 match=1 equation=PASS keyhash=1cde8b4210197332a588185d6f5dfdee49f00b7124ba77c39021bb2eeb11617a
+KEYGEN_PERF degree=1024 index=88 cycles=224335405 match=1 equation=PASS keyhash=9a48285e0143b4f9d6d87e95dbbf330a40ef444d2a8a9dfe6ea0754a6851b947
+KEYGEN_PERF degree=1024 index=89 cycles=202039485 match=1 equation=PASS keyhash=93fc8a7a63c3ea501283ca357a9a2d9b632c90718889bd85d359e72ae353a03b
+KEYGEN_PERF degree=1024 index=90 cycles=499633387 match=1 equation=PASS keyhash=6ae1f258fd1b47847a770cfc8b57edd87f73b643456ed0d3f55b61f64ba998aa
+KEYGEN_PERF degree=1024 index=91 cycles=145010077 match=1 equation=PASS keyhash=8213ebe0bd9662cc540a86f37b5c3778a577faa11eb7785cd65f71136ba34d17
+KEYGEN_PERF degree=1024 index=92 cycles=240015139 match=1 equation=PASS keyhash=f93d2d41cf8b1142bb766ef498504462e2fd15e75b8a8cbab11df89b5669cdf9
+KEYGEN_PERF degree=1024 index=93 cycles=155035736 match=1 equation=PASS keyhash=9b1b3ab5c634272c40cf4f7c46d6588e137710cce505798a03f8d3f1b4535b46
+KEYGEN_PERF degree=1024 index=94 cycles=178451489 match=1 equation=PASS keyhash=05ba9ac56237bf4544cd277a0f0f1e5dd521c1287d2eb16c22f6c445bb8fb4e2
+KEYGEN_PERF degree=1024 index=95 cycles=313110380 match=1 equation=PASS keyhash=a7b4103bac08de9484734e19631beb10677209f22afdd43f5c3f9300bb98d208
+KEYGEN_PERF degree=1024 index=96 cycles=259303019 match=1 equation=PASS keyhash=48b163e6d5c4dc614d9038ff3c063fee0ff842b42c69b13b81292301002cea07
+KEYGEN_PERF degree=1024 index=97 cycles=144317501 match=1 equation=PASS keyhash=55ef208bf4008cad720ad5c5f44999b1bbf6dc7375267df51ca48893bf821a45
+KEYGEN_PERF degree=1024 index=98 cycles=153345324 match=1 equation=PASS keyhash=6d18c6049c6e36564d80fdb916a7bb6a27f09747d9d444a537937bfacc56c300
+KEYGEN_PERF degree=1024 index=99 cycles=211963120 match=1 equation=PASS keyhash=5fb66d78fddbd42b4243d2bcaa626b4185c4bdbb815aa02a60e02a93e08106b3
+KEYGEN_SUMMARY degree=1024 calls=100 total=24516538758 median_lo=196673897 median_hi=197475875 min=141391893 max=744401830
+KEYGEN_DONE count=200 mismatches=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1ae68 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x13b88 lma 0x30000980
+Loading section datas, size 0x4c lma 0x30014520
+Loading section device_states, size 0x2c lma 0x3001456c
+Loading section k_mutex_area, size 0x14 lma 0x30014598
+Loading section .last_section, size 0x4 lma 0x300145ac
+Start address 0x10016258, load size 194340
+Transfer rate: 551 KB/sec, 7474 bytes/write.
+Temporary breakpoint 1 at 0x10012fb4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x10016244: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpoqt6_4bq/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10012f48: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x10016244: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x985e4c            9985612
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30023d68          805453160
+r8             0x300000d0          805306576
+r9             0x30033ea8          805519016
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30033e58          0x30033e58 <z_main_stack+65456>
+lr             0x10012fab          268513195
+pc             0x10012f48          0x10012f48 <nucleo_test_breakpoint>
+xpsr           0x10c0000           17563648
+fpscr          0x40010             262160
+msp            0x30023d68          0x30023d68 <z_idle_stacks>
+psp            0x30033e58          0x30033e58 <z_main_stack+65456>
+vpr            0x3f3c              [ P0=16188 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30023d68          0x30023d68 <z_idle_stacks>
+psp_s          0x30033e58          0x30033e58 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30023568          0x30023568 <z_interrupt_stacks>
+psplim_s       0x30023ea8          0x30023ea8 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x3f3c              16188
+0x30033e58 <z_main_stack+65456>:	0x00000000	0x10012fc7	0x00000000	0x10019a5b
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30023d68
+PSP=0x30033e58
+LR=0x10012fab
+PC=0x10012f48
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30023d68 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30023d78 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

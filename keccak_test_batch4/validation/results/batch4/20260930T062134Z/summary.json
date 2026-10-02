@@ -1,0 +1,97 @@
+{
+  "run": "/Users/seungwon/FALCON/keccak_test_batch4/validation/results/batch4/20260930T062134Z",
+  "valid": true,
+  "current_sources_match": true,
+  "rows": [
+    {
+      "n": 512,
+      "blocks": 32,
+      "samples": 40,
+      "original4_cycles": 43244049.0,
+      "batch4_cycles": 42768363.0,
+      "original_equiv_one": 10811012.25,
+      "batch_equiv_one": 10692090.75,
+      "throughput_speedup": 1.0111223803445553,
+      "cycle_reduction_percent": 1.1000033784995478,
+      "paired_median": 1.0111240594914808,
+      "paired_min": 1.0110561474450974,
+      "paired_max": 1.011237216380937
+    },
+    {
+      "n": 512,
+      "blocks": 64,
+      "samples": 40,
+      "original4_cycles": 43244048.5,
+      "batch4_cycles": 42289619.0,
+      "original_equiv_one": 10811012.125,
+      "batch_equiv_one": 10572404.75,
+      "throughput_speedup": 1.0225688838672204,
+      "cycle_reduction_percent": 2.20707711952548,
+      "paired_median": 1.022570435911573,
+      "paired_min": 1.0224504359399833,
+      "paired_max": 1.0227721091843365
+    },
+    {
+      "n": 512,
+      "blocks": 112,
+      "samples": 40,
+      "original4_cycles": 43244049.0,
+      "batch4_cycles": 41571434.0,
+      "original_equiv_one": 10811012.25,
+      "batch_equiv_one": 10392858.5,
+      "throughput_speedup": 1.0402347198318922,
+      "cycle_reduction_percent": 3.867850117365279,
+      "paired_median": 1.0402349605225227,
+      "paired_min": 1.040035595902453,
+      "paired_max": 1.0405790797716141
+    },
+    {
+      "n": 1024,
+      "blocks": 32,
+      "samples": 40,
+      "original4_cycles": 90254383.5,
+      "batch4_cycles": 89778149.5,
+      "original_equiv_one": 22563595.875,
+      "batch_equiv_one": 22444537.375,
+      "throughput_speedup": 1.005304564670271,
+      "cycle_reduction_percent": 0.5276574738333872,
+      "paired_median": 1.0053048862725469,
+      "paired_min": 1.005264745030016,
+      "paired_max": 1.0053499602317602
+    },
+    {
+      "n": 1024,
+      "blocks": 64,
+      "samples": 40,
+      "original4_cycles": 90254383.5,
+      "batch4_cycles": 89299420.0,
+      "original_equiv_one": 22563595.875,
+      "batch_equiv_one": 22324855.0,
+      "throughput_speedup": 1.010693949635955,
+      "cycle_reduction_percent": 1.0580799103236949,
+      "paired_median": 1.0106939496724092,
+      "paired_min": 1.0106313370246653,
+      "paired_max": 1.0107666294078075
+    },
+    {
+      "n": 1024,
+      "blocks": 112,
+      "samples": 40,
+      "original4_cycles": 90254383.5,
+      "batch4_cycles": 88580994.5,
+      "original_equiv_one": 22563595.875,
+      "batch_equiv_one": 22145248.625,
+      "throughput_speedup": 1.0188910613325752,
+      "cycle_reduction_percent": 1.8540805832439111,
+      "paired_median": 1.0188909394331613,
+      "paired_min": 1.0187899344201443,
+      "paired_max": 1.019002826805756
+    }
+  ],
+  "checks": [
+    "CHECK streams=PASS prefix_blocks=0,1,2,7,112 tails=1..7 retry_counters=1..26",
+    "CHECK signatures=PASS exact=1008 verified=1008 rejected=2016 keys=8",
+    "CHECK api=PASS mixed_degrees=PASS single=PASS short_buffer=PASS null_seed=PASS clear=PASS",
+    "BENCH_DONE result=0 total_exact=1020 total_rejected=2040"
+  ]
+}

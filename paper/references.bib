@@ -1,0 +1,346 @@
+% ---------------------------------------------------------------------------
+% Standards and specifications
+% ---------------------------------------------------------------------------
+
+@techreport{FIPS203,
+  author      = {{National Institute of Standards and Technology}},
+  title       = {Module-Lattice-Based Key-Encapsulation Mechanism Standard},
+  type        = {Federal Information Processing Standards Publication},
+  number      = {FIPS 203},
+  institution = {U.S. Department of Commerce},
+  year        = {2024},
+  month       = aug,
+  doi         = {10.6028/NIST.FIPS.203},
+}
+
+@techreport{FIPS204,
+  author      = {{National Institute of Standards and Technology}},
+  title       = {Module-Lattice-Based Digital Signature Standard},
+  type        = {Federal Information Processing Standards Publication},
+  number      = {FIPS 204},
+  institution = {U.S. Department of Commerce},
+  year        = {2024},
+  month       = aug,
+  doi         = {10.6028/NIST.FIPS.204},
+}
+
+@techreport{FIPS205,
+  author      = {{National Institute of Standards and Technology}},
+  title       = {Stateless Hash-Based Digital Signature Standard},
+  type        = {Federal Information Processing Standards Publication},
+  number      = {FIPS 205},
+  institution = {U.S. Department of Commerce},
+  year        = {2024},
+  month       = aug,
+  doi         = {10.6028/NIST.FIPS.205},
+}
+
+@misc{Falcon,
+  author       = {Pierre-Alain Fouque and Jeffrey Hoffstein and Paul Kirchner
+                  and Vadim Lyubashevsky and Thomas Pornin and Thomas Prest
+                  and Thomas Ricosset and Gregor Seiler and William Whyte
+                  and Zhenfei Zhang},
+  title        = {{Falcon}: Fast-{Fourier} Lattice-based Compact Signatures
+                  over {NTRU}. {Specification} v1.2},
+  howpublished = {Submission to the NIST Post-Quantum Cryptography
+                  Standardization Process, Round~3},
+  year         = {2020},
+  note         = {\url{https://falcon-sign.info/}},
+}
+
+@inproceedings{DP16,
+  author    = {L{\'e}o Ducas and Thomas Prest},
+  title     = {Fast {Fourier} Orthogonalization},
+  booktitle = {Proceedings of the {ACM} on International Symposium on
+               Symbolic and Algebraic Computation, {ISSAC} 2016},
+  pages     = {191--198},
+  publisher = {ACM},
+  year      = {2016},
+  doi       = {10.1145/2930889.2930923},
+}
+
+% TODO: add the issue/version of the manual that is used.
+@manual{ArmV8MARM,
+  title        = {{Armv8-M} Architecture Reference Manual},
+  organization = {Arm Limited},
+  note         = {Document number DDI0553},
+}
+
+
+% ---------------------------------------------------------------------------
+% Falcon / FN-DSA implementations
+% ---------------------------------------------------------------------------
+
+@misc{cfndsa,
+  author       = {Thomas Pornin},
+  title        = {c-fn-dsa: {FN-DSA} implementation in {C}},
+  howpublished = {\url{https://github.com/pornin/c-fn-dsa}},
+  note         = {Commit a5f15894bf1a68017074650d5298cecf9bb29a79},
+  year         = {2026},
+}
+
+@misc{Pornin19,
+  author       = {Thomas Pornin},
+  title        = {New Efficient, Constant-Time Implementations of {Falcon}},
+  howpublished = {Cryptology {ePrint} Archive, Paper 2019/893},
+  year         = {2019},
+  url          = {https://eprint.iacr.org/2019/893},
+}
+
+@misc{Pornin25m4,
+  author       = {Thomas Pornin},
+  title        = {{Falcon} on {ARM} {Cortex-M4}: an Update},
+  howpublished = {Cryptology {ePrint} Archive, Paper 2025/123},
+  year         = {2025},
+  url          = {https://eprint.iacr.org/2025/123},
+}
+
+@misc{Pornin26ram,
+  author       = {Thomas Pornin},
+  title        = {A {RAM}-Efficient Implementation of {Falcon}},
+  howpublished = {Cryptology {ePrint} Archive, Paper 2026/1915},
+  year         = {2026},
+  url          = {https://eprint.iacr.org/2026/1915},
+}
+
+@misc{Pornin23kg,
+  author       = {Thomas Pornin},
+  title        = {Improved Key Pair Generation for {Falcon}, {BAT} and {Hawk}},
+  howpublished = {Cryptology {ePrint} Archive, Paper 2023/290},
+  year         = {2023},
+  url          = {https://eprint.iacr.org/2023/290},
+}
+
+@misc{Pornin25kg,
+  author       = {Thomas Pornin},
+  title        = {Improved (Again) Key Pair Generation for {Falcon}, {BAT}
+                  and {Hawk}},
+  howpublished = {Cryptology {ePrint} Archive, Paper 2025/1239},
+  year         = {2025},
+  url          = {https://eprint.iacr.org/2025/1239},
+}
+
+@inproceedings{HW23,
+  author    = {James Howe and Bas Westerbaan},
+  title     = {Benchmarking and Analysing the {NIST} {PQC} Lattice-Based
+               Signature Schemes Standards on the {ARM} {Cortex} {M7}},
+  booktitle = {Progress in Cryptology -- {AFRICACRYPT} 2023},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {14064},
+  publisher = {Springer},
+  year      = {2023},
+  doi       = {10.1007/978-3-031-37679-5_19},
+}
+
+@inproceedings{NG23,
+  author    = {Duc Tri Nguyen and Kris Gaj},
+  title     = {Fast {Falcon} Signature Generation and Verification Using
+               {ARMv8} {NEON} Instructions},
+  booktitle = {Progress in Cryptology -- {AFRICACRYPT} 2023},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {14064},
+  pages     = {417--441},
+  publisher = {Springer},
+  year      = {2023},
+  doi       = {10.1007/978-3-031-37679-5_18},
+}
+
+@article{KSS22,
+  author  = {Youngbeom Kim and Jingyo Song and Seog Chung Seo},
+  title   = {Accelerating {Falcon} on {ARMv8}},
+  journal = {IEEE Access},
+  volume  = {10},
+  pages   = {44446--44460},
+  year    = {2022},
+  doi     = {10.1109/ACCESS.2022.3169784},
+}
+
+@article{ZZ26,
+  author  = {Jipeng Zhang and Jiaheng Zhang},
+  title   = {Vectorized {Falcon-Sign} Implementations using {SSE2}, {AVX2},
+             {AVX-512F}, {NEON}, and {RVV}},
+  journal = {IACR Transactions on Cryptographic Hardware and Embedded Systems},
+  volume  = {2026},
+  number  = {1},
+  pages   = {302--324},
+  year    = {2026},
+  doi     = {10.46586/tches.v2026.i1.302-324},
+}
+
+@article{TWFalcon,
+  author  = {Stef Halmans and Christine van Vredendaal and Tobias Schneider
+             and Frank Custers and Tim G{\"u}neysu},
+  title   = {{TWFalcon}: Triple-Word Arithmetic for {Falcon}: Giving
+             {Falcon} the Precision to Fly Securely},
+  journal = {IACR Transactions on Cryptographic Hardware and Embedded Systems},
+  volume  = {2026},
+  number  = {2},
+  pages   = {347--371},
+  year    = {2026},
+  note    = {Cryptology {ePrint} Archive, Paper 2025/1991},
+}
+
+% TODO: add the part and LNCS volume number of CRYPTO 2026.
+@inproceedings{BFLP26,
+  author    = {Daniel {De Almeida Braga} and Pierre-Alain Fouque and
+               Bachir Lachguel and Thomas Prest},
+  title     = {Toward a Secure Fixed-Point Implementation of the {Falcon}
+               Signature Scheme},
+  booktitle = {Advances in Cryptology -- {CRYPTO} 2026},
+  series    = {Lecture Notes in Computer Science},
+  pages     = {166--197},
+  publisher = {Springer},
+  year      = {2026},
+  doi       = {10.1007/978-3-032-35377-1_6},
+}
+
+% ---------------------------------------------------------------------------
+% Precision and side channels
+% ---------------------------------------------------------------------------
+
+@inproceedings{LTYZ25,
+  author    = {Xiuhan Lin and Mehdi Tibouchi and Yang Yu and Shiduo Zhang},
+  title     = {Do Not Disturb a Sleeping {Falcon}: Floating-Point Error
+               Sensitivity of the {Falcon} Sampler and Its Consequences},
+  booktitle = {Advances in Cryptology -- {EUROCRYPT} 2025, Part {II}},
+  series    = {Lecture Notes in Computer Science},
+  pages     = {213--244},
+  publisher = {Springer},
+  year      = {2025},
+  doi       = {10.1007/978-3-031-91124-8_8},
+}
+
+@inproceedings{KA21,
+  author    = {Emre Karabulut and Aydin Aysu},
+  title     = {{FALCON} Down: Breaking {FALCON} Post-Quantum Signature Scheme
+               through Side-Channel Attacks},
+  booktitle = {58th {ACM/IEEE} Design Automation Conference, {DAC} 2021},
+  publisher = {IEEE},
+  year      = {2021},
+}
+
+@article{GMRR22,
+  author  = {Morgane Guerreau and Ange Martinelli and Thomas Ricosset and
+             M{\'e}lissa Rossi},
+  title   = {The Hidden Parallelepiped Is Back Again: Power Analysis Attacks
+             on {Falcon}},
+  journal = {IACR Transactions on Cryptographic Hardware and Embedded Systems},
+  volume  = {2022},
+  number  = {3},
+  pages   = {141--164},
+  year    = {2022},
+  doi     = {10.46586/tches.v2022.i3.141-164},
+}
+
+@inproceedings{ZLYW23,
+  author    = {Shiduo Zhang and Xiuhan Lin and Yang Yu and Weijia Wang},
+  title     = {Improved Power Analysis Attacks on {Falcon}},
+  booktitle = {Advances in Cryptology -- {EUROCRYPT} 2023, Part {IV}},
+  series    = {Lecture Notes in Computer Science},
+  publisher = {Springer},
+  year      = {2023},
+}
+
+% ---------------------------------------------------------------------------
+% PQC on Arm Helium (MVE)
+% ---------------------------------------------------------------------------
+
+@article{BMKYV22,
+  author  = {Hanno Becker and Jose Maria {Bermudo Mera} and Angshuman
+             Karmakar and Joseph Yiu and Ingrid Verbauwhede},
+  title   = {Polynomial multiplication on embedded vector architectures},
+  journal = {IACR Transactions on Cryptographic Hardware and Embedded Systems},
+  volume  = {2022},
+  number  = {1},
+  pages   = {482--505},
+  year    = {2022},
+  doi     = {10.46586/tches.v2022.i1.482-505},
+}
+
+@article{SLOTHY,
+  author  = {Amin Abdulrahman and Hanno Becker and Matthias J. Kannwischer
+             and Fabien Klein},
+  title   = {Fast and Clean: Auditable High-Performance Assembly via
+             Constraint Solving},
+  journal = {IACR Transactions on Cryptographic Hardware and Embedded Systems},
+  volume  = {2024},
+  number  = {1},
+  pages   = {87--132},
+  year    = {2024},
+  doi     = {10.46586/tches.v2024.i1.87-132},
+}
+
+% Cite in the third person in the anonymous submission.
+@misc{LSS26,
+  author       = {Seung-Won Lee and Min-Joo Sim and Hwa-Jeong Seo},
+  title        = {High-Performance Implementations of {HAETAE} and {SMAUG-T}
+                  on {Arm} {Cortex-M55} Using {MVE} and {Slothy}},
+  howpublished = {Cryptology {ePrint} Archive, Paper 2026/2168},
+  year         = {2026},
+}
+
+% Implementation package of the round-3 Falcon submission (contains the
+% AVX2 base sampler that vectorizes the table comparisons of one sample).
+@misc{FalconImpl,
+  author       = {Pierre-Alain Fouque and Jeffrey Hoffstein and Paul Kirchner
+                  and Vadim Lyubashevsky and Thomas Pornin and Thomas Prest
+                  and Thomas Ricosset and Gregor Seiler and William Whyte
+                  and Zhenfei Zhang},
+  title        = {{Falcon}: implementation package ({Falcon-impl-20211101})},
+  howpublished = {\url{https://falcon-sign.info/Falcon-impl-20211101.zip}},
+  year         = {2021},
+}
+
+
+% ---------------------------------------------------------------------------
+% PQC migration status and policy (2024--2026)
+% ---------------------------------------------------------------------------
+
+
+% Still an Initial Public Draft as of 2026; re-check before submission.
+@techreport{NISTIR8547,
+  author      = {Dustin Moody and Ray Perlner and Andrew Regenscheid and
+                 Angela Robinson and David Cooper},
+  title       = {Transition to Post-Quantum Cryptography Standards},
+  type        = {NIST Internal Report},
+  number      = {8547 (Initial Public Draft)},
+  institution = {National Institute of Standards and Technology},
+  year        = {2024},
+  month       = nov,
+  doi         = {10.6028/NIST.IR.8547.ipd},
+}
+
+@misc{EUPQC25,
+  author       = {{NIS Cooperation Group, EU PQC Workstream}},
+  title        = {A Coordinated Implementation Roadmap for the Transition to
+                  Post-Quantum Cryptography, Part 1, Version 1.1},
+  year         = {2025},
+  month        = jun,
+  note         = {\url{https://digital-strategy.ec.europa.eu/en/library/coordinated-implementation-roadmap-transition-post-quantum-cryptography},
+                  accessed 2026-10-01},
+}
+
+% Verified against the PDF (PP-22-1338, Ver. 1.0, September 2022; the URL path
+% date 2025/May/30 is only the hosting date): "Software and firmware signing:
+% begin transitioning immediately, support and prefer CNSA 2.0 by 2025, and
+% exclusively use CNSA 2.0 by 2030" (requirements for National Security Systems).
+@misc{CNSA2,
+  author       = {{National Security Agency}},
+  title        = {Announcing the Commercial National Security Algorithm Suite
+                  2.0},
+  howpublished = {Cybersecurity Advisory PP-22-1338, Ver.~1.0},
+  year         = {2022},
+  month        = sep,
+  note         = {\url{https://media.defense.gov/2025/May/30/2003728741/-1/-1/0/CSA_CNSA_2.0_ALGORITHMS.PDF},
+                  accessed 2026-10-01},
+}
+
+% TODO: confirm the exact title and revision on the ST document page
+% (DS14791; Rev 10, August 2026 according to the search index).
+@manual{STM32N6DS,
+  title        = {{STM32N657} datasheet},
+  organization = {STMicroelectronics},
+  note         = {Document DS14791, \url{https://www.st.com/resource/en/datasheet/stm32n657a0.pdf},
+                  accessed 2026-10-01},
+  year         = {2026},
+}

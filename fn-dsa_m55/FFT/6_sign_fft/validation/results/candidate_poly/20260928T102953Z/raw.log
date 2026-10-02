@@ -1,0 +1,528 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 61021
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :61021 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+compare-sections
+tbreak *0x10002e64
+hbreak *0x100060f4
+set $early_fault_bp = $bpnum
+jump *0x10006109
+if $pc != 0x10002e64
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpsrzs3raa/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10002e14
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x100060f4
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+if *(unsigned int*)0xe000ed28 != 0
+echo [[EXTENDED-FAULT-DIAGNOSTIC]]\n
+echo VTOR_FPCCR_FPCAR:\n
+x/wx 0xe000ed08
+x/3wx 0xe000ef34
+echo VECTOR_WORDS:\n
+x/16wx 0x10000000
+echo MEMSYSCTL:\n
+x/24wx 0xe001e000
+echo PSP_EXTENDED:\n
+x/96wx $psp
+echo MSP_EXTENDED:\n
+x/48wx $msp
+end
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 61021
+Info : Listening on port 61021 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/61021
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003510 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+POLY_HW cpu=800000000 fpscr=00040000 ccr=00000611 tcm=00000099
+POLY_EXACT degree=2 inverse=0 failures=0 guards=0
+POLY_PERF degree=2 inverse=0 implementation=emulated calls=100 total=6600 median_lo=66 median_hi=66 min=66 max=66
+POLY_PERF degree=2 inverse=0 implementation=native_c calls=100 total=5600 median_lo=56 median_hi=56 min=56 max=56
+POLY_PERF degree=2 inverse=0 implementation=current calls=100 total=4700 median_lo=47 median_hi=47 min=47 max=47
+POLY_CT degree=2 inverse=0 class=0 calls=100 total=2500 min=25 max=25
+POLY_CT degree=2 inverse=0 class=1 calls=100 total=2500 min=25 max=25
+POLY_CT degree=2 inverse=0 class=2 calls=100 total=2500 min=25 max=25
+POLY_CT degree=2 inverse=0 class=3 calls=100 total=2500 min=25 max=25
+POLY_CT degree=2 inverse=0 class=4 calls=100 total=2500 min=25 max=25
+POLY_CT degree=2 inverse=0 class=5 calls=100 total=2500 min=25 max=25
+POLY_CT degree=2 inverse=0 class=6 calls=100 total=2500 min=25 max=25
+POLY_CT degree=2 inverse=0 class=7 calls=100 total=2500 min=25 max=25
+POLY_EXACT degree=2 inverse=1 failures=0 guards=0
+POLY_PERF degree=2 inverse=1 implementation=emulated calls=100 total=6500 median_lo=65 median_hi=65 min=65 max=65
+POLY_PERF degree=2 inverse=1 implementation=native_c calls=100 total=5000 median_lo=50 median_hi=50 min=50 max=50
+POLY_PERF degree=2 inverse=1 implementation=current calls=100 total=4600 median_lo=46 median_hi=46 min=46 max=46
+POLY_CT degree=2 inverse=1 class=0 calls=100 total=2100 min=21 max=21
+POLY_CT degree=2 inverse=1 class=1 calls=100 total=2100 min=21 max=21
+POLY_CT degree=2 inverse=1 class=2 calls=100 total=2100 min=21 max=21
+POLY_CT degree=2 inverse=1 class=3 calls=100 total=2100 min=21 max=21
+POLY_CT degree=2 inverse=1 class=4 calls=100 total=2100 min=21 max=21
+POLY_CT degree=2 inverse=1 class=5 calls=100 total=2100 min=21 max=21
+POLY_CT degree=2 inverse=1 class=6 calls=100 total=2100 min=21 max=21
+POLY_CT degree=2 inverse=1 class=7 calls=100 total=2100 min=21 max=21
+POLY_EXACT degree=4 inverse=0 failures=0 guards=0
+POLY_PERF degree=4 inverse=0 implementation=emulated calls=100 total=73500 median_lo=735 median_hi=735 min=735 max=735
+POLY_PERF degree=4 inverse=0 implementation=native_c calls=100 total=33200 median_lo=332 median_hi=332 min=332 max=332
+POLY_PERF degree=4 inverse=0 implementation=current calls=100 total=26200 median_lo=262 median_hi=262 min=262 max=262
+POLY_CT degree=4 inverse=0 class=0 calls=100 total=23900 min=239 max=239
+POLY_CT degree=4 inverse=0 class=1 calls=100 total=23900 min=239 max=239
+POLY_CT degree=4 inverse=0 class=2 calls=100 total=23900 min=239 max=239
+POLY_CT degree=4 inverse=0 class=3 calls=100 total=23900 min=239 max=239
+POLY_CT degree=4 inverse=0 class=4 calls=100 total=23900 min=239 max=239
+POLY_CT degree=4 inverse=0 class=5 calls=100 total=23900 min=239 max=239
+POLY_CT degree=4 inverse=0 class=6 calls=100 total=23900 min=239 max=239
+POLY_CT degree=4 inverse=0 class=7 calls=100 total=23900 min=239 max=239
+POLY_EXACT degree=4 inverse=1 failures=0 guards=0
+POLY_PERF degree=4 inverse=1 implementation=emulated calls=100 total=66600 median_lo=666 median_hi=666 min=666 max=666
+POLY_PERF degree=4 inverse=1 implementation=native_c calls=100 total=24000 median_lo=240 median_hi=240 min=240 max=240
+POLY_PERF degree=4 inverse=1 implementation=current calls=100 total=22800 median_lo=228 median_hi=228 min=228 max=228
+POLY_CT degree=4 inverse=1 class=0 calls=100 total=20300 min=203 max=203
+POLY_CT degree=4 inverse=1 class=1 calls=100 total=20300 min=203 max=203
+POLY_CT degree=4 inverse=1 class=2 calls=100 total=20300 min=203 max=203
+POLY_CT degree=4 inverse=1 class=3 calls=100 total=20300 min=203 max=203
+POLY_CT degree=4 inverse=1 class=4 calls=100 total=20300 min=203 max=203
+POLY_CT degree=4 inverse=1 class=5 calls=100 total=20300 min=203 max=203
+POLY_CT degree=4 inverse=1 class=6 calls=100 total=20300 min=203 max=203
+POLY_CT degree=4 inverse=1 class=7 calls=100 total=20300 min=203 max=203
+POLY_EXACT degree=8 inverse=0 failures=0 guards=0
+POLY_PERF degree=8 inverse=0 implementation=emulated calls=100 total=139200 median_lo=1392 median_hi=1392 min=1392 max=1392
+POLY_PERF degree=8 inverse=0 implementation=native_c calls=100 total=60500 median_lo=605 median_hi=605 min=605 max=605
+POLY_PERF degree=8 inverse=0 implementation=current calls=100 total=49200 median_lo=492 median_hi=492 min=492 max=492
+POLY_CT degree=8 inverse=0 class=0 calls=100 total=47000 min=470 max=470
+POLY_CT degree=8 inverse=0 class=1 calls=100 total=47000 min=470 max=470
+POLY_CT degree=8 inverse=0 class=2 calls=100 total=47000 min=470 max=470
+POLY_CT degree=8 inverse=0 class=3 calls=100 total=47000 min=470 max=470
+POLY_CT degree=8 inverse=0 class=4 calls=100 total=47000 min=470 max=470
+POLY_CT degree=8 inverse=0 class=5 calls=100 total=47000 min=470 max=470
+POLY_CT degree=8 inverse=0 class=6 calls=100 total=47000 min=470 max=470
+POLY_CT degree=8 inverse=0 class=7 calls=100 total=47000 min=470 max=470
+POLY_EXACT degree=8 inverse=1 failures=0 guards=0
+POLY_PERF degree=8 inverse=1 implementation=emulated calls=100 total=125700 median_lo=1257 median_hi=1257 min=1257 max=1257
+POLY_PERF degree=8 inverse=1 implementation=native_c calls=100 total=42900 median_lo=429 median_hi=429 min=429 max=429
+POLY_PERF degree=8 inverse=1 implementation=current calls=100 total=44500 median_lo=445 median_hi=445 min=445 max=445
+POLY_CT degree=8 inverse=1 class=0 calls=100 total=42000 min=420 max=420
+POLY_CT degree=8 inverse=1 class=1 calls=100 total=42000 min=420 max=420
+POLY_CT degree=8 inverse=1 class=2 calls=100 total=42000 min=420 max=420
+POLY_CT degree=8 inverse=1 class=3 calls=100 total=42000 min=420 max=420
+POLY_CT degree=8 inverse=1 class=4 calls=100 total=42000 min=420 max=420
+POLY_CT degree=8 inverse=1 class=5 calls=100 total=42000 min=420 max=420
+POLY_CT degree=8 inverse=1 class=6 calls=100 total=42000 min=420 max=420
+POLY_CT degree=8 inverse=1 class=7 calls=100 total=42000 min=420 max=420
+POLY_EXACT degree=16 inverse=0 failures=0 guards=0
+POLY_PERF degree=16 inverse=0 implementation=emulated calls=100 total=270700 median_lo=2707 median_hi=2707 min=2707 max=2707
+POLY_PERF degree=16 inverse=0 implementation=native_c calls=100 total=115100 median_lo=1151 median_hi=1151 min=1151 max=1151
+POLY_PERF degree=16 inverse=0 implementation=current calls=100 total=92000 median_lo=920 median_hi=920 min=920 max=920
+POLY_CT degree=16 inverse=0 class=0 calls=100 total=89800 min=898 max=898
+POLY_CT degree=16 inverse=0 class=1 calls=100 total=89800 min=898 max=898
+POLY_CT degree=16 inverse=0 class=2 calls=100 total=89800 min=898 max=898
+POLY_CT degree=16 inverse=0 class=3 calls=100 total=89800 min=898 max=898
+POLY_CT degree=16 inverse=0 class=4 calls=100 total=89800 min=898 max=898
+POLY_CT degree=16 inverse=0 class=5 calls=100 total=89800 min=898 max=898
+POLY_CT degree=16 inverse=0 class=6 calls=100 total=89800 min=898 max=898
+POLY_CT degree=16 inverse=0 class=7 calls=100 total=89800 min=898 max=898
+POLY_EXACT degree=16 inverse=1 failures=0 guards=0
+POLY_PERF degree=16 inverse=1 implementation=emulated calls=100 total=243900 median_lo=2439 median_hi=2439 min=2439 max=2439
+POLY_PERF degree=16 inverse=1 implementation=native_c calls=100 total=80699 median_lo=807 median_hi=807 min=806 max=807
+POLY_PERF degree=16 inverse=1 implementation=current calls=100 total=82300 median_lo=823 median_hi=823 min=823 max=823
+POLY_CT degree=16 inverse=1 class=0 calls=100 total=79800 min=798 max=798
+POLY_CT degree=16 inverse=1 class=1 calls=100 total=79800 min=798 max=798
+POLY_CT degree=16 inverse=1 class=2 calls=100 total=79800 min=798 max=798
+POLY_CT degree=16 inverse=1 class=3 calls=100 total=79800 min=798 max=798
+POLY_CT degree=16 inverse=1 class=4 calls=100 total=79800 min=798 max=798
+POLY_CT degree=16 inverse=1 class=5 calls=100 total=79800 min=798 max=798
+POLY_CT degree=16 inverse=1 class=6 calls=100 total=79800 min=798 max=798
+POLY_CT degree=16 inverse=1 class=7 calls=100 total=79800 min=798 max=798
+POLY_EXACT degree=32 inverse=0 failures=0 guards=0
+POLY_PERF degree=32 inverse=0 implementation=emulated calls=100 total=533700 median_lo=5337 median_hi=5337 min=5337 max=5337
+POLY_PERF degree=32 inverse=0 implementation=native_c calls=100 total=224300 median_lo=2243 median_hi=2243 min=2243 max=2243
+POLY_PERF degree=32 inverse=0 implementation=current calls=100 total=177600 median_lo=1776 median_hi=1776 min=1776 max=1776
+POLY_CT degree=32 inverse=0 class=0 calls=100 total=175400 min=1754 max=1754
+POLY_CT degree=32 inverse=0 class=1 calls=100 total=175400 min=1754 max=1754
+POLY_CT degree=32 inverse=0 class=2 calls=100 total=175400 min=1754 max=1754
+POLY_CT degree=32 inverse=0 class=3 calls=100 total=175400 min=1754 max=1754
+POLY_CT degree=32 inverse=0 class=4 calls=100 total=175400 min=1754 max=1754
+POLY_CT degree=32 inverse=0 class=5 calls=100 total=175400 min=1754 max=1754
+POLY_CT degree=32 inverse=0 class=6 calls=100 total=175400 min=1754 max=1754
+POLY_CT degree=32 inverse=0 class=7 calls=100 total=175400 min=1754 max=1754
+POLY_EXACT degree=32 inverse=1 failures=0 guards=0
+POLY_PERF degree=32 inverse=1 implementation=emulated calls=100 total=480300 median_lo=4803 median_hi=4803 min=4803 max=4803
+POLY_PERF degree=32 inverse=1 implementation=native_c calls=100 total=156300 median_lo=1563 median_hi=1563 min=1563 max=1563
+POLY_PERF degree=32 inverse=1 implementation=current calls=100 total=157900 median_lo=1579 median_hi=1579 min=1579 max=1579
+POLY_CT degree=32 inverse=1 class=0 calls=100 total=155400 min=1554 max=1554
+POLY_CT degree=32 inverse=1 class=1 calls=100 total=155400 min=1554 max=1554
+POLY_CT degree=32 inverse=1 class=2 calls=100 total=155400 min=1554 max=1554
+POLY_CT degree=32 inverse=1 class=3 calls=100 total=155400 min=1554 max=1554
+POLY_CT degree=32 inverse=1 class=4 calls=100 total=155400 min=1554 max=1554
+POLY_CT degree=32 inverse=1 class=5 calls=100 total=155400 min=1554 max=1554
+POLY_CT degree=32 inverse=1 class=6 calls=100 total=155400 min=1554 max=1554
+POLY_CT degree=32 inverse=1 class=7 calls=100 total=155400 min=1554 max=1554
+POLY_EXACT degree=64 inverse=0 failures=0 guards=0
+POLY_PERF degree=64 inverse=0 implementation=emulated calls=100 total=1059700 median_lo=10597 median_hi=10597 min=10597 max=10597
+POLY_PERF degree=64 inverse=0 implementation=native_c calls=100 total=442700 median_lo=4427 median_hi=4427 min=4427 max=4427
+POLY_PERF degree=64 inverse=0 implementation=current calls=100 total=348800 median_lo=3488 median_hi=3488 min=3488 max=3488
+POLY_CT degree=64 inverse=0 class=0 calls=100 total=346600 min=3466 max=3466
+POLY_CT degree=64 inverse=0 class=1 calls=100 total=346600 min=3466 max=3466
+POLY_CT degree=64 inverse=0 class=2 calls=100 total=346600 min=3466 max=3466
+POLY_CT degree=64 inverse=0 class=3 calls=100 total=346600 min=3466 max=3466
+POLY_CT degree=64 inverse=0 class=4 calls=100 total=346600 min=3466 max=3466
+POLY_CT degree=64 inverse=0 class=5 calls=100 total=346600 min=3466 max=3466
+POLY_CT degree=64 inverse=0 class=6 calls=100 total=346600 min=3466 max=3466
+POLY_CT degree=64 inverse=0 class=7 calls=100 total=346600 min=3466 max=3466
+POLY_EXACT degree=64 inverse=1 failures=0 guards=0
+POLY_PERF degree=64 inverse=1 implementation=emulated calls=100 total=953100 median_lo=9531 median_hi=9531 min=9531 max=9531
+POLY_PERF degree=64 inverse=1 implementation=native_c calls=100 total=307500 median_lo=3075 median_hi=3075 min=3075 max=3075
+POLY_PERF degree=64 inverse=1 implementation=current calls=100 total=309100 median_lo=3091 median_hi=3091 min=3091 max=3091
+POLY_CT degree=64 inverse=1 class=0 calls=100 total=306600 min=3066 max=3066
+POLY_CT degree=64 inverse=1 class=1 calls=100 total=306600 min=3066 max=3066
+POLY_CT degree=64 inverse=1 class=2 calls=100 total=306600 min=3066 max=3066
+POLY_CT degree=64 inverse=1 class=3 calls=100 total=306600 min=3066 max=3066
+POLY_CT degree=64 inverse=1 class=4 calls=100 total=306600 min=3066 max=3066
+POLY_CT degree=64 inverse=1 class=5 calls=100 total=306600 min=3066 max=3066
+POLY_CT degree=64 inverse=1 class=6 calls=100 total=306600 min=3066 max=3066
+POLY_CT degree=64 inverse=1 class=7 calls=100 total=306600 min=3066 max=3066
+POLY_EXACT degree=128 inverse=0 failures=0 guards=0
+POLY_PERF degree=128 inverse=0 implementation=emulated calls=100 total=2111700 median_lo=21117 median_hi=21117 min=21117 max=21117
+POLY_PERF degree=128 inverse=0 implementation=native_c calls=100 total=879500 median_lo=8795 median_hi=8795 min=8795 max=8795
+POLY_PERF degree=128 inverse=0 implementation=current calls=100 total=691200 median_lo=6912 median_hi=6912 min=6912 max=6912
+POLY_CT degree=128 inverse=0 class=0 calls=100 total=689000 min=6890 max=6890
+POLY_CT degree=128 inverse=0 class=1 calls=100 total=689000 min=6890 max=6890
+POLY_CT degree=128 inverse=0 class=2 calls=100 total=689000 min=6890 max=6890
+POLY_CT degree=128 inverse=0 class=3 calls=100 total=689000 min=6890 max=6890
+POLY_CT degree=128 inverse=0 class=4 calls=100 total=689000 min=6890 max=6890
+POLY_CT degree=128 inverse=0 class=5 calls=100 total=689000 min=6890 max=6890
+POLY_CT degree=128 inverse=0 class=6 calls=100 total=689000 min=6890 max=6890
+POLY_CT degree=128 inverse=0 class=7 calls=100 total=689000 min=6890 max=6890
+POLY_EXACT degree=128 inverse=1 failures=0 guards=0
+POLY_PERF degree=128 inverse=1 implementation=emulated calls=100 total=1898700 median_lo=18987 median_hi=18987 min=18987 max=18987
+POLY_PERF degree=128 inverse=1 implementation=native_c calls=100 total=609900 median_lo=6099 median_hi=6099 min=6099 max=6099
+POLY_PERF degree=128 inverse=1 implementation=current calls=100 total=606500 median_lo=6065 median_hi=6065 min=6065 max=6065
+POLY_CT degree=128 inverse=1 class=0 calls=100 total=604000 min=6040 max=6040
+POLY_CT degree=128 inverse=1 class=1 calls=100 total=604000 min=6040 max=6040
+POLY_CT degree=128 inverse=1 class=2 calls=100 total=604000 min=6040 max=6040
+POLY_CT degree=128 inverse=1 class=3 calls=100 total=604000 min=6040 max=6040
+POLY_CT degree=128 inverse=1 class=4 calls=100 total=604000 min=6040 max=6040
+POLY_CT degree=128 inverse=1 class=5 calls=100 total=604000 min=6040 max=6040
+POLY_CT degree=128 inverse=1 class=6 calls=100 total=604000 min=6040 max=6040
+POLY_CT degree=128 inverse=1 class=7 calls=100 total=604000 min=6040 max=6040
+POLY_EXACT degree=256 inverse=0 failures=0 guards=0
+POLY_PERF degree=256 inverse=0 implementation=emulated calls=100 total=4215700 median_lo=42157 median_hi=42157 min=42157 max=42157
+POLY_PERF degree=256 inverse=0 implementation=native_c calls=100 total=1753100 median_lo=17531 median_hi=17531 min=17531 max=17531
+POLY_PERF degree=256 inverse=0 implementation=current calls=100 total=1376000 median_lo=13760 median_hi=13760 min=13760 max=13760
+POLY_CT degree=256 inverse=0 class=0 calls=100 total=1373800 min=13738 max=13738
+POLY_CT degree=256 inverse=0 class=1 calls=100 total=1373800 min=13738 max=13738
+POLY_CT degree=256 inverse=0 class=2 calls=100 total=1373800 min=13738 max=13738
+POLY_CT degree=256 inverse=0 class=3 calls=100 total=1373800 min=13738 max=13738
+POLY_CT degree=256 inverse=0 class=4 calls=100 total=1373800 min=13738 max=13738
+POLY_CT degree=256 inverse=0 class=5 calls=100 total=1373800 min=13738 max=13738
+POLY_CT degree=256 inverse=0 class=6 calls=100 total=1373800 min=13738 max=13738
+POLY_CT degree=256 inverse=0 class=7 calls=100 total=1373800 min=13738 max=13738
+POLY_EXACT degree=256 inverse=1 failures=0 guards=0
+POLY_PERF degree=256 inverse=1 implementation=emulated calls=100 total=3789900 median_lo=37899 median_hi=37899 min=37899 max=37899
+POLY_PERF degree=256 inverse=1 implementation=native_c calls=100 total=1214700 median_lo=12147 median_hi=12147 min=12147 max=12147
+POLY_PERF degree=256 inverse=1 implementation=current calls=100 total=1203300 median_lo=12033 median_hi=12033 min=12033 max=12033
+POLY_CT degree=256 inverse=1 class=0 calls=100 total=1200800 min=12008 max=12008
+POLY_CT degree=256 inverse=1 class=1 calls=100 total=1200800 min=12008 max=12008
+POLY_CT degree=256 inverse=1 class=2 calls=100 total=1200800 min=12008 max=12008
+POLY_CT degree=256 inverse=1 class=3 calls=100 total=1200800 min=12008 max=12008
+POLY_CT degree=256 inverse=1 class=4 calls=100 total=1200800 min=12008 max=12008
+POLY_CT degree=256 inverse=1 class=5 calls=100 total=1200800 min=12008 max=12008
+POLY_CT degree=256 inverse=1 class=6 calls=100 total=1200800 min=12008 max=12008
+POLY_CT degree=256 inverse=1 class=7 calls=100 total=1200800 min=12008 max=12008
+POLY_EXACT degree=512 inverse=0 failures=0 guards=0
+POLY_PERF degree=512 inverse=0 implementation=emulated calls=100 total=8423700 median_lo=84237 median_hi=84237 min=84237 max=84237
+POLY_PERF degree=512 inverse=0 implementation=native_c calls=100 total=3500299 median_lo=35003 median_hi=35003 min=35002 max=35003
+POLY_PERF degree=512 inverse=0 implementation=current calls=100 total=2745600 median_lo=27456 median_hi=27456 min=27456 max=27456
+POLY_CT degree=512 inverse=0 class=0 calls=100 total=2743400 min=27434 max=27434
+POLY_CT degree=512 inverse=0 class=1 calls=100 total=2743400 min=27434 max=27434
+POLY_CT degree=512 inverse=0 class=2 calls=100 total=2743400 min=27434 max=27434
+POLY_CT degree=512 inverse=0 class=3 calls=100 total=2743400 min=27434 max=27434
+POLY_CT degree=512 inverse=0 class=4 calls=100 total=2743400 min=27434 max=27434
+POLY_CT degree=512 inverse=0 class=5 calls=100 total=2743400 min=27434 max=27434
+POLY_CT degree=512 inverse=0 class=6 calls=100 total=2743400 min=27434 max=27434
+POLY_CT degree=512 inverse=0 class=7 calls=100 total=2743400 min=27434 max=27434
+POLY_EXACT degree=512 inverse=1 failures=0 guards=0
+POLY_PERF degree=512 inverse=1 implementation=emulated calls=100 total=7572301 median_lo=75723 median_hi=75723 min=75723 max=75724
+POLY_PERF degree=512 inverse=1 implementation=native_c calls=100 total=2424300 median_lo=24243 median_hi=24243 min=24243 max=24243
+POLY_PERF degree=512 inverse=1 implementation=current calls=100 total=2396900 median_lo=23969 median_hi=23969 min=23969 max=23969
+POLY_CT degree=512 inverse=1 class=0 calls=100 total=2394400 min=23944 max=23944
+POLY_CT degree=512 inverse=1 class=1 calls=100 total=2394400 min=23944 max=23944
+POLY_CT degree=512 inverse=1 class=2 calls=100 total=2394400 min=23944 max=23944
+POLY_CT degree=512 inverse=1 class=3 calls=100 total=2394400 min=23944 max=23944
+POLY_CT degree=512 inverse=1 class=4 calls=100 total=2394400 min=23944 max=23944
+POLY_CT degree=512 inverse=1 class=5 calls=100 total=2394400 min=23944 max=23944
+POLY_CT degree=512 inverse=1 class=6 calls=100 total=2394400 min=23944 max=23944
+POLY_CT degree=512 inverse=1 class=7 calls=100 total=2394400 min=23944 max=23944
+POLY_EXACT degree=1024 inverse=0 failures=0 guards=0
+POLY_PERF degree=1024 inverse=0 implementation=emulated calls=100 total=16839700 median_lo=168397 median_hi=168397 min=168397 max=168397
+POLY_PERF degree=1024 inverse=0 implementation=native_c calls=100 total=6994700 median_lo=69947 median_hi=69947 min=69947 max=69947
+POLY_PERF degree=1024 inverse=0 implementation=current calls=100 total=5484800 median_lo=54848 median_hi=54848 min=54848 max=54848
+POLY_CT degree=1024 inverse=0 class=0 calls=100 total=5482600 min=54826 max=54826
+POLY_CT degree=1024 inverse=0 class=1 calls=100 total=5482600 min=54826 max=54826
+POLY_CT degree=1024 inverse=0 class=2 calls=100 total=5482600 min=54826 max=54826
+POLY_CT degree=1024 inverse=0 class=3 calls=100 total=5482600 min=54826 max=54826
+POLY_CT degree=1024 inverse=0 class=4 calls=100 total=5482600 min=54826 max=54826
+POLY_CT degree=1024 inverse=0 class=5 calls=100 total=5482600 min=54826 max=54826
+POLY_CT degree=1024 inverse=0 class=6 calls=100 total=5482600 min=54826 max=54826
+POLY_CT degree=1024 inverse=0 class=7 calls=100 total=5482600 min=54826 max=54826
+POLY_EXACT degree=1024 inverse=1 failures=0 guards=0
+POLY_PERF degree=1024 inverse=1 implementation=emulated calls=100 total=15137100 median_lo=151371 median_hi=151371 min=151371 max=151371
+POLY_PERF degree=1024 inverse=1 implementation=native_c calls=100 total=4843501 median_lo=48435 median_hi=48435 min=48435 max=48436
+POLY_PERF degree=1024 inverse=1 implementation=current calls=100 total=4784100 median_lo=47841 median_hi=47841 min=47841 max=47841
+POLY_CT degree=1024 inverse=1 class=0 calls=100 total=4781600 min=47816 max=47816
+POLY_CT degree=1024 inverse=1 class=1 calls=100 total=4781600 min=47816 max=47816
+POLY_CT degree=1024 inverse=1 class=2 calls=100 total=4781600 min=47816 max=47816
+POLY_CT degree=1024 inverse=1 class=3 calls=100 total=4781601 min=47816 max=47817
+POLY_CT degree=1024 inverse=1 class=4 calls=100 total=4781600 min=47816 max=47816
+POLY_CT degree=1024 inverse=1 class=5 calls=100 total=4781600 min=47816 max=47816
+POLY_CT degree=1024 inverse=1 class=6 calls=100 total=4781600 min=47816 max=47816
+POLY_CT degree=1024 inverse=1 class=7 calls=100 total=4781600 min=47816 max=47816
+POLY_ABI calls=20 failures=0
+POLY_DONE comparisons=5120 failures=0 guards=0
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003510 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0xac4c lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x4c18 lma 0x30000978
+Loading section datas, size 0x50 lma 0x300055a0
+Loading section device_states, size 0x2c lma 0x300055f0
+Loading section k_mutex_area, size 0x14 lma 0x3000561c
+Loading section .last_section, size 0x4 lma 0x30005630
+Start address 0x10006108, load size 66972
+Transfer rate: 540 KB/sec, 3524 bytes/write.
+Section rom_start, range 0x10000000 -- 0x1000032c: matched.
+Section text, range 0x10000330 -- 0x1000af7c: matched.
+Section .ARM.exidx, range 0x30000000 -- 0x30000008: matched.
+Section initlevel, range 0x30000008 -- 0x300000d0: matched.
+Section device_area, range 0x300000d0 -- 0x30000338: matched.
+Section sw_isr_table, range 0x30000338 -- 0x30000910: matched.
+Section gpio_driver_api_area, range 0x30000910 -- 0x30000934: matched.
+Section reset_driver_api_area, range 0x30000934 -- 0x30000944: matched.
+Section clock_control_driver_api_area, range 0x30000944 -- 0x30000960: matched.
+Section otp_driver_api_area, range 0x30000960 -- 0x30000964: matched.
+Section uart_driver_api_area, range 0x30000964 -- 0x30000978: matched.
+Section rodata, range 0x30000978 -- 0x30005590: matched.
+Section datas, range 0x300055a0 -- 0x300055f0: matched.
+Section device_states, range 0x300055f0 -- 0x3000561c: matched.
+Section k_mutex_area, range 0x3000561c -- 0x30005630: matched.
+Section .last_section, range 0x30005630 -- 0x30005634: matched.
+Temporary breakpoint 1 at 0x10002e64: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x100060f4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpsrzs3raa/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10002e14: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x100060f4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x984632            9979442
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x30016750          805398352
+r8             0x300000d0          805306576
+r9             0x30026890          805464208
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x30026840          0x30026840 <z_main_stack+65456>
+lr             0x10002e5b          268447323
+pc             0x10002e14          0x10002e14 <nucleo_test_breakpoint>
+xpsr           0x90f0000           151977984
+fpscr          0x40010             262160
+msp            0x30016750          0x30016750 <z_idle_stacks>
+psp            0x30026840          0x30026840 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x30016750          0x30016750 <z_idle_stacks>
+psp_s          0x30026840          0x30026840 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30015f50          0x30015f50 <z_interrupt_stacks>
+psplim_s       0x30016890          0x30016890 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x30026840 <z_main_stack+65456>:	0x00000000	0x10002e77	0x00000000	0x1000983f
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x30016750
+PSP=0x30026840
+LR=0x10002e5b
+PC=0x10002e14
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x30016750 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x30016760 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

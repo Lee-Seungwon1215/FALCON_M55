@@ -1,0 +1,55 @@
+DOCUMENT: plantard.pdf PAGE: 18/24
+
+18 Improved Plantard Arithmetic for Lattice-based Cryptography
+Algorithm 16 The improved Plantard multiplication by a constant on RISC-V
+q+1
+Input: A 32-bit signed integer a∈[−q22α,q22α], a precomputed 2l-bit integer bq′where
+b is a constant, q′
+= q−1 mod±22l
+Output: r≡ab(−2−2l) mod q,r∈[−
+q
+2 ,
+2 )
+1: bq′←bq−1 mod±22l ▷ precomputed
+2: mul r,a,bq′ ▷ r←[abq′]2l
+3: srai r,r,#16 ▷ r←[[abq′]2l]l
+4: mul r,r,q
+5: add r,r,q2α 6: srai r,r,#16 ▷ r←q[[abq′]2l]l + q2α
+▷ r←[q[[abq′]2l]l + q2α]l
+7: return r
+4.3 Extensibility on Other Platforms and Schemes
+The efficiency of the Plantard arithmetic for 16-bit moduli relies on the smulw{b,t}
+instruction to perform the 16 ×32-bit multiplication on Cortex-M4. The 16 ×32-bit
+multiplication would make it difficult to apply the Plantard arithmetic to architectures like
+AVX2 and NEON. However, the proposed optimizations for 16-bit NTT are not limited
+to Cortex-M4 but can also be extended to Cortex-M7 as both of the devices share the
+same SIMD extensions [Lor16]. Moreover, the Plantard arithmetic for 16-bit moduli may
+still outperform the Montgomery and Barrett arithmetic on some 32-bit microcontrollers
+without such powerful SIMD extensions as Cortex-M4/M7. Take the SiFive Freedom
+E310 microcontroller [SiF], equipped with a 32-bit E31 RISC-V core, as an example. The
+instruction sequence of Algorithm 11 on RISC-V is shown in Algorithm 16. Here, the
+16 ×32-bit multiplication is directly implemented with the 32 ×32-bit multiplication
+instruction, and the result locates in the top half of r. One extra shift operation is required
+to shift it down to the bottom half for the follow-up operations. Compared with its
+Montgomery and Barrett counterparts [Gre20, Listing 5.2.10] on RISC-V, the improved
+Plantard multiplication by a constant reduces one multiplication instruction (the intrinsic
+advantage of the Plantard arithmetic) and introduces an extra shift instruction. On the
+SiFive Freedom E310 microcontroller, one multiplication instruction costs 5 cycles while
+one shift instruction costs 1 cycle [SiF]. Therefore, the improved Plantard arithmetic is
+better than its Montgomery and Barrett counterparts on this platform. Similarly, for other
+32-bit microcontrollers without SIMD instruction, our method for 16-bit moduli would
+still outperform its Montgomery and Barrett counterparts if multiplication instruction is
+slower than the shift instruction.
+Similar analysis results can be obtained on the Plantard arithmetic for 32-bit moduli.
+The improved Plantard arithmetic would still outperform its Montgomery and Barrett
+counterparts if the target platform provides native 32 ×64-bit or 64 ×64-bit multiplication
+instructions, and the multiplication instruction is slower than the shift instruction. In this
+work, we only focus on accelerating Kyber and NTTRU with 16-bit NTT on Cortex-M4.
+We leave the exploration of Plantard arithmetic’s practical applications on various schemes
+and platforms as future work.
+5 Results and Comparisons
+5.1 Benchmarking Setup
+ThebenchmarkingresultsareobtainedonSTM32F407G-DISC1withtheSTM32F407VGT6
+MCU. The board is equipped with 1MiB of flash memory and 192 KiB of RAM. The
+benchmarking setup can refer to pqm4 [KRSS], and the microcontroller is clocked at 24
+MHz to avoid wait states during memory operations as recommended in pqm4. The compile

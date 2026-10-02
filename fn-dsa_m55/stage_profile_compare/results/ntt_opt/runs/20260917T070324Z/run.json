@@ -1,0 +1,665 @@
+{
+  "candidate": "ntt_opt",
+  "started_utc": "2026-09-17T07:03:24.571253+00:00",
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_final_compare/exec_board.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/zephyr/zephyr.elf"
+  ],
+  "source_tree_sha256": "8356267ec5434628f98c6ef33d194d9fa60cae9f99d975d173b82f14b8aebe74",
+  "elf_sha256": "193ec22f0461c46dbc855b0f621f2e9ac6de0fd5b87c8646d453b9b6f8098868",
+  "mq_assembly": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/mq_cm55.s",
+  "probe": "003C00223335510735383531",
+  "build_provenance": {
+    "ready": true,
+    "inputs": {
+      "source_dir": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt",
+      "source_files": {
+        "codec.c": "d72b5b03b6b74aec02de60cc69bbe232c6f13e0ff94cbd096f157ea178bb6cc7",
+        "codec_cm4.s": "53a380bcb500ed2d665405fa6ef5f3eb39bbeb9def4f86b29a9be532bbd7cd94",
+        "fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+        "inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+        "kgen.c": "a034de222847ef5a5532d404df3bfd422bea2deffe0e54f25361dc6cb149f5cd",
+        "kgen_fxp.c": "cf93446862da0ba3429326bddb6633595cb2b2cb310b0e8489cb1b7f9c100edd",
+        "kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+        "kgen_inner.h": "0e124f2cbfee404b9e51c1723ef21544f0849a14e5b61ffa76c32f083fa0ec11",
+        "kgen_mp31.c": "c41e661b6cf9d6a1ac5f71cb007f37eab9667efcde928b7f76ea01155bcaedbc",
+        "kgen_mp31_cm55.s": "bad74cbe6f569a948b70f887b47cc0c5fc9f7e6130605df27adb70f3d88ece88",
+        "kgen_ntru.c": "35696b1619bbaaa14046ab85a66f384670e9f8c8d44e523a0dcf8cd402fb8abf",
+        "kgen_poly.c": "4508e2feeb7a19a5616243d205e395c6709b8c90dbcc19d1feb05421a8f71f7f",
+        "kgen_zint31.c": "ba655aabdfb7c36cf8d723c8a69521915c07f5d023cbbf96a05a35f6e759f81e",
+        "mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+        "mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+        "sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+        "sha3_cm4.s": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+        "sign.c": "e23b7a63ea92e535cf16cfeef4a1500ad0984047adfe15696b7642b795f2a732",
+        "sign_core.c": "d64678400179f60ecbcc53624c2aa93fde3539cf8dc064a53e8778fa79c29861",
+        "sign_fpoly.c": "d6187c282576f8f1b534f9e48da8dedcca8f6f4f2a4ab6aa73bfd5412492b1e6",
+        "sign_fpr.c": "995ad5b954913cd1d63a5d14d3cffdeb48e7fa2ccb9afacc3f8bda129ea1aa95",
+        "sign_fpr_cm4.s": "ba5b3cdff48f7302d3229bdd00db9fca8a6bf8b420ee0eb0c1ff167079a51789",
+        "sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+        "sign_sampler.c": "9f91e55b8d7f9a48c730affe05bffc3c9c304121df5d2ce5542b99854c53c69b",
+        "sign_sampler_cm4.s": "546ff1ad3ce37778a55ad3aa5c20ce73e83e4f97920351609e1a1d16e3af7fde",
+        "speed_fndsa.c": "621f9069bbafd6b2422656f69a1143a778cb9a7f5e0f5ec7f02ed24ae55ab096",
+        "sysrng.c": "663d943595102660f0c98ec3fef37d3b7825f162cd8a9218cf9df8317cb38bd1",
+        "test_fndsa.c": "893ef158f2c55110c157293184cb4d87dbc294d16b08e531af4ee07d64927bdd",
+        "test_sign.c": "761db5680f06c72bd1bf2a4a4bad5d5de8d81ee2aa6e47ab21316d8d405073fc",
+        "util.c": "eeaaa063aa1e5987ba81d6cb13941300d9e55d0c428aa33ef6127693d8eca80f",
+        "vrfy.c": "d6db7c9a50ef36c30ef951127bdee0ed90774b4a5811817beb19850c265db58f"
+      },
+      "source_tree_sha256": "8356267ec5434628f98c6ef33d194d9fa60cae9f99d975d173b82f14b8aebe74",
+      "harness": {
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/profile.c": "ccb112a01f68ea9f6c2c2edf5ddb41071e1ffad02099fd7a5ffb7df16819e488",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/profile.h": "2a82731917bdc4e87311a3d29018ef1ee1024821edac3f73b5aa14bac46156f4",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/instrument.py": "3967e60bb79af6a5e91c77219e87b65bf8d9bf6df72d7b3b985e852c69f9e3d9",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/CMakeLists.txt": "54ed02f97275ca2856e8235c702d7c2a48ed84605582db5710c9874aa7b50b61",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build.sh": "d2994fc11366184581a9f1a0a3356b2394a25bd05326e01d52b980b82409bea4",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/run.py": "4c838bdae9775d54a3bf7c001ed0429a77943b7090fcd03f8e547006a06a29b8",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/ntt_opt_audit.py": "2d20ad21a4a1453ffda497d0caf9185d5f89923251047dc9305f8cf4dd85a05c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_profile_compare/benchmark.c": "f19e19a0bbaa61002dfeee51b3a7c135841fea44f531de223e543d57ec6f1535",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_final_compare/exec_board.py": "17f7e1ac1acbae42dd7763796c14b362ffe69e1f8d8c1177a3952a4724645e6e",
+        "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/exec_with_tcm_init.py": "6f01ebd2840d289640dd4ca0a9a98d68f4f8fb6246d4e4378f78bd1966392246",
+        "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/generate_dtcm_linker.py": "7c637a878cd75b223ce1acf13cb24efbff7b204027782638821bb5e94c373087",
+        "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/dtcm_startup.s": "9970b18f9ff120116e6d917f7e3ca8be344181515d3d975f9394ac47be1ed0f6",
+        "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/fndsa.conf": "67b02f000d4936b976ccd6a16141743e5361b9da67f356ce28d0be42d06caef3"
+      },
+      "generated": {
+        "codec.c": "beb030d1e6edc9f02b31d9b4bf0f591e489c6a2bf6d762c63355e3f06d21bce9",
+        "kgen.c": "0ff37c3af12ae6130e22bee29193a8cfe5b33c56cbe6a99a4d3cd365e36a06ae",
+        "kgen_fxp.c": "26fc5b844e9fbc2309f588f6b3a71d1cd09f2701a6a55bf759e11c4130ae5bd8",
+        "kgen_gauss.c": "38c498ee1f0c13ab4d2d458f71983a93f49cd8cecce143aaac7cfa0b7a556e81",
+        "kgen_mp31.c": "589baf6d5c19a9d07cd8634031a0c434d2dacbbe0024e3f8d368708093c31d44",
+        "kgen_ntru.c": "4efd54afcc4babba603534e55fbde47091225b6d29856c218e7c2e792d19cdcf",
+        "kgen_poly.c": "61981a021bd7fb34e13328188f17a2ee33a1e947d4f4f60f4d3bbf318a98e07f",
+        "kgen_zint31.c": "3d1b43b68f012a9e0de56b24a76193ff60b4b4382dee80de2cf3a4831e2d0c95",
+        "mq.c": "14500c0a007eba8995dd470b4e93195eecf1e81df3fa725fcde76109a66a1007",
+        "sha3.c": "148188335fe16afb56b461c4b5023bef534f557fde954d834353479e8001c97e",
+        "sign.c": "a187cf8fd306c18dbd26e3f016fbaa475cfef70daff6f4459200d11fd02354a4",
+        "sign_core.c": "94f8d1457c745b030f6d843abb48f6dca473d0f5fe8ac66e86f8f7ba30cbd120",
+        "sign_fpoly.c": "4764bd8bfe19e0761cdd315ab12d93d0a5af369a137f4a2356fd3d289c15acbd",
+        "sign_fpr.c": "2baf18c3d3c61f6a39a1f0ef948bc0872d4cde88addb54fccdac4d64ff80931d",
+        "sign_sampler.c": "707ad206fb4dd95fb3dd010ccd3e585de702461b46bdb40b7b40fa390b284445",
+        "sysrng.c": "1c7f8b55a7febbb8be28fb510ffb505c9fb395f5a499f7aa78d5bdc93d41f479",
+        "util.c": "9b7347d7fe0427cb025fd312abe3225f58b3448b7ddddd5902804c571b39c50b",
+        "vrfy.c": "b438939a109b63b308e72487e4cdc37f8d622fbd601ee2e9ad3c05fd49747417"
+      },
+      "baseline_run_sha256": "bca0ae265e132c1fa1a5a31b6cc1c50657568136b56465da0fb1134f23fce84e",
+      "baseline_raw_sha256": "f2a48129fd2d0a830ded198fbd437eae6813cd92d8b606ffac08ddcffd79bd7e"
+    },
+    "build": {
+      "artifacts": {
+        "zephyr/zephyr.elf": "193ec22f0461c46dbc855b0f621f2e9ac6de0fd5b87c8646d453b9b6f8098868",
+        "zephyr/zephyr.map": "bc6929d1364c1b821f1bed8acd09d3f441b88eb2ba5cf414829d8a44e90677f2",
+        "zephyr/.config": "29add21e434a3054715e66a9711d44653b8362c0370b249dfbfd5744d14eb0ca",
+        "compile_commands.json": "eb0a67649d573111bc6878adb71e32ffd359a27bc848f90ad58c8279e5788af1",
+        "CMakeCache.txt": "dc06606f5d3e6d065b0acc7f7d602b03481e64a2675a48a432299f2b2e4779e0",
+        "fndsa_dtcm_linker.ld": "4de97733aab7bc8680c0aa9caef321c6743a916092bf20dce05051ad77de58e8"
+      },
+      "compiled_crypto": [
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/codec_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/kgen_mp31_cm55.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/mq_cm55.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/sha3_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/sign_fpr_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt/sign_sampler_cm4.s",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/codec.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/kgen.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/kgen_fxp.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/kgen_gauss.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/kgen_mp31.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/kgen_ntru.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/kgen_poly.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/kgen_zint31.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/mq.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/sha3.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/sign.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/sign_core.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/sign_fpoly.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/sign_fpr.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/sign_sampler.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/sysrng.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/util.c",
+        "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/ntt_opt/generated/vrfy.c"
+      ],
+      "symbols": {
+        "fndsa_mqpoly_int_to_ntt": "0x10001958",
+        "fndsa_mqpoly_ntt_to_int": "0x10002a74",
+        "fndsa_mp_NTT": "0x10000330",
+        "fndsa_mp_iNTT": "0x100007c0"
+      },
+      "itcm_used": 104424,
+      "dtcm_reserved": 222224,
+      "same_historical_workload_config_and_linker_policy": true
+    }
+  },
+  "ended_utc": "2026-09-17T07:03:39.534767+00:00",
+  "returncode": 0,
+  "valid": true,
+  "validation_errors": [],
+  "totals": {
+    "512_keygen": {
+      "calls": 10,
+      "total": 517203780,
+      "minimum": 42561394,
+      "maximum": 68305258
+    },
+    "512_sign": {
+      "calls": 100,
+      "total": 1753346046,
+      "minimum": 17371882,
+      "maximum": 17687043
+    },
+    "512_verify": {
+      "calls": 100,
+      "total": 32434100,
+      "minimum": 324341,
+      "maximum": 324341
+    },
+    "1024_keygen": {
+      "calls": 10,
+      "total": 2616697867,
+      "minimum": 160384710,
+      "maximum": 434953058
+    },
+    "1024_sign": {
+      "calls": 100,
+      "total": 3754854202,
+      "minimum": 37190078,
+      "maximum": 37847860
+    },
+    "1024_verify": {
+      "calls": 100,
+      "total": 62588800,
+      "minimum": 625888,
+      "maximum": 625888
+    }
+  },
+  "categories": {
+    "512_keygen_other": {
+      "cycles": 6670,
+      "entries": 10
+    },
+    "512_keygen_kg_generate": {
+      "cycles": 42332101,
+      "entries": 247
+    },
+    "512_keygen_kg_check": {
+      "cycles": 60986833,
+      "entries": 247
+    },
+    "512_keygen_kg_ntru": {
+      "cycles": 412154456,
+      "entries": 11
+    },
+    "512_keygen_kg_sk_complete": {
+      "cycles": 145120,
+      "entries": 10
+    },
+    "512_keygen_kg_pk_compute": {
+      "cycles": 1578600,
+      "entries": 10
+    },
+    "512_keygen_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_other": {
+      "cycles": 14900,
+      "entries": 0
+    },
+    "512_sign_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_sg_message_hash": {
+      "cycles": 1566600,
+      "entries": 100
+    },
+    "512_sign_sg_key_prep": {
+      "cycles": 24872500,
+      "entries": 100
+    },
+    "512_sign_sg_hash_to_point": {
+      "cycles": 15702178,
+      "entries": 100
+    },
+    "512_sign_sg_fft_basis": {
+      "cycles": 381662900,
+      "entries": 100
+    },
+    "512_sign_sg_ldl_ffsampling": {
+      "cycles": 762131700,
+      "entries": 100
+    },
+    "512_sign_sg_gaussian_berexp": {
+      "cycles": 417515507,
+      "entries": 102400
+    },
+    "512_sign_sg_recon_norm": {
+      "cycles": 148103100,
+      "entries": 100
+    },
+    "512_sign_sg_encode": {
+      "cycles": 1776661,
+      "entries": 100
+    },
+    "512_sign_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_other": {
+      "cycles": 17700,
+      "entries": 0
+    },
+    "512_verify_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_vr_message_hash": {
+      "cycles": 11970200,
+      "entries": 100
+    },
+    "512_verify_vr_decode": {
+      "cycles": 1810100,
+      "entries": 100
+    },
+    "512_verify_vr_ntt": {
+      "cycles": 3126700,
+      "entries": 100
+    },
+    "512_verify_vr_hash_to_point": {
+      "cycles": 14755400,
+      "entries": 100
+    },
+    "512_verify_vr_poly": {
+      "cycles": 361600,
+      "entries": 100
+    },
+    "512_verify_vr_norm": {
+      "cycles": 392400,
+      "entries": 200
+    },
+    "1024_keygen_other": {
+      "cycles": 6669,
+      "entries": 10
+    },
+    "1024_keygen_kg_generate": {
+      "cycles": 282786042,
+      "entries": 877
+    },
+    "1024_keygen_kg_check": {
+      "cycles": 489666871,
+      "entries": 877
+    },
+    "1024_keygen_kg_ntru": {
+      "cycles": 1840711895,
+      "entries": 17
+    },
+    "1024_keygen_kg_sk_complete": {
+      "cycles": 282560,
+      "entries": 10
+    },
+    "1024_keygen_kg_pk_compute": {
+      "cycles": 3243830,
+      "entries": 10
+    },
+    "1024_keygen_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_other": {
+      "cycles": 14700,
+      "entries": 0
+    },
+    "1024_sign_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_sg_message_hash": {
+      "cycles": 1566600,
+      "entries": 100
+    },
+    "1024_sign_sg_key_prep": {
+      "cycles": 45221100,
+      "entries": 100
+    },
+    "1024_sign_sg_hash_to_point": {
+      "cycles": 28893331,
+      "entries": 100
+    },
+    "1024_sign_sg_fft_basis": {
+      "cycles": 836714000,
+      "entries": 100
+    },
+    "1024_sign_sg_ldl_ffsampling": {
+      "cycles": 1686035700,
+      "entries": 100
+    },
+    "1024_sign_sg_gaussian_berexp": {
+      "cycles": 823058436,
+      "entries": 204800
+    },
+    "1024_sign_sg_recon_norm": {
+      "cycles": 329833100,
+      "entries": 100
+    },
+    "1024_sign_sg_encode": {
+      "cycles": 3517235,
+      "entries": 100
+    },
+    "1024_sign_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_other": {
+      "cycles": 17700,
+      "entries": 0
+    },
+    "1024_verify_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_vr_message_hash": {
+      "cycles": 22329500,
+      "entries": 100
+    },
+    "1024_verify_vr_decode": {
+      "cycles": 3591900,
+      "entries": 100
+    },
+    "1024_verify_vr_ntt": {
+      "cycles": 7246100,
+      "entries": 100
+    },
+    "1024_verify_vr_hash_to_point": {
+      "cycles": 27945600,
+      "entries": 100
+    },
+    "1024_verify_vr_poly": {
+      "cycles": 707200,
+      "entries": 100
+    },
+    "1024_verify_vr_norm": {
+      "cycles": 750800,
+      "entries": 200
+    }
+  },
+  "fingerprints": {
+    "512": "9895079d",
+    "1024": "a020dd02"
+  },
+  "raw_log_sha256": "9ae412462410f92d89f782aefffb391d2928296c54d1ee8aadb14dbfbb175da5"
+}

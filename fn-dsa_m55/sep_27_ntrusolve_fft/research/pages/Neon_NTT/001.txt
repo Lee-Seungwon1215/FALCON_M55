@@ -1,0 +1,45 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 1/38
+
+Neon NTT: Faster Dilithium, Kyber, and Saber
+on Cortex-A72 and Apple M1
+Hanno Becker1, Vincent Hwang2,3, Matthias J. Kannwischer3, Bo-Yin Yang3
+and Shang-Yi Yang4
+1 Arm Research, Cambridge, UK
+hanno.becker@arm.com
+2 National Taiwan University, Taipei, Taiwan
+vincentvbh7@gmail.com
+3 Academia Sinica, Taipei, Taiwan
+matthias@kannwischer.eu, by@crypto.tw
+4 Chelpis Co. Ltd., Taipei, Taiwan
+nick.yang@chelpis.com
+Abstract. We present new speed records on the Armv8-A architecture for the lattice-
+based schemes Dilithium, Kyber, and Saber. The core novelty in this paper is
+the combination of Montgomery multiplication and Barrett reduction resulting in
+“Barrett multiplication” which allows particularly eﬃcient modular one-known-factor
+multiplication using the Armv8-A Neon vector instructions. These novel techniques
+combinedwithfasttwo-unknown-factorMontgomerymultiplication, Barrettreduction
+sequences, and interleaved multi-stage butterflies result in significantly faster code.
+We also introduce “asymmetric multiplication” which is an improved technique for
+caching the results of the incomplete NTT, used e.g. for matrix-to-vector polynomial
+multiplication. Our implementations target the Arm Cortex-A72 CPU, on which our
+speed is 1.7× that of the state-of-the-art matrix-to-vector polynomial multiplication
+in kyber768 [Nguyen–Gaj 2021]. For Saber, NTTs are far superior to Toom–Cook
+multiplication on the Armv8-A architecture, outrunning the matrix-to-vector polyno-
+mial multiplication by 2.0×. On the Apple M1, our matrix-vector products run 2.1×
+and 1.9× faster for Kyber and Saber respectively.
+Keywords: NIST PQC· Armv8-A· Neon· Dilithium· Kyber· Saber
+1 Introduction
+When large quantum computers arrive, Shor’s algorithm [Sho97] will break almost all
+currently deployed public-key cryptography by solving the integer factorization and the
+discrete logarithms problems. Preparing for this, the U.S. National Institute of Standards
+and Technology (NIST) has initiated a process to select new cryptosystems that withstand
+the increased capabilities of quantum computers – an area known as Post-Quantum
+Cryptography (PQC). This process naturally divides into categories of digital signatures
+and key encapsulation mechanisms (KEMs) [NIS] and is currently in the third round,
+where 7 finalists and 8 alternate candidates still compete [AASA+20].
+Undoubtedly, the scheme(s) selected at the end of the NIST PQC competition will
+become prominent computational workloads of the future. It is therefore important to
+understand their performance and resource characteristics on the hugely diverse spectrum
+of today’s and upcoming computing platforms, ranging from low-power IoT devices over
+desktops to high-end data center cores, to name some. Representative of the former, the
+focus of performance analysis of PQC on embedded devices has so far been the Arm®

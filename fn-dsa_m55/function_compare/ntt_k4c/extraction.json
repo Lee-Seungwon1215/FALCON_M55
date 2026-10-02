@@ -1,0 +1,35 @@
+{
+  "comparison": "M55_ref vs ntt_opt (K4C, pre-SLOTHY)",
+  "inputs": {
+    "M55_ref/inner.h": "53a8fcb059d0a409e26e6a48c27deccd20815c2febb42469582a8b3a860c2412",
+    "M55_ref/kgen_inner.h": "0e124f2cbfee404b9e51c1723ef21544f0849a14e5b61ffa76c32f083fa0ec11",
+    "ntt_opt/inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+    "ntt_opt/kgen_inner.h": "0e124f2cbfee404b9e51c1723ef21544f0849a14e5b61ffa76c32f083fa0ec11",
+    "M55_ref/kgen_mp31.c": "d4423f4dfe784309fa99840e25353140c8c95f32e6e7b701f7b1ce0cb70ef002",
+    "ntt_opt/kgen_mp31.c": "c41e661b6cf9d6a1ac5f71cb007f37eab9667efcde928b7f76ea01155bcaedbc",
+    "M55_ref/mq_cm4.s": "d134b066b757ec7b884295e22cb334526f53db40723d6efa02f2a73e3fd29637",
+    "M55_ref/mq.c": "1c86060bd2d59a001447bb21c5ca0fda9d7d959a1693c8349ea0d9159ad5011e",
+    "ntt_opt/mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+    "ntt_opt/mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+    "ntt_opt/kgen_mp31_cm55.s": "bad74cbe6f569a948b70f887b47cc0c5fc9f7e6130605df27adb70f3d88ece88"
+  },
+  "outputs": {
+    "original/mp_helpers.h": "45a9b282c49a507de36bff82bbafb787bc479840995ec951230412b70e069789",
+    "original/kgen_mp31.c": "b5d825552537ffb7c6256d24e4863a4c58ea47ad27ea2f4fea92f354bcacb296",
+    "optimized/kgen_mp31_fallback.c": "148dd93906c0d25df9efab68855d1c8ba62140ed1bb607ce0a1de66961eff758",
+    "bench/roots.c": "693dbe512b1c31521bb55149a42ac29eb1c6a384d0bcffaa1d449b2b2282f560",
+    "original/mq_cm4.s": "3a8ea7068c5ad4d18d6bb619e22afabeae063c63bc1ab518b7927bd7d7a8ea77",
+    "original/mq_tables.c": "6d917e9d70d5064e38a52ab82dbc980cc21b8981f3f16de6b9e2602509951dd6",
+    "optimized/mq_cm55.s": "5a386f915e72968ea95cc5a6752ad12f03e404a3d4eef213a8eac4bec0d0964a",
+    "optimized/mq_tables.c": "1496ca049b8ff51107b3673183b9a7c6fe9636655db79dcdbd28a3462e38aaee",
+    "optimized/kgen_mp31_cm55.s": "14d275a422045b87c06c78667bff21a469cef21a2ace876029f6afc3e4f2daa7"
+  },
+  "adaptations": [
+    "public symbol namespaces orig_/opt_ (no algorithm change)",
+    "NTT-only extraction, local minimal headers, ELF placement sections",
+    "M4 inline assembly enabled for original RNS and optimized small fallback",
+    "current ntt_opt K4C assembly copied without arithmetic or instruction-order edits",
+    "optimized C fallback extracted from current ntt_opt, full inverse roots w*R",
+    "mq tables copied from respective source; RNS roots generated once outside timing"
+  ]
+}

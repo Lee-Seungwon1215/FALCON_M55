@@ -1,0 +1,390 @@
+\section{Introduction}
+\label{sec:intro}
+
+The migration to post-quantum cryptography (PQC) is well under way.
+Two years after NIST published ML-KEM~\cite{FIPS203}, ML-DSA~\cite{FIPS204}
+and SLH-DSA~\cite{FIPS205}, post-quantum key exchange is already widely
+deployed, whereas post-quantum authentication lags behind even though its
+deadlines are approaching.
+NIST's draft transition plan deprecates quantum-vulnerable signatures such as
+RSA and ECDSA at 112-bit security after 2030 and disallows them all after
+2035~\cite{NISTIR8547}, the EU roadmap recommends migrating high-risk use
+cases by the end of 2030~\cite{EUPQC25}, and for U.S.\ national security
+systems, the NSA expects software and firmware signing to use post-quantum
+algorithms exclusively by 2030~\cite{CNSA2}.
+Embedded devices are a particularly hard case: devices deployed today must
+verify firmware and authenticate themselves well beyond these dates, under
+tight bandwidth, memory and energy budgets.
+For them, FN-DSA (FIPS~206), derived from the lattice-based signature scheme
+Falcon~\cite{Falcon}, is the most attractive of NIST's stateless post-quantum
+signatures: its public key and signature take 897 and 666~bytes for
+FN-DSA-512, compared with 1312 and 2420~bytes for ML-DSA-44~\cite{FIPS204},
+and its verification needs little more than hashing and a single polynomial
+multiplication modulo $q=12289$.
+At the time of writing, the FIPS~206 draft has not yet been published, so we
+follow the reference implementation~\cite{cfndsa}, which tracks the expected
+draft.
+\TODO{Re-check all dates, figures and the FIPS~206 status before
+submission.}
+% [역할] 연구 분야의 큰 흐름: 2026년 PQC 전환 현황(키 교환은 대규모 배포,
+%        서명은 지연)과 다가오는 시한 → 임베디드가 가장 어려움 → FN-DSA가 적합
+% [번역]
+% 양자내성암호(PQC)로의 전환은 이미 한창 진행 중이다.
+% NIST가 ML-KEM, ML-DSA, SLH-DSA를 발표한 지 2년이 지난 지금, 양자내성
+% 키 교환은 이미 널리 배포된 반면, 양자내성 인증(서명)은 시한이 다가오고
+% 있는데도 뒤처져 있다.
+% NIST의 전환 계획 초안은 RSA, ECDSA 같은 양자 취약 서명의 112비트
+% 보안 수준을 2030년 이후 폐기 예정(deprecated)으로, 2035년 이후에는
+% 모두 사용 금지(disallowed)로 정하고 있다. EU 로드맵은 고위험 사용처를
+% 2030년 말까지 전환하도록 권고하며, 미국 국가안보시스템(NSS)에 대해서는
+% NSA(CNSA 2.0)가 소프트웨어·펌웨어 서명이 2030년까지 양자내성 알고리즘만
+% 쓰도록 예정해 두었다.
+% 임베디드 기기는 특히 어려운 경우다. 지금 배포되는 기기는 이 시한을
+% 훨씬 넘어서까지 펌웨어를 검증하고 자신을 인증해야 하며, 대역폭·메모리·
+% 에너지 제약도 빠듯하다.
+% 이런 기기에는 격자 기반 서명 Falcon에서 나온 FN-DSA(FIPS 206)가 NIST의
+% 무상태(stateless) 양자내성 서명 중 가장 매력적이다. FN-DSA-512의
+% 공개키와 서명은 897바이트와 666바이트로 ML-DSA-44의 1312바이트와
+% 2420바이트보다 작고, 검증에는 해싱과 q=12289 모듈러 다항식 곱셈 한 번
+% 정도만 필요하다.
+% 이 글을 쓰는 시점에 FIPS 206 초안은 아직 공개되지 않았으므로, 예상
+% 초안을 따라가는 레퍼런스 구현을 기준으로 한다.
+% (TODO: 제출 전에 모든 날짜·수치와 FIPS 206 상태 다시 확인)
+
+This compactness comes at the price of a delicate implementation.
+Signing relies on fast Fourier sampling (ffSampling)~\cite{DP16,Falcon}, a
+randomized nearest-plane algorithm that operates on polynomials in the complex
+Fourier domain and repeatedly calls a discrete Gaussian sampler whose center
+and standard deviation depend on the secret key.
+These computations are specified in IEEE-754 binary64 arithmetic, and their
+numerical behavior matters for security, not only for performance:
+Lin et al.~\cite{LTYZ25} showed that even tiny deviations between
+mathematically equivalent floating-point implementations of the sampler can,
+under certain conditions, have security consequences.
+A conservative way to rule out such deviations is to require that an
+optimized implementation reproduces the known-answer tests (KATs) of the
+reference implementation bit for bit.
+Moreover, all floating-point code must run in constant time, and side-channel
+analysis of Falcon's floating-point arithmetic and Gaussian sampling has
+repeatedly led to key recovery~\cite{KA21,GMRR22,ZLYW23}.
+Key generation is demanding as well: it solves the NTRU equation with
+big-integer arithmetic in a residue number system (RNS) and with Babai
+reductions whose approximations are computed in the Fourier domain, using
+fixed-point arithmetic in the most efficient
+implementations~\cite{Pornin23kg,Pornin25kg}.
+% [역할] 문제 정의: FN-DSA 구현이 까다로운 이유 (binary64 의존, 정확성이
+%        보안에 미치는 영향과 KAT bit 단위 재현, 상수시간, 키 생성의 복잡도)
+% [번역]
+% 이 간결함의 대가로 구현은 까다롭다.
+% 서명은 fast Fourier sampling(ffSampling)에 의존한다. 이는 복소
+% Fourier 영역의 다항식 위에서 동작하는 무작위 nearest-plane
+% 알고리즘으로, 비밀키에 따라 중심과 표준편차가 달라지는 이산
+% 가우시안 샘플러를 반복해서 호출한다.
+% 이 계산들은 IEEE-754 binary64 연산으로 규정되어 있으며, 그 수치적
+% 동작은 성능뿐 아니라 보안에도 중요하다. Lin 등은 수학적으로 동등한
+% 샘플러의 부동소수점 구현들 사이의 아주 작은 차이도 특정 조건에서는
+% 보안 문제로 이어질 수 있음을 보였다.
+% 이런 차이를 보수적으로 배제하는 방법은, 최적화 구현이 레퍼런스 구현의
+% KAT(known-answer test)를 bit 단위로 그대로 재현하도록 요구하는 것이다.
+% 또한 모든 부동소수점 코드는 상수시간으로 동작해야 하며, Falcon의
+% 부동소수점 연산과 가우시안 샘플링에 대한 부채널 분석은 여러 차례
+% 키 복구로 이어졌다.
+% 키 생성도 까다롭다. RNS(잉여수 체계) 위의 큰 정수 연산과 Babai
+% reduction으로 NTRU 방정식을 푸는데, Babai reduction의 근사값은
+% Fourier 영역에서 계산하며, 가장 효율적인 구현들은 이를 고정소수점
+% 연산으로 수행한다.
+
+On microcontrollers, these requirements lead to a difficult trade-off.
+The Arm Cortex-M4, the de facto reference platform for embedded PQC, has at
+most a single-precision floating-point unit (FPU), so the fastest
+implementations of Falcon emulate binary64 arithmetic with integer
+instructions~\cite{Pornin19,Pornin25m4}.
+Despite years of optimization, signing with FN-DSA-512 still takes more than
+ten million cycles on this platform~\cite{Pornin25m4,Pornin26ram}.
+Several directions have been explored to reduce this cost.
+Howe and Westerbaan benchmarked Falcon on the Cortex-M7, which has a
+double-precision FPU~\cite{HW23}.
+TWFalcon trades speed for precision with triple-word single-precision
+arithmetic on the Cortex-M4F~\cite{TWFalcon}.
+Fixed-point arithmetic has been proposed for key
+generation~\cite{Pornin23kg,Pornin25kg} and, more recently, for
+signing~\cite{BFLP26}.
+Finally, Pornin recently removed more than half of the floating-point
+operations of signing, partly by replacing them with modular integer
+computations, primarily to reduce RAM usage~\cite{Pornin26ram}.
+In short, existing microcontroller implementations either emulate binary64,
+replace it with alternative arithmetic, or target cores without a vector
+unit.
+% [역할] 공통 한계: MCU 선행연구의 접근 방식과, 이들의 공통적인 한계 요약
+% [번역]
+% 마이크로컨트롤러에서는 이런 요구사항 때문에 어려운 절충이 생긴다.
+% 임베디드 PQC의 사실상 기준 플랫폼인 Arm Cortex-M4는 기껏해야
+% 단정밀도 FPU만 갖추고 있어서, 가장 빠른 Falcon 구현들은 binary64
+% 연산을 정수 명령으로 에뮬레이션한다.
+% 수년간의 최적화에도 이 플랫폼에서 FN-DSA-512 서명은 여전히 천만
+% 사이클 이상 걸린다.
+% 이 비용을 줄이기 위해 여러 방향이 시도되었다.
+% Howe와 Westerbaan은 배정밀도 FPU를 갖춘 Cortex-M7에서 Falcon을
+% 벤치마크했다.
+% TWFalcon은 Cortex-M4F에서 삼중 워드(triple-word) 단정밀도 연산으로
+% 속도를 내주고 정밀도를 얻었다.
+% 고정소수점 연산은 키 생성에, 최근에는 서명에도 제안되었다.
+% 마지막으로 Pornin은 최근 주로 RAM 사용량을 줄이기 위해 서명의
+% 부동소수점 연산을 절반 넘게 없앴고, 그중 일부는 모듈러 정수 연산으로
+% 대체했다.
+% 요컨대 기존 MCU 구현은 binary64를 에뮬레이션하거나, 다른 산술로
+% 대체하거나, 벡터 유닛이 없는 코어를 대상으로 한다.
+
+The Armv8.1-M architecture changes this landscape.
+Its first implementation, the Cortex-M55, and its successor, the Cortex-M85,
+combine an FPU that optionally supports double precision with the M-Profile
+Vector Extension (MVE), also known as Helium~\cite{ArmV8MARM}.
+Both cores ship in commercial microcontrollers, e.g., the Cortex-M55 in the
+STM32N6 series~\cite{STM32N6DS}.
+This suggests a simple recipe for FN-DSA: run the floating-point parts on the
+double-precision FPU and vectorize the integer parts with MVE.
+However, the two features interact in ways that make this recipe far from
+obvious.
+First, MVE offers 128-bit vectors of 8-, 16- and 32-bit integers and of
+half- and single-precision floats, but no double-precision lanes; hence, none
+of Falcon's binary64 arithmetic can be vectorized directly.
+Second, the eight vector registers \texttt{Q0}--\texttt{Q7} alias the
+floating-point register file, so scalar FP64 code and MVE code compete for
+the same sixteen double-precision registers \texttt{D0}--\texttt{D15}.
+Third, the Cortex-M55 executes each 128-bit vector instruction in several
+beats and overlaps instructions that use different execution resources, so
+its throughput depends strongly on instruction mix and
+scheduling~\cite{BMKYV22,SLOTHY}.
+As a result, each numerical kernel of FN-DSA admits at least three competing
+implementation strategies: scalar binary64 on the FPU, fixed-point or
+emulated arithmetic vectorized with integer MVE, and multi-word
+single-precision arithmetic vectorized with floating-point MVE.
+Since these strategies stress different parts of the microarchitecture, the
+right choice has to be made kernel by kernel.
+% [역할] 문제의 중요성: M55가 주는 기회와, 단순한 공식이 통하지 않는
+%        세 가지 이유 → 커널마다 산술을 골라야 한다는 결론
+% [번역]
+% Armv8.1-M 아키텍처는 이 상황을 바꾼다.
+% 그 첫 구현인 Cortex-M55와 후속 Cortex-M85는 배정밀도를 선택적으로
+% 지원하는 FPU와 M-Profile Vector Extension(MVE, Helium)을 함께
+% 갖추고 있다.
+% 두 코어 모두 상용 MCU로 출시되어 있으며, 예를 들어 STM32N6 시리즈가
+% Cortex-M55를 탑재한다.
+% 여기서 FN-DSA에 대한 단순한 공식을 떠올릴 수 있다. 부동소수점 부분은
+% 배정밀도 FPU에서 실행하고, 정수 부분은 MVE로 벡터화하는 것이다.
+% 그러나 두 기능은 서로 얽혀 있어서 이 공식은 결코 자명하지 않다.
+% 첫째, MVE는 8·16·32비트 정수와 반정밀도·단정밀도 부동소수점의
+% 128비트 벡터를 제공하지만 배정밀도 lane은 없다. 따라서 Falcon의
+% binary64 연산은 어느 것도 직접 벡터화할 수 없다.
+% 둘째, 8개의 벡터 레지스터 Q0–Q7이 부동소수점 레지스터 파일과
+% 겹치므로, 스칼라 FP64 코드와 MVE 코드는 같은 16개의 배정밀도
+% 레지스터 D0–D15를 두고 경쟁한다.
+% 셋째, Cortex-M55는 128비트 벡터 명령 하나를 여러 beat에 걸쳐
+% 실행하고, 서로 다른 실행 자원을 쓰는 명령들을 겹쳐 실행한다. 그래서
+% 처리량이 명령 조합과 스케줄링에 크게 좌우된다.
+% 결과적으로 FN-DSA의 각 수치 커널에는 적어도 세 가지 구현 전략이
+% 경쟁한다. FPU의 스칼라 binary64, 정수 MVE로 벡터화한 고정소수점
+% 또는 에뮬레이션 연산, 부동소수점 MVE로 벡터화한 다중 워드 단정밀도
+% 연산이다.
+% 이 전략들은 마이크로아키텍처의 서로 다른 부분에 부담을 주므로,
+% 올바른 선택은 커널마다 따로 내려야 한다.
+
+Existing work leaves two questions open.
+First, it offers no guidance on how to divide FN-DSA between a scalar FP64
+unit and a vector unit without double-precision lanes.
+Vectorized Falcon implementations for NEON, AVX2, AVX-512 and
+RVV~\cite{KSS22,NG23,ZZ26} rely on double-precision SIMD instructions, which
+MVE lacks.
+The Cortex-M7 results of Howe and Westerbaan~\cite{HW23} use a scalar
+double-precision FPU, but on a core without a vector extension.
+Conversely, Helium implementations of lattice-based schemes, such as Kyber,
+Dilithium and Saber~\cite{BMKYV22,SLOTHY} or HAETAE and
+SMAUG-T~\cite{LSS26}, target integer and fixed-point arithmetic, since none
+of these schemes requires binary64.
+Second, it is unclear how much acceleration remains once the outputs must
+stay exact.
+The most recent vectorized implementation of Falcon signing~\cite{ZZ26}
+obtains part of its speedup by batching several calls of the base sampler
+and by using four-way parallel SHAKE, both of which make its signatures
+differ from those of the reference implementation.
+To the best of our knowledge, no optimized implementation of Falcon or FN-DSA
+for the Cortex-M55 has been published.
+% [역할] 연구 공백(open problem) 두 가지: ① FP64 SIMD가 없는 환경에서의
+%        산술 선택 기준이 없음 ② 출력 정확성을 지킬 때 남는 가속 폭을 모름
+% [번역]
+% 기존 연구는 두 가지 질문을 열어 둔다.
+% 첫째, 배정밀도 lane이 없는 벡터 유닛과 스칼라 FP64 유닛 사이에
+% FN-DSA를 어떻게 나눌지에 대한 지침이 없다.
+% NEON, AVX2, AVX-512, RVV용 벡터화 Falcon 구현들은 MVE에 없는
+% 배정밀도 SIMD 명령에 의존한다.
+% Howe와 Westerbaan의 Cortex-M7 결과는 스칼라 배정밀도 FPU를 쓰지만,
+% 벡터 확장이 없는 코어에서의 결과다.
+% 반대로 Kyber, Dilithium, Saber나 HAETAE, SMAUG-T 같은 격자 기반
+% 방식의 Helium 구현들은 정수·고정소수점 연산을 대상으로 한다. 이
+% 방식들은 binary64를 필요로 하지 않기 때문이다.
+% 둘째, 출력이 정확하게 유지되어야 할 때 가속이 얼마나 남는지 불분명하다.
+% Falcon 서명의 가장 최근 벡터화 구현은 기본 샘플러의 여러 호출을
+% 묶어서 처리하고 4-way 병렬 SHAKE를 사용해 속도 향상의 일부를 얻는데,
+% 두 방법 모두 서명이 레퍼런스 구현의 출력과 달라지게 만든다.
+% 우리가 아는 한, Cortex-M55용으로 최적화된 Falcon 또는 FN-DSA 구현은
+% 아직 발표되지 않았다.
+
+\paragraph{Our approach.}
+We present the first optimized implementation of FN-DSA for the Arm
+Cortex-M55.
+It accelerates every expensive kernel of key generation, signing and
+verification for FN-DSA-512 and FN-DSA-1024, and we evaluate it on real
+hardware, an STM32N657 microcontroller running at 800\,MHz.
+Profiling the reference implementation~\cite{cfndsa} on this board shows
+why all three operations need attention: floating-point-heavy code accounts
+for about \tbd{87\%} of the signing time, whereas key generation is
+dominated by the integer arithmetic of the NTRU solver and verification by
+the NTT and SHAKE.
+Each of our techniques results from a per-kernel selection: we implement
+candidate strategies for a kernel, measure them on the device, discard those
+that break the KATs or introduce secret-dependent timing, and adopt the
+fastest remaining one.
+Applied to FN-DSA, this rule gives a different answer for each class of
+kernels.
+For the integer kernels, MVE is the natural choice, as expected.
+For the Fourier-domain arithmetic of key generation, the FP64 unit loses
+against fixed-point arithmetic vectorized with integer MVE.
+For signing, the FP64 unit wins and replaces binary64 emulation without
+changing a single bit of the output.
+\TODO{Confirm after implementation.}
+Finally, for the base sampler and SHAKE, exactness rules out the usual way
+of using SIMD across independent instances, so we parallelize within a
+single instance instead.
+% [역할] 제안 기법의 개요: 무엇을 했는지, 기법을 고르는 규칙, 그리고
+%        본론 이야기 흐름(5~8절) 미리보기
+% [번역]
+% 우리는 Arm Cortex-M55를 위한 첫 번째 최적화 FN-DSA 구현을 제시한다.
+% 이 구현은 FN-DSA-512와 FN-DSA-1024의 키 생성·서명·검증에서 비용이
+% 큰 모든 커널을 가속하며, 800 MHz로 동작하는 실제 하드웨어인
+% STM32N657 MCU에서 평가한다.
+% 이 보드에서 레퍼런스 구현을 프로파일링하면 세 연산 모두를 개선해야
+% 하는 이유가 드러난다. 서명 시간의 약 87%를 부동소수점 연산이 많은
+% 코드가 차지하는 반면, 키 생성은 NTRU solver의 정수 연산이, 검증은
+% NTT와 SHAKE가 지배한다.
+% 우리의 각 기법은 커널별 선택의 결과다. 한 커널의 후보 전략들을
+% 구현해 보드에서 측정하고, KAT를 깨거나 비밀값에 따라 실행 시간이
+% 달라지는 후보를 버린 뒤, 남은 후보 중 가장 빠른 것을 채택한다.
+% 이 규칙을 FN-DSA에 적용하면 커널 부류마다 다른 답이 나온다.
+% 정수 커널에서는 예상대로 MVE가 자연스러운 선택이다.
+% 키 생성의 Fourier 영역 연산에서는 FP64 유닛이 정수 MVE로 벡터화한
+% 고정소수점 연산에 진다.
+% 서명에서는 FP64 유닛이 이기며, 출력을 단 한 bit도 바꾸지 않고
+% binary64 에뮬레이션을 대체한다. (TODO: 구현 후 확인)
+% 마지막으로 기본 샘플러와 SHAKE에서는 정확성 조건 때문에 독립된
+% 인스턴스들에 걸쳐 SIMD를 쓰는 일반적인 방법을 쓸 수 없으므로, 대신
+% 하나의 인스턴스 안에서 병렬화한다.
+
+\paragraph{Contributions.}
+Our contributions are as follows.
+% [역할] 논문의 주요 기여: 본론 절(5~8절)에 대응하는 개선 기법과 연구의 부산물
+% [번역]
+% 우리의 기여는 다음과 같다.
+\begin{itemize}
+  % Evidence: fn-dsa_m55/ntt_opt*/, fn-dsa_m55/ntt_k4c_compare/result.md
+  \item \textbf{Vectorized integer kernels (Section~\ref{sec:ntt}).}
+    We vectorize the NTT modulo $q=12289$, which all three operations use,
+    and the NTTs over 31-bit primes used by the NTRU solver, choosing
+    reduction methods, layer splits and instruction schedules by on-device
+    comparison.
+    This alone speeds up verification by \tbd{1.16$\times$} and
+    \tbd{1.17$\times$} for FN-DSA-512 and FN-DSA-1024, respectively.
+    % [번역] 벡터화한 정수 커널 (5절).
+    % 세 연산이 모두 쓰는 q=12289 모듈러 NTT와, NTRU solver가 쓰는
+    % 31비트 소수 위의 NTT를 벡터화한다. reduction 방식, 레이어 분할,
+    % 명령 스케줄은 보드 위 비교로 고른다.
+    % 이것만으로 FN-DSA-512와 FN-DSA-1024의 검증이 각각 1.16배,
+    % 1.17배 빨라진다.
+  % Evidence: fn-dsa_m55/function_compare/{fft_keygen,twfalcon}/,
+  %           fn-dsa_m55/sep_27_ntrusolve_fft/result.md
+  \item \textbf{Fourier-domain arithmetic of key generation
+    (Section~\ref{sec:keygen}).}
+    Comparing native binary64, multi-word single-precision MVE and
+    integer-MVE fixed-point implementations of the Babai reduction, we find
+    that native binary64 makes the transforms \tbd{21.5--30.4\%} slower
+    than the reference fixed-point code, whereas integer-MVE fixed-point
+    arithmetic is the fastest and yields the same keys as the reference.
+    Together with the vectorized NTTs, key generation becomes
+    \tbd{1.22$\times$} and \tbd{1.17$\times$} faster.
+    % [번역] 키 생성의 Fourier 영역 연산 (6절).
+    % Babai reduction을 native binary64, 다중 워드 단정밀도 MVE, 정수 MVE
+    % 고정소수점으로 구현해 비교한 결과, native binary64는 변환을
+    % 레퍼런스 고정소수점 코드보다 21.5–30.4% 느리게 만드는 반면, 정수
+    % MVE 고정소수점 연산은 가장 빠르면서 레퍼런스와 같은 키를 만든다.
+    % 벡터화한 NTT와 함께 키 생성이 1.22배, 1.17배 빨라진다.
+  \item \textbf{Bit-exact native binary64 for signing
+    (Section~\ref{sec:sign}).}
+    \TODO{Confirm after implementation.}
+    We replace binary64 emulation in the FFT and ffSampling with the scalar
+    FP64 unit while reproducing the KATs bit for bit, which multi-word
+    single-precision alternatives cannot do.
+    % [번역] 서명을 위한 bit 단위로 정확한 native binary64 (7절).
+    % (TODO: 구현 후 확인) FFT와 ffSampling의 binary64 에뮬레이션을
+    % 스칼라 FP64 유닛으로 대체하면서 KAT를 bit 단위로 그대로 재현한다.
+    % 다중 워드 단정밀도 대안들은 이를 할 수 없다.
+  \item \textbf{Exactness-preserving vectorization
+    (Section~\ref{sec:exact}).}
+    \TODO{Confirm after implementation.}
+    We vectorize the table comparisons of the base sampler within a single
+    sample, a KAT-compatible alternative to batching~\cite{ZZ26} that the
+    AVX2 code of the original Falcon submission also
+    follows~\cite{FalconImpl}, and we accelerate single-state Keccak, since
+    every use of SHAKE in the current reference implementation processes a
+    single stream~\cite{cfndsa}.
+    % [번역] 정확성을 유지하는 벡터화 (8절).
+    % (TODO: 구현 후 확인) 기본 샘플러의 표 비교를 한 샘플 안에서
+    % 벡터화한다. 이는 여러 샘플을 묶는 방식[ZZ26]의 KAT 호환 대안이며,
+    % 원래 Falcon 제출본의 AVX2 코드도 같은 방식을 쓴다. 또한 현재
+    % 레퍼런스 구현에서 SHAKE를 쓰는 모든 곳이 단일 스트림을 처리하므로,
+    % 단일 상태 Keccak을 가속한다.
+  \item \textbf{By-products.}
+    \TODO{Finalize.}
+    A timing characterization of the FP64 instructions of the Cortex-M55,
+    including subnormal operands; guidelines for choosing between scalar
+    FP64 and MVE arithmetic on Armv8.1-M; and our code and measurement
+    framework, which are publicly available at
+    \TODO{anonymized repository link}.
+    % [번역] 부산물. (TODO: 확정)
+    % Cortex-M55 FP64 명령의 타이밍 특성 분석(subnormal 피연산자 포함),
+    % Armv8.1-M에서 스칼라 FP64와 MVE 연산 중 무엇을 고를지에 대한
+    % 지침, 그리고 공개하는 코드와 측정 프레임워크(익명 저장소 링크는
+    % 추후 기입).
+\end{itemize}
+Overall, compared with the reference implementation ported to the same
+board, our implementation speeds up key generation, signing and verification
+by \tbd{X$\times$}, \tbd{Y$\times$} and \tbd{Z$\times$} for FN-DSA-512, and
+by \tbd{X$\times$}, \tbd{Y$\times$} and \tbd{Z$\times$} for FN-DSA-1024.
+\TODO{Position against the Cortex-M4~\cite{Pornin25m4,Pornin26ram} and
+Cortex-M7~\cite{HW23} results.}
+% [역할] 전체 성과 요약과 선행연구 대비 위치
+% [번역]
+% 종합하면, 같은 보드로 이식한 레퍼런스 구현과 비교해 우리 구현은
+% FN-DSA-512의 키 생성·서명·검증을 각각 X배, Y배, Z배,
+% FN-DSA-1024에서는 X배, Y배, Z배 빠르게 한다.
+% (TODO: Cortex-M4 및 Cortex-M7 결과와 비교한 위치 서술)
+
+\paragraph{Organization.}
+Section~\ref{sec:prelim} recalls FN-DSA, its reference implementation and
+the relevant features of the Cortex-M55.
+Section~\ref{sec:related} discusses related work and derives our design
+considerations.
+Section~\ref{sec:method} describes our experimental setup, profiles the
+reference implementation and states our selection rule.
+Sections~\ref{sec:ntt} to~\ref{sec:exact} present our techniques for the
+four classes of kernels outlined above.
+Section~\ref{sec:eval} evaluates performance, memory usage and constant-time
+behavior, Section~\ref{sec:discussion} discusses lessons, limitations and
+future work, and Section~\ref{sec:conclusion} concludes.
+% [역할] 논문 구성
+% [번역]
+% Preliminaries 절은 FN-DSA와 그 레퍼런스 구현, Cortex-M55의 관련 특징을
+% 다룬다. Related Work 절은 관련 연구를 정리하고 설계 고려사항을
+% 도출한다. Design Methodology 절은 실험 환경을 설명하고, 레퍼런스
+% 구현을 프로파일링하며, 선택 규칙을 제시한다. 5절부터 8절까지는 위에서
+% 요약한 네 부류의 커널을 위한 기법을 제시한다. Evaluation 절은 성능,
+% 메모리 사용량, 상수시간 동작을 평가하고, Discussion 절은 교훈, 한계,
+% 향후 과제를 논의하며, Conclusion 절에서 결론을 맺는다.

@@ -1,0 +1,55 @@
+DOCUMENT: plantard.pdf PAGE: 17/24
+
+Junhao Huang et al. 17
+Algorithm 15 Double Plantard reduction for packed coefficients
+Input: A 32-bit packed integers a= atop||abottom where atop,abottom are two 16-bit signed
+coefficients
+Output: r= (atopmod q)||(abottommod q),−
+1: const ←(−22l mod q)·(q−1 mod±22l) mod±22l 2: smulwb t, const, a
+3: smulwt a, const, a
+4: smlabt t,t,q,q2α
+5: smlabt a,a,q,q2α
+6: pkhtb r,a,t, asr#16
+7: return r
+q+1
+2 ≤rtop,rbottom < q
+2
+▷ precomputed
+the modular reduction will have a one-layer delay since the matrix-vector multiplication
+generates coefficients smaller than 1q,1.5q, and 2q. Second, since the maximum value of
+the reduced coefficient is 0.5q after each modular reduction, 4 layers of butterflies can be
+conducted over the reduced coefficients instead of 3 when using Montgomery’s method.
+After the second-layer butterflies of Kyber768/Kyber1024, the modular reduction is applied
+for all of the 128 coefficients; then all coefficients have a maximum value of 0.5q. The
+third-layer butterflies have a step size of 8, and the first 8 coefficients (a0 ∼a7) will first
+grow to 8q after the sixth-layer butterflies. The final-layer butterflies have a step size of
+128. Two sets of 8 coefficients (a0 ∼a7,a128 ∼a135) have a maximum value of 8q, while
+the rest of the coefficients are smaller than 4q. Therefore, we only need to perform modular
+reduction on these 16 coefficients instead of all of the 128 coefficients in previous reports,
+and other coefficients will be naturally reduced by the modular multiplication with the
+twiddle factors and 128−1 in the final-layer butterflies.
+The GS butterflies are also adopted for the INTT in NTTRU. The optimization brought
+by our method is similar to the INTT in Kyber, except that the modular reduction for half
+of the coefficients is required after every 3 layers of butterflies with Plantard arithmetic
+instead of 2 when using Montgomery arithmetic. Thus, only 2 modular reductions for 384
+coefficients are required after the third and sixth layers of butterflies.
+4.2.4 Double Plantard Reduction for Packed Coefficients
+The modular reduction of coefficients is necessary if the next operation in NTT/INTT
+would cause an overflow. Previous work [ABCG20] uses double Montgomery reduction or
+double Barrett reduction (i.e., Algorithm 10 and Algorithm 8 in [ABCG20]) to reduce two
+packed coefficients on Cortex-M4, which consume 7 cycles and 8 cycles, respectively. The
+double Barrett reduction in [ABCG20, Algorithm 8] requires two explicit shift operations
+for packed coefficients. Recent work further reduces its cycle counts down to 6 cycles by
+eliminating two explicit shift operations using the smlawb and smlawt instructions (see
+[AHKS22, Algorithm 3.2]). In this work, an even better 5-cycle double Plantard reduction
+is proposed and shown in Algorithm 15. This algorithm is based on the fact that the
+Plantard reduction over a 16-bit signed integer can be viewed as a Plantard multiplication
+by a constant−22lmod q. And one can multiply q−1 by the constant−22lmod q to obtain
+a precomputed constant, thus saving one multiplication by q−1. Note that the input range
+of Algorithm 15 is the same as Algorithm 11. Since Algorithm 15 generates signed output
+in [−
+q+1
+q
+2 ,
+2 ), this algorithm is only applicable inside NTT/INTT. The Barrett reduction
+is still required outside NTT/INTT to obtain a positive result.

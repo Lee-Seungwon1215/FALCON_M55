@@ -1,0 +1,57 @@
+DOCUMENT: ARMv8_falcon.pdf PAGE: 1/15
+
+Received February 28, 2022, accepted April 14, 2022, date of publication April 22, 2022, date of current version April 29, 2022.
+Digital Object Identifier 10.1109/ACCESS.2022.3169784
+Accelerating Falcon on ARMv8
+YOUNGBEOM KIM , (Student Member, IEEE), JINGYO SONG, (Student Member, IEEE),
+AND SEOG CHUNG SEO , (Member, IEEE)
+Department of Financial Information Security, Kookmin University, Seoul 02707, South Korea
+Corresponding author: Seog Chung Seo (scseo@kookmin.ac.kr)
+This work was supported in part by the Institute of Information and Communications Technology Planning and Evaluation (IITP) Grant
+funded by the Korean Government through Ministry of Science and ICT (MSIT) (6G autonomous security internalization-based
+technology research to ensure security quality at all times) under Grant A2021-0270, and in part by the National Research Foundation of
+Korea (NRF) Grant funded by the Korean Government through MSIT under Grant 2022R1C1C1013368.
+ABSTRACT Falcon is one of the promising digital-signature algorithms in NIST’s ongoing Post-Quantum
+Cryptography (PQC) standardization finalist. Computational efficiency regarding software and hardware
+is also the main criteria for PQC standardization. In this paper, we present an efficient Falcon software
+implementation on ARMv8 environment. Until now, most of the software optimization on PQC algorithms
+have been conducted on 32-bit ARM (Cortex-M4) and typical CPUs (Intel and AMD CPUs). However,
+ARMv8 including Cortex-A30, 50, and 70 series have been widely used for various IoT (Internet of
+Things) applications, Edge computing devices, and OBUs (On Board Units) in autonomous driving cars. For
+optimizing the performance of Falcon, we take full advantage of NEON engine which is a kind of parallel
+processing unit in ARMv8 MCU. The main computation in Falcon belongs to polynomial multiplications
+in Complex number domain and Integer domain. Typically, FFT (Fast Fourier Transformation)-based
+multiplication method and NTT (Number Theoriteic Transform)-based multiplication method have been
+widely used for efficient polynomial multiplications in Complex number domain and Integer domain,
+respectively. Thus, in order to enhance the overall performance of Falcon, we improve the FFT-based multi-
+plication method and NTT-based multiplication method by utilizing NEON engine in ARMv8. Specifically,
+we parallelize the overall process (FFT/NTT transformation, pointwise multiplication, and inverse FFT/NTT
+transformation) of FFT-based polynomial multiplication method and NTT-based polynomial multiplication
+method with strategically utilizing the NEON engine and vector instructions. Furthermore, we minimize the
+number of redundant memory accesses during FFT/NTT-based polynomial multiplication by making the
+most of available registers in NEON engine. Through the proposed parallel FFT/NTT-based polynomial
+multiplications, the proposed Falcon software provides 15.1% (resp. 18.1%), 16.5% (resp. 17.1%), and
+65.4% (resp. 69.4%) of performance improvement in keypair generation, signing, and verification at security
+level 1 (resp. 5) compared with the reference Falcon implementation submitted to the final round of NIST
+PQC competition. Furthermore, as far as we know, this is the first optimized implementation of Falcon on
+ARMv8 environment.
+INDEX TERMS Falcon, NIST PQC signature, parallel implementation, memory optimization, ARM/NEON
+processor, ARMv8, Internet of Things.
+I. INTRODUCTION
+With the development of a quantum-computing environment,
+through Shor’s algorithm, the problems of prime factorization
+and discrete logarithms, which are the underlying hardness
+of public-key cryptosystems, can be solved within polyno-
+mial time; therefore, the safety of the existing public-key
+The associate editor coordinating the review of this manuscript and
+approving it for publication was S. M. Rezaul Hasan .
+44446 cryptosystems, such as RSA and ECC, are recently con-
+cerned [1]. Since 2016, the National Institute of Standards
+and Technology (NIST) has been conducting a standard-
+ization project for Post-Quantum Cryptography (QPC) that
+provides safety even in a quantum-computing environment.
+In August 2020, Round 3 candidates were selected for Public
+Key Encryption/Key Encapsulation Mechanism (PKE/KEM)
+and Digital Signature Algorithm (DSA) schemes, and stan-
+dardization of final candidates is planned for 2022. Most
+This work is licensed under a Creative Commons Attribution 4.0 License. For more information, see https://creativecommons.org/licenses/by/4.0/ VOLUME 10, 2022

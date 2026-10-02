@@ -1,0 +1,119 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 8/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 8
+Algorithm 7 CT algorithm on RISC-V
+Input: Two signed integers a,b, the 32-bit twiddle factor ζ
+Output: a′
+= a+ bζ,b′
+= a−bζ
+1: mul b,b,ζ
+2: srai b,b, #16
+3: addi b,b,2α
+4: mulh t,b,q2l
+5: sub b′,a,t
+6: add a′,a,t
+7: return a′,b′
+In summary, the optimal combination of butterfly usage on
+Cortex-M3 is to apply CT algorithm on both NTT and INTT.
+On the other hand, the most effective pattern on RISC-V is to
+use CT algorithm on NTT but GS algorithm on INTT.
+2) Layer Merging: Layer merging is an essential optimiza-
+tion strategy in NTT/INTT when memory access operations
+are costly. This strategy effectively reduces the expensive
+memory access by loading multiple coefficients at once and
+processing more NTT/INTT layers over these coefficients. The
+design of optimal layer merging strategy depends on the num-
+ber of available registers on the target platform. For example,
+fourteen registers are programming-available on Cortex-M3.
+Thus, a maximum of eight coefficients can be loaded at once,
+allowing to merge three layers of NTT/INTT on this platform.
+The remaining six registers are utilized to store addresses or
+execute the modular arithmetic in the butterfly unit. On RISC-
+V, an abundance of 30 programming-available registers are
+provided with greater flexibility. Therefore, sixteen coefficients
+can be loaded at once, allowing to merge four layers of
+NTT/INTT at once, and there are still 14 registers left for other
+usage. Consequently, the 4-layer merging strategy is better on
+RISC-V.
+In summary, for the 7-layer NTT/INTT in Kyber, we adopt
+the 3+3+1 and 3+1+3 layer merging strategy for NTT and
+INTT, respectively, on Cortex-M3. The motivation behind the
+choice of the 3+1+3 layer merging strategy instead of 3+3+1
+will be discussed in Section V-A3. On the other hand, the 4+3
+and 3+4 layer merging strategy are used for NTT and INTT
+on RISC-V, respectively.
+3) Better Lazy Reduction: The so-called “lazy reduction
+strategy” means deferring the modular reduction of coefficients
+until the value of coefficients exceed the maximum bound of
+the register or the input range of the subsequent operation. The
+input range of the modular multiplication by a constant in the
+butterfly unit is particularly crucial in facilitating this strategy.
+The NTT implementation with CT algorithm algorithm using
+Plantard arithmetic only increases the coefficients by 3.5q.
+The large input range and small output range of Plantard
+arithmetic enables us to eliminate all the modular reductions
+of coefficients in NTT on Cortex-M3 and RISC-V. This is a
+noteworthy improvement compared to the Montgomery-based
+NTT implementation, which requires one modular reduction
+for all coefficients. Therefore, the focus of this study is on
+the exploration of better lazy reduction strategy for INTT on
+Cortex-M3 and RISC-V.
+An even better lazy reduction strategy is designed for INTT
+in this work, compared to the version on Cortex-M4 in [20].
+Two main factors contribute to this new design. Firstly, Huang
+et al. [20] utilized the SIMD extension of Cortex-M4 to speed
+up NTT/INTT; thus the coefficient in INTT cannot exceed the
+bound of a 16-bit signed integer. For Kyber’s modulus q=
+3329, the coefficients must stay within [−9.5q,9.5q]. However,
+on the low-end 32-bit platforms that lack of SIMD extension,
+each coefficient is loaded to a 32-bit register, which has the
+potential to temporarily overflow 16-bit signed integer range
+before it is stored back to a 16-bit memory. Secondly, the input
+range of the Plantard arithmetic is enlarged from [−64q,64q]
+in [20, Algorithm 11] to [−137q,230q], which allows for a
+“lazier” modular reduction.
+a) Input Polynomial of INTT: Before moving to the
+detailed strategy, let’s analyze the coefficient size of the input
+polynomial of INTT first. It is worth noting that matrix-vector
+multiplication and vector inner product are the two operations
+that could expand the coefficient size of INTT’s input polyno-
+mial. The resulting polynomial of these two operations must
+add up k intermediate polynomials, where k equals 2,3,4
+for the three Kyber variants, respectively. Abdulrahman et
+al. [14] proposed two versions of implementations for these
+two operations and its underlying pointwise multiplication: the
+stack-version and the speed-version. In this study, we apply the
+Plantard arithmetic to both versions of implementations.
+• The stack-version process involves reducing each inter-
+mediate polynomial and accumulating k reduced polyno-
+mials together, which generates an “unreduced” polyno-
+mial (i.e., every coefficient of the polynomial is beyond
+the output range of modular reduction). When imple-
+mented with the Plantard arithmetic, the stack-version
+matrix-vector product and vector inner product produce
+coefficients within the range (−kq/2,kq/2).
+• The speed-version implementation is built on top of
+the stack-version implementation. An intermediate 32-
+bit array is used to cache the sum of k intermediate
+polynomials, and this intermediate result is reduced after
+the accumulation process, producing a “reduced” poly-
+nomial (i.e., every coefficient is in the output range of
+modular reduction). When implemented with the Plantard
+arithmetic, the speed-version code generates coefficients
+in the range (−q/2,q/2).
+b) Better Lazy Reduction on RISC-V: We first introduce
+a better lazy reduction strategy for INTT on RISC-V. Since
+INTT is computed by using GS algorithm in combination with
+the 3+4 layer merging strategy on RISC-V, after the third
+layer of INTT, the coefficients have to be stored back to 16-
+bit signed integers in memory. Therefore, we need to analyze
+the coefficient size to ensure that they can fit in 16-bit signed
+integer after the third layer of INTT.
+Fig. 1 demonstrates the first 16 coefficients of the first three
+layers of a length-128 INTT implemented via GS algorithm.
+Since the input coefficients of the stack-version INTT are
+within the bound (−kq/2,kq/2), we let the red number
+x in Fig. 1 equal to kq/2, which is the largest absolute
+value of the input range. After three layers of GS butterflies
+computation, the first 2 coefficients (out of 16 coefficients)
+are expanded up to 8x, namely 4kq. In the case of Kyber512

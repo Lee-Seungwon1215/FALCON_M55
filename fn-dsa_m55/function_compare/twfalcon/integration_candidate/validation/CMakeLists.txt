@@ -1,0 +1,120 @@
+cmake_minimum_required(VERSION 3.20.0)
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+set(BOARD_LINKER_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/fndsa_dtcm_linker.ld")
+execute_process(COMMAND ${Python3_EXECUTABLE} "${COMMON_MEAS}/app/generate_dtcm_linker.py"
+  "$ENV{ZEPHYR_BASE}/include/zephyr/arch/arm/cortex_m/scripts/linker.ld"
+  "${BOARD_LINKER_SCRIPT}" COMMAND_ERROR_IS_FATAL ANY)
+if(PIN_INTEGER_LAYOUT)
+  # Diagnostic control only: no change to crypto sources or instructions.
+  execute_process(COMMAND ${Python3_EXECUTABLE}
+    "${CMAKE_CURRENT_SOURCE_DIR}/pin_integer_layout.py" "${BOARD_LINKER_SCRIPT}"
+    COMMAND_ERROR_IS_FATAL ANY)
+endif()
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+project(fndsa_isolated_fp64_audit C ASM)
+zephyr_link_libraries(-Wl,--wrap=soc_early_reset_hook -Wl,--wrap=printf
+  -Wl,--wrap=fprintf -Wl,--wrap=puts -Wl,--wrap=putchar -Wl,--wrap=fflush -Wl,--wrap=exit)
+set(C_NAMES codec mq sha3 sysrng util kgen kgen_fxp kgen_gauss kgen_mp31
+  kgen_ntru kgen_poly kgen_zint31 sign sign_core sign_fpoly sign_fpr sign_sampler vrfy)
+if(KEYGEN_BASELINE)
+  # Measurement-only source selection: compile M55_ref itself, without edits.
+  set(S_NAMES codec_cm4 mq_cm4 sha3_cm4 sign_fpr_cm4 sign_sampler_cm4)
+else()
+  list(APPEND C_NAMES tw32_gm_q32 tw32_gm_ds32 tw32_fft_mve tw32_bridge triple_float)
+  set(S_NAMES codec_cm4 mq_cm55 sha3_cm4 sign_fpr_cm4 sign_sampler_cm4
+    kgen_mp31_cm55 tw32_primitives_cm55)
+endif()
+set(CRYPTO_FILES)
+set(BENCH_FILE "${BENCH_SOURCE}")
+if(BENCH_SOURCE STREQUAL "integration_bench.c")
+  execute_process(COMMAND ${Python3_EXECUTABLE}
+    "${CMAKE_CURRENT_SOURCE_DIR}/generate_integration_profile.py"
+    "${CRYPTO_SOURCE}" "${CMAKE_CURRENT_BINARY_DIR}/generated" "${INTEGRATION_MODE}"
+    COMMAND_ERROR_IS_FATAL ANY)
+  set(BENCH_FILE "${CMAKE_CURRENT_BINARY_DIR}/generated/integration_bench.c")
+endif()
+foreach(name IN LISTS C_NAMES)
+  if(BENCH_SOURCE STREQUAL "integration_bench.c" AND (name STREQUAL "kgen" OR name STREQUAL "kgen_ntru"))
+    list(APPEND CRYPTO_FILES "${CMAKE_CURRENT_BINARY_DIR}/generated/${name}.c")
+  elseif(BENCH_SOURCE STREQUAL "keyprofile.c" AND name STREQUAL "kgen_ntru")
+    execute_process(COMMAND ${Python3_EXECUTABLE}
+      "${CMAKE_CURRENT_SOURCE_DIR}/generate_approx_profile.py"
+      "${CRYPTO_SOURCE}" "${CMAKE_CURRENT_BINARY_DIR}/generated"
+      COMMAND_ERROR_IS_FATAL ANY)
+    list(APPEND CRYPTO_FILES "${CMAKE_CURRENT_BINARY_DIR}/generated/kgen_ntru.c")
+  elseif(BENCH_SOURCE STREQUAL "ntruprofile.c" AND name STREQUAL "kgen_ntru")
+    execute_process(COMMAND ${Python3_EXECUTABLE}
+      "${CMAKE_CURRENT_SOURCE_DIR}/generate_ntru_profile.py"
+      "${CRYPTO_SOURCE}" "${CMAKE_CURRENT_BINARY_DIR}/generated" "${NTRU_PROFILE_MODE}"
+      COMMAND_ERROR_IS_FATAL ANY)
+    list(APPEND CRYPTO_FILES "${CMAKE_CURRENT_BINARY_DIR}/generated/kgen_ntru.c")
+  elseif(BENCH_SOURCE STREQUAL "orthoprofile.c" AND name STREQUAL "kgen_ntru")
+    execute_process(COMMAND ${Python3_EXECUTABLE}
+      "${CMAKE_CURRENT_SOURCE_DIR}/generate_ortho_profile.py"
+      "${CRYPTO_SOURCE}" "${CMAKE_CURRENT_BINARY_DIR}/generated" "${NTRU_PROFILE_MODE}"
+      COMMAND_ERROR_IS_FATAL ANY)
+    list(APPEND CRYPTO_FILES "${CMAKE_CURRENT_BINARY_DIR}/generated/kgen_ntru.c")
+  else()
+    list(APPEND CRYPTO_FILES "${CRYPTO_SOURCE}/${name}.c")
+  endif()
+endforeach()
+foreach(name IN LISTS S_NAMES)
+  list(APPEND CRYPTO_FILES "${CRYPTO_SOURCE}/${name}.s")
+endforeach()
+set(SHIM "$ENV{MLKEM_NATIVE_PINNED_ROOT}/test/zephyr/app/shim_nucleo_n657x0_q.c")
+target_sources(app PRIVATE ${CRYPTO_FILES} ${BENCH_FILE}
+  "${COMMON_MEAS}/app/dtcm_startup.s" "${SHIM}")
+if(BENCH_SOURCE STREQUAL "integration_bench.c")
+  target_sources(app PRIVATE integration_profile.c)
+  set_property(SOURCE integration_profile.c APPEND PROPERTY
+    COMPILE_OPTIONS -O3 -mfpu=fpv5-d16 -ffp-contract=off -fno-fast-math -fno-strict-aliasing)
+endif()
+if(BENCH_SOURCE STREQUAL "twiddlebench.c")
+  target_sources(app PRIVATE old10_tw32_fft_mve.c old10_tw32_bridge.c)
+  set_property(SOURCE old10_tw32_fft_mve.c old10_tw32_bridge.c APPEND PROPERTY
+    COMPILE_OPTIONS -O3 -mfpu=fpv5-d16 -ffp-contract=off -fno-fast-math -fno-strict-aliasing)
+endif()
+if(BENCH_SOURCE STREQUAL "keyprofile.c")
+  target_sources(app PRIVATE approx_profile.c)
+  set_property(SOURCE approx_profile.c APPEND PROPERTY
+    COMPILE_OPTIONS -O3 -mfpu=fpv5-d16 -ffp-contract=off -fno-fast-math -fno-strict-aliasing)
+endif()
+if(BENCH_SOURCE STREQUAL "ntruprofile.c")
+  target_sources(app PRIVATE ntru_profile.c)
+  target_include_directories(app PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated")
+  set_property(SOURCE ntru_profile.c APPEND PROPERTY
+    COMPILE_OPTIONS -O3 -mfpu=fpv5-d16 -ffp-contract=off -fno-fast-math -fno-strict-aliasing)
+endif()
+if(BENCH_SOURCE STREQUAL "orthoprofile.c")
+  target_sources(app PRIVATE ortho_profile.c)
+  target_include_directories(app PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/generated")
+  set_property(SOURCE ortho_profile.c APPEND PROPERTY
+    COMPILE_OPTIONS -O3 -mfpu=fpv5-d16 -ffp-contract=off -fno-fast-math -fno-strict-aliasing)
+endif()
+if(BENCH_SOURCE STREQUAL "bridgeprofile.c")
+  execute_process(COMMAND ${Python3_EXECUTABLE}
+    "${CMAKE_CURRENT_SOURCE_DIR}/generate_bridge_profile.py"
+    "${CRYPTO_SOURCE}" "${CMAKE_CURRENT_BINARY_DIR}/generated"
+    COMMAND_ERROR_IS_FATAL ANY)
+  set(BRIDGE_PROFILE_FILES)
+  foreach(prefix bp bc)
+    foreach(name tw32_bridge tw32_fft_mve)
+      list(APPEND BRIDGE_PROFILE_FILES "${CMAKE_CURRENT_BINARY_DIR}/generated/${prefix}_${name}.c")
+    endforeach()
+  endforeach()
+  target_sources(app PRIVATE ${BRIDGE_PROFILE_FILES})
+  set_property(SOURCE ${BRIDGE_PROFILE_FILES} APPEND PROPERTY
+    COMPILE_OPTIONS -O3 -mfpu=fpv5-d16 -ffp-contract=off -fno-fast-math -fno-strict-aliasing)
+endif()
+target_include_directories(app PRIVATE "${CRYPTO_SOURCE}" "${CMAKE_CURRENT_SOURCE_DIR}/generated" "${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_definitions(app PRIVATE FNDSA_ASM_CORTEXM4=1 FNDSA_ASM_CORTEXM55=1
+  AUDIT_BOARD=1 fmaf=__builtin_fmaf
+  isnanf=__builtin_isnan isinff=__builtin_isinf
+  printf=__wrap_printf fprintf=__wrap_fprintf
+  puts=__wrap_puts putchar=__wrap_putchar fflush=__wrap_fflush exit=__wrap_exit)
+if(NOT KEYGEN_BASELINE)
+  target_compile_definitions(app PRIVATE FNDSA_MVE_MP31=1)
+endif()
+zephyr_compile_definitions(USER_VECT_TAB_ADDRESS VECT_TAB_BASE_ADDRESS=0x10000000 VECT_TAB_OFFSET=0x0)
+set_property(SOURCE ${CRYPTO_FILES} ${BENCH_FILE} ${SHIM} APPEND PROPERTY
+  COMPILE_OPTIONS -O3 -mfpu=fpv5-d16 -ffp-contract=off -fno-fast-math -fno-strict-aliasing)

@@ -1,0 +1,567 @@
+{
+  "candidate": "before",
+  "started_utc": "2026-09-14T02:50:08.393098+00:00",
+  "command": [
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_slothy/measurement/exec_board.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_profile_compare/build/before/zephyr/zephyr.elf"
+  ],
+  "source_tree_sha256": "7dac07f89dacd72e431036e30704ea249890e9bb7a887fe65d631e7efe86d41c",
+  "elf_sha256": "07248a666e8b1717c475d4b64bd26641d3634b5e3316e42b006687fac99cf63c",
+  "mq_assembly": "/Users/seungwon/FALCON/fn-dsa_m55/ref/mq_cm4.s",
+  "probe": "003C00223335510735383531",
+  "ended_utc": "2026-09-14T02:50:23.744713+00:00",
+  "returncode": 0,
+  "valid": true,
+  "validation_errors": [],
+  "totals": {
+    "512_keygen": {
+      "calls": 10,
+      "total": 588485044,
+      "minimum": 49323696,
+      "maximum": 75897284
+    },
+    "512_sign": {
+      "calls": 100,
+      "total": 1841487353,
+      "minimum": 18222899,
+      "maximum": 18601102
+    },
+    "512_verify": {
+      "calls": 100,
+      "total": 37828301,
+      "minimum": 378283,
+      "maximum": 378284
+    },
+    "1024_keygen": {
+      "calls": 10,
+      "total": 2850430941,
+      "minimum": 180782107,
+      "maximum": 463085648
+    },
+    "1024_sign": {
+      "calls": 100,
+      "total": 3930352927,
+      "minimum": 38874096,
+      "maximum": 39663907
+    },
+    "1024_verify": {
+      "calls": 100,
+      "total": 73766800,
+      "minimum": 737668,
+      "maximum": 737668
+    }
+  },
+  "categories": {
+    "512_keygen_other": {
+      "cycles": 1919,
+      "entries": 0
+    },
+    "512_keygen_shake": {
+      "cycles": 28266642,
+      "entries": 1937
+    },
+    "512_keygen_codec": {
+      "cycles": 185370,
+      "entries": 40
+    },
+    "512_keygen_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_fft_fixed": {
+      "cycles": 64070518,
+      "entries": 16996
+    },
+    "512_keygen_fft_fpr": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_ntt_q": {
+      "cycles": 4960496,
+      "entries": 146
+    },
+    "512_keygen_ntt_modp": {
+      "cycles": 97096020,
+      "entries": 47343
+    },
+    "512_keygen_keygen_other": {
+      "cycles": 1974497,
+      "entries": 10
+    },
+    "512_keygen_key_preparation": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_ntru_other": {
+      "cycles": 249633966,
+      "entries": 11
+    },
+    "512_keygen_crt": {
+      "cycles": 98397214,
+      "entries": 1504
+    },
+    "512_keygen_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sampler_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_gaussian_fg": {
+      "cycles": 15458452,
+      "entries": 247
+    },
+    "512_keygen_gaussian0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_norm": {
+      "cycles": 28439950,
+      "entries": 55
+    },
+    "512_keygen_sign_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_verify_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_other": {
+      "cycles": 37899,
+      "entries": 0
+    },
+    "512_sign_shake": {
+      "cycles": 237046206,
+      "entries": 16246
+    },
+    "512_sign_codec": {
+      "cycles": 10598353,
+      "entries": 800
+    },
+    "512_sign_hash_to_point": {
+      "cycles": 1769552,
+      "entries": 100
+    },
+    "512_sign_message_hash": {
+      "cycles": 118100,
+      "entries": 100
+    },
+    "512_sign_fft_fixed": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_fft_fpr": {
+      "cycles": 426682503,
+      "entries": 700
+    },
+    "512_sign_ntt_q": {
+      "cycles": 42199200,
+      "entries": 1200
+    },
+    "512_sign_ntt_modp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_keygen_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_key_preparation": {
+      "cycles": 4776100,
+      "entries": 100
+    },
+    "512_sign_ntru_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_ldl_ffsampling": {
+      "cycles": 753995708,
+      "entries": 25600
+    },
+    "512_sign_sampler_other": {
+      "cycles": 138962742,
+      "entries": 102400
+    },
+    "512_sign_gaussian_fg": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_gaussian0": {
+      "cycles": 42730560,
+      "entries": 178044
+    },
+    "512_sign_berexp": {
+      "cycles": 96632929,
+      "entries": 178044
+    },
+    "512_sign_norm": {
+      "cycles": 500100,
+      "entries": 300
+    },
+    "512_sign_sign_other": {
+      "cycles": 85437401,
+      "entries": 100
+    },
+    "512_sign_verify_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_other": {
+      "cycles": 17000,
+      "entries": 0
+    },
+    "512_verify_shake": {
+      "cycles": 24809901,
+      "entries": 1700
+    },
+    "512_verify_codec": {
+      "cycles": 1817900,
+      "entries": 200
+    },
+    "512_verify_hash_to_point": {
+      "cycles": 1789200,
+      "entries": 100
+    },
+    "512_verify_message_hash": {
+      "cycles": 462800,
+      "entries": 200
+    },
+    "512_verify_fft_fixed": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_fft_fpr": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_ntt_q": {
+      "cycles": 7271200,
+      "entries": 200
+    },
+    "512_verify_ntt_modp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_keygen_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_key_preparation": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_ntru_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sampler_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_gaussian_fg": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_gaussian0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_norm": {
+      "cycles": 395700,
+      "entries": 300
+    },
+    "512_verify_sign_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_verify_other": {
+      "cycles": 1264600,
+      "entries": 100
+    },
+    "1024_keygen_other": {
+      "cycles": 1940,
+      "entries": 0
+    },
+    "1024_keygen_shake": {
+      "cycles": 195020855,
+      "entries": 13364
+    },
+    "1024_keygen_codec": {
+      "cycles": 360410,
+      "entries": 40
+    },
+    "1024_keygen_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_fft_fixed": {
+      "cycles": 343072587,
+      "entries": 50767
+    },
+    "1024_keygen_fft_fpr": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_ntt_q": {
+      "cycles": 36245918,
+      "entries": 482
+    },
+    "1024_keygen_ntt_modp": {
+      "cycles": 303630734,
+      "entries": 146042
+    },
+    "1024_keygen_keygen_other": {
+      "cycles": 12140858,
+      "entries": 10
+    },
+    "1024_keygen_key_preparation": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_ntru_other": {
+      "cycles": 1161720176,
+      "entries": 17
+    },
+    "1024_keygen_crt": {
+      "cycles": 489800196,
+      "entries": 2974
+    },
+    "1024_keygen_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sampler_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_gaussian_fg": {
+      "cycles": 92447886,
+      "entries": 877
+    },
+    "1024_keygen_gaussian0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_norm": {
+      "cycles": 215989381,
+      "entries": 209
+    },
+    "1024_keygen_sign_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_verify_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_other": {
+      "cycles": 38200,
+      "entries": 0
+    },
+    "1024_sign_shake": {
+      "cycles": 457852278,
+      "entries": 31378
+    },
+    "1024_sign_codec": {
+      "cycles": 19865221,
+      "entries": 800
+    },
+    "1024_sign_hash_to_point": {
+      "cycles": 3446976,
+      "entries": 100
+    },
+    "1024_sign_message_hash": {
+      "cycles": 118300,
+      "entries": 100
+    },
+    "1024_sign_fft_fixed": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_fft_fpr": {
+      "cycles": 957451429,
+      "entries": 700
+    },
+    "1024_sign_ntt_q": {
+      "cycles": 93395700,
+      "entries": 1200
+    },
+    "1024_sign_ntt_modp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_keygen_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_key_preparation": {
+      "cycles": 9205300,
+      "entries": 100
+    },
+    "1024_sign_ntru_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_ldl_ffsampling": {
+      "cycles": 1668709519,
+      "entries": 51200
+    },
+    "1024_sign_sampler_other": {
+      "cycles": 274697785,
+      "entries": 204800
+    },
+    "1024_sign_gaussian_fg": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_gaussian0": {
+      "cycles": 84066480,
+      "entries": 350277
+    },
+    "1024_sign_berexp": {
+      "cycles": 190130239,
+      "entries": 350277
+    },
+    "1024_sign_norm": {
+      "cycles": 960900,
+      "entries": 300
+    },
+    "1024_sign_sign_other": {
+      "cycles": 170414600,
+      "entries": 100
+    },
+    "1024_sign_verify_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_other": {
+      "cycles": 16900,
+      "entries": 0
+    },
+    "1024_verify_shake": {
+      "cycles": 46701000,
+      "entries": 3200
+    },
+    "1024_verify_codec": {
+      "cycles": 3599700,
+      "entries": 200
+    },
+    "1024_verify_hash_to_point": {
+      "cycles": 3450200,
+      "entries": 100
+    },
+    "1024_verify_message_hash": {
+      "cycles": 748600,
+      "entries": 200
+    },
+    "1024_verify_fft_fixed": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_fft_fpr": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_ntt_q": {
+      "cycles": 16092100,
+      "entries": 200
+    },
+    "1024_verify_ntt_modp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_keygen_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_key_preparation": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_ntru_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_crt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sampler_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_gaussian_fg": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_gaussian0": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_norm": {
+      "cycles": 754100,
+      "entries": 300
+    },
+    "1024_verify_sign_other": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_verify_other": {
+      "cycles": 2404200,
+      "entries": 100
+    }
+  },
+  "fingerprints": {
+    "512": "9895079d",
+    "1024": "a020dd02"
+  },
+  "raw_log_sha256": "cf39ce058058f2ef01e869af6e8bb4f17863dc21819d1be7167d398390032226"
+}

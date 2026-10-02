@@ -1,0 +1,110 @@
+{
+  "valid": true,
+  "run_directory": "runs/full-20260910T020147Z",
+  "started_utc": "2026-09-10T02:01:47.360738+00:00",
+  "ended_utc": "2026-09-10T02:03:28.963929+00:00",
+  "elf_sha256": "c415762b0c572db02f144fb77ac78a02e8af571544faab2dfa4334a5dfe1b65f",
+  "raw_sha256": "2181aa3d1e97fe2143cfc9ed2a9e9e785eb7f0eaa9160a25e5893538230fb3eb",
+  "measured_calls": 600,
+  "warmup_calls": 600,
+  "batch_records": 60,
+  "ecc_check_enabled": true,
+  "fault_registers_zero": true,
+  "host_digests_match": true,
+  "cpu_sys_hclk_mhz": [
+    800,
+    400,
+    200
+  ],
+  "icache_enabled": false,
+  "dcache_enabled": false,
+  "timer_selfcheck": {
+    "zephyr": 80000221,
+    "dwt": 80000591,
+    "difference": 370
+  },
+  "wall_seconds": 101.603191,
+  "summed_measured_seconds_at_nominal_cpu": 49.2777584025,
+  "memory_note": "Local linker: vectors/text ITCM; global rodata, Zephyr tables, data LMA/VMA, BSS and stack DTCM. Inline text literal pools remain ITCM.",
+  "statistics": [
+    {
+      "degree": 512,
+      "operation": "keygen",
+      "measured_calls": 100,
+      "warmup_calls": 100,
+      "independent_batch_inputs": 10,
+      "upper_median_cycles": 51998993,
+      "upper_median_ms_at_800mhz": 64.99874125,
+      "mean_cycles": 57447400.2,
+      "min_batch_mean_cycles": 48012279.4,
+      "max_batch_mean_cycles": 74448794.3,
+      "sd_of_batch_means": 11392290.050730223
+    },
+    {
+      "degree": 512,
+      "operation": "sign",
+      "measured_calls": 100,
+      "warmup_calls": 100,
+      "independent_batch_inputs": 10,
+      "upper_median_cycles": 17434921,
+      "upper_median_ms_at_800mhz": 21.79365125,
+      "mean_cycles": 17408717.57,
+      "min_batch_mean_cycles": 17253862.0,
+      "max_batch_mean_cycles": 17466351.0,
+      "sd_of_batch_means": 62391.18970150361
+    },
+    {
+      "degree": 512,
+      "operation": "verify",
+      "measured_calls": 100,
+      "warmup_calls": 100,
+      "independent_batch_inputs": 10,
+      "upper_median_cycles": 372321,
+      "upper_median_ms_at_800mhz": 0.46540125,
+      "mean_cycles": 366587.37,
+      "min_batch_mean_cycles": 357737.2,
+      "max_batch_mean_cycles": 372575.2,
+      "sd_of_batch_means": 7525.9191565696665
+    },
+    {
+      "degree": 1024,
+      "operation": "keygen",
+      "measured_calls": 100,
+      "warmup_calls": 100,
+      "independent_batch_inputs": 10,
+      "upper_median_cycles": 261461140,
+      "upper_median_ms_at_800mhz": 326.826425,
+      "mean_cycles": 280950872.82,
+      "min_batch_mean_cycles": 177577539.3,
+      "max_batch_mean_cycles": 457396408.5,
+      "sd_of_batch_means": 105966501.3100108
+    },
+    {
+      "degree": 1024,
+      "operation": "sign",
+      "measured_calls": 100,
+      "warmup_calls": 100,
+      "independent_batch_inputs": 10,
+      "upper_median_cycles": 37347834,
+      "upper_median_ms_at_800mhz": 46.6847925,
+      "mean_cycles": 37323628.15,
+      "min_batch_mean_cycles": 37198542.9,
+      "max_batch_mean_cycles": 37486650.7,
+      "sd_of_batch_means": 87030.44735558856
+    },
+    {
+      "degree": 1024,
+      "operation": "verify",
+      "measured_calls": 100,
+      "warmup_calls": 100,
+      "independent_batch_inputs": 10,
+      "upper_median_cycles": 729270,
+      "upper_median_ms_at_800mhz": 0.9115875,
+      "mean_cycles": 724861.11,
+      "min_batch_mean_cycles": 714360.2,
+      "max_batch_mean_cycles": 729833.0,
+      "sd_of_batch_means": 7198.802819365962
+    }
+  ],
+  "interpretation": "Upper median of 10 measured block totals divided by 10. Not a 100-independent-input distribution or pure M4/M55 core comparison."
+}

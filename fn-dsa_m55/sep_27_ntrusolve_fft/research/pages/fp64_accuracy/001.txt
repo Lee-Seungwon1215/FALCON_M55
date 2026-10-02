@@ -1,0 +1,37 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 1/18
+
+Formal Verification of Emulated Floating-Point
+Arithmetic in Falcon
+Vincent Hwang
+1 Max Planck Institute for Security and Privacy, Bochum, Germany
+2 SandboxAQ, Bochum, Germany
+vincentvbh7@gmail.com
+Abstract. We show that there is a discrepancy between the emulated
+floating-point multiplication in the submission package of the digital sig-
+natureFalconandtheclaimedbehavior.Inparticular,weshowthatsome
+floating-point products with absolute values the smallest normal positive
+floating-point number are incorrectly zeroized. However, we show that
+the discrepancy doesn’t affect the complex fast Fourier transform in the
+signature generation of Falcon by modeling the floating-point addition,
+subtraction, and multiplication in CryptoLine. We later implement our
+own floating-point multiplications in Armv7-M assembly and Jasmin and
+prove their equivalence with our model, demonstrating the possibility of
+transferring the challenging verification task (verifying highly-optimized
+assembly) to the presumably more readable code base (Jasmin).
+Keywords: Falcon· Floating-point arithmetic· Formal verification·
+CryptoLine
+1 Introduction
+Falcon [Pre+20] is one of the recently selected digital signatures for standard-
+ization by the National Institute of Standards and Technology. Essentially the
+signature is sampled with a probability approximated by floating-point numbers.
+Since floating-point arithmetic is not always constant-time, [Por19] implemented
+a series of constant-time floating-point arithmetic with software emulation. We
+show that
+– theemulatedfloating-pointmultiplicationdoesnothonoritsbehaviorclaimed
+by [Por19];
+– the discrepancy does not affect the complex fast Fourier transform in the
+signature generation of Falcon; and
+– how to prove the equivalence between emulated floating-point addition/sub-
+traction/multiplication implementations.
+Our source code is publicly available at
+https://github.com/vincentvbh/Float_formal.

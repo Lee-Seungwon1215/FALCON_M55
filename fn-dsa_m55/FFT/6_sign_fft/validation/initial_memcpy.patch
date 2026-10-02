@@ -1,0 +1,107 @@
+--- Final_code/Before_slothy/sign_fpoly.c	2026-09-28 14:17:18
++++ fn-dsa_m55/FFT/6_sign_fft/sign_fpoly.c	2026-09-28 16:13:47
+@@ -3,6 +3,28 @@
+  */
+ 
+ #include "sign_inner.h"
++
++/* M55 signing FFT only: fpr already contains an IEEE-754 binary64 bit
++ * pattern, not a numeric uint64_t or a Q32 value. memcpy preserves that
++ * pattern without an aliasing violation or a numeric conversion. These
++ * helpers are private: LDL, split/merge and the sampler retain their
++ * original arithmetic. Compile with FP contraction and fast-math disabled.
++ */
++_Static_assert(sizeof(double) == sizeof(fpr), "binary64 double required");
++
++static inline double
++fft_load_f64(const fpr *src)
++{
++	double x;
++	memcpy(&x, src, sizeof x);
++	return x;
++}
++
++static inline void
++fft_store_f64(fpr *dst, double x)
++{
++	memcpy(dst, &x, sizeof x);
++}
+ 
+ /* If rev() is the bit-reversal function over 10 bits, then,
+    for k = 1 to 1023:
+@@ -1247,19 +1269,22 @@
+ 		size_t ht = t >> 1;
+ 		size_t j0 = 0;
+ 		for (size_t i = 0; i < hm; i ++) {
+-			fpr s_re = GM[((m + i) << 1) + 0];
+-			fpr s_im = GM[((m + i) << 1) + 1];
++			double s_re = fft_load_f64(&GM[((m + i) << 1) + 0]);
++			double s_im = fft_load_f64(&GM[((m + i) << 1) + 1]);
+ 			for (size_t j = 0; j < ht; j ++) {
+ 				size_t j1 = j0 + j;
+ 				size_t j2 = j1 + ht;
+-				fpr x_re = f[j1];
+-				fpr x_im = f[j1 + hn];
+-				fpr y_re = f[j2];
+-				fpr y_im = f[j2 + hn];
+-				fpr z_re, z_im;
+-				FPC_MUL(z_re, z_im, y_re, y_im, s_re, s_im);
+-				FPR_ADD_SUB(f[j1], f[j2], x_re, z_re);
+-				FPR_ADD_SUB(f[j1 + hn], f[j2 + hn], x_im, z_im);
++				double x_re = fft_load_f64(&f[j1]);
++				double x_im = fft_load_f64(&f[j1 + hn]);
++				double y_re = fft_load_f64(&f[j2]);
++				double y_im = fft_load_f64(&f[j2 + hn]);
++				/* Four separately rounded products, as in FPC_MUL. */
++				double z_re = (y_re * s_re) - (y_im * s_im);
++				double z_im = (y_re * s_im) + (y_im * s_re);
++				fft_store_f64(&f[j1], x_re + z_re);
++				fft_store_f64(&f[j2], x_re - z_re);
++				fft_store_f64(&f[j1 + hn], x_im + z_im);
++				fft_store_f64(&f[j2 + hn], x_im - z_im);
+ 			}
+ 			j0 += t;
+ 		}
+@@ -1536,26 +1561,31 @@
+ 		size_t dt = t << 1;
+ 		size_t j0 = 0;
+ 		for (size_t i = 0; i < (hm >> 1); i ++) {
+-			fpr s_re = GM[((hm + i) << 1) + 0];
+-			fpr s_im = fpr_neg(GM[((hm + i) << 1) + 1]);
++			double s_re = fft_load_f64(&GM[((hm + i) << 1) + 0]);
++			double s_im = -fft_load_f64(&GM[((hm + i) << 1) + 1]);
+ 			for (size_t j = 0; j < t; j ++) {
+ 				size_t j1 = j0 + j;
+ 				size_t j2 = j1 + t;
+-				fpr x_re = f[j1];
+-				fpr x_im = f[j1 + hn];
+-				fpr y_re = f[j2];
+-				fpr y_im = f[j2 + hn];
+-				FPR_ADD_SUB(f[j1], x_re, x_re, y_re);
+-				FPR_ADD_SUB(f[j1 + hn], x_im, x_im, y_im);
+-				FPC_MUL(x_re, x_im, x_re, x_im, s_re, s_im);
+-				f[j2] = x_re;
+-				f[j2 + hn] = x_im;
++				double x_re = fft_load_f64(&f[j1]);
++				double x_im = fft_load_f64(&f[j1 + hn]);
++				double y_re = fft_load_f64(&f[j2]);
++				double y_im = fft_load_f64(&f[j2 + hn]);
++				double d_re = x_re - y_re;
++				double d_im = x_im - y_im;
++				fft_store_f64(&f[j1], x_re + y_re);
++				fft_store_f64(&f[j1 + hn], x_im + y_im);
++				fft_store_f64(&f[j2],
++					(d_re * s_re) - (d_im * s_im));
++				fft_store_f64(&f[j2 + hn],
++					(d_re * s_im) + (d_im * s_re));
+ 			}
+ 			j0 += dt;
+ 		}
+ 		t = dt;
+ 	}
+ 
++	/* Exact power-of-two scaling: retain the inexpensive, zero-aware
++	   exponent adjustment. This is not emulated floating-point division. */
+ 	for (size_t i = 0; i < n; i ++) {
+ 		f[i] = fpr_div2e(f[i], logn - 1);
+ 	}

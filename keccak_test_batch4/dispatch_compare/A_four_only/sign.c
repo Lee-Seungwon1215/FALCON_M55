@@ -1,0 +1,487 @@
+/*
+ * Top-level signature generation functions.
+ */
+
+#include "sign_inner.h"
+#include "fndsa_batch4.h"
+
+/* Verified properties at this point:
+      degree is acceptable
+      encoded signing key has the proper size
+      signature buffer is large enough to receive the result
+      tmp is large enough (but not necessarily aligned)  */
+static int
+sign_prepare_key(unsigned logn, const uint8_t *sign_key, void *tmp)
+{
+	size_t n = (size_t)1 << logn;
+
+	/* Align tmp to a 32-byte boundary. */
+	tmp = (void *)(((uintptr_t)tmp + 31) & ~(uintptr_t)31);
+
+	/* We decode f, g and F into a temporary area, and use them
+	   to recompute G. Only G will be provided in decoded format
+	   to sign_core(); f, g and F can be redecoded cheaply from
+	   the encoded key when needed. */
+	int8_t *f = (int8_t *)tmp + 4 * n;
+	int8_t *g = f + n;
+	int8_t *F = g + n;
+	int8_t *G = (int8_t *)tmp + ((size_t)58 << logn);
+
+	/* Decode the private key. Header byte and length have already
+	   been verified. */
+	unsigned nbits;
+	switch (logn) {
+	case 2: case 3: case 4: case 5:
+		nbits = 8;
+		break;
+	case 6: case 7:
+		nbits = 7;
+		break;
+	case 8: case 9:
+		nbits = 6;
+		break;
+	default:
+		nbits = 5;
+		break;
+	}
+	size_t k, j = 1;
+	k = trim_i8_decode(logn, sign_key + j, f, nbits);
+	if (k == 0) {
+		return 0;
+	}
+	j += k;
+	k = trim_i8_decode(logn, sign_key + j, g, nbits);
+	if (k == 0) {
+		return 0;
+	}
+	j += k;
+	k = trim_i8_decode(logn, sign_key + j, F, 8);
+	if (k == 0) {
+		return 0;
+	}
+
+	/* Rebuild G and the public polynomial h:
+	      h = g/f mod X^n+1 mod q
+	      G = h*F mod X^n+1 mod q
+	   We also compute the SHAKE256 hash of the verifying key. */
+	uint16_t *t1 = (uint16_t *)tmp;
+	uint16_t *t0 = t1 + n;
+	/* t0 <- h = g/f */
+	mqpoly_small_to_int(logn, g, t0);
+	mqpoly_small_to_int(logn, f, t1);
+	mqpoly_int_to_ntt(logn, t0);
+	mqpoly_int_to_ntt(logn, t1);
+	if (!mqpoly_div_ntt(logn, t0, t1, t0 + n)) {
+		/* f is not invertible; the key is not valid */
+		return 0;
+	}
+	/* t1 <- G = h*F */
+	mqpoly_small_to_int(logn, F, t1);
+	mqpoly_int_to_ntt(logn, t1);
+	mqpoly_mul_ntt(logn, t1, t0);
+	mqpoly_ntt_to_int(logn, t1);
+	if (!mqpoly_int_to_small(logn, t1, G)) {
+		/* coefficients of G are out-of-range */
+		return 0;
+	}
+
+	/* Note: at this point we have h (in NTT representation); we could
+	   use it to encode, then recompute the verifying key hash. This
+	   is not mandated by FIPS 206, though; the signing key is assumed
+	   to be internally consistent. */
+
+
+	return 1;
+}
+
+static int
+sign_prepare(unsigned logn, const uint8_t *sign_key, const uint8_t *mu,
+    const uint8_t *seed, size_t seed_len, uint8_t seedbuf[40], void *tmp)
+{
+    tmp = (void *)(((uintptr_t)tmp + 31) & ~(uintptr_t)31);
+    if (!sign_prepare_key(logn, sign_key, tmp)) return 0;
+    unsigned nbits = logn <= 5 ? 8 : logn <= 7 ? 7 : logn <= 9 ? 6 : 5;
+	/* For hedging support, we need the hash of the private key. We
+	   can use tmp for the SHAKE256 context (tmp has size at least 232
+	   bytes, while a shake_context structure is 208 bytes, and tmp
+	   is suitably aligned). */
+	shake_context *sc = (shake_context *)tmp;
+	shake_init(sc, 256);
+	shake_inject(sc, sign_key + 1, nbits << (logn - 2));
+	shake_flip(sc);
+	shake_extract(sc, seedbuf, 40);
+
+	/* The derived seed is obtained as:
+	     SHAKE256(SHAKE256(f||g)[40] || mu || seed)[40]
+	   We already have SHAKE256(f||g)[40] in seedbuf[]. */
+	shake_init(sc, 256);
+	shake_inject(sc, seedbuf, 40);
+	shake_inject(sc, mu, 64);
+
+	/* We need some entropy. If none was provided, then we use the
+	   system RNG. */
+	if (seed == NULL) {
+		if (!sysrng(seedbuf, 40)) {
+			return 0;
+		}
+		seed = seedbuf;
+		seed_len = 40;
+	}
+	shake_inject(sc, seed, seed_len);
+	shake_flip(sc);
+	shake_extract(sc, seedbuf, 40);
+
+	/* We now have G, and we checked that f, g and F can be decoded
+	   successfully (no out-of-range element). We have a 40-byte seed.
+	   We can proceed to the main signing loop. */
+	return 1;
+
+	/* TODO: maybe explicitly overwrite the whole temporary area with
+	   zeros? Arguably this is mostly wasted time if the area is
+	   allocated on the stack, and if tmp is provided explicitly then
+	   it is the responsibility of the caller to do any appropriate
+	   zeroizing. */
+}
+
+
+/* Preserve the original single-signature public entry points. */
+static size_t
+sign_step1(unsigned logn, const uint8_t *sign_key, const uint8_t *mu,
+    const uint8_t *seed, size_t seed_len, uint8_t *sig, void *tmp)
+{
+    uint8_t seedbuf[40];
+    tmp = (void *)(((uintptr_t)tmp + 31) & ~(uintptr_t)31);
+    if (!sign_prepare(logn, sign_key, mu, seed, seed_len, seedbuf, tmp))
+        return 0;
+    const int8_t *G = (int8_t *)tmp + ((size_t)58 << logn);
+    return sign_core(logn, sign_key + 1, G, mu,
+        seedbuf, sizeof seedbuf, sig, tmp);
+}
+
+size_t
+fndsa_sign_batch4_temp_size(unsigned blocks)
+{
+    if (blocks > 160) return 0;
+    return sizeof(fndsa_batch4_work) + (size_t)544 * (blocks ? blocks : 1) + 31;
+}
+
+int
+fndsa_sign_seeded_batch4_temp(fndsa_sign_batch4_job jobs[4],
+    unsigned blocks, void *work, size_t work_len)
+{
+    if (jobs == NULL) return 0;
+    for (unsigned s = 0; s < 4; s++) jobs[s].sig_len = 0;
+    size_t need = fndsa_sign_batch4_temp_size(blocks);
+    if (need == 0 || work == NULL || work_len < need) return 0;
+    fndsa_batch4_work *w = (void *)(((uintptr_t)work + 31) & ~(uintptr_t)31);
+    unsigned logn[4];
+    /* Validate every descriptor before cryptographic processing/output. */
+    for (unsigned s = 0; s < 4; s++) {
+        fndsa_sign_batch4_job *j = &jobs[s];
+        if (j->sign_key == NULL || j->sign_key_len == 0 ||
+            j->seed == NULL || j->sig == NULL ||
+            (j->ctx_len && j->ctx == NULL) || (j->hv_len && j->hv == NULL))
+            return 0;
+        const uint8_t *sk = j->sign_key;
+        logn[s] = sk[0] & 15;
+        if ((sk[0] & 0xf0) != 0x50 || logn[s] < 9 || logn[s] > 10 ||
+            j->sign_key_len != FNDSA_SIGN_KEY_SIZE(logn[s]) ||
+            j->max_sig_len < FNDSA_SIGNATURE_SIZE(logn[s]))
+            return 0;
+    }
+    /* All SHAKE stages of the batch use the independent-state dispatcher.
+     * Integer key preparation and signing arithmetic remain unchanged. */
+    fndsa_shake4_state hash;
+    fndsa_shake_iov v[4][5];
+    const fndsa_shake_iov *vp[4];
+    size_t count[4] = {0};
+    uint8_t header[4][2] = {{0}}, block[4][136];
+    unsigned external = 0;
+    for (unsigned s = 0; s < 4; s++) {
+        const fndsa_sign_batch4_job *j = &jobs[s];
+        vp[s] = v[s];
+        const uint8_t *id = (const uint8_t *)(j->id == NULL ? FNDSA_HASH_ID_RAW : j->id);
+        if (id[0] == 0xfe) {
+            if (j->hv_len != 64) return 0;
+            external |= 1u << s;
+            memcpy(w->mu[s], j->hv, 64);
+        } else {
+            if (j->ctx_len > 255) return 0;
+            size_t id_len = 0;
+            if (id[0] == 6 && id[1] <= 127) {
+                header[s][0] = 1;
+                id_len = (size_t)id[1]+2;
+            } else if (id[0] != 0) return 0;
+            header[s][1] = (uint8_t)j->ctx_len;
+            v[s][0] = (fndsa_shake_iov){fndsa_hashed_vrfykey_from_signkey(j->sign_key,j->sign_key_len),64};
+            v[s][1] = (fndsa_shake_iov){header[s],2};
+            v[s][2] = (fndsa_shake_iov){j->ctx,j->ctx_len};
+            v[s][3] = (fndsa_shake_iov){id,id_len};
+            v[s][4] = (fndsa_shake_iov){j->hv,j->hv_len};
+            count[s] = 5;
+        }
+        if (!sign_prepare_key(logn[s], j->sign_key, w->tmp)) return 0;
+        memcpy(w->G[s], w->tmp + ((size_t)58 << logn[s]), (size_t)1 << logn[s]);
+    }
+    if (external != 15) {
+        fndsa_shake4_absorb(&hash, vp, count);
+        fndsa_shake4_block(&hash, block);
+        for (unsigned s = 0; s < 4; s++)
+            if (!(external & (1u << s))) memcpy(w->mu[s], block[s], 64);
+    }
+    /* SHAKE256(f||g)[40], then SHAKE256(that || mu || entropy)[40]. */
+    for (unsigned s = 0; s < 4; s++) {
+        unsigned bits = logn[s] == 9 ? 6 : 5;
+        v[s][0] = (fndsa_shake_iov){(const uint8_t *)jobs[s].sign_key+1,bits << (logn[s]-2)};
+        count[s] = 1;
+    }
+    fndsa_shake4_absorb(&hash, vp, count);
+    fndsa_shake4_block(&hash, block);
+    for (unsigned s = 0; s < 4; s++) {
+        memcpy(w->seed[s], block[s], 40);
+        v[s][0] = (fndsa_shake_iov){w->seed[s],40};
+        v[s][1] = (fndsa_shake_iov){w->mu[s],64};
+        v[s][2] = (fndsa_shake_iov){jobs[s].seed,jobs[s].seed_len};
+        count[s] = 3;
+    }
+    fndsa_shake4_absorb(&hash, vp, count);
+    fndsa_shake4_block(&hash, block);
+    uint8_t counter = 0;
+    for (unsigned s = 0; s < 4; s++) {
+        memcpy(w->seed[s], block[s], 40);
+        v[s][0] = (fndsa_shake_iov){w->seed[s],40};
+        v[s][1] = (fndsa_shake_iov){&counter,1};
+        count[s] = 2;
+        memset(&w->streams[s], 0, sizeof w->streams[s]);
+        w->streams[s].x4 = &w->rolling;
+        w->streams[s].lane = s;
+    }
+    fndsa_shake4_stream_init(&w->rolling, vp, count, (uint8_t *)(w+1), blocks);
+    uint16_t *hm[4];
+    for (unsigned s = 0; s < 4; s++) {
+        fndsa_shake4_stream_read(&w->rolling, s, w->nonce[s], 40);
+        hm[s] = w->hm[s];
+    }
+    fndsa_shake4_hash_to_point(&hash, logn, w->nonce, w->mu, hm, 15);
+    int ok = 1;
+    for (unsigned s = 0; s < 4; s++) {
+        fndsa_sign_batch4_job *j = &jobs[s];
+        j->sig_len = fndsa_sign_core_batch4(logn[s],
+            (const uint8_t *)j->sign_key + 1, w->G[s], w->mu[s],
+            w->seed[s], 40, j->sig, w->tmp, &w->streams[s], w->nonce[s], w->hm[s]);
+        w->rolling.live &= ~(1u << s);
+        ok &= j->sig_len != 0;
+    }
+    return ok;
+}
+
+/* Custom wrappers to allocate the temporary buffers on the stack. Several
+   wrappers are defined so that stack allocation is not always worst-case. */
+#define SIGN_WRAP(sz)   \
+	NOINLINE static size_t sign_ ## sz(unsigned logn, \
+		const uint8_t *sign_key, const uint8_t *mu, \
+		const uint8_t *seed, size_t seed_len, \
+		uint8_t *sig) \
+	{ \
+		uint8_t tmp[(sz) * 59 + 31]; \
+		return sign_step1(logn, \
+			sign_key, mu, seed, seed_len, sig, tmp); \
+	}
+
+SIGN_WRAP(32)
+SIGN_WRAP(64)
+SIGN_WRAP(128)
+SIGN_WRAP(256)
+SIGN_WRAP(512)
+SIGN_WRAP(1024)
+
+static size_t
+sign_wrapper(int weak,
+	const uint8_t *sign_key, size_t sign_key_len,
+	const uint8_t *ctx, size_t ctx_len,
+	const char *id, const uint8_t *hv, size_t hv_len,
+	const uint8_t *seed, size_t seed_len,
+	uint8_t *sig, size_t max_sig_len,
+	void *tmp, size_t tmp_len)
+{
+	/* Signing key defines the degree to use. */
+	if (sign_key_len == 0) {
+		return 0;
+	}
+	unsigned head = sign_key[0];
+	if ((head & 0xF0) != 0x50) {
+		return 0;
+	}
+	unsigned logn = head & 0x0F;
+	if (weak) {
+		if (logn < 2 || logn > 8) {
+			return 0;
+		}
+	} else {
+		if (logn < 9 || logn > 10) {
+			return 0;
+		}
+	}
+	if (sign_key_len != FNDSA_SIGN_KEY_SIZE(logn)) {
+		return 0;
+	}
+	if (sig == NULL) {
+		return FNDSA_SIGNATURE_SIZE(logn);
+	}
+	if (max_sig_len < FNDSA_SIGNATURE_SIZE(logn)) {
+		return 0;
+	}
+
+	/* We have checked that the degree is acceptable, the signing key
+	   size is correct, and the signature will fit in the output buffer.
+	   We compute the message representative mu. */
+	uint8_t mu[64];
+	if (id != NULL && *(const uint8_t *)id == 0xFE) {
+		/* External mu mode. */
+		if (hv_len != 64) {
+			return 0;
+		}
+		memcpy(mu, hv, hv_len);
+	} else {
+		if (!fndsa_compute_mu(mu,
+			fndsa_hashed_vrfykey_from_signkey(
+				sign_key, sign_key_len),
+			ctx, ctx_len, id, hv, hv_len))
+		{
+			return 0;
+		}
+	}
+
+	if (tmp == NULL) {
+		switch (logn) {
+		case 6:
+			return sign_64(logn,
+				sign_key, mu, seed, seed_len, sig);
+		case 7:
+			return sign_128(logn,
+				sign_key, mu, seed, seed_len, sig);
+		case 8:
+			return sign_256(logn,
+				sign_key, mu, seed, seed_len, sig);
+		case 9:
+			return sign_512(logn,
+				sign_key, mu, seed, seed_len, sig);
+		case 10:
+			return sign_1024(logn,
+				sign_key, mu, seed, seed_len, sig);
+		default:
+			return sign_32(logn,
+				sign_key, mu, seed, seed_len, sig);
+		}
+	} else {
+		if (tmp_len < (((size_t)59 << logn) + 31)) {
+			return 0;
+		}
+		return sign_step1(logn,
+			sign_key, mu, seed, seed_len, sig, tmp);
+	}
+}
+
+/* see fndsa.h */
+size_t
+fndsa_sign(const void *sign_key, size_t sign_key_len,
+	const void *ctx, size_t ctx_len,
+	const char *id, const void *hv, size_t hv_len,
+	void *sig, size_t max_sig_len)
+{
+	return sign_wrapper(0, sign_key, sign_key_len,
+		ctx, ctx_len, id, hv, hv_len,
+		NULL, 0, sig, max_sig_len, NULL, 0);
+}
+
+/* see fndsa.h */
+size_t
+fndsa_sign_seeded(const void *sign_key, size_t sign_key_len,
+	const void *ctx, size_t ctx_len,
+	const char *id, const void *hv, size_t hv_len,
+	const void *seed, size_t seed_len,
+	void *sig, size_t max_sig_len)
+{
+	return sign_wrapper(0, sign_key, sign_key_len,
+		ctx, ctx_len, id, hv, hv_len,
+		seed, seed_len, sig, max_sig_len, NULL, 0);
+}
+
+/* see fndsa.h */
+size_t
+fndsa_sign_temp(const void *sign_key, size_t sign_key_len,
+	const void *ctx, size_t ctx_len,
+	const char *id, const void *hv, size_t hv_len,
+	void *sig, size_t max_sig_len,
+	void *tmp, size_t tmp_len)
+{
+	return sign_wrapper(0, sign_key, sign_key_len,
+		ctx, ctx_len, id, hv, hv_len,
+		NULL, 0, sig, max_sig_len, tmp, tmp_len);
+}
+
+/* see fndsa.h */
+size_t
+fndsa_sign_seeded_temp(const void *sign_key, size_t sign_key_len,
+	const void *ctx, size_t ctx_len,
+	const char *id, const void *hv, size_t hv_len,
+	const void *seed, size_t seed_len,
+	void *sig, size_t max_sig_len,
+	void *tmp, size_t tmp_len)
+{
+	return sign_wrapper(0, sign_key, sign_key_len,
+		ctx, ctx_len, id, hv, hv_len,
+		seed, seed_len, sig, max_sig_len, tmp, tmp_len);
+}
+
+/* see fndsa.h */
+size_t
+fndsa_sign_weak(const void *sign_key, size_t sign_key_len,
+	const void *ctx, size_t ctx_len,
+	const char *id, const void *hv, size_t hv_len,
+	void *sig, size_t max_sig_len)
+{
+	return sign_wrapper(1, sign_key, sign_key_len,
+		ctx, ctx_len, id, hv, hv_len,
+		NULL, 0, sig, max_sig_len, NULL, 0);
+}
+
+/* see fndsa.h */
+size_t
+fndsa_sign_weak_seeded(const void *sign_key, size_t sign_key_len,
+	const void *ctx, size_t ctx_len,
+	const char *id, const void *hv, size_t hv_len,
+	const void *seed, size_t seed_len,
+	void *sig, size_t max_sig_len)
+{
+	return sign_wrapper(1, sign_key, sign_key_len,
+		ctx, ctx_len, id, hv, hv_len,
+		seed, seed_len, sig, max_sig_len, NULL, 0);
+}
+
+/* see fndsa.h */
+size_t
+fndsa_sign_weak_temp(const void *sign_key, size_t sign_key_len,
+	const void *ctx, size_t ctx_len,
+	const char *id, const void *hv, size_t hv_len,
+	void *sig, size_t max_sig_len,
+	void *tmp, size_t tmp_len)
+{
+	return sign_wrapper(1, sign_key, sign_key_len,
+		ctx, ctx_len, id, hv, hv_len,
+		NULL, 0, sig, max_sig_len, tmp, tmp_len);
+}
+
+/* see fndsa.h */
+size_t
+fndsa_sign_weak_seeded_temp(const void *sign_key, size_t sign_key_len,
+	const void *ctx, size_t ctx_len,
+	const char *id, const void *hv, size_t hv_len,
+	const void *seed, size_t seed_len,
+	void *sig, size_t max_sig_len,
+	void *tmp, size_t tmp_len)
+{
+	return sign_wrapper(1, sign_key, sign_key_len,
+		ctx, ctx_len, id, hv, hv_len,
+		seed, seed_len, sig, max_sig_len, tmp, tmp_len);
+}

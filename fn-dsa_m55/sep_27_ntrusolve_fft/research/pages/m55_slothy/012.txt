@@ -1,0 +1,35 @@
+DOCUMENT: m55_slothy.pdf PAGE: 12/46
+
+12 Fast and Clean: Auditable high-performance assembly via constraint solving
+Figure 4: High-level overview of operation of SLOTHY
+Figure 4 provides an overview of SLOTHY’s operation: First, the input is parsed and
+converted to a computational flow graph. Next, a constraint model is derived as explained
+below, and passed to an external solver. Upon success, the (optimal) satisfying assignment
+found by the solver is converted back into the output source. This source is then subject
+to some post-processing and self-check before being returned to the caller.
+SLOTHY’s core does not change instructions except for register renaming. In fact, it
+has no knowledge of the semantics of instructions beyond their signatures, that is, the
+number and types of inputs, outputs, and input/outputs. It remains the responsibility of
+the developer to find ways to express the target computation in terms of the underlying
+architecture. This is a core design choice of SLOTHY, and we refer to Section 2 for rationale
+in comparison with synthesizing superoptimization.
+Finally, SLOTHY has no built-in notion of memory, only registers. First, reasoning
+about dynamic memory accesses is not possible without awareness of the precise semantics
+of instructions, which is out of scope of SLOTHY by design, as just discussed. Reasoning
+about static memory accesses, such as stack spills, is possible by modelling static memory
+locations as special “registers” — this will be explained in Section 4.12.
+4.2 Overview
+The following sections assume that a piece of assembly to be optimized has been provided
+and parsed into a computational flow graph (see Section 3). Our goal, then, is to define a
+constraint model — that is, a set of integer, boolean, and interval variables together with
+a set of conditions imposed upon them — whose set of solutions captures lowerings of
+the CFG which are both valid (with respect to the underlying architecture) and of high
+performance (with respect to the underlying microarchitecture).
+Aspects of the model that pertain to validity are discussed in Sections 4.3 and 4.4, while
+Sections 4.6 and 4.8 discuss microarchitectural performance constraints. Section 4.5 dis-
+cusses how we incorporate software pipelining into the constraint model, and Sections 4.13,
+4.12, 4.7 and 4.14 discuss the modelling of memory, stalls, and optimization objectives.
+4.3 Correctness/Architecture constraints: Instruction scheduling
+Every instruction I of the input source is assigned an integer variable I.pos defining
+where the instruction is placed in the output code. To get a unique program order in the
+output, we require {I.pos}I to be mutually distinct. Further, to maintain functional

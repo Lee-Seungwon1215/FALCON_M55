@@ -1,0 +1,44 @@
+# ML-KEM 기법을 참고한 SHAKE256x4 — M55
+
+네 개 상태를 even/odd 비트 plane으로 저장한다. θ의 1-bit 회전을 두 plane의 교환/32-bit 회전으로 처리하고, θ 보정과 ρ·π를 결합해 임시 배열에 쓴다. χ·ι 뒤에도 상태는 bit-interleaved 형식을 유지한다. seed 입력과 squeeze 경계에서만 표현을 변환한다.
+
+## 출처와 이식 범위
+
+- [mlkem-native MVE 개발 원본](https://github.com/pq-code-package/mlkem-native/blob/fc269bc2d1068486625a3775310c2c1f28d74732/dev/fips202/armv81m/src/keccak_f1600_x4_mve.S): even/odd 비트 분리, 4개 독립 상태의 같은 위치 병렬 처리, θ·ρ·π 통합 메모리 흐름을 참고했다. upstream ASM을 그대로 가져온 성능 재현이 아니라 새 M55 ASM 구현이다.
+- [VecFalcon SHAKE/PRNG](https://github.com/Ji-Peng/VecFalcon/blob/61b326e9bb6afe2ea4927e7a25832e7a64485367/opt/sha3.c) 및 [서명 연결](https://github.com/Ji-Peng/VecFalcon/blob/61b326e9bb6afe2ea4927e7a25832e7a64485367/opt/sign_core.c): 56-byte subseed, SHAKE256(seed || stream ID), 8-byte 출력 교차 배치와 sampler 연결을 참고했다.
+- VecFalcon의 원래 AArch64 ASM은 **스칼라 2개 + NEON 2개 상태**를 교차 실행한다. 여기서는 그 레지스터 스케줄을 복제하지 않는다. M55의 8개 Q 레지스터와 32-bit 정수 MVE에 맞춰 네 스트림을 4×32-bit로 처리했다. 그러므로 이 결과는 'VecFalcon 원본 ASM의 M55 재현 수치'가 아니다.
+
+## 공통 연결
+
+`sign_core.c`에서 기존 SHAKE256(seed || 1-byte counter)의 첫 40 bytes를 nonce로 유지하고,
+다음 56 bytes를 x4 PRNG seed로 사용한다. `sign_sampler.c`의 u8/u16/u64 공급원만 x4로 바꿨다.
+네 스트림은 SHAKE256(subseed || 0), ..., SHAKE256(subseed || 3)이다.
+각 136-byte rate block의 8-byte word를 stream 0→1→2→3 순서로 배치해 544-byte buffer를 만든다.
+u16/u64를 얻을 때 남은 공간이 부족하면 마지막 1~7 bytes를 버리고 refill하는 VecFalcon 규칙도 유지한다.
+
+현 FN-DSA 버전의 counter/nonce/hash API를 보존했으므로, VecFalcon 구버전의 4-byte counter,
+별도 Gaussian vector sampler, 전체 서명 API까지 복제한 것은 아니다. **연결 지점은 같은 서명 샘플러**다.
+기존 단일 SHAKE와 SHA3 API, 키생성, Hash-to-Point, 검증 경로는 그대로다.
+`Final_code/Before_slothy`에는 이 실험을 반영하지 않았다.
+
+## 파일
+
+- `sha3x4_cm55.s`: 새 M55/MVE x4 permutation. 소스 자체에 직접 작성했다.
+- `sha3x4.c`, `sha3x4.h`: x4 상태/seed/refill/출력.
+- `sign_core.c`, `sign_inner.h`, `sign_sampler.c`: sampler 연결.
+- `Makefile`: 이 폴더 소스만으로 archive 생성. 누락되어 있던 기존 서명 ASM 3개도 목록에 포함했다.
+- 다른 후보의 암호 코드를 include/link하거나 빌드 옵션으로 backend를 고르는 구조가 아니다.
+- 공통 **시험 도구만** `../keccak_test_mlkem/validation`에서 각 폴더의 소스를 빌드한다.
+  시험의 고정 배치 링크 스크립트는 함수/데이터 위치를 맞추는 용도이며 암호 구현을 대체하지 않는다.
+
+## 실험용 주의사항
+
+기존 FN-DSA deterministic signature KAT 유지가 목적이 아닌 **변경 PRNG 성능 실험**이다.
+세 후보와 순차 x4 대조군의 난수·서명은 서로 같아야 하지만 원래 단일 SHAKE 서명과는 다르다.
+독립 Keccak oracle, SHAKE 출력 대조, 서명 검증·변조 거부를 검사했다.
+상수시간/누출/새 PRNG 보안의 종합 인증을 끝낸 배포용 구현이라고 주장하지 않는다.
+시험 키는 공개된 결정적 입력으로 만든 키이므로 실제 사용 금지.
+
+`baseline_documents/`는 복사 당시의 README/result 보존본이다.
+기존 `stage_profile_result.md`, `ntru_fft_profile_result.md`도 이전 코드 기록이며 x4 재계측 결과가 아니다.
+최신 결과는 [result.md](result.md)를 확인한다.

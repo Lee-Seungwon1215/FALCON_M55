@@ -1,0 +1,61 @@
+DOCUMENT: m55_slothy.pdf PAGE: 9/46
+
+Abdulrahman, Becker, Kannwischer, Klein 9
+Figure 2: Illustration of instruction overlapping for instructions relying
+on separate functional units.
+1 vldrw.u32 q0, [inA]
+2 vldrw.u32 q1, [inA, #16] //-
+3 vldrw.u32 q2, [inA, #32] //-
+4 vldrw.u32 q7, [inB], #16 //-
+5 vmulh.u32 q0, q0, q7
+6 vmulh.u32 q1, q1, q7 //-
+7 vmulh.u32 q2, q2, q7 //-
+8 vadd.u32 q0, q0, q0
+9 vadd.u32 q0, q0, q7 //-
+10 vadd.u32 q1, q1, q1 //-
+11 vadd.u32 q1, q1, q7 //-
+12 vadd.u32 q2, q2, q2 //-
+13 vadd.u32 q2, q2, q7 //-
+14 vstrw.u32 q1, [inA, #16]
+15 vstrw.u32 q2, [inA, #32] //-
+16 vstrw.u32 q0, [inA], #48 //-
+1 vldrw.u32 q1, [inB], #16
+2 vldrw.u32 q2, [inA, #16] //-
+3 vmulh.u32 q7, q2, q1
+4 vldrw.u32 q4, [inA, #32]
+5 vadd.u32 q7, q7, q7
+6 vmulh.u32 q6, q4, q1
+7 vadd.u32 q4, q7, q1
+8 vldrw.u32 q2, [inA]
+9 vadd.u32 q7, q6, q6
+10 vmulh.u32 q6, q2, q1
+11 vadd.u32 q7, q7, q1
+12 vstrw.u32 q4, [inA, #16]
+13 vadd.u32 q4, q6, q6
+14 vstrw.u32 q7, [inA, #32]
+15 vadd.u32 q7, q4, q1
+16 vstrw.u32 q7, [inA], #48
+Listing 2: Left: Poorly written snippet of Helium assembly with little potential for
+instruction overlapping. Right: Improved scheduling + register allocation. An //-
+annotation indicates a structural hazard preventing instruction overlapping.
+units and are therefore amenable to overlapping. Figure 2 provides an illustration, assuming
+an implementation of Helium where each vector instruction takes two cycles (“dual beat
+implementation”) and where there are separate functional units for vector load/store (LSU),
+integer addition/logical operations (INT), and multiply operations (MUL) — the Cortex-
+M55 CPU is an example. We can see how the first instructions overlap, leading to high
+resource utilization, but how the consecutive pair of VADD stalls the pipeline. Typically,
+there is flexibility in the instruction scheduling, so that good interleaving of different
+instruction types is possible. For example, Listing 2 shows two versions of the same piece
+of (meaningless) Helium assembly, one poorly scheduled, making little use of instruction
+overlapping, and another with a good mix of instructions, facilitating overlapping.
+Second, the compact vector register file reduces the cost of CPUs implementing Helium,
+but requires developers or compilers to manage register usage very carefully, and balance
+it with the general purpose register file through the use of scalar-vector instructions.
+A primary goal of this work is to demonstrate how to automate the process of solving
+the software constraints posed by Helium through constraint solving.
+Implementations. Armv8.1-M+Helium is implemented by the Cortex-M55 and Cortex-
+M85 CPUs, both of which we will be optimizing for in this paper. The Cortex-M55 is the
+first processor supporting Armv8.1-M+Helium, and considered a mid-range implementation
+in Arm’s M-profile line. The Cortex-M85 processor, in turn, is considered a high-end
+implementation, which in addition to support for Helium also offers extensive dual-issuing
+capabilities. More relevant microarchitectural details will be discussed in Section 6.2.

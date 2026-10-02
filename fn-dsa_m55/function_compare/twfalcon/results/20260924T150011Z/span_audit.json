@@ -1,0 +1,122 @@
+{
+  "elf": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/build/board/zephyr/zephyr.elf",
+  "scope": "full-span loop only",
+  "loops": [
+    {
+      "symbol": "ds32_stage7_fwd4_span",
+      "loop_start": "0x10004592",
+      "loop_end": "0x100048aa",
+      "instructions": 199,
+      "vector_memory": 84,
+      "scratch_memory": 68,
+      "twiddle_memory": 0,
+      "coefficient_memory": 16,
+      "fp_instructions": {
+        "vadd.f32": 31,
+        "vfma.f32": 12,
+        "vmul.f32": 4,
+        "vneg.f32": 7,
+        "vsub.f32": 47
+      },
+      "public_loop_counter": "r9",
+      "conditional_branches": 1
+    },
+    {
+      "symbol": "ds32_stage7_inv4_span",
+      "loop_start": "0x100048de",
+      "loop_end": "0x10004bf6",
+      "instructions": 199,
+      "vector_memory": 84,
+      "scratch_memory": 68,
+      "twiddle_memory": 0,
+      "coefficient_memory": 16,
+      "fp_instructions": {
+        "vadd.f32": 31,
+        "vfma.f32": 12,
+        "vmul.f32": 4,
+        "vneg.f32": 7,
+        "vsub.f32": 47
+      },
+      "public_loop_counter": "r9",
+      "conditional_branches": 1
+    },
+    {
+      "symbol": "ds32_stage8_fwd4_span",
+      "loop_start": "0x10004c3a",
+      "loop_end": "0x10004ec2",
+      "instructions": 163,
+      "vector_memory": 52,
+      "scratch_memory": 28,
+      "twiddle_memory": 0,
+      "coefficient_memory": 24,
+      "fp_instructions": {
+        "vadd.f32": 31,
+        "vfma.f32": 12,
+        "vmul.f32": 4,
+        "vneg.f32": 7,
+        "vsub.f32": 47
+      },
+      "public_loop_counter": "r9",
+      "conditional_branches": 1
+    },
+    {
+      "symbol": "ds32_stage8_inv4_span",
+      "loop_start": "0x10004f06",
+      "loop_end": "0x1000518e",
+      "instructions": 163,
+      "vector_memory": 52,
+      "scratch_memory": 28,
+      "twiddle_memory": 0,
+      "coefficient_memory": 24,
+      "fp_instructions": {
+        "vadd.f32": 31,
+        "vfma.f32": 12,
+        "vmul.f32": 4,
+        "vneg.f32": 7,
+        "vsub.f32": 47
+      },
+      "public_loop_counter": "r9",
+      "conditional_branches": 1
+    },
+    {
+      "symbol": "ds32_bfly_fwd4_span",
+      "loop_start": "0x100039fa",
+      "loop_end": "0x10003c62",
+      "instructions": 155,
+      "vector_memory": 36,
+      "scratch_memory": 4,
+      "twiddle_memory": 8,
+      "coefficient_memory": 24,
+      "fp_instructions": {
+        "vadd.f32": 31,
+        "vfma.f32": 12,
+        "vmul.f32": 4,
+        "vneg.f32": 7,
+        "vsub.f32": 47
+      },
+      "public_loop_counter": "r9",
+      "conditional_branches": 1
+    },
+    {
+      "symbol": "ds32_bfly_inv4_span",
+      "loop_start": "0x10003c9a",
+      "loop_end": "0x10003f12",
+      "instructions": 159,
+      "vector_memory": 44,
+      "scratch_memory": 12,
+      "twiddle_memory": 8,
+      "coefficient_memory": 24,
+      "fp_instructions": {
+        "vadd.f32": 31,
+        "vfma.f32": 12,
+        "vmul.f32": 4,
+        "vneg.f32": 7,
+        "vsub.f32": 47
+      },
+      "public_loop_counter": "r9",
+      "conditional_branches": 1
+    }
+  ],
+  "fp_instruction_multisets_unchanged": true,
+  "structural_control_check": "PASS"
+}

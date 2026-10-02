@@ -1,0 +1,397 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3349...
+[exec_wrapper] SWO redirect port 62560
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3349 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :62560 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3349
+echo [[TCM-PRELOAD-INIT]]\n
+echo MEMSYSCTL_MSCR_ITCM_DTCM:\n
+x/6wx 0xE001E000
+restore /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/loader/loader_tcm_init.bin binary 0x34080000
+set $preload_primask = $primask
+tbreak *0x3408002a
+jump *0x34080001
+echo [[TCM-PRELOAD-INIT-DONE]]\n
+x/4wx 0x100243d8
+x/6wx 0xE001E000
+set $primask = $preload_primask
+load
+compare-sections
+tbreak *0x1000f184
+hbreak *0x100123f0
+jump *0x10012405
+if $pc != 0x1000f184
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+x/8wx 0x100243d0
+x/12wx 0x30000000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpfz35q0pu/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x1000f134
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x100123f0
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3349
+Info : Listening on port 3349 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 62560
+Info : Listening on port 62560 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/62560
+Info : accepting 'gdb' connection on tcp/3349
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3349" instead of "target remote :3349"
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x34000000
+Error: Failed to read memory at 0x100243e4
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+[[TCM-PRELOAD-INIT]]
+MEMSYSCTL_MSCR_ITCM_DTCM:
+0xe001e000:	0x0001300a	0x00000165	0x00000000	0x00000000
+0xe001e010:	0x00000049	0x00000049
+Restoring binary file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/loader/loader_tcm_init.bin into memory (0x34080000 to 0x34080038)
+Temporary breakpoint 1 at 0x3408002a
+
+Temporary breakpoint 1, 0x3408002a in ?? ()
+[[TCM-PRELOAD-INIT-DONE]]
+0x100243d8:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe001e000:	0x0001300a	0x00000165	0x00000000	0x00000000
+0xe001e010:	0x00000049	0x00000049
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x171c8 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x100174f8
+Loading section initlevel, size 0xc8 lma 0x10017500
+Loading section device_area, size 0x268 lma 0x100175c8
+Loading section sw_isr_table, size 0x5d8 lma 0x10017830
+Loading section gpio_driver_api_area, size 0x24 lma 0x10017e08
+Loading section reset_driver_api_area, size 0x10 lma 0x10017e2c
+Loading section clock_control_driver_api_area, size 0x1c lma 0x10017e3c
+Loading section otp_driver_api_area, size 0x4 lma 0x10017e58
+Loading section uart_driver_api_area, size 0x14 lma 0x10017e5c
+Loading section rodata, size 0xc538 lma 0x10017e80
+Loading section datas, size 0x4c lma 0x100243b8
+Loading section device_states, size 0x2c lma 0x10024404
+Loading section k_mutex_area, size 0x14 lma 0x10024430
+Loading section .last_section, size 0x4 lma 0x10024444
+Start address 0x10012404, load size 148532
+Transfer rate: 531 KB/sec, 6188 bytes/write.
+Section rom_start, range 0x10000000 -- 0x1000032c: matched.
+Section text, range 0x10000330 -- 0x100174f8: matched.
+Section .ARM.exidx, range 0x100174f8 -- 0x10017500: matched.
+Section initlevel, range 0x10017500 -- 0x100175c8: matched.
+Section device_area, range 0x100175c8 -- 0x10017830: matched.
+Section sw_isr_table, range 0x10017830 -- 0x10017e08: matched.
+Section gpio_driver_api_area, range 0x10017e08 -- 0x10017e2c: matched.
+Section reset_driver_api_area, range 0x10017e2c -- 0x10017e3c: matched.
+Section clock_control_driver_api_area, range 0x10017e3c -- 0x10017e58: matched.
+Section otp_driver_api_area, range 0x10017e58 -- 0x10017e5c: matched.
+Section uart_driver_api_area, range 0x10017e5c -- 0x10017e70: matched.
+Section rodata, range 0x10017e80 -- 0x100243b8: matched.
+Section datas, range 0x100243b8 -- 0x10024404: matched.
+Section device_states, range 0x10024404 -- 0x10024430: matched.
+Section k_mutex_area, range 0x10024430 -- 0x10024444: matched.
+Section .last_section, range 0x10024444 -- 0x10024448: matched.
+Temporary breakpoint 2 at 0x1000f184: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 3 at 0x100123f0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, z_arm_usage_fault () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S:80
+80		mrs r0, MSP
+[[STARTUP-FAULT]]
+r0             0x0                 0
+r1             0x0                 0
+r2             0x0                 0
+r3             0x0                 0
+r4             0x30000000          805306368
+r5             0x23                35
+r6             0x22                34
+r7             0x1                 1
+r8             0x1                 1
+r9             0x400               1024
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0x0                 0
+sp             0x300271e0          0x300271e0
+lr             0xffffffed          -19
+pc             0x100123f0          0x100123f0 <z_arm_usage_fault>
+xpsr           0x1000003           16777219
+fpscr          0x40000             262144
+msp            0x300271e0          0x300271e0
+psp            0x30017018          0x30017018 <z_interrupt_stacks+1912>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x300271e0          0x300271e0
+psp_s          0x30017018          0x30017018 <z_interrupt_stacks+1912>
+primask        0x0                 0
+basepri        0x10                16
+faultmask      0x0                 0
+control        0x0                 0
+msplim_s       0x0                 0x0
+psplim_s       0x0                 0x0
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x10                16
+faultmask_s    0x0                 0
+control_s      0x0                 0
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x0                 0
+p0             0x0                 0
+0x30017018 <z_interrupt_stacks+1912>:	0x100243b8	0x30000020	0x0000008c	0x30000000
+0x30017028 <z_interrupt_stacks+1928>:	0x100243d8	0x00000006	0x10013076	0x01102000
+0x300271e0:	0x00000000	0x00000000	0x00000000	0x00000000
+0x300271f0:	0x00000000	0x00000000	0x00000000	0x00000000
+   0x10013076 <memcpy+74>:	vldrw.u32	q3, [r12], #16
+   0x1001307a <memcpy+78>:	vstrw.32	q3, [r1], #16
+   0x1001307e <memcpy+82>:	le	lr, 0x10013076 <memcpy+74>
+   0x10013082 <memcpy+86>:	lsls	r1, r5, #30
+   0x10013084 <memcpy+88>:	beq.n	0x100130ba <memcpy+142>
+   0x10013086 <memcpy+90>:	bic.w	r1, r5, #3
+   0x1001308a <memcpy+94>:	add.w	lr, r0, r1, lsl #2
+   0x1001308e <memcpy+98>:	add.w	r12, r3, r1, lsl #2
+0xe000ed28:	0x00008200	0x40000000	0x00000000	0x100243e4
+0xe000ed38:	0x100243e4	0x00020000
+0xe001e000:	0x0001300a	0x00000165	0x00000000	0x00000000
+0xe001e010:	0x00000049	0x00000049
+0x100243d0:	0x00ff00ff	0x07ffc0fb	0x1000f199	0x30000028
+0x100243e0:	0x0001c200	0x00000000	0x30000034	0x0001c200
+0x30000000 <exti_irq_table>:	0x00ff00ff	0x00ff00ff	0x00ff00ff	0x07ffc2ff
+0x30000010 <exti_irq_table+16>:	0x00ff00ff	0x00ff00ff	0x00ff00ff	0x07ffc0fb
+0x30000020 <_char_out>:	0x00000000	0x00000000	0x00000000	0x00000000
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!
+FAIL!
+gdb batch failed with code 1
+0x18003514 in ?? ()
+[[TCM-PRELOAD-INIT]]
+MEMSYSCTL_MSCR_ITCM_DTCM:
+0xe001e000:	0x0001300a	0x00000165	0x00000000	0x00000000
+0xe001e010:	0x00000049	0x00000049
+Restoring binary file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/loader/loader_tcm_init.bin into memory (0x34080000 to 0x34080038)
+Temporary breakpoint 1 at 0x3408002a
+
+Temporary breakpoint 1, 0x3408002a in ?? ()
+[[TCM-PRELOAD-INIT-DONE]]
+0x100243d8:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe001e000:	0x0001300a	0x00000165	0x00000000	0x00000000
+0xe001e010:	0x00000049	0x00000049
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x171c8 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x100174f8
+Loading section initlevel, size 0xc8 lma 0x10017500
+Loading section device_area, size 0x268 lma 0x100175c8
+Loading section sw_isr_table, size 0x5d8 lma 0x10017830
+Loading section gpio_driver_api_area, size 0x24 lma 0x10017e08
+Loading section reset_driver_api_area, size 0x10 lma 0x10017e2c
+Loading section clock_control_driver_api_area, size 0x1c lma 0x10017e3c
+Loading section otp_driver_api_area, size 0x4 lma 0x10017e58
+Loading section uart_driver_api_area, size 0x14 lma 0x10017e5c
+Loading section rodata, size 0xc538 lma 0x10017e80
+Loading section datas, size 0x4c lma 0x100243b8
+Loading section device_states, size 0x2c lma 0x10024404
+Loading section k_mutex_area, size 0x14 lma 0x10024430
+Loading section .last_section, size 0x4 lma 0x10024444
+Start address 0x10012404, load size 148532
+Transfer rate: 531 KB/sec, 6188 bytes/write.
+Section rom_start, range 0x10000000 -- 0x1000032c: matched.
+Section text, range 0x10000330 -- 0x100174f8: matched.
+Section .ARM.exidx, range 0x100174f8 -- 0x10017500: matched.
+Section initlevel, range 0x10017500 -- 0x100175c8: matched.
+Section device_area, range 0x100175c8 -- 0x10017830: matched.
+Section sw_isr_table, range 0x10017830 -- 0x10017e08: matched.
+Section gpio_driver_api_area, range 0x10017e08 -- 0x10017e2c: matched.
+Section reset_driver_api_area, range 0x10017e2c -- 0x10017e3c: matched.
+Section clock_control_driver_api_area, range 0x10017e3c -- 0x10017e58: matched.
+Section otp_driver_api_area, range 0x10017e58 -- 0x10017e5c: matched.
+Section uart_driver_api_area, range 0x10017e5c -- 0x10017e70: matched.
+Section rodata, range 0x10017e80 -- 0x100243b8: matched.
+Section datas, range 0x100243b8 -- 0x10024404: matched.
+Section device_states, range 0x10024404 -- 0x10024430: matched.
+Section k_mutex_area, range 0x10024430 -- 0x10024444: matched.
+Section .last_section, range 0x10024444 -- 0x10024448: matched.
+Temporary breakpoint 2 at 0x1000f184: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 3 at 0x100123f0: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, z_arm_usage_fault () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S:80
+80		mrs r0, MSP
+[[STARTUP-FAULT]]
+r0             0x0                 0
+r1             0x0                 0
+r2             0x0                 0
+r3             0x0                 0
+r4             0x30000000          805306368
+r5             0x23                35
+r6             0x22                34
+r7             0x1                 1
+r8             0x1                 1
+r9             0x400               1024
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0x0                 0
+sp             0x300271e0          0x300271e0
+lr             0xffffffed          -19
+pc             0x100123f0          0x100123f0 <z_arm_usage_fault>
+xpsr           0x1000003           16777219
+fpscr          0x40000             262144
+msp            0x300271e0          0x300271e0
+psp            0x30017018          0x30017018 <z_interrupt_stacks+1912>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x300271e0          0x300271e0
+psp_s          0x30017018          0x30017018 <z_interrupt_stacks+1912>
+primask        0x0                 0
+basepri        0x10                16
+faultmask      0x0                 0
+control        0x0                 0
+msplim_s       0x0                 0x0
+psplim_s       0x0                 0x0
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x10                16
+faultmask_s    0x0                 0
+control_s      0x0                 0
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x0                 0
+p0             0x0                 0
+0x30017018 <z_interrupt_stacks+1912>:	0x100243b8	0x30000020	0x0000008c	0x30000000
+0x30017028 <z_interrupt_stacks+1928>:	0x100243d8	0x00000006	0x10013076	0x01102000
+0x300271e0:	0x00000000	0x00000000	0x00000000	0x00000000
+0x300271f0:	0x00000000	0x00000000	0x00000000	0x00000000
+   0x10013076 <memcpy+74>:	vldrw.u32	q3, [r12], #16
+   0x1001307a <memcpy+78>:	vstrw.32	q3, [r1], #16
+   0x1001307e <memcpy+82>:	le	lr, 0x10013076 <memcpy+74>
+   0x10013082 <memcpy+86>:	lsls	r1, r5, #30
+   0x10013084 <memcpy+88>:	beq.n	0x100130ba <memcpy+142>
+   0x10013086 <memcpy+90>:	bic.w	r1, r5, #3
+   0x1001308a <memcpy+94>:	add.w	lr, r0, r1, lsl #2
+   0x1001308e <memcpy+98>:	add.w	r12, r3, r1, lsl #2
+0xe000ed28:	0x00008200	0x40000000	0x00000000	0x100243e4
+0xe000ed38:	0x100243e4	0x00020000
+0xe001e000:	0x0001300a	0x00000165	0x00000000	0x00000000
+0xe001e010:	0x00000049	0x00000049
+0x100243d0:	0x00ff00ff	0x07ffc0fb	0x1000f199	0x30000028
+0x100243e0:	0x0001c200	0x00000000	0x30000034	0x0001c200
+0x30000000 <exti_irq_table>:	0x00ff00ff	0x00ff00ff	0x00ff00ff	0x07ffc2ff
+0x30000010 <exti_irq_table+16>:	0x00ff00ff	0x00ff00ff	0x00ff00ff	0x07ffc0fb
+0x30000020 <_char_out>:	0x00000000	0x00000000	0x00000000	0x00000000
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

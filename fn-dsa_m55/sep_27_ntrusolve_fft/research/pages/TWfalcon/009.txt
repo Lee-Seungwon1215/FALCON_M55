@@ -1,0 +1,60 @@
+DOCUMENT: TWfalcon.pdf PAGE: 9/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 9
+3.1 Formal Error Evaluation
+The Falcon specification suggests using the double-precision floating-point standard from
+IEEE-754 [IEE19]. To show that this standard gives enough precision, they use a Rényi
+divergence-based analysis of Klein’s sampler. This analysis relies on Lemma 3 and
+Equation 4 from [Pre17, Section 3.2, 3.3], where from Lemma 3 we know that
+Dδ
+∃δ>0, s.t. 1−δ≤
+D ≤1 + δ.
+Lemma 3 and Equation 4 can be combined to get the following bound on δ:
+δ2 ≤
+1
+4λqs
+. (1)
+This, for qs = 264 and λ= 256, results in δ≤2−37 [Pre17].
+In Falcon there are 2n discrete Gaussian samplers denoted by DZ,cj ,σj . The floating-
+point values cj (resp. σj) are known with an absolute error (resp. relative error) at most
+δc (resp. δσ). For any output of the Gaussian sampler used by Falcon with non-negligible
+probability, we have δ ≤20n(δc + δσ) in the worst case [PFH+22]. This delta is from
+Lemma 3. Additionally, they improve this bound for the average case, by replacing the
+factor 2n with √2n, resulting in 10√2n(δc + δσ).
+To derive the bound on the combined errors (δc + δσ), we use the fact that when the
+Relative Error Lemma (Lemma 3) applies, for λ= 256 and qs = 264, we have δ ≤2−37
+.
+We can now compute the bound using the equation
+10·√2n·(δc + δσ) ≤2−37
+,
+resulting in (δc + δσ) ≤2−46
+.
+The Falcon specification mentions that experimental results of the signature scheme,
+implemented using the double-precision standard, show they always have (δc+ δσ) ≤2−40
+,
+which is worse than the required bound of ≤2−46. To understand the security implications
+of this difference, we go back to Equation 1, and we substitute the value 2−40 for (δc+ δσ).
+We then obtain the following inequality:
+1
+(10·√2n(δc + δσ))2 ≤
+2−61 ≤
+4λqs
+1
+.
+λqs
+If we want to keep security of the highest security level, we have to use λ= 256, which
+results in the following inequality:
+1
+2−53 ≤
+.
+qs
+From this, we can conclude that if (δc + δσ) ≤2−40 and λ = 256, the imperfect
+distribution based on the double-precision standard is only proven to be secure up to
+253 queries, while the NIST requirement is 264. This indicates that for the Rényi based
+security argument, the double-precision standard does not provide enough precision. Note,
+the Falcon specification only states that the values always stay below 2−40, not if this is
+close to the average case or just a far outlier.
+To better understand the actual distribution of error values, and to verify the claim
+that the combined error consistently stays below 2−40, the precision test was recreated.
+This analysis will be presented in Section 3.2.

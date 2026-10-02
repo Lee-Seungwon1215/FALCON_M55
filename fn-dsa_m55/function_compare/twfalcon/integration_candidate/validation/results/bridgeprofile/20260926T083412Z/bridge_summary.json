@@ -1,0 +1,226 @@
+{
+  "rows": [
+    {
+      "degree": 512,
+      "op": "FFT",
+      "calls": 500,
+      "total_mean_cycles": {
+        "public_fp64": 114725.0,
+        "public_alias": 114727.0,
+        "clone_control": 114629.002,
+        "profile": 115807.0,
+        "M55_ref_fixed": 126043.006
+      },
+      "regions": {
+        "input": {
+          "mean_cycles": 13210.0,
+          "percent": 11.406909772293558
+        },
+        "roots": {
+          "mean_cycles": 1810.998,
+          "percent": 1.5638070237550408
+        },
+        "compute_and_inner_control": {
+          "mean_cycles": 89416.002,
+          "percent": 77.21122384657231
+        },
+        "output": {
+          "mean_cycles": 11275.0,
+          "percent": 9.736026319652526
+        },
+        "outer_control_measurement": {
+          "mean_cycles": 95.0,
+          "percent": 0.0820330377265623
+        }
+      },
+      "input_output_percent": 21.142936091946083,
+      "input_output_plus_roots_percent": 22.706743115701123,
+      "profile_vs_public_percent": 0.9431248638047451,
+      "profile_vs_clone_percent": 1.0276613941033963,
+      "clone_vs_public_percent": -0.08367661799956183,
+      "public_vs_fixed_percent": -8.979479591275375
+    },
+    {
+      "degree": 512,
+      "op": "iFFT",
+      "calls": 500,
+      "total_mean_cycles": {
+        "public_fp64": 122446.0,
+        "public_alias": 122444.0,
+        "clone_control": 121642.002,
+        "profile": 123372.0,
+        "M55_ref_fixed": 143336.004
+      },
+      "regions": {
+        "input": {
+          "mean_cycles": 13210.0,
+          "percent": 10.70745387932432
+        },
+        "roots": {
+          "mean_cycles": 2835.0,
+          "percent": 2.297928217099504
+        },
+        "compute_and_inner_control": {
+          "mean_cycles": 95959.0,
+          "percent": 77.78020944784878
+        },
+        "output": {
+          "mean_cycles": 11275.0,
+          "percent": 9.139026683526247
+        },
+        "outer_control_measurement": {
+          "mean_cycles": 93.0,
+          "percent": 0.07538177220114775
+        }
+      },
+      "input_output_percent": 19.846480562850566,
+      "input_output_plus_roots_percent": 22.14440877995007,
+      "profile_vs_public_percent": 0.7562517354589016,
+      "profile_vs_clone_percent": 1.4222044783511523,
+      "clone_vs_public_percent": -0.6566143442823802,
+      "public_vs_fixed_percent": -14.574149841654583
+    },
+    {
+      "degree": 1024,
+      "op": "FFT",
+      "calls": 500,
+      "total_mean_cycles": {
+        "public_fp64": 248357.008,
+        "public_alias": 248359.002,
+        "clone_control": 248101.004,
+        "profile": 250318.0,
+        "M55_ref_fixed": 280637.002
+      },
+      "regions": {
+        "input": {
+          "mean_cycles": 26394.0,
+          "percent": 10.544187793127142
+        },
+        "roots": {
+          "mean_cycles": 3634.996,
+          "percent": 1.45215126359271
+        },
+        "compute_and_inner_control": {
+          "mean_cycles": 197655.004,
+          "percent": 78.96156249250953
+        },
+        "output": {
+          "mean_cycles": 22539.0,
+          "percent": 9.004146725365334
+        },
+        "outer_control_measurement": {
+          "mean_cycles": 95.0,
+          "percent": 0.03795172540528448
+        }
+      },
+      "input_output_percent": 19.548334518492478,
+      "input_output_plus_roots_percent": 21.00048578208519,
+      "profile_vs_public_percent": 0.7895859334881239,
+      "profile_vs_clone_percent": 0.8935860654558203,
+      "clone_vs_public_percent": -0.10307903210043934,
+      "public_vs_fixed_percent": -11.502401240731608
+    },
+    {
+      "degree": 1024,
+      "op": "iFFT",
+      "calls": 500,
+      "total_mean_cycles": {
+        "public_fp64": 265412.008,
+        "public_alias": 265410.008,
+        "clone_control": 263552.004,
+        "profile": 267198.002,
+        "M55_ref_fixed": 318470.002
+      },
+      "regions": {
+        "input": {
+          "mean_cycles": 26394.0,
+          "percent": 9.878067875672214
+        },
+        "roots": {
+          "mean_cycles": 5699.0,
+          "percent": 2.1328752301074467
+        },
+        "compute_and_inner_control": {
+          "mean_cycles": 212473.002,
+          "percent": 79.51893367825407
+        },
+        "output": {
+          "mean_cycles": 22539.0,
+          "percent": 8.4353175664839
+        },
+        "outer_control_measurement": {
+          "mean_cycles": 93.0,
+          "percent": 0.03480564948236402
+        }
+      },
+      "input_output_percent": 18.313385442156115,
+      "input_output_plus_roots_percent": 20.44626067226356,
+      "profile_vs_public_percent": 0.6729137891907211,
+      "profile_vs_clone_percent": 1.383407428008021,
+      "clone_vs_public_percent": -0.7007987370337809,
+      "public_vs_fixed_percent": -16.660279984549376
+    }
+  ],
+  "precomputed_roots": true,
+  "byte_identical_checks": 8800,
+  "denominator": "instrumented integrated function, 5 batches x 100 calls",
+  "note": "Raw instrumented shares, no arbitrary timer subtraction. Compute includes loop/control, inverse scale and root counter overhead; not a pure assembly-only cycle count.",
+  "original_sources_unchanged": {
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sysrng.c": "663d943595102660f0c98ec3fef37d3b7825f162cd8a9218cf9df8317cb38bd1",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen_mp31.c": "c41e661b6cf9d6a1ac5f71cb007f37eab9667efcde928b7f76ea01155bcaedbc",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/codec.c": "d72b5b03b6b74aec02de60cc69bbe232c6f13e0ff94cbd096f157ea178bb6cc7",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen_ntru.c": "dea772c878cdf77a7a54505ef3341171312ffcfd81daea2383db161f10a9eddf",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/util.c": "eeaaa063aa1e5987ba81d6cb13941300d9e55d0c428aa33ef6127693d8eca80f",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/tw32_primitives_cm55.s": "2a983f18d4857fd108703f7e777ea27cf584abf964c1b43a21f97981a2dbba4e",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/test_sign.c": "761db5680f06c72bd1bf2a4a4bad5d5de8d81ee2aa6e47ab21316d8d405073fc",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/tw32_gm_q32.c": "e8264959da439d60571dd9389a025d342068263e015bd8c90f851bed62c0493b",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen_fxp.c": "244332f67aad05e221b41a43f96d0d953ce06e0118ee6e18ddc6c54bf242c367",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/tw32_gm_ds32.h": "d3785969c81dca65dc23903fa4649e0548caa1d83506b1c2bb62241ebed12495",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sha3_cm4.s": "b313a4da7943202e97ed6753c71ebbf20d9fb9e2f44ce7cd67007e2461b6c830",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/tw32_api.h": "18f2185e21dc117416532240bfbded6596e136446d256558a1250d0db6d99f57",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/triple_float.c": "5d506594f0374706e7c08c07669683741ced18cbf5544a5b07a0d9d8af4da657",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen_mp31_cm55.s": "bad74cbe6f569a948b70f887b47cc0c5fc9f7e6130605df27adb70f3d88ece88",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sign_fpoly.c": "d6187c282576f8f1b534f9e48da8dedcca8f6f4f2a4ab6aa73bfd5412492b1e6",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen.c": "a034de222847ef5a5532d404df3bfd422bea2deffe0e54f25361dc6cb149f5cd",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/tw32_fft_mve.c": "ca1bd459b184256519787f4f57a1d5ee2bda58b3d27ee927dc62d3581b4289cd",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sign.c": "e23b7a63ea92e535cf16cfeef4a1500ad0984047adfe15696b7642b795f2a732",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/tw32_bridge.c": "b213e3a396667e85cc17f84542e60019b27372670738a442aa17e2f636150e1a",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/speed_fndsa.c": "621f9069bbafd6b2422656f69a1143a778cb9a7f5e0f5ec7f02ed24ae55ab096",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation_fp64.c": "b72b0d3bdddce23a65887e86a33e2c9a2c848f216f08a1b3c882c494c35b9466",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/codec_cm4.s": "53a380bcb500ed2d665405fa6ef5f3eb39bbeb9def4f86b29a9be532bbd7cd94",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/mq.c": "58ca9a7d8b58862016cd43d24eca43343f3d2479981afdd6c1a9819f56a718a9",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/test_fndsa.c": "893ef158f2c55110c157293184cb4d87dbc294d16b08e531af4ee07d64927bdd",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sign_fpr.c": "995ad5b954913cd1d63a5d14d3cffdeb48e7fa2ccb9afacc3f8bda129ea1aa95",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sign_sampler_cm4.s": "546ff1ad3ce37778a55ad3aa5c20ce73e83e4f97920351609e1a1d16e3af7fde",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/tw32_gm_ds32.c": "d41350722b4df3913da8ed1f8d3f1c8672b11386d4d199c6dffd6702acc1e2b4",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen_poly.c": "2d8fe81382a1b526346eb095566af7713bf7ef8e5204762961c12294613be853",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/mq_cm55.s": "0d1c14bed961466f649d1d818732d82ba3d1f1cf87c2ca441b37edaecf5d13f9",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sign_core.c": "d64678400179f60ecbcc53624c2aa93fde3539cf8dc064a53e8778fa79c29861",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sign_fpr_cm4.s": "ba5b3cdff48f7302d3229bdd00db9fca8a6bf8b420ee0eb0c1ff167079a51789",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen_zint31.c": "ba655aabdfb7c36cf8d723c8a69521915c07f5d023cbbf96a05a35f6e759f81e",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/vrfy.c": "d6db7c9a50ef36c30ef951127bdee0ed90774b4a5811817beb19850c265db58f",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/kgen_inner.h": "0b71e23ccc212f0769474b0ea86b6ce4b8ccdd2f9e19b5c6f40b2cc658ace773",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/sign_sampler.c": "9f91e55b8d7f9a48c730affe05bffc3c9c304121df5d2ce5542b99854c53c69b",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/triple_float.h": "9299428e8651563d83a08ec8adba72350a2185ce934353e0aa27db4736529dbc",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/generated/upstream_kat.h": "e5a2148bc910e4929087e05fa033c9382315fd895b3af7c561b2bac62244fa07",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/generated/perf_cases.h": "f2838df4103d9132cb9f2c7dbaaab02ca014fc4eb4b7e8340238404301d00f13",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/generated/upstream_signkat.h": "cf96bef1894e9a44d646e8e3330b314bdbb8421ad6c1167a3d4007b3f106bf78",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/bridgeprofile.c": "dc8a242b71820674a0a404b1402c5cf5c4e30da3bb33753e6d0b8261d7a3fba1",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/CMakeLists.txt": "ba56682f93b69376e107c3a2caf24317d5aeb1226109590974bb6d8f51a4edfd",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/build.sh": "5268670eaf165e410af63adbf3ee938f2dc5942d14db323263352bb05a9e203b",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/bridge_profile.h": "ad3b81f655094030348c659f909936b1b4908bb25917025ed46808a0b5a1e83b",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/generate_bridge_profile.py": "e7312fc523900bbcc6a93467e9ded437350808dc99fa80977b3d3ab37d078ffc",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/build/bridgeprofile/generated/bc_tw32_bridge.c": "accccf093ae978221ecd8c57c33390aaa53c0a44cdbdd8cae9f5a9e5cc106a1b",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/build/bridgeprofile/generated/bc_tw32_fft_mve.c": "6f9bfac214f8fa403996dfd7adb21624acefe4a25e83a4cecb84b89824c5cdf8",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/build/bridgeprofile/generated/bp_tw32_bridge.c": "174452d5686729b7a683a262fddea2571cd3ab4ff180c3c2cae883068e7c2e23",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/build/bridgeprofile/generated/bp_tw32_fft_mve.c": "16aedbe7a5b898ffdf6ad5dd11891e2c187c77758ed57dd7765ebf9d11680b50",
+    "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/build/bridgeprofile/generated/bridge_profile_manifest.json": "c76fd2693b5781459fa9edbf190cf5fffda29b89bffa49e6b5c1b15bd4d80dea"
+  },
+  "raw_sha256": "d79fdc09ea99474e9bf32a8814db48763bc2fdcd315e884378c840ba5d15694a",
+  "elf_sha256": "bdece5c1eaea8f71eb6471681837795b5e61c7284092e240e4035b24b7b581bd"
+}

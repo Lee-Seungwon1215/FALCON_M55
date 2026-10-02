@@ -1,0 +1,43 @@
+DOCUMENT: falcon_m7.pdf PAGE: 7/22
+
+Dilithium and Falcon on the ARM Cortex M7 7
+Table 1: Benchmarking results of Dilithium on the ARM Cortex M7 using the
+STM32F767ZI NUCLEO-144 development board. Results in KCycles.
+Parameter Set Opera-
+tion
+Min Avg Max SDev/
+SErr
+Avg
+(ms)
+Dilithium-2 Key Gen 1,390 1,437 1,479 81/3 6.7
+M7 vs M4 Key Gen 1.13x 1.10x 1.06x -/- 1.40x
+Dilithium-2 Sign 1,835 3,658 16,440 604/17 16.9
+M7 vs M4 Sign 1.19x 1.09x 0.64x -/- 1.40x
+Dilithium-2 Verify 1,428 1,429 1,432 27.8/0.9 6.6
+M7 vs M4 Verify 1.12x 1.12x 1.12x -/- 1.42x
+Dilithium-3 Key Gen 2,563 2,566 2,569 37.6/1.2 11.9
+M7 vs M4 Key Gen 1.12x 1.13x 1.12x -/- 1.44x
+Dilithium-3 Sign 2,981 6,009 26,208 65/9 20.7
+M7 vs M4 Sign 1.12x 1.19x 0.78x -/- 2.06x
+Dilithium-3 Verify 2,452 2,453 2,456 26.5/0.8 11.4
+M7 vs M4 Verify 1.12x 1.12x 1.11x -/- 1.43x
+Dilithium-5 KeyGen 4,312 4,368 4,436 54.4/1.7 20.2
+Dilithium-5 Sign 5,020 8,157 35,653 99k/3k 37.8
+Dilithium-5 Verify 4,282 4,287 4,292 46.5/1.5 19.8
+and Falcon’s key generation procedures. Next, we profile the inner workings of
+Dilithium (Table 7) and Falcon (Table 8).
+4.1 Rate of Acceptance in Dilithium and Falcon
+The following figures illustrate the effective rejection rates of Dilithium’s signing
+(Figure 3) and Falcon’s key generation (Figure 4) procedures. Restart or rejection
+rates are shown in the figures’ x-axis, with probabilities of acceptance shown in
+the y-axis.
+4.2 Profiling Results of Dilithium and Falcon
+The values presented in the following tables are iterated over 1,000 runs of the
+main operation (e.g., verify). As noted previously, for comparison, we provide
+profiling results for Falcon both with and without use of the FPU, and also
+provide the improvements over the results on the Cortex M4 provided in pqm4.
+For Dilithium, we only provide comparisons with pqm4 as it does not benefit at
+all from the FPU. Some lines of the tables will appear incomplete due to the fact
+that either that operation did not fit on the Cortex M4 (i.e., Falcon-1024 sign
+tree) or those results were not reported by pqm4 (i.e., Falcon’s expand private
+key).

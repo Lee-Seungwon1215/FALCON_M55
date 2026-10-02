@@ -1,0 +1,50 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 14/18
+
+14 Hwang
+floating-point numbers and the equivalences between implementations via soft-
+ware emulation. The whole paper is written in a way with concise logical reason-
+ing so readers can follow more easily. However, the true story of the discovery is
+more disorganized than the story told in the paper.
+The true story is that, we first wrote a model in CryptoLine and proved
+its equivalence with the emulated floating-point multiplication by [Por19]. With
+a much more readable model at hand, we were confounded by its correctness
+since it was inconsistent with our understanding of floating-point arithmetic.
+Our careful examinations eventually led to the C program extracting witnesses
+with incorrect zeroization, in the sense that the results were different from the
+native floating-point multiplication on our laptop and the emulated floating-
+point multiplication by the Arm’s toolchain for Cortex-M4. After contacting the
+authorof[Por19],weknewthatexperimentally,therewerenosuchfloating-point
+numbersbuttherewasnoformalproof.Welaterfixedourmodel,simplifieditfor
+range-checking, and verified the absence of non-zero floating-point numbers with
+absolute values the smallest normal positive floating-point number throughout
+the complex FFT in the signature generation of Falcon. The model was finally
+used for verifying the equivalence of implementations. We hope the true story
+will give more insights on how to use the tools.
+6.2 The Validity of This Paper After Recent Uses of Fixed-Point
+Arithmetic
+Recently, a fixed-point implementation for the complex FFT in the key gen-
+eration was proposed by [Por23]. An immediate question is the validity of our
+findings in the emulated floating-point arithmetic. We would like to stress that,
+the roles of the complex FFTs are quite different in key generation and signature
+generation.
+Key generation. We review the uses of complex FFT in the key generation of
+Falcon as follows. We first generate short integer polynomials f and g, and solve
+for integer polynomials F and G satisfying
+f G−gF= q mod (xn + 1).
+Since the coefficients of F and G could be too large for efficient computation
+for the follow-up computation, we need to reduce the bit-size of the pair (F, G)
+with respect to the pair (f, g). This can be achieved by the Babai’s reduction:
+we compute k= F f∗ +Gg∗
+f f∗ +gg∗ and subtract (kf, kg) from (F, G) where f∗ :=
+f0−
+n−1
+i=1 fixn−i is the adjoint of f=
+n−1
+i=0 fixi. Obviously, if f G−gF=
+q mod (xn + 1), then f (G−kg)−g (F−kf ) = f G−gF= q mod (xn + 1) and
+(F−kf, G−kg) is a valid solution for the NTRU equation. For the quotient
+F f∗ +Gg∗
+f f∗ +gg∗ in Q[x]/ ⟨xn + 1⟩, we instead compute them with the aid of complex
+FFT in C[x]/ ⟨xn + 1⟩. In [Por23], the author implemented the complex FFT
+with scaled 64-bit fixed-point arithmetic and reduced the pair (F, G) several
+times instead of reducing it once with high-precision complex FFT.

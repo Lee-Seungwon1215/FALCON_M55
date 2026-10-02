@@ -1,0 +1,303 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 52337
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :52337 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10017a7c
+hbreak *0x1001ad0c
+set $early_fault_bp = $bpnum
+jump *0x1001ad21
+if $pc != 0x10017a7c
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpi3q4hjsv/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x10017a2c
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x1001ad0c
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.274468
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 52337
+Info : Listening on port 52337 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/52337
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x1800350e msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+SEC_API degree=512 index=0 valid=1 rejected=60 failures=0 guards=0
+SEC_API degree=512 index=1 valid=2 rejected=121 failures=0 guards=0
+SEC_API degree=512 index=2 valid=3 rejected=182 failures=0 guards=0
+SEC_API degree=512 index=3 valid=4 rejected=243 failures=0 guards=0
+SEC_API degree=512 index=4 valid=5 rejected=304 failures=0 guards=0
+SEC_API degree=512 index=5 valid=6 rejected=365 failures=0 guards=0
+SEC_API degree=512 index=6 valid=7 rejected=426 failures=0 guards=0
+SEC_API degree=512 index=7 valid=8 rejected=487 failures=0 guards=0
+SEC_API degree=512 index=8 valid=9 rejected=548 failures=0 guards=0
+SEC_API degree=512 index=9 valid=10 rejected=609 failures=0 guards=0
+SEC_API degree=512 index=10 valid=11 rejected=670 failures=0 guards=0
+SEC_API degree=512 index=11 valid=12 rejected=731 failures=0 guards=0
+SEC_API degree=512 index=12 valid=13 rejected=792 failures=0 guards=0
+SEC_API degree=512 index=13 valid=14 rejected=853 failures=0 guards=0
+SEC_API degree=512 index=14 valid=15 rejected=914 failures=0 guards=0
+SEC_API degree=512 index=15 valid=16 rejected=975 failures=0 guards=0
+SEC_API degree=512 index=16 valid=17 rejected=1036 failures=0 guards=0
+SEC_API degree=512 index=17 valid=18 rejected=1097 failures=0 guards=0
+SEC_API degree=512 index=18 valid=19 rejected=1158 failures=0 guards=0
+SEC_API degree=512 index=19 valid=20 rejected=1219 failures=0 guards=0
+SEC_API degree=512 index=20 valid=21 rejected=1280 failures=0 guards=0
+SEC_API degree=512 index=21 valid=22 rejected=1341 failures=0 guards=0
+SEC_API degree=512 index=22 valid=23 rejected=1402 failures=0 guards=0
+SEC_API degree=512 index=23 valid=24 rejected=1463 failures=0 guards=0
+SEC_API degree=512 index=24 valid=25 rejected=1524 failures=0 guards=0
+SEC_API degree=512 index=25 valid=26 rejected=1585 failures=0 guards=0
+SEC_API degree=512 index=26 valid=27 rejected=1646 failures=0 guards=0
+SEC_API degree=512 index=27 valid=28 rejected=1707 failures=0 guards=0
+SEC_API degree=512 index=28 valid=29 rejected=1768 failures=0 guards=0
+SEC_API degree=512 index=29 valid=30 rejected=1829 failures=0 guards=0
+SEC_API degree=512 index=30 valid=31 rejected=1890 failures=0 guards=0
+SEC_API degree=512 index=31 valid=32 rejected=1951 failures=0 guards=0
+SEC_API degree=1024 index=0 valid=33 rejected=2011 failures=0 guards=0
+SEC_API degree=1024 index=1 valid=34 rejected=2072 failures=0 guards=0
+SEC_API degree=1024 index=2 valid=35 rejected=2133 failures=0 guards=0
+SEC_API degree=1024 index=3 valid=36 rejected=2194 failures=0 guards=0
+SEC_API degree=1024 index=4 valid=37 rejected=2255 failures=0 guards=0
+SEC_API degree=1024 index=5 valid=38 rejected=2316 failures=0 guards=0
+SEC_API degree=1024 index=6 valid=39 rejected=2377 failures=0 guards=0
+SEC_API degree=1024 index=7 valid=40 rejected=2438 failures=0 guards=0
+SEC_API degree=1024 index=8 valid=41 rejected=2499 failures=0 guards=0
+SEC_API degree=1024 index=9 valid=42 rejected=2560 failures=0 guards=0
+SEC_API degree=1024 index=10 valid=43 rejected=2621 failures=0 guards=0
+SEC_API degree=1024 index=11 valid=44 rejected=2682 failures=0 guards=0
+SEC_API degree=1024 index=12 valid=45 rejected=2743 failures=0 guards=0
+SEC_API degree=1024 index=13 valid=46 rejected=2804 failures=0 guards=0
+SEC_API degree=1024 index=14 valid=47 rejected=2865 failures=0 guards=0
+SEC_API degree=1024 index=15 valid=48 rejected=2926 failures=0 guards=0
+SEC_API degree=1024 index=16 valid=49 rejected=2987 failures=0 guards=0
+SEC_API degree=1024 index=17 valid=50 rejected=3048 failures=0 guards=0
+SEC_API degree=1024 index=18 valid=51 rejected=3109 failures=0 guards=0
+SEC_API degree=1024 index=19 valid=52 rejected=3170 failures=0 guards=0
+SEC_API degree=1024 index=20 valid=53 rejected=3231 failures=0 guards=0
+SEC_API degree=1024 index=21 valid=54 rejected=3292 failures=0 guards=0
+SEC_API degree=1024 index=22 valid=55 rejected=3353 failures=0 guards=0
+SEC_API degree=1024 index=23 valid=56 rejected=3414 failures=0 guards=0
+SEC_API degree=1024 index=24 valid=57 rejected=3475 failures=0 guards=0
+SEC_API degree=1024 index=25 valid=58 rejected=3536 failures=0 guards=0
+SEC_API degree=1024 index=26 valid=59 rejected=3597 failures=0 guards=0
+SEC_API degree=1024 index=27 valid=60 rejected=3658 failures=0 guards=0
+SEC_API degree=1024 index=28 valid=61 rejected=3719 failures=0 guards=0
+SEC_API degree=1024 index=29 valid=62 rejected=3780 failures=0 guards=0
+SEC_API degree=1024 index=30 valid=63 rejected=3841 failures=0 guards=0
+SEC_API degree=1024 index=31 valid=64 rejected=3902 failures=0 guards=0
+SEC_API_DONE valid=64 rejectedInfo : Deferring arp_examine of stm32n6x.cpu
+=3902 failures=0 guards=0
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x1800350e in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x1f820 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0x14750 lma 0x30000980
+Loading section datas, size 0x4c lma 0x300150e0
+Loading section device_states, size 0x2c lma 0x3001512c
+Loading section k_mutex_area, size 0x14 lma 0x30015158
+Loading section .last_section, size 0x4 lma 0x3001516c
+Start address 0x1001ad20, load size 216228
+Transfer rate: 551 KB/sec, 7722 bytes/write.
+Temporary breakpoint 1 at 0x10017a7c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x1001ad0c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpi3q4hjsv/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x10017a2c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x1001ad0c: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x985e4c            9985612
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x3002c178          805486968
+r8             0x300000d0          805306576
+r9             0x3003c2b8          805552824
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x3003c268          0x3003c268 <z_main_stack+65456>
+lr             0x10017a73          268532339
+pc             0x10017a2c          0x10017a2c <nucleo_test_breakpoint>
+xpsr           0x90f0000           151977984
+fpscr          0x20040010          537133072
+msp            0x3002c178          0x3002c178 <z_idle_stacks>
+psp            0x3003c268          0x3003c268 <z_main_stack+65456>
+vpr            0xf                 [ P0=15 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x3002c178          0x3002c178 <z_idle_stacks>
+psp_s          0x3003c268          0x3003c268 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x3002b978          0x3002b978 <z_interrupt_stacks>
+psplim_s       0x3002c2b8          0x3002c2b8 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0xf                 15
+0x3003c268 <z_main_stack+65456>:	0x00000000	0x10017a8f	0x00000000	0x1001e413
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x3002c178
+PSP=0x3003c268
+LR=0x10017a73
+PC=0x10017a2c
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x3002c178 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x3002c188 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

@@ -1,0 +1,47 @@
+DOCUMENT: TWfalcon.pdf PAGE: 5/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 5
+Table 2: IEEE 754 precision and exponent properties.
+Format Precision Bits Exponent Bits Exponent Min Exponent Max
+binary32 24 8 -126 +127
+binary64 53 11 -1022 +1023
+represents the sign of the value. Then, bits ei represent the exponent value, computed as
+e= |e0...en−1|2−b where b is a bias making sure both positive and negative exponents
+can be represented. The last bits di represent the mantissa, storing the significant digits
+of the number.
+Figure 1: General binary floating-point representation, where every block is a bit and the
+lowest bit is on the right.
+In Table 2 the details about the single-precision floating-point standard, binary32, and
+the double-precision floating-point standard, binary64, are shown. The IEEE 754 standard
+defines several special values that handle edge cases in floating-point arithmetic, but for
+Falcon only the case of zero is important. The ±0 is represented by setting all exponent
+and fraction bits to zero. The sign bit distinguishes between +0 and−0.
+Due to the finite precision, errors can appear in floating-point arithmetic. Rounding
+errors occur when numbers that cannot be exactly represented are rounded to the nearest
+IEEE 754-representable value, introducing small discrepancies. Cancellation errors happen
+when subtracting two nearly equal numbers, causing a loss of significant digits and reducing
+precision. Small floating-point errors can compound over multiple operations, ultimately
+leading to noticeable inaccuracies.
+The relative error measures how much a floating-point approximation deviates from
+the true value:
+|x−xf|
+Relative Error=
+|x|,
+where x is the true value and xf is its floating-point representation. Machine epsilon (ϵ)
+defines the upper bound on the relative error when rounding a real number to the closest
+floating-point representation.
+The Unit in the Last Place (ULP) is defined as the gap between two consecutive
+floating-point numbers. The relative error of a representation is therefore bounded by half
+the ULP.
+Additional accuracy for floating-point representation can be gathered by adding extra
+bits of precision. For single-precision (binary32 in IEEE 754) floating-point numbers,
+the machine epsilon is ϵsingle = 2−23 ≈1.19 ×10−7, which corresponds to roughly 7
+decimal digits of accuracy. In double-precision (binary64 in IEEE 754), ϵdouble = 2−52 ≈
+2.22 ×10−16, providing about 16 decimal digits of accuracy.
+2.3 Triple-Word Floating-Point Algorithms
+Adding extra bits to increase precision is not always an option for constrained devices. As
+an alternative, multiple floating-point values can be combined to compute arithmetic with
+higher precision (see e.g. [Pri91]).
+Algorithms optimized for the use of three floating-point values to gain higher precision
+are specified by [FMP19]. These algorithms work for any implementation of floating-point

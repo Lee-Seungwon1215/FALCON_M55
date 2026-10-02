@@ -1,0 +1,50 @@
+DOCUMENT: Neon_NTT.pdf PAGE: 38/38
+
+38 Neon NTT: Faster Dilithium, Kyber, and Saber on Cortex-A72 and Apple M1
+Algorithm 38 4 layers of 32-bit CT butterflies over 32 SIMD registers.
+Inputs:
+Coeﬃcients: (v0,...,v15) = (a0,...,a15)
+Auxiliary registers: v16,...,v19, v28,...,v31
+Twiddle factors:
+v20= h0||l0||0||Q
+v21= h2||l2||h1||l1
+v22= h4||l4||h3||l3
+v23= h6||l6||h5||l5
+v24= h8||l8||h7||l7
+v25= h10||l10||h9||l9
+v26= h12||l12||h11||l11
+v27= h14||l14||h13||l13
+Symbols:
+L0_0= v0, v2, v4, v6, v8, v10, v12, v14
+L0_1= v1, v3, v5, v7, v9, v11, v13, v15
+L1_0= v0, v2, v8, v10, v4, v6, v12, v14
+L1_1= v1, v3, v9, v11, v5, v7, v13, v15
+L2_0= v0, v4, v8, v12, v2, v6, v10, v14
+L2_1= v1, v5, v9, v13, v3, v7, v11, v15
+L3_0= v0, v2, v4, v6, v1, v3, v5, v7
+L3_1= v8, v10, v12, v14, v9, v11, v13, v15
+T0= v16, v17, v18, v19
+T1= v28, v29, v30, v31
+mod= v20
+W0= v20, 2, 3, v20, 2, 3, v20, 2, 3, v20, 2, 3
+W1= v21, 0, 1, v21, 0, 1, v21, 2, 3, v21, 2, 3
+W2= v22, 0, 1, v22, 2, 3, v23, 0, 1, v23, 2, 3
+W3_0= v24, 0, 1, v24, 2, 3, v25, 0, 1, v25, 2, 3
+W3_1= v26, 0, 1, v26, 2, 3, v27, 0, 1, v27, 2, 3
+Outputs: (v0,...,v15) = NTT(a0,...,a15)
+1: qq_butterfly_top L0_1, T0, mod, W0
+2: qq_butterfly_bot L0_1, T0, mod, W0
+3: qq_butterfly_top L0_0, T1, mod, W0
+4: qq_butterfly_bot L0_0, T1, mod, W0
+5: qq_butterfly_top L1_1, T0, mod, W1
+6: qq_butterfly_bot L1_1, T0, mod, W1
+7: qq_butterfly_top L1_0, T1, mod, W1
+8: qq_butterfly_bot L1_0, T1, mod, W1
+9: qq_butterfly_top L2_1, T0, mod, W2
+10: qq_butterfly_bot L2_1, T0, mod, W2
+11: qq_butterfly_top L2_0, T1, mod, W2
+12: qq_butterfly_bot L2_0, T1, mod, W2
+13: qq_butterfly_top L3_0, T0, mod, W3_0
+14: qq_butterfly_bot L3_0, T0, mod, W3_0
+15: qq_butterfly_top L3_1, T1, mod, W3_1
+16: qq_butterfly_bot L3_1, T1, mod, W3_1

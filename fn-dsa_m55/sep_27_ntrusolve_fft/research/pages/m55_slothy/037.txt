@@ -1,0 +1,60 @@
+DOCUMENT: m55_slothy.pdf PAGE: 37/46
+
+Abdulrahman, Becker, Kannwischer, Klein 37
+stores to scalar instructions has detrimental effect on performance. Microbenchmarks
+suggest that this is due to the GPR-to-Vector insert instruction ins dual-issuing alongside
+other vector instructions, while the Vector-to-GPR extraction instruction umov does not
+seem to. On the Cortex-A72 CPU, the best Kyber NTT is achieved by optimizing the basic,
+non-hybrid NTT implementation. For Dilithium, we achieve a slightly better performance
+by replacing the st4 after the last layer by a sequence imitating its behavior using “regular”
+strs and transposition operations. Although this approach requires more instructions, it
+facilitates the interleaving and thus allows for fewer stalls.
+Benchmarking environment. For Cortex-A55, we use a Lantronix Snapdragon 888
+hardwaredevelopmentkitwitha QualcommSnapdragonSM8350PSoC.Ourbenchmarking
+platform for Cortex-A72 is a Raspberry Pi 4. Cycle counts are obtained via PMU on
+Cortex-A72 and perf on Cortex-A55.
+Results. Table 4 shows the performance of our SLOTHY-optimized NTTs in comparison
+with the state of the art NTTs from [BHK+21]. For Dilithium, we outperform [BHK+21] by
+1.41×on Cortex-A55 and by 1.27×on Cortex-A72. For Kyber, we outperform [BHK+21]
+by 1.4×on Cortex-A55 and by 1.29×on Cortex-A72. Considering that [BHK+21] included
+microarchitecturespecificoptimizationsforCortex-A72, weseethisasamajordemonstrator
+of SLOTHY’s capabilities.
+Type Cycles Code size Readable1 Flexible
+µarch
+32-bit Dilithium NTT
+[BHK+21] Our work
+3+5 layers
+Cortex-A55
+Handwritten ASM 2436 2.3 KB ◦ ✕
+Clean 3542 1.5 KB
++ ✓
+slothyA55 1728 2.8 KB
+[BHK+21] Our work
+3+5 layers
+Cortex-A72
+Handwritten ASM 2241 2.3 KB ◦ ✕
+Clean 2250 1.1 KB
++ ✓
+slothyA72 1766 2.1 KB
+16-bit Kyber NTT
+[BHK+21] Our work
+3+5 layers
+Cortex-A55
+Handwritten ASM 1245 2.7 KB ◦ ✕
+Clean 1914 1.0 KB
++ ✓
+slothyA55 891 1.9 KB
+[BHK+21] Our work
+3+5 layers
+Cortex-A72
+Handwritten ASM 1200 2.7 KB ◦ ✕
+Clean 1307 0.8 KB
++ ✓
+slothyA72 932 1.4 KB
+1 See Table 2 for a legend.
+Table 4: Comparison of Kyber and Dilithium NTT implementations for AArch64.
+8.4 Example: X25519 on AArch64
+This section discusses the use of slothy for the optimization of the X25519 scalar
+multiplication on the Cortex-A55 CPU. The complexity of this example significantly
+exceeds that of the previous examples, both because of code size and because of the
+breadth of different scalar and SIMD instructions used in it.

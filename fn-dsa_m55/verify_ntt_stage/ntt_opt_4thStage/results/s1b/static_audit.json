@@ -1,0 +1,48 @@
+{
+  "candidate": "s1b",
+  "baseline": "ntt_opt",
+  "source_scope": {
+    "changed_files": [
+      "mq_cm55.s"
+    ],
+    "paired_sites": 10,
+    "paired_products": 20,
+    "new_secret_dependent_branches": 0,
+    "new_memory_accesses": 0
+  },
+  "mq_object": {
+    "baseline_text_bytes": 10500,
+    "s1a_text_bytes": 10500,
+    "candidate_text_bytes": 10500,
+    "shared_instruction_counts": {
+      "control_flow": 86,
+      "memory": 377,
+      "vqrdmulh": 57,
+      "vmul": 117,
+      "vmla": 57,
+      "vector_push_pop": 4
+    }
+  },
+  "hashes": {
+    "baseline_mq_cm55_sha256": "b4f5834ac4cb72c6d51f62bf4c9746b58350e668ebcb193bf1e51272ae9fbbc3",
+    "s1a_mq_cm55_sha256": "94dfb2e39788b4def40f2ab8919e6a1c5eb9579535b649180c55f9d6dd21c490",
+    "candidate_mq_cm55_sha256": "38a0502db847819ed2a85cb870c39f36c6ab7e06bc38509695c52441f7c3f655",
+    "candidate_source_tree_sha256": "c6a4e28e02fa7294d41b6baca1db9cdc3ae6de01aa58ba5a1424a0aea2dc98a4",
+    "candidate_elf_sha256": "3ce0bf31b5d87a63a1276ec335e58deb9d0f5d51706a20dd559c32295755aa3e",
+    "candidate_raw_log_sha256": "75cd25a4da676eddf7ba882e71d241e0786af8a128de8c3f456a2181b17bbf3f"
+  },
+  "validation": {
+    "barrett_pair_mismatches": 0,
+    "forward_ntt_mismatches": 0,
+    "inverse_roundtrip_mismatches": 0,
+    "max_modular_error": 0,
+    "host_kat_digests_match": true,
+    "sign_verify": "PASS",
+    "tamper_rejection": "PASS",
+    "fault_registers_zero": true,
+    "stack_used_upper_bound_bytes": 9624,
+    "baseline_pairwise_samples": 60,
+    "baseline_pairwise_nonpositive_savings": 0
+  },
+  "limitations": "Static constant-time structure audit only; power/EM TVLA was not performed."
+}

@@ -1,0 +1,70 @@
+{
+  "candidate": "s3a",
+  "baseline": "ntt_opt",
+  "source_scope": {
+    "changed_files": ["mq_cm55.s"],
+    "mq_load_pair_expansion_sites": 35,
+    "inverse_l0_explicit_preload_sites": 1,
+    "cross_iteration_preloads": 0,
+    "input_output_reschedules": 0,
+    "new_secret_dependent_branches": 0,
+    "new_memory_accesses": 0,
+    "stack_spills_added": 0
+  },
+  "mq_object": {
+    "baseline_text_bytes": 10500,
+    "candidate_text_bytes": 10500,
+    "baseline_instruction_count": 2725,
+    "candidate_instruction_count": 2725,
+    "mnemonic_multiset_equal": true,
+    "memory_instruction_count": 377,
+    "control_instruction_count": 86,
+    "memory_access_sequence_equal": true,
+    "control_flow_sequence_equal": true
+  },
+  "performance": {
+    "paired_batches_per_degree_operation": 10,
+    "candidate_faster_samples": 60,
+    "equal_samples": 0,
+    "candidate_slower_samples": 0,
+    "upper_median_cycles": {
+      "512_keygen": 51721172,
+      "512_sign": 17149415,
+      "512_verify": 323487,
+      "1024_keygen": 260386135,
+      "1024_sign": 36745607,
+      "1024_verify": 626036
+    },
+    "baseline_minus_candidate_cycles": {
+      "512_keygen": 1523,
+      "512_sign": 1515,
+      "512_verify": 251,
+      "1024_keygen": 5610,
+      "1024_sign": 3059,
+      "1024_verify": 510
+    }
+  },
+  "hashes": {
+    "baseline_mq_cm55_sha256": "b4f5834ac4cb72c6d51f62bf4c9746b58350e668ebcb193bf1e51272ae9fbbc3",
+    "candidate_mq_cm55_sha256": "b7970786ec42a35c7174e43c7a115750afceba68e5fda9b25a18740d9b065bb7",
+    "candidate_source_tree_sha256": "6d13f0aab28ed598dd2f00408fb83e7e56f2396ccc5bca715e1c184dded7a829",
+    "candidate_elf_sha256": "a04d82758a19210e520c3e9c76607bc5804b71d7d26e7290e5bc49d56e99e50b",
+    "candidate_raw_log_sha256": "dd686f7f3756194fa55be96538e0c10e67c09d49b3b6e68ceff8a7d876dfe662"
+  },
+  "validation": {
+    "barrett_pair_mismatches": 0,
+    "forward_ntt_mismatches": 0,
+    "inverse_roundtrip_mismatches": 0,
+    "oracle_roundtrip_mismatches": 0,
+    "max_modular_error": 0,
+    "host_kat_digests_match": true,
+    "sign_verify": "PASS",
+    "tamper_rejection": "PASS",
+    "fault_registers_zero": true,
+    "tcm_ecc_start": "0x1300a",
+    "tcm_ecc_end": "0x1300a",
+    "stack_used_upper_bound_bytes": 9624
+  },
+  "verdict": "Best general S3 candidate: all 60 paired API batches are faster than baseline with no code-size increase.",
+  "limitations": "Static constant-time structure audit only; power/EM TVLA was not performed."
+}

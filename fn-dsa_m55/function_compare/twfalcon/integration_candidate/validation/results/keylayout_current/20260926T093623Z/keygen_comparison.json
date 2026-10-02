@@ -1,0 +1,138 @@
+{
+  "rows": [
+    {
+      "degree": 512,
+      "calls_per_implementation": 100,
+      "ref_mean_cycles": 62738244.17,
+      "current_mean_cycles": 60138543.8,
+      "ref_mean_ms": 78.42280521250001,
+      "current_mean_ms": 75.17317975,
+      "speedup_ratio_of_totals": 1.043228522104654,
+      "time_reduction_percent": 4.1437250984513785,
+      "ref_median_cycles": 53540318.5,
+      "current_median_cycles": 51047604.5,
+      "ref_min_cycles": 46436887,
+      "ref_max_cycles": 135545997,
+      "current_min_cycles": 44380566,
+      "current_max_cycles": 128859544,
+      "faster_seed_pairs": 100,
+      "per_seed_speedup_min": 1.0071531434220153,
+      "per_seed_speedup_max": 1.0555618808332425
+    },
+    {
+      "degree": 1024,
+      "calls_per_implementation": 100,
+      "ref_mean_cycles": 261716429.84,
+      "current_mean_cycles": 250808606.83,
+      "ref_mean_ms": 327.1455373,
+      "current_mean_ms": 313.5107585375,
+      "speedup_ratio_of_totals": 1.0434906247750637,
+      "time_reduction_percent": 4.167802157727918,
+      "ref_median_cycles": 212966851.0,
+      "current_median_cycles": 200880719.0,
+      "ref_min_cycles": 155582023,
+      "ref_max_cycles": 769576501,
+      "current_min_cycles": 147697317,
+      "current_max_cycles": 750209225,
+      "faster_seed_pairs": 100,
+      "per_seed_speedup_min": 1.0115228231437097,
+      "per_seed_speedup_max": 1.0636334460383872
+    }
+  ],
+  "encoded_key_hash_pairs_equal": 200,
+  "KAT_equation_cases_per_implementation": 200,
+  "diagnostic_integer_layout": true,
+  "integer_routine_addresses": [
+    {
+      "zint_co_reduce_mod": [
+        268436289,
+        678
+      ],
+      "fndsa_zint_sub_scaled": [
+        268440341,
+        184
+      ],
+      "fndsa_zint_norm_zero": [
+        268437137,
+        230
+      ],
+      "fndsa_zint_rebuild_CRT": [
+        268437369,
+        1090
+      ],
+      "fndsa_zint_mod_small_unsigned": [
+        268437033,
+        104
+      ],
+      "fndsa_zint_bezout": [
+        268438461,
+        1612
+      ],
+      "fndsa_zint_add_scaled_mul_small": [
+        268440073,
+        268
+      ],
+      "fndsa_zint_mul_small": [
+        268436969,
+        64
+      ]
+    },
+    {
+      "zint_co_reduce_mod": [
+        268436289,
+        678
+      ],
+      "fndsa_zint_sub_scaled": [
+        268440341,
+        184
+      ],
+      "fndsa_zint_norm_zero": [
+        268437137,
+        230
+      ],
+      "fndsa_zint_rebuild_CRT": [
+        268437369,
+        1090
+      ],
+      "fndsa_zint_mod_small_unsigned": [
+        268437033,
+        104
+      ],
+      "fndsa_zint_bezout": [
+        268438461,
+        1612
+      ],
+      "fndsa_zint_add_scaled_mul_small": [
+        268440073,
+        268
+      ],
+      "fndsa_zint_mul_small": [
+        268436969,
+        64
+      ]
+    }
+  ],
+  "hardware_config_identical": true,
+  "identical_linker_policy": true,
+  "memory_bytes": {
+    "keylayout_ref": {
+      "ITCM": 76772,
+      "DTCM": 179752
+    },
+    "keylayout_current": {
+      "ITCM": 110872,
+      "DTCM": 208552
+    }
+  },
+  "reference_run": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/results/keylayout_ref/20260926T093459Z",
+  "current_run": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate/validation/results/keylayout_current/20260926T093623Z",
+  "reference_source": "/Users/seungwon/FALCON/fn-dsa_m55/M55_ref",
+  "current_source": "/Users/seungwon/FALCON/fn-dsa_m55/function_compare/twfalcon/integration_candidate",
+  "harness_sha256": "aa97163d117cf234243039c030bff85a884cf70345c322526cd1a2b81a8f2887",
+  "raw_sha256": [
+    "18f7431bd9fca72d9350351400afb8fe6f83d9e36cc52582883a74c2d0482f84",
+    "a24a48ffd0cb06902f9de014675589701067590e6b16f86c1c1bdaa5bc3c78a2"
+  ],
+  "scope": "Full keygen incl all rejections/retries, key derivation and encoding. Current tree includes prior NTT and real-arithmetic/FFT changes; NOT FFT-only attribution.",
+  "timing": "Zephyr 64-bit SysTick cycle counter at 800MHz; interrupts enabled in both. Separate firmware images, same compiler/options and ITCM/DTCM/cache policy, not identical code addresses."
+}

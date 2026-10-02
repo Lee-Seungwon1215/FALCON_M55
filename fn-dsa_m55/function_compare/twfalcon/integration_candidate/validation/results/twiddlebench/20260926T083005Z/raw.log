@@ -1,0 +1,382 @@
+[exec_wrapper] configuring FLEXMEM...
+[exec_wrapper] starting OpenOCD on port 3359...
+[exec_wrapper] SWO redirect port 56395
+[exec_wrapper] /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd -f interface/stlink.cfg -c transport select swd -f target/stm32n6x.cfg -c if {[lsearch -exact [target names] stm32n6x.cpu] >= 0} { stm32n6x.cpu configure -defer-examine } -c adapter speed 8000 -c adapter serial 003C00223335510735383531 -c reset_config srst_only srst_nogate -c gdb_port 3359 -c tcl_port disabled -c telnet_port disabled -c init -c stm32n6x.cpu arp_examine -c stm32n6x.swo configure -protocol uart -traceclk 100000000 -pin-freq 1000000 -output :56395 -formatter 0 -c stm32n6x.swo enable -c stm32n6x.cpu itm port 0 on
+============ GDB SCRIPT ============
+set pagination off
+set confirm off
+target remote localhost:3359
+load
+tbreak *0x10008224
+hbreak *0x1000b670
+set $early_fault_bp = $bpnum
+jump *0x1000b685
+if $pc != 0x10008224
+echo [[STARTUP-FAULT]]\n
+info registers
+x/8wx $psp
+x/8wx $msp
+x/8i *(unsigned int*)($psp+24)
+x/6wx 0xE000ED28
+x/6wx 0xE001E000
+monitor reset_config none
+monitor reset run
+quit 1
+end
+delete $early_fault_bp
+echo TCM_CONTROL_START=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_START=
+output/x *(unsigned int*)0xE001E000
+echo \n
+restore /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpvs2optk0/argv.bin binary 0x340b0000
+set $nucleo_exit_code = -1
+break *0x100081d4
+commands
+  set $nucleo_exit_code = $r0
+  echo [[NUCLEO-DONE]]\n
+end
+break *0x1000b670
+commands
+  echo [[NUCLEO-HARDFAULT]]\n
+end
+continue
+if $nucleo_exit_code != -1
+  echo NUCLEO_EXIT_CODE=
+  output/d $nucleo_exit_code
+  echo \n
+end
+info registers
+x/4wx $sp
+echo CFSR=
+output/x *(unsigned int *)0xE000ED28
+echo \n
+echo HFSR=
+output/x *(unsigned int *)0xE000ED2C
+echo \n
+echo DFSR=
+output/x *(unsigned int *)0xE000ED30
+echo \n
+echo MMFAR=
+output/x *(unsigned int *)0xE000ED34
+echo \n
+echo BFAR=
+output/x *(unsigned int *)0xE000ED38
+echo \n
+echo AFSR=
+output/x *(unsigned int *)0xE000ED3C
+echo \n
+echo SHCSR=
+output/x *(unsigned int *)0xE000ED24
+echo \n
+echo CCR=
+output/x *(unsigned int *)0xE000ED14
+echo \n
+echo MSP=
+output/x $msp
+echo \n
+echo PSP=
+output/x $psp
+echo \n
+echo LR=
+output/x $lr
+echo \n
+echo PC=
+output/x $pc
+echo \n
+echo STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:\n
+if ($lr & 4)
+  x/8wx $psp
+else
+  x/8wx $msp
+end
+x/4wx 0xE000ED28
+x/wx 0xE000ED38
+echo TCM_CONTROL_END=
+output/x *(unsigned int*)0x56008008
+echo \n
+echo TCM_MSCR_END=
+output/x *(unsigned int*)0xE001E000
+echo \n
+monitor reset_config none
+monitor reset run
+====================================
+[exec_wrapper] running gdb batch
+Open On-Chip Debugger 0.12.0+dev-g4e9b167 (2026-09-09-11:52)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+adapter speed: 8000 kHz
+srst_only separate srst_nogate srst_open_drain connect_deassert_srst
+DEPRECATED! use 'gdb port', not 'gdb_port'
+DEPRECATED! use 'tcl port' not 'tcl_port'
+DEPRECATED! use 'telnet port', not 'telnet_port'
+Info : STLINK V3J15M6 (API v3) VID:PID 0483:3754
+Info : Target voltage: 3.277659
+Info : clock speed 8000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32n6x.ap0] Examination succeed
+Info : [stm32n6x.ap0] gdb port disabled
+Info : [stm32n6x.cpu] starting gdb server on 3359
+Info : Listening on port 3359 for gdb connections
+Info : [stm32n6x.cpu] Cortex-M55 r1p1 processor detected
+Info : [stm32n6x.cpu] target has 8 breakpoints, 8 watchpoints
+Info : starting trace server for stm32n6x.swo on 56395
+Info : Listening on port 56395 for tpiu_swo_trace connections
+Info : tcl server disabled
+Info : telnet server disabled
+Info : accepting 'tpiu_swo_trace' connection on tcp/56395
+Info : accepting 'gdb' connection on tcp/3359
+stm32n6x.cpu in Secure state
+[stm32n6x.cpu] halted due to debug-request, current mode: Thread
+xPSR: 0x21000000 pc: 0x18003514 msp: 0x341037a8
+Info : New GDB Connection: 1, Target stm32n6x.cpu, state: halted
+Warn : Prefer GDB command "target extended-remote :3359" instead of "target remote :3359"
+TWROOT_HW cpu=800000000 fpscr=00040000 ccr=00000611 tcm=00000099
+TWROOT_CHECK roots=2048 components=6144 mismatches=0
+TWROOT_OUTPUT logn=2 cases=400 mismatches=0
+TWROOT_OUTPUT logn=3 cases=400 mismatches=0
+TWROOT_OUTPUT logn=4 cases=400 mismatches=0
+TWROOT_OUTPUT logn=5 cases=400 mismatches=0
+TWROOT_OUTPUT logn=6 cases=400 mismatches=0
+TWROOT_OUTPUT logn=7 cases=400 mismatches=0
+TWROOT_OUTPUT logn=8 cases=400 mismatches=0
+TWROOT_OUTPUT logn=9 cases=400 mismatches=0
+TWROOT_OUTPUT logn=10 cases=400 mismatches=0
+TWROOT_PERF degree=512 inverse=0 batch=0 backend=stage10_ondemand calls=100 cycles=17500900 min=175009 max=175009
+TWROOT_PERF degree=512 inverse=0 batch=0 backend=stage11_precomputed calls=100 cycles=11471901 min=114719 max=114720
+TWROOT_PERF degree=512 inverse=0 batch=0 backend=stage11_alias calls=100 cycles=11472100 min=114721 max=114721
+TWROOT_PERF degree=512 inverse=0 batch=0 backend=M55_ref_fixed calls=100 cycles=12603900 min=126039 max=126039
+TWROOT_BATCH degree=512 inverse=0 batch=0 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=1 batch=0 backend=stage10_ondemand calls=100 cycles=18031600 min=180316 max=180316
+TWROOT_PERF degree=512 inverse=1 batch=0 backend=stage11_precomputed calls=100 cycles=12243602 min=122436 max=122437
+TWROOT_PERF degree=512 inverse=1 batch=0 backend=stage11_alias calls=100 cycles=12243800 min=122438 max=122438
+TWROOT_PERF degree=512 inverse=1 batch=0 backend=M55_ref_fixed calls=100 cycles=14333600 min=143336 max=143336
+TWROOT_BATCH degree=512 inverse=1 batch=0 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=0 batch=0 backend=stage10_ondemand calls=100 cycles=36911000 min=369110 max=369110
+TWROOT_PERF degree=1024 inverse=0 batch=0 backend=stage11_precomputed calls=100 cycles=24835101 min=248350 max=248352
+TWROOT_PERF degree=1024 inverse=0 batch=0 backend=stage11_alias calls=100 cycles=24835300 min=248353 max=248353
+TWROOT_PERF degree=1024 inverse=0 batch=0 backend=M55_ref_fixed calls=100 cycles=28063300 min=280633 max=280633
+TWROOT_BATCH degree=1024 inverse=0 batch=0 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=1 batch=0 backend=stage10_ondemand calls=100 cycles=38090900 min=380909 max=380909
+TWROOT_PERF degree=1024 inverse=1 batch=0 backend=stage11_precomputed calls=100 cycles=26540200 min=265402 max=265402
+TWROOT_PERF degree=1024 inverse=1 batch=0 backend=stage11_alias calls=100 cycles=26540400 min=265404 max=265404
+TWROOT_PERF degree=1024 inverse=1 batch=0 backend=M55_ref_fixed calls=100 cycles=31847001 min=318470 max=318471
+TWROOT_BATCH degree=1024 inverse=1 batch=0 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=0 batch=1 backend=stage10_ondemand calls=100 cycles=17500900 min=175009 max=175009
+TWROOT_PERF degree=512 inverse=0 batch=1 backend=stage11_precomputed calls=100 cycles=11471899 min=114718 max=114719
+TWROOT_PERF degree=512 inverse=0 batch=1 backend=stage11_alias calls=100 cycles=11472101 min=114721 max=114722
+TWROOT_PERF degree=512 inverse=0 batch=1 backend=M55_ref_fixed calls=100 cycles=12603900 min=126039 max=126039
+TWROOT_BATCH degree=512 inverse=0 batch=1 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=1 batch=1 backend=stage10_ondemand calls=100 cycles=18031600 min=180316 max=180316
+TWROOT_PERF degree=512 inverse=1 batch=1 backend=stage11_precomputed calls=100 cycles=12243600 min=122436 max=122436
+TWROOT_PERF degree=512 inverse=1 batch=1 backend=stage11_alias calls=100 cycles=12243800 min=122438 max=122438
+TWROOT_PERF degree=512 inverse=1 batch=1 backend=M55_ref_fixed calls=100 cycles=14333600 min=143336 max=143336
+TWROOT_BATCH degree=512 inverse=1 batch=1 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=0 batch=1 backend=stage10_ondemand calls=100 cycles=36911000 min=369110 max=369110
+TWROOT_PERF degree=1024 inverse=0 batch=1 backend=stage11_precomputed calls=100 cycles=24835100 min=248351 max=248351
+TWROOT_PERF degree=1024 inverse=0 batch=1 backend=stage11_alias calls=100 cycles=24835302 min=248353 max=248354
+TWROOT_PERF degree=1024 inverse=0 batch=1 backend=M55_ref_fixed calls=100 cycles=28063300 min=280633 max=280633
+TWROOT_BATCH degree=1024 inverse=0 batch=1 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=1 batch=1 backend=stage10_ondemand calls=100 cycles=38090900 min=380909 max=380909
+TWROOT_PERF degree=1024 inverse=1 batch=1 backend=stage11_precomputed calls=100 cycles=26540197 min=265401 max=265402
+TWROOT_PERF degree=1024 inverse=1 batch=1 backend=stage11_alias calls=100 cycles=26540400 min=265404 max=265404
+TWROOT_PERF degree=1024 inverse=1 batch=1 backend=M55_ref_fixed calls=100 cycles=31847000 min=318470 max=318470
+TWROOT_BATCH degree=1024 inverse=1 batch=1 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=0 batch=2 backend=stage10_ondemand calls=100 cycles=17500900 min=175009 max=175009
+TWROOT_PERF degree=512 inverse=0 batch=2 backend=stage11_precomputed calls=100 cycles=11471900 min=114718 max=114720
+TWROOT_PERF degree=512 inverse=0 batch=2 backend=stage11_alias calls=100 cycles=11472100 min=114721 max=114721
+TWROOT_PERF degree=512 inverse=0 batch=2 backend=M55_ref_fixed calls=100 cycles=12603900 min=126039 max=126039
+TWROOT_BATCH degree=512 inverse=0 batch=2 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=1 batch=2 backend=stage10_ondemand calls=100 cycles=18031600 min=180316 max=180316
+TWROOT_PERF degree=512 inverse=1 batch=2 backend=stage11_precomputed calls=100 cycles=12243601 min=122436 max=122437
+TWROOT_PERF degree=512 inverse=1 batch=2 backend=stage11_alias calls=100 cycles=12243800 min=122438 max=122438
+TWROOT_PERF degree=512 inverse=1 batch=2 backend=M55_ref_fixed calls=100 cycles=14333600 min=143336 max=143336
+TWROOT_BATCH degree=512 inverse=1 batch=2 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=0 batch=2 backend=stage10_ondemand calls=100 cycles=36911000 min=369110 max=369110
+TWROOT_PERF degree=1024 inverse=0 batch=2 backend=stage11_precomputed calls=100 cycles=24835100 min=248351 max=248351
+TWROOT_PERF degree=1024 inverse=0 batch=2 backend=stage11_alias calls=100 cycles=24835302 min=248353 max=248354
+TWROOT_PERF degree=1024 inverse=0 batch=2 backend=M55_ref_fixed calls=100 cycles=28063301 min=280633 max=280634
+TWROOT_BATCH degree=1024 inverse=0 batch=2 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=1 batch=2 backend=stage10_ondemand calls=100 cycles=38090901 min=380909 max=380910
+TWROOT_PERF degree=1024 inverse=1 batch=2 backend=stage11_precomputed calls=100 cycles=26540199 min=265401 max=265402
+TWROOT_PERF degree=1024 inverse=1 batch=2 backend=stage11_alias calls=100 cycles=26540400 min=265404 max=265404
+TWROOT_PERF degree=1024 inverse=1 batch=2 backend=M55_ref_fixed calls=100 cycles=31847001 min=318470 max=318471
+TWROOT_BATCH degree=1024 inverse=1 batch=2 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=0 batch=3 backend=stage10_ondemand calls=100 cycles=17500900 min=175009 max=175009
+TWROOT_PERF degree=512 inverse=0 batch=3 backend=stage11_precomputed calls=100 cycles=11471900 min=114719 max=114719
+TWROOT_PERF degree=512 inverse=0 batch=3 backend=stage11_alias calls=100 cycles=11472101 min=114721 max=114722
+TWROOT_PERF degree=512 inverse=0 batch=3 backend=M55_ref_fixed calls=100 cycles=12603900 min=126039 max=126039
+TWROOT_BATCH degree=512 inverse=0 batch=3 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=1 batch=3 backend=stage10_ondemand calls=100 cycles=18031601 min=180316 max=180317
+TWROOT_PERF degree=512 inverse=1 batch=3 backend=stage11_precomputed calls=100 cycles=12243601 min=122436 max=122437
+TWROOT_PERF degree=512 inverse=1 batch=3 backend=stage11_alias calls=100 cycles=12243800 min=122438 max=122438
+TWROOT_PERF degree=512 inverse=1 batch=3 backend=M55_ref_fixed calls=100 cycles=14333600 min=143336 max=143336
+TWROOT_BATCH degree=512 inverse=1 batch=3 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=0 batch=3 backend=stage10_ondemand calls=100 cycles=36911001 min=369110 max=369111
+TWROOT_PERF degree=1024 inverse=0 batch=3 backend=stage11_precomputed calls=100 cycles=24835100 min=248351 max=248351
+TWROOT_PERF degree=1024 inverse=0 batch=3 backend=stage11_alias calls=100 cycles=24835300 min=248353 max=248353
+TWROOT_PERF degree=1024 inverse=0 batch=3 backend=M55_ref_fixed calls=100 cycles=28063301 min=280633 max=280634
+TWROOT_BATCH degree=1024 inverse=0 batch=3 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=1 batch=3 backend=stage10_ondemand calls=100 cycles=38090900 min=380909 max=380909
+TWROOT_PERF degree=1024 inverse=1 batch=3 backend=stage11_precomputed calls=100 cycles=26540198 min=265401 max=265402
+TWROOT_PERF degree=1024 inverse=1 batch=3 backend=stage11_alias calls=100 cycles=26540401 min=265404 max=265405
+TWROOT_PERF degree=1024 inverse=1 batch=3 backend=M55_ref_fixed calls=100 cycles=31847000 min=318470 max=318470
+TWROOT_BATCH degree=1024 inverse=1 batch=3 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=0 batch=4 backend=stage10_ondemand calls=100 cycles=17500900 min=175009 max=175009
+TWROOT_PERF degree=512 inverse=0 batch=4 backend=stage11_precomputed calls=100 cycles=11471899 min=114718 max=114719
+TWROOT_PERF degree=512 inverse=0 batch=4 backend=stage11_alias calls=100 cycles=11472100 min=114721 max=114721
+TWROOT_PERF degree=512 inverse=0 batch=4 backend=M55_ref_fixed calls=100 cycles=12603900 min=126039 max=126039
+TWROOT_BATCH degree=512 inverse=0 batch=4 cases=330 mismatches=0
+TWROOT_PERF degree=512 inverse=1 batch=4 backend=stage10_ondemand calls=100 cycles=18031600 min=180316 max=180316
+TWROOT_PERF degree=512 inverse=1 batch=4 backend=stage11_precomputed calls=100 cycles=12243600 min=122436 max=122436
+TWROOT_PERF degree=512 inverse=1 batch=4 backend=stage11_alias calls=100 cycles=12243800 min=122438 max=122438
+TWROOT_PERF degree=512 inverse=1 batch=4 backend=M55_ref_fixed calls=100 cycles=14333600 min=143336 max=143336
+TWROOT_BATCH degree=512 inverse=1 batch=4 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=0 batch=4 backend=stage10_ondemand calls=100 cycles=36911001 min=369110 max=369111
+TWROOT_PERF degree=1024 inverse=0 batch=4 backend=stage11_precomputed calls=100 cycles=24835100 min=248351 max=248351
+TWROOT_PERF degree=1024 inverse=0 batch=4 backend=stage11_alias calls=100 cycles=24835300 min=248353 max=248353
+TWROOT_PERF degree=1024 inverse=0 batch=4 backend=M55_ref_fixed calls=100 cycles=28063301 min=280633 max=280634
+TWROOT_BATCH degree=1024 inverse=0 batch=4 cases=330 mismatches=0
+TWROOT_PERF degree=1024 inverse=1 batch=4 backend=stage10_ondemand calls=100 cycles=38090900 min=380909 max=380909
+TWROOT_PERF degree=1024 inverse=1 batch=4 backend=stage11_precomputed calls=100 cycles=26540200 min=265402 max=265402
+TWROOT_PERF degree=1024 inverse=1 batch=4 backend=stage11_alias calls=100 cycles=26540400 min=265404 max=265404
+TWROOT_PERF degree=1024 inverse=1 batch=4 backend=M55_ref_fixed calls=100 cycles=31847002 min=318470 max=318471
+TWROOT_BATCH degree=1024 inverse=1 batch=4 cases=330 mismatches=0
+TWROOT_TIMING degree=512 inverse=0 class=0 calls=100 cycles=11462400 min=114624 max=114624
+TWROOT_TIMING degree=512 inverse=0 class=1 calls=100 cycles=11462400 min=114624 max=114624
+TWROOT_TIMING degree=512 inverse=0 class=2 calls=100 cycles=11462401 min=114624 max=114625
+TWROOT_TIMING degree=512 inverse=0 class=3 calls=100 cycles=11462400 min=114624 max=114624
+TWROOT_TIMING degree=512 inverse=0 class=4 calls=100 cycles=11462400 min=114624 max=114624
+TWROOT_TIMING degree=512 inverse=0 class=5 calls=100 cycles=11462400 min=114624 max=114624
+TWROOT_TIMING degree=512 inverse=0 class=6 calls=100 cycles=11462400 min=114624 max=114624
+TWROOT_TIMING degree=512 inverse=0 class=7 calls=100 cycles=11462400 min=114624 max=114624
+TWROOT_TIMING degree=512 inverse=1 class=0 calls=100 cycles=12179701 min=121797 max=121798
+TWROOT_TIMING degree=512 inverse=1 class=1 calls=100 cycles=12179700 min=121797 max=121797
+TWROOT_TIMING degree=512 inverse=1 class=2 calls=100 cycles=12179700 min=121797 max=121797
+TWROOT_TIMING degree=512 inverse=1 class=3 calls=100 cycles=12179700 min=121797 max=121797
+TWROOT_TIMING degree=512 inverse=1 class=4 calls=100 cycles=12179700 min=121797 max=121797
+TWROOT_TIMING degree=512 inverse=1 class=5 calls=100 cycles=12179700 min=121797 max=121797
+TWROOT_TIMING degree=512 inverse=1 class=6 calls=100 cycles=12179700 min=121797 max=121797
+TWROOT_TIMING degree=512 inverse=1 class=7 calls=100 cycles=12179700 min=121797 max=121797
+TWROOT_TIMING degree=1024 inverse=0 class=0 calls=100 cycles=24809600 min=248096 max=248096
+TWROOT_TIMING degree=1024 inverse=0 class=1 calls=100 cycles=24809601 min=248096 max=248097
+TWROOT_TIMING degree=1024 inverse=0 class=2 calls=100 cycles=24809600 min=248096 max=248096
+TWROOT_TIMING degree=1024 inverse=0 class=3 calls=100 cycles=24809600 min=248096 max=248096
+TWROOT_TIMING degree=1024 inverse=0 class=4 calls=100 cycles=24809601 min=248096 max=248097
+TWROOT_TIMING degree=1024 inverse=0 class=5 calls=100 cycles=24809600 min=248096 max=248096
+TWROOT_TIMING degree=1024 inverse=0 class=6 calls=100 cycles=24809600 min=248096 max=248096
+TWROOT_TIMING degree=1024 inverse=0 class=7 calls=100 cycles=24809601 min=248096 max=248097
+TWROOT_TIMING degree=1024 inverse=1 class=0 calls=100 cycles=26386700 min=263867 max=263867
+TWROOT_TIMING degree=1024 inverse=1 class=1 calls=100 cycles=26386701 min=263867 max=263868
+TWROOT_TIMING degree=1024 inverse=1 class=2 calls=100 cycles=26386700 min=263867 max=263867
+TWROOT_TIMING degree=1024 inverse=1 class=3 calls=100 cycles=26386700 min=263867 max=263867
+TWROOT_TIMING degree=1024 inverse=1 class=4 calls=100 cycles=26386701 min=263867 max=263868
+TWROOT_TIMING degree=1024 inverse=1 class=5 calls=100 cycles=26386700 min=263867 max=263867
+TWROOT_TIMING degree=1024 inverse=1 class=6 calls=100 cycles=26386700 min=263867 max=263867
+TWROOT_TIMING degree=1024 inverse=1 class=7 calls=100 cycles=26386701 min=263867 max=263868
+TWROOT_DONE batches=5 mismatches=0 sink=00d28124f5daf84d
+Info : Deferring arp_examine of stm32n6x.cpu
+Info : Use arp_examine command to examine it manually!
+Info : dropped 'gdb' connection
+0x18003514 in ?? ()
+Loading section rom_start, size 0x32c lma 0x10000000
+Loading section text, size 0x10234 lma 0x10000330
+Loading section .ARM.exidx, size 0x8 lma 0x30000000
+Loading section initlevel, size 0xc8 lma 0x30000008
+Loading section device_area, size 0x268 lma 0x300000d0
+Loading section sw_isr_table, size 0x5d8 lma 0x30000338
+Loading section gpio_driver_api_area, size 0x24 lma 0x30000910
+Loading section reset_driver_api_area, size 0x10 lma 0x30000934
+Loading section clock_control_driver_api_area, size 0x1c lma 0x30000944
+Loading section otp_driver_api_area, size 0x4 lma 0x30000960
+Loading section uart_driver_api_area, size 0x14 lma 0x30000964
+Loading section rodata, size 0xec94 lma 0x30000980
+Loading section datas, size 0x54 lma 0x3000f620
+Loading section device_states, size 0x2c lma 0x3000f674
+Loading section k_mutex_area, size 0x14 lma 0x3000f6a0
+Loading section .last_section, size 0x4 lma 0x3000f6b4
+Start address 0x1000b684, load size 130052
+Transfer rate: 547 KB/sec, 5654 bytes/write.
+Temporary breakpoint 1 at 0x10008224: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 254.
+Hardware assisted breakpoint 2 at 0x1000b670: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Temporary breakpoint 1, get_bootargs () at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:254
+254	  return mlk_bootargs_block;
+TCM_CONTROL_START=0x99
+TCM_MSCR_START=0x1300a
+Restoring binary file /var/folders/cl/qszfy4ys3t51fgwf6m125j080000gt/T/tmpvs2optk0/argv.bin into memory (0x340b0000 to 0x340c0000)
+Breakpoint 3 at 0x100081d4: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c, line 148.
+Breakpoint 4 at 0x1000b670: file /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/cortex_m/fault_s.S, line 80.
+
+Breakpoint 3, nucleo_test_breakpoint (rc=rc@entry=0) at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:148
+148	  __asm__ volatile("bkpt 0" ::: "memory");
+[[NUCLEO-DONE]]
+NUCLEO_EXIT_CODE=0
+r0             0x0                 0
+r1             0xe0000000          -536870912
+r2             0x1000900           16779520
+r3             0x9846b1            9979569
+r4             0x0                 0
+r5             0x300000d0          805306576
+r6             0x30000910          805308688
+r7             0x300242e0          805454560
+r8             0x300000d0          805306576
+r9             0x30034420          805520416
+r10            0x34102040          873472064
+r11            0x56021800          1442977792
+r12            0xa                 10
+sp             0x300343d0          0x300343d0 <z_main_stack+65456>
+lr             0x1000821b          268468763
+pc             0x100081d4          0x100081d4 <nucleo_test_breakpoint>
+xpsr           0x1000000           16777216
+fpscr          0x40010             262160
+msp            0x300242e0          0x300242e0 <z_idle_stacks>
+psp            0x300343d0          0x300343d0 <z_main_stack+65456>
+vpr            0x0                 [ P0=0 MASK01=0 MASK23=0 ]
+msp_ns         0x241077f0          0x241077f0
+psp_ns         0x241077f0          0x241077f0
+msp_s          0x300242e0          0x300242e0 <z_idle_stacks>
+psp_s          0x300343d0          0x300343d0 <z_main_stack+65456>
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x6                 6
+msplim_s       0x30023ae0          0x30023ae0 <z_interrupt_stacks>
+psplim_s       0x30024420          0x30024420 <z_main_stack>
+msplim_ns      0x24106ff0          0x24106ff0
+psplim_ns      0x24106ff0          0x24106ff0
+primask_s      0x0                 0
+basepri_s      0x0                 0
+faultmask_s    0x0                 0
+control_s      0x6                 6
+primask_ns     0x0                 0
+basepri_ns     0x0                 0
+faultmask_ns   0x0                 0
+control_ns     0x4                 4
+p0             0x0                 0
+0x300343d0 <z_main_stack+65456>:	0x00000000	0x10008237	0x00000000	0x1000edbb
+CFSR=0x0
+HFSR=0x0
+DFSR=0x0
+MMFAR=0x0
+BFAR=0x30040000
+AFSR=0x0
+SHCSR=0xf0000
+CCR=0x611
+MSP=0x300242e0
+PSP=0x300343d0
+LR=0x1000821b
+PC=0x100081d4
+STACKED_R0_R1_R2_R3_R12_LR_PC_XPSR:
+0x300242e0 <z_idle_stacks>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x300242f0 <z_idle_stacks+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed28:	0x00000000	0x00000000	0x00000000	0x00000000
+0xe000ed38:	0x30040000
+TCM_CONTROL_END=0x99
+TCM_MSCR_END=0x1300a
+[Inferior 1 (Remote target) detached]
+none separate
+Deferring arp_examine of stm32n6x.cpu
+Use arp_examine command to examine it manually!

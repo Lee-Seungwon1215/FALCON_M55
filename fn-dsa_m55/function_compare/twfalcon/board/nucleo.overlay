@@ -1,0 +1,21 @@
+/ {
+    tw_itcm: memory@10000000 {
+        compatible = "zephyr,memory-region", "arm,itcm";
+        reg = <0x10000000 0x00040000>;
+        zephyr,memory-region = "ITCM";
+    };
+    tw_dtcm: memory@30000000 {
+        compatible = "zephyr,memory-region", "arm,dtcm";
+        reg = <0x30000000 0x00040000>;
+        zephyr,memory-region = "DTCM";
+    };
+    tw_axisram: memory@34080000 {
+        compatible = "zephyr,memory-region", "mmio-sram";
+        reg = <0x34080000 0x00030000>;
+        zephyr,memory-region = "NUCLEO_AXISRAM";
+    };
+    chosen {
+        zephyr,flash = &tw_itcm;
+        zephyr,sram = &tw_dtcm;
+    };
+};

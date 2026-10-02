@@ -1,0 +1,61 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 4/29
+
+4 Polynomial multiplication on embedded vector architectures
+can view the evaluation homomorphism either as evα : R[X]/ i(X−αi) →Rn, or as
+evα : R[X]<n →Rn. It is an isomorphism if and only if for all i̸= j, αi−αj is invertible in
+R. For example, this holds if Ris a field and the αi are pairwise distinct. If evα is bijective,
+we can thus fully recover a polynomial f ∈R[X]<n of degree < n from its evaluations
+f(αi); equally, we can recover the residue of f ∈R[X] modulo i(X−αi) from f(αi).
+This technique can be used to calculate products fg if f,g∈R[X]/ i(X−αi) or if
+f ∈R[X]≤a,g ∈R[X]≤b with a+ b < n: In both cases, we first compute f(αi),g(αi)–
+the “evaluation step” – then the products f(αi)g(αi) – the “point multiplication step” –
+and finally recover fg from its evaluations at the αi – the “interpolation step”.
+It is common to add the “evaluation at ∞”, giving ev∞
+α : R[X]≤n →Rn+1 defined
+by f →(f(α1),...,f(αn),f(∞)), where f(∞) is the coeﬃcient of Xn. This extended
+evaluation ev∞
+α is bijective if and only if evα is. In this case, we can therefore a polynomial
+of degree ≤n from its evaluations at α1,...,αn plus its n-th coeﬃcient.
+2.2.1 Toom-Cook/Karatsuba
+Karatsuba’s algorithm instantiates the “multiplication by evaluation” blueprint with
+α0 = 0,α1 = 1,α2 = ∞, thereby allowing to compute the product of two degree-1
+polynomials f= a+ bX and g= c+ dX in terms of their evaluations at 0,1,∞. Concretely,
+f(0) = a,f(1) = a+ b, f(∞) = b, g(0) = c, g(1) = c+ d, g(∞) = d,
+and we recover fg from the point multiplications f(0)g(0), f(1)g(1), and f(∞)g(∞) via
+fg= (a+ bX)(c+ dX) = ac+ (ad+ bc)X+ bdX2
+= f(0)g(0) + (f(1)g(1)−f(0)g(0)−f(∞)g(∞))X+ f(∞)g(∞)X2
+.
+This works for any ring R since α0−α1 =−1 is invertible.
+The Toom-Cook algorithm generalizes Karatsuba’s. Concretely, we are interested in
+4-way Toom-Cook defined by the points 0,∞,±1,±1
+2 ,2 and applied over a ring R where
+2k = 0 for some k – we will mainly be looking at Z213 . This setting has been introduced
+and studied in [KMRV18], and a few subtle points should be noted – see [KMRV18] for
+details: Firstly, to make sense of the fractional evaluations in Z, one scales by αdeg(f), so
+that for f= a0 + a1X+ a2X2 + a3X3 we have f 1
+2 := 8a0 + 4a1 + 2a2 + a3. Secondly,
+evα is not an isomorphism: In fact, if 2k = 0 in R but 2k−1 ̸= 0, the polynomial
+f := 2k−1X(X+ 1) satisfies f(α) = 0 for all α∈{0,∞,±1,±1
+2 ,2}. However, [KMRV18]
+explains that multiplication by evaluation still works if we temporarily operate with k+ 3
+bits of precision – that is, we lift representatives from Z2k to Z2k+3 below 2k, compute
+evaluation, multiplication and interpolation in Z2k+3 , and reduce to Z2k in the end.
+2.2.2 Iterating Toom-Cook/Karatsuba
+Toom-Cook/Karatsuba multiplication is usually applied iteratively, with Rbeing a polyno-
+mial ring itself, transforming a product of two polynomials of large degree into numerous
+products of polynomials of smaller degree, which can then be computed by more direct
+means such as schoolbook multiplication. We explain this for k-way Toom-Cook.
+Given a polynomial f ∈R[X]<n with n = kr, we can group its monomials into the
+blocks {in
+in
+k ,
+k + 1,...
+(i+1)n
+k−1},i= 0,...,r−1, and thereby express f as
+˜
+f= f0(X) + f1(X)Y +···+ fk−1(X)Yk−1
+, degX(fi) <n/k, Y= X
+k.
+Formally, we consider lifts under R[X]<n/k[Y]<k →R[X]<n,Y →Xn/k. Treating R′:=
+R[X] as the coeﬃcient ring, we then apply Toom-Cook to compute R′[Y]<k ×R′[Y]<k →
+n

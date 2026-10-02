@@ -1,0 +1,46 @@
+DOCUMENT: m55_slothy.pdf PAGE: 20/46
+
+20 Fast and Clean: Auditable high-performance assembly via constraint solving
+but nonetheless constitutes a CFG-altering preprocessing prior to the core CFG-preserving
+optimization that needs independent verification. A similar comment applies to offset
+rewrites (Section 4.13), which too can be viewed as CFG-altering preprocessing steps.
+In summary, we believe that SLOTHY-based optimization is amenable to automated
+certificate-based verification with SLOTHY and its implementation being untrusted. How-
+ever, further work is required to elaborate and implement this verification strategy — our
+own implementation currently only performs the core CFG-isomorphism “selfcheck”.
+5.3 Performance accuracy
+The accuracy of SLOTHY’s performance expectation depends on the fidelity of the given
+microarchitectural models. Realistically, those will not be perfectly accurate, but focused
+on key aspects such as instruction latencies, throughput, execution units, or forwarding
+paths. Unmodeled microarchitectural aspects may therefore still lead to stalls in code
+which the (micro)architectural model underlying SLOTHY considers “stall-free”. It is
+therefore important to validate the performance of code produced via SLOTHY by running
+it on real hardware, and refine the microarchitectural model if necessary.
+6 (Micro)Architecture models
+Section 4 described our (micro)architecture-agnostic framework SLOTHY for assembly opti-
+mization via constraint solving. In this section, we discuss our concrete instantiations: We
+modelaspectsoftheCortex-M55andCortex-M85CPUsimplementingArmv8.1-M+Helium,
+as well as the Cortex-A55 and Cortex-A72 CPUs implementing AArch64+Neon.
+6.1 General approach
+Architecture modelling. A SLOTHY architecture model has the following main compo-
+nents: First, the set of register types and their associated registers. Register aliases (such as
+LR being an alias for X30 in AArch64) may be defined, too. Second, the set of instructions
+required for the workload(s) to be optimized. For every instruction, SLOTHY needs to
+know about the number of input, output, and input/output registers and their register
+type. If there are restrictions on which registers can be used, those must be modelled, too.
+Jointly destructive instruction patterns should be modelled for best performance. Finally,
+parsers and writers need to be written for the conversion between assembly and CFGs.
+Microarchitecture modelling. A SLOTHY microarchitecture model has the following
+main components: First, the set of functional units and, for a superscalar architecture, the
+issue width. Second, the latencies, throughputs, and functional unit of every instruction.
+Third, special cases and target specific restrictions, a typical example being forwarding
+paths for common instruction sequences, or issue-slot restrictions.
+For in-order microarchitectures, we extract most information from the respective
+software optimization guides (SWOGs), with further refinement using our own microbench-
+marks. For out-of-order microarchitectures, the modelling process is more heuristic: We
+also gather information regarding the throughputs and latencies from the SWOGs, but
+experiment with relaxations on the latencies because of out-of-order execution, as well as
+the modelling of frontend limitations as outlined in Section 4.10.
+Modelling effort. While the development of (micro)architecture models can be time
+consuming (see Section 8), it is important to note that it is a one-off effort in the sense
+that every aspect of the target (micro)architecture needs to be modelled only once.

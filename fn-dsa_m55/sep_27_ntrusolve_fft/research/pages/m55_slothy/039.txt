@@ -1,0 +1,93 @@
+DOCUMENT: m55_slothy.pdf PAGE: 39/46
+
+Abdulrahman, Becker, Kannwischer, Klein 39
+.macro scalar_mul sC, sA, sB
+scalar_mul_inner \
+\sC\()0, \sC\()1, \sC\()2, ... \sC\()9, \
+\sA\()0, \sA\()1, \sA\()2, ... \sA\()9, \
+\sB\()0, \sB\()1, \sB\()2, ... \sB\()9
+.endm
+.macro scalar_mul_inner \
+sC0, sC1, sC2, ..., sC9, \
+sA0, sA1, sA2, ..., sA9, \
+sB0, sB1, sB2, ..., sB9
+umull X<tmp_9>, W<\sA1>, W<\sB8>
+umaddl X<tmp_9>, W<\sA2>, W<\sB7>, X<tmp_9>
+...
+umaddl X<tmp_9>, W<\sA9>, W<\sB0>, X<tmp_9>
+umaddl X<tmp_9>, W<\sA0>, W<\sB9>, X<tmp_9>
+mul W<tmp_tw_9>, W<\sA9>, W<const19>
+umull X<tmp_8>, W<\sA1>, W<\sB7>
+umaddl X<tmp_8>, W<\sA3>, W<\sB5>, X<tmp_8>
+umaddl X<tmp_8>, W<\sA5>, W<\sB3>, X<tmp_8>
+umaddl X<tmp_8>, W<\sA7>, W<\sB1>, X<tmp_8>
+umaddl X<tmp_8>, W<tmp_tw_9>, W<\sB9>, X<tmp_8>
+add X<tmp_8>, X<tmp_8>, X<tmp_8>
+umaddl X<tmp_8>, W<\sA0>, W<\sB8>, X<tmp_8>
+umaddl X<tmp_8>, W<\sA2>, W<\sB6>, X<tmp_8>
+umaddl X<tmp_8>, W<\sA4>, W<\sB4>, X<tmp_8>
+umaddl X<tmp_8>, W<\sA6>, W<\sB2>, X<tmp_8>
+umaddl X<tmp_8>, W<\sA8>, W<\sB0>, X<tmp_8>
+...
+.endm
+1 // ...
+2 mainloop:
+3 vector_sub vB, vX2, vZ2
+4 vector_sub vD, vX3, vZ3
+5 vector_add vA, vX2, vZ2
+6 vector_add vC, vX3, vZ3
+7 vector_cmov vF, vA, vC
+8 vector_to_scalar sF, vF
+9 vector_cmov vG, vB, vD
+10 vector_to_scalar sG, vG
+11 vector_transpose vAB, vA, vB // (B|A)
+12 vector_transpose vDC, vD, vC // (C|D)
+13 scalar_sqr sAA, sF
+14 scalar_sqr sBB, sG
+15 // store sAA as A; store sBB as B
+16 scalar_sub sE, sAA, sBB
+17 scalar_addm sBB, sBB, sE, 121666
+18 scalar_mul sZ4, sBB, sE
+19 vector_mul vADBC, vAB, vDC
+20 // T1 = DA + CB; T2 = DA - CB; Repack T=(T1|T2)
+21 vector_addsub_repack vT, vADBC
+22 vector_sqr vTA, vT
+23 // copy lower of vTA (T1^2) to vX3
+24 vector_load_lane vTA, STACK_A, 1 // load A in vT[1]
+25 vector_load_lane vBX, STACK_B, 1 // load B in vBX[1]
+26 vector_load_lane vBX, STACK_X, 0 // load X1 in vBX[0]
+27 vector_mul vX4Z5, vTA, vBX
+28 scalar_to_vector vZ2, sZ4
+29 // copy lower of vX4Z5 to vX2
+30 // copy upper of vX4Z5 to vZ3
+31 // scalar bit and counter logic
+32 bpl mainloop
+33 // ...
+Listing 14: Excerpts of our clean X25519 scalar multiplication “base” implementation,
+obtained from [Len19] via extensive use of macros, aliases, and complete de-interleaving.
+prefixed by s (for scalar register groups) or v (for vector register groups) to avoid long
+argument lists: For example, if sA0-sA9 refers to a set of scalar registers representing a
+255-bit scalar, we pass sA to our macros and internally expand to sA0-sA9 (by writing
+sA\()0 etc.) — see Listing 14 (left). Using these macros, we can then implement the
+pseudocode from Algorithm 1 relatively straight-forwardly as shown in Listing 14 (right).
+We separate operations performed on the scalar and vector units, resulting in much more
+readable and maintainable code. However, due to the strict separation of scalar and vector
+code, the base implementation performs poorly esp. on in-order CPUs like the Cortex-A55.
+8.4.1 Auto-optimized implementation
+When using slothy to optimize our X25519 base implementation, one faces multiple
+challenges: First, with the inner loop consisting of 958 instructions (much larger than the
+225 instructions of our prior largest example), optimizing it all at once via the vanilla
+SLOTHY approach results in a model too complex to be feasible for CP-SAT. Second, the
+code uses a large number of scalar, 64-bit Neon and 128-bit Neon instructions, and thus
+requires a much more complete model of the architecture and microarchitecture.
+Heuristics. WeuseavarietyofheuristicsintroducedinSection7.5tokeeptheoptimization
+feasible. First, we apply the CFG-based preprocessing to achieve a coarse interleaving
+based on depths. We then run multiple optimization passes using the splitting heuristic,
+using move_stalls_to_top and move_stalls_to_bottom to “comb” stalls towards
+the middle of the code where they can be absorbed. During this phase, we ignore latencies,
+the focus being good utilization of execution units. Finally, we take last pass over the
+whole code using the splitting heuristic, this time taking latencies into account.
+Temporary registers. Throughout the computation, various temporary registers are
+required in both the scalar and vector code. While the current implementation already
+has a valid assignment of architectural registers, we can leave this register selection to
+slothy allowing more flexibility as explained in Section 7.3. As the splitting heuristic is

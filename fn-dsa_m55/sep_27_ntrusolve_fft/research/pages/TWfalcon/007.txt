@@ -1,0 +1,76 @@
+DOCUMENT: TWfalcon.pdf PAGE: 7/25
+
+Stef Halmans, Christine van Vredendaal , Tobias Schneider , Frank Custers and Tim
+Güneysu 7
+Table 3: Example of VecSum computation, each row is a 2Sum call, computing x+y= s+e,
+where s is then used in the next row to add together with the next input.
+x y s e
+7.33e−6 5.46e−6 1.28e−5
+−1e−8
+3.11e−4 1.28e−5 3.24e−4
+−2e−7
+1.23e−3 3.24e−4 1.55e−3 4e−6
+1.12 1.55e−3 1.12 1.55e−3
+2.12 1.12 3.24 0
+Next, we apply the VecSum algorithm to this list. It starts from right to left, repeatedly
+calling 2Sum to produce a rounded sum s and an error e with x+ y= s+ e, carrying
+s forward and storing e, as illustrated in Figure 2a. This computation for our example
+can be found in Table 3, resulting in the list [3.24,0,1.55e−3
+,4e−6
+,−2e−7
+,−1e−8], which
+satisfies the F-nonoverlapping definition.
+We then apply VSEB to renormalize this expansion into a shorter, well-formed
+one. VSEB maintains a small accumulator ϵ and scans the list, repeatedly comput-
+ing ri,ϵi+1 = 2Sum(ϵi,ei+1). If ϵi+1 ̸= 0, it emits ri as the next output component
+and carries ϵi+1 forward, else it carries ri forward without emitting an output. This
+follows the diagram in Figure 2b. There is a final 2Sum call, which splits the re-
+maining tail into the last two outputs. This preserves exactness, i.e., the sum of out-
+puts equals the original total, while producing a compact, P-nonoverlapping expansion.
+The first three components represent the TW sum. Any additional non-zero compo-
+nents capture precision beyond the TW format and will be discarded. The expansion
+created in VSEB would be [3.24,1.55e−3
+,3.79e−6
+,0,0,0], resulting in the final result
+ˆ
+z= ˆ x+ ˆ y= [3.24,1.55e−3
+,3.79e−6].
+Algorithm 1 TWSum(x0,x1,x2,y0,y1,y2).
+Require:¯
+x,¯
+y∈TW
+Ensure:¯
+r∈TW and¯
+r−(¯ x+¯ y)
+x+¯ y ≤ 2u3 + 4.2u4
+¯
+1: z0,...,z5 ←Merge (x0,x1,x2),(y0,y1,y2)
+2: e0,...,e5 ←VecSum(z0,...,z5)
+3: r0,r1,r2 ←VSEB(3) e0,...,e5
+4: return (r0,r1,r2)
+Algorithm 2 (3Prod) computes the product between two TW numbersˆ
+x= (x0 +x1 +x2)
+andˆ
+y= (y0 +y1 +y2) by expanding the product and then carefully organizing the dominant
+terms so that the final result fits back into a well-formed three-component expansion. In
+full, (x0 + x1 + x2)·(y0 + y1 + y2) contains 9 cross terms. The smallest three terms, x1y2,
+x2y1, x2y2, are below the precision we intend to keep. Consequently, we only compute the
+six more significant terms:
+x0y0, x1y0, x0y1, x1y1, x2y0, x0y2.
+First, the three largest cross terms are computed with 2Prod, which for each pair returns
+a rounded product z+
+ij and an error z−
+ij such that xiyj= z+
+ij + z−
+ij. The three pieces that
+may overlap in magnitude, namely z−
+00, z+
+01 and z+
+10, are then collected by a single VecSum
+call to produce (b0,b1,b2). At this point we still need to incorporate x1y1, x0y2, and x2y0.
+The product x1y1 can overlap with b2, and x0y2 and x2y0 can overlap with z−
+10 and z−
+01,
+respectively. However, for these three products we do not need to retain their error results
+to reach TW precision. We therefore use Fused Multiply-Add (FMA) to combine each
+product with its accumulator in a single rounding (line 5, 6, 7). The last two are summed

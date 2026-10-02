@@ -1,0 +1,425 @@
+-- Found Python3: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python3.12 (found version "3.12.14") found components: Interpreter
+Loading Zephyr default modules (Zephyr base).
+-- Application: /Users/seungwon/FALCON/Final_code/validation
+-- CMake version: 3.31.6
+-- Found Python3: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python3.12 (found suitable version "3.12.14", minimum required is "3.12") found components: Interpreter
+-- Cache files will be written to: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/.cache
+-- Zephyr version: 4.4.1 (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1)
+-- Board: nucleo_n657x0_q, qualifiers: stm32n657xx
+-- Found toolchain: gnuarmemb (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi)
+-- Could NOT find Dtc (missing: DTC) (Required is at least version "1.4.6")
+Hint: The project() command has not yet been called.  It sets up system-specific search paths.
+-- Found BOARD.dts: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/boards/st/nucleo_n657x0_q/nucleo_n657x0_q.dts
+-- Found devicetree overlay: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/nucleo_n657x0_q.overlay
+-- Generated zephyr.dts: /Users/seungwon/FALCON/Final_code/validation/build/sign_detail/zephyr/zephyr.dts
+-- Generated pickled edt: /Users/seungwon/FALCON/Final_code/validation/build/sign_detail/zephyr/edt.pickle
+-- Generated devicetree_generated.h: /Users/seungwon/FALCON/Final_code/validation/build/sign_detail/zephyr/include/generated/zephyr/devicetree_generated.h
+Parsing /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/Kconfig
+Loaded configuration '/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/boards/st/nucleo_n657x0_q/nucleo_n657x0_q_defconfig'
+Merged configuration '/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/prj.conf'
+Merged configuration '/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/nucleo_n657x0_q.conf'
+Merged configuration '/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/fndsa.conf'
+Configuration saved to '/Users/seungwon/FALCON/Final_code/validation/build/sign_detail/zephyr/.config'
+Kconfig header saved to '/Users/seungwon/FALCON/Final_code/validation/build/sign_detail/zephyr/include/generated/zephyr/autoconf.h'
+-- Found GnuLd: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/arm-none-eabi/bin/ld.bfd (found version "2.45.1")
+-- The C compiler identification is GNU 15.2.1
+-- The CXX compiler identification is GNU 15.2.1
+-- The ASM compiler identification is GNU
+-- Found assembler: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gcc
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/CMakeLists.txt:688 (message):
+  
+  ZEPHYR_BASE=/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1
+  doesn't appear to be a git repository, please specify
+  '-DBUILD_VERSION=<version>'
+
+
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/soc/st/stm32/stm32n6x/CMakeLists.txt:31 (message):
+  
+
+        Signing Image tool (STM32_SigningTool_CLI) is not available.
+        Signed image will not be generated.
+        You won't be able to run application on the board.
+        Refer to board documentation for more information.
+      
+
+
+-- Found gen_kobject_list: /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/scripts/build/gen_kobject_list.py
+CMake Warning at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/CMakeLists.txt:1081 (message):
+  No SOURCES given to Zephyr library: drivers__console
+
+  Excluding target from build.
+
+
+-- Configuring done (6.2s)
+-- Generating done (0.3s)
+-- Build files have been written to: /Users/seungwon/FALCON/Final_code/validation/build/sign_detail
+[1/215] Preparing syscall dependency handling
+
+[2/215] Generating include/generated/zephyr/version.h
+-- Zephyr version: 4.4.1 (/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1), build: 83a4252f796e
+[3/215] Generating misc/generated/syscalls_subdirs.trigger
+[4/215] Generating misc/generated/syscalls.json, misc/generated/struct_tags.json
+[5/215] Generating include/generated/device-api-sections.ld, include/generated/device-api-sections.cmake
+[6/215] Generating include/generated/zephyr/syscall_dispatch.c, include/generated/zephyr/syscall_exports_llext.c, syscall_weakdefs_llext.c, include/generated/zephyr/syscall_list.h
+[7/215] Generating include/generated/zephyr/driver-validation.h
+[8/215] Generating include/generated/zephyr/kobj-types-enum.h, include/generated/zephyr/otype-to-str.h, include/generated/zephyr/otype-to-size.h
+[9/215] Building C object zephyr/lib/heap/CMakeFiles/heap_constants.dir/heap_constants.c.obj
+[10/215] Generating ../../include/generated/zephyr/heap_constants.h
+[11/215] Building C object zephyr/CMakeFiles/offsets.dir/arch/arm/core/offsets/offsets.c.obj
+[12/215] Generating include/generated/zephyr/offsets.h
+[13/215] Generating ../../../include/generated/libc/minimal/strerror_table.h
+[14/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/codec.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/codec.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[15/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/sha3.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/sha3.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[16/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/mq.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/mq.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[17/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/sysrng.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/sysrng.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[18/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/util.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/util.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[19/215] Building C object zephyr/arch/common/CMakeFiles/isr_tables.dir/isr_tables.c.obj
+[20/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_gauss.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_gauss.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[21/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[22/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_mp31.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_mp31.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[23/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_fxp.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_fxp.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[24/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_fft_mve.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_ds.h:7,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_fft_mve.c:6:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[25/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_zint31.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_zint31.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[26/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_ntru.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_ntru.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[27/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_fft_bridge.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_ds.h:7,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_fft_bridge.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[28/215] Building C object CMakeFiles/app.dir/sign_generated/sign_core.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/validation/../Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/validation/../Before_slothy/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/sign_core.c:5:
+/Users/seungwon/FALCON/Final_code/validation/../Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[29/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_poly.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/kgen_poly.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[30/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/sign_fpr.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/sign_fpr.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[31/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/vrfy.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/vrfy.c:5:
+/Users/seungwon/FALCON/Final_code/Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[32/215] Building C object CMakeFiles/app.dir/sign_generated/sign_sampler.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/validation/../Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/validation/../Before_slothy/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/sign_sampler.c:5:
+/Users/seungwon/FALCON/Final_code/validation/../Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[33/215] Building C object CMakeFiles/app.dir/sign_generated/sign.c.obj
+[34/215] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/codec_cm4.s.obj
+[35/215] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/sign_fpr_cm4.s.obj
+[36/215] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/sha3_cm4.s.obj
+[37/215] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/sign_sampler_cm4.s.obj
+[38/215] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_mp31_cm55.s.obj
+[39/215] Building C object CMakeFiles/app.dir/sign_generated/sign_fpoly.c.obj
+In file included from /Users/seungwon/FALCON/Final_code/validation/../Before_slothy/inner.h:6,
+                 from /Users/seungwon/FALCON/Final_code/validation/../Before_slothy/sign_inner.h:10,
+                 from /Users/seungwon/FALCON/Final_code/Before_slothy/sign_fpoly.c:5:
+/Users/seungwon/FALCON/Final_code/validation/../Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[40/215] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/mq_cm55.s.obj
+[41/215] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/Final_code/Before_slothy/kgen_fft_cm55.s.obj
+[42/215] Building ASM object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/app/dtcm_startup.s.obj
+[43/215] Building C object CMakeFiles/app.dir/sign_generated/profile.c.obj
+[44/215] Building C object CMakeFiles/app.dir/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/irq_multilevel.h:15,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/devicetree.h:21,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/arch/arm/cortex_m/nvic.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core_m.h:22,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/app/shim_nucleo_n657x0_q.c:17:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/__assert.h:35:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   35 | void __printf_like(1, 2) assert_print(const char *fmt, ...);
+      | ^~~~
+[45/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/libc/validate_libc.c.obj
+[46/215] Building C object CMakeFiles/app.dir/sign_generated/benchmark.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/irq_multilevel.h:15,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/devicetree.h:21,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/arch/arm/cortex_m/nvic.h:10,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core_m.h:22,
+                 from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/modules/cmsis_6/./cmsis_core.h:10,
+                 from /Users/seungwon/FALCON/Final_code/validation/build/sign_detail/sign_generated/benchmark.c:3:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/include/zephyr/sys/__assert.h:35:1: warning: '__wrap_printf' is an unrecognized format function type [-Wformat=]
+   35 | void __printf_like(1, 2) assert_print(const char *fmt, ...);
+      | ^~~~
+In file included from /Users/seungwon/FALCON/Final_code/validation/build/sign_detail/sign_generated/benchmark.c:1:
+/Users/seungwon/FALCON/Final_code/validation/../Before_slothy/fndsa.h:201:1: warning: 'fndsa_hashed_vrfykey_from_signkey' defined but not used [-Wunused-function]
+  201 | fndsa_hashed_vrfykey_from_signkey(const void *sign_key, size_t sign_key_len)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[47/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/os/printk.c.obj
+[48/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/heap/heap.c.obj
+[49/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/os/clock.c.obj
+[50/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/os/cbprintf_packaged.c.obj
+[51/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/os/thread_entry.c.obj
+[52/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/os/sem.c.obj
+[53/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/dec.c.obj
+[54/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/os/cbprintf.c.obj
+[55/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/hex.c.obj
+[56/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/set.c.obj
+[57/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/os/assert.c.obj
+[58/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/timeutil.c.obj
+[59/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/bitmask.c.obj
+[60/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/rb.c.obj
+[61/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/os/cbprintf_complete.c.obj
+[62/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/bitarray.c.obj
+[63/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/getopt/getopt.c.obj
+[64/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/last_section_id.c.obj
+[65/215] Building C object zephyr/CMakeFiles/zephyr.dir/misc/generated/configs.c.obj
+[66/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/ring_buffer.c.obj
+[67/215] Building C object zephyr/CMakeFiles/zephyr.dir/lib/utils/getopt/getopt_common.c.obj
+[68/215] Building C object zephyr/CMakeFiles/zephyr.dir/soc/st/stm32/common/stm32cube_hal.c.obj
+[69/215] Building C object zephyr/CMakeFiles/zephyr.dir/soc/st/stm32/common/soc_config.c.obj
+[70/215] Building C object zephyr/CMakeFiles/zephyr.dir/soc/st/stm32/common/stm32_iocell.c.obj
+[71/215] Building C object zephyr/CMakeFiles/zephyr.dir/soc/st/stm32/common/stm32_cache.c.obj
+[72/215] Building C object zephyr/CMakeFiles/zephyr.dir/soc/st/stm32/common/stm32_xspim.c.obj
+[73/215] Building C object zephyr/CMakeFiles/zephyr.dir/soc/st/stm32/common/gpioport_mgr.c.obj
+[74/215] Building C object zephyr/CMakeFiles/zephyr.dir/soc/st/stm32/common/stm32_backup_domain.c.obj
+[75/215] Building C object zephyr/CMakeFiles/zephyr.dir/subsys/mem_mgmt/mem_attr.c.obj
+[76/215] Building C object zephyr/CMakeFiles/zephyr.dir/soc/st/stm32/stm32n6x/soc.c.obj
+[77/215] Generating linker_zephyr_pre0.cmd
+[78/215] Building C object zephyr/arch/common/CMakeFiles/arch__common.dir/init.c.obj
+[79/215] Building C object zephyr/CMakeFiles/zephyr.dir/subsys/tracing/tracing_none.c.obj
+[80/215] Building C object zephyr/arch/common/CMakeFiles/arch__common.dir/sw_isr_common.c.obj
+[81/215] Linking C static library zephyr/arch/common/libisr_tables.a
+[82/215] Building ASM object zephyr/arch/arch/arm/core/CMakeFiles/arch__arm__core.dir/nmi_on_reset.S.obj
+[83/215] Building C object zephyr/arch/common/CMakeFiles/arch__common.dir/xip.c.obj
+[84/215] Building ASM object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/fault_s.S.obj
+[85/215] Building C object zephyr/arch/arch/arm/core/CMakeFiles/arch__arm__core.dir/fatal.c.obj
+[86/215] Building C object zephyr/arch/arch/arm/core/CMakeFiles/arch__arm__core.dir/nmi.c.obj
+[87/215] Building ASM object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/reset.S.obj
+[88/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/fpu.c.obj
+[89/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/fault.c.obj
+[90/215] Building ASM object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/vector_table.S.obj
+[91/215] Building ASM object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/svc.S.obj
+[92/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/scb.c.obj
+[93/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/prep_c.c.obj
+[94/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/irq_manage.c.obj
+[95/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/thread.c.obj
+[96/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/cpu_idle.c.obj
+[97/215] Building ASM object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/swap_helper.S.obj
+[98/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/exc_exit.c.obj
+[99/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/thread_abort.c.obj
+[100/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/irq_init.c.obj
+[101/215] Building C object zephyr/arch/arch/arm/core/cortex_m/CMakeFiles/arch__arm__core__cortex_m.dir/isr_wrapper.c.obj
+[102/215] Building C object zephyr/arch/arch/arm/core/mpu/CMakeFiles/arch__arm__core__mpu.dir/arm_core_mpu.c.obj
+[103/215] Building C object zephyr/arch/arch/arm/core/cortex_m/cmse/CMakeFiles/arch__arm__core__cortex_m__cmse.dir/arm_core_cmse.c.obj
+[104/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdlib/atoi.c.obj
+[105/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdlib/strtol.c.obj
+[106/215] Building C object zephyr/arch/arch/arm/core/mpu/CMakeFiles/arch__arm__core__mpu.dir/arm_mpu_regions.c.obj
+[107/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdlib/strtoul.c.obj
+[108/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdlib/strtoll.c.obj
+[109/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdlib/bsearch.c.obj
+[110/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdlib/strtoull.c.obj
+[111/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/string/strerror.c.obj
+[112/215] Building C object zephyr/arch/arch/arm/core/mpu/CMakeFiles/arch__arm__core__mpu.dir/arm_mpu.c.obj
+In file included from /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/mpu/arm_mpu.c:77:
+In function 'mpu_region_get_access_attr',
+    inlined from 'mpu_region_get_conf' at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/mpu/arm_mpu_v8_internal.h:304:2,
+    inlined from 'mpu_mark_areas_for_dynamic_regions' at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/mpu/arm_mpu_v8_internal.h:724:3,
+    inlined from 'arm_core_mpu_mark_areas_for_dynamic_regions' at /Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/mpu/arm_mpu.c:406:6:
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/mpu/arm_mpu_v8_internal.h:290:19: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+  290 |         attr->pxn = (mpu_get_rlar() & MPU_RLAR_PXN_Msk) >> MPU_RLAR_PXN_Pos;
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/mpu/arm_mpu_v8_internal.h: In function 'arm_core_mpu_mark_areas_for_dynamic_regions':
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/zephyr-4.4.1/arch/arm/core/mpu/arm_mpu_v8_internal.h:33:35: note: at offset 44 into destination object 'dyn_reg_info' of size 24
+   33 | static struct dynamic_region_info dyn_reg_info[MPU_DYNAMIC_REGION_AREAS_NUM];
+      |                                   ^~~~~~~~~~~~
+[113/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/string/strncasecmp.c.obj
+[114/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdlib/qsort.c.obj
+[115/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/string/strstr.c.obj
+[116/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/string/strspn.c.obj
+[117/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdlib/exit.c.obj
+[118/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/string/string.c.obj
+[119/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/math/sqrtf.c.obj
+[120/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/math/sqrt.c.obj
+[121/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdout/sprintf.c.obj
+[122/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdout/stdout_console.c.obj
+[123/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/stdout/fprintf.c.obj
+[124/215] Building C object zephyr/lib/libc/common/CMakeFiles/lib__libc__common.dir/source/time/asctime.c.obj
+[125/215] Building C object zephyr/lib/libc/common/CMakeFiles/lib__libc__common.dir/source/time/gmtime_r.c.obj
+[126/215] Building C object zephyr/lib/libc/common/CMakeFiles/lib__libc__common.dir/source/time/localtime_r_utc.c.obj
+[127/215] Building C object zephyr/lib/libc/common/CMakeFiles/lib__libc__common.dir/source/time/ctime.c.obj
+[128/215] Building C object zephyr/lib/libc/common/CMakeFiles/lib__libc__common.dir/source/time/time.c.obj
+[129/215] Building C object zephyr/lib/libc/minimal/CMakeFiles/lib__libc__minimal.dir/source/time/gmtime.c.obj
+[130/215] Building C object zephyr/lib/libc/common/CMakeFiles/lib__libc__common.dir/source/stdlib/abort.c.obj
+[131/215] Building C object zephyr/lib/libc/common/CMakeFiles/lib__libc__common.dir/source/string/strnlen.c.obj
+[132/215] Building C object zephyr/lib/posix/c_lib_ext/CMakeFiles/lib__posix__c_lib_ext.dir/fnmatch.c.obj
+[133/215] Building C object zephyr/lib/libc/common/CMakeFiles/lib__libc__common.dir/source/stdlib/malloc.c.obj
+[134/215] Building C object zephyr/lib/posix/c_lib_ext/CMakeFiles/lib__posix__c_lib_ext.dir/getentropy.c.obj
+[135/215] Building C object zephyr/lib/posix/c_lib_ext/CMakeFiles/lib__posix__c_lib_ext.dir/getopt_shim.c.obj
+[136/215] Building C object zephyr/subsys/nvmem/CMakeFiles/subsys__nvmem.dir/nvmem.c.obj
+[137/215] Building C object zephyr/drivers/clock_control/CMakeFiles/drivers__clock_control.dir/clock_stm32_mux.c.obj
+[138/215] Building C object zephyr/drivers/interrupt_controller/CMakeFiles/drivers__interrupt_controller.dir/intc_exti_stm32.c.obj
+[139/215] Building C object zephyr/drivers/interrupt_controller/CMakeFiles/drivers__interrupt_controller.dir/intc_gpio_stm32.c.obj
+[140/215] Building C object zephyr/drivers/clock_control/CMakeFiles/drivers__clock_control.dir/clock_stm32_ll_n6.c.obj
+[141/215] Building C object zephyr/drivers/pinctrl/CMakeFiles/drivers__pinctrl.dir/common.c.obj
+[142/215] Building C object zephyr/drivers/otp/CMakeFiles/drivers__otp.dir/otp_bsec_stm32.c.obj
+[143/215] Building C object zephyr/drivers/gpio/CMakeFiles/drivers__gpio.dir/gpio_stm32.c.obj
+[144/215] Building C object zephyr/drivers/pinctrl/CMakeFiles/drivers__pinctrl.dir/pinctrl_stm32.c.obj
+[145/215] Building C object zephyr/drivers/reset/CMakeFiles/drivers__reset.dir/reset_stm32.c.obj
+[146/215] Building C object zephyr/drivers/timer/CMakeFiles/drivers__timer.dir/sys_clock_init.c.obj
+[147/215] Building C object zephyr/drivers/timer/CMakeFiles/drivers__timer.dir/cortex_m_systick.c.obj
+[148/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/soc/system_stm32n6xx_fsbl.c.obj
+[149/215] Building C object zephyr/drivers/serial/CMakeFiles/drivers__serial.dir/uart_stm32.c.obj
+[150/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/drivers/src/stm32n6xx_hal.c.obj
+[151/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/drivers/src/stm32n6xx_hal_bsec.c.obj
+[152/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/drivers/src/stm32n6xx_hal_rif.c.obj
+[153/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/drivers/src/stm32n6xx_hal_rcc.c.obj
+[154/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/drivers/src/stm32n6xx_ll_utils.c.obj
+[155/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/drivers/src/stm32n6xx_hal_xspi.c.obj
+[156/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/main_weak.c.obj
+[157/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/drivers/src/stm32n6xx_hal_rcc_ex.c.obj
+[158/215] Building C object modules/hal_stm32/stm32cube/CMakeFiles/..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.dir/stm32n6xx/drivers/src/stm32n6xx_ll_rcc.c.obj
+[159/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/banner.c.obj
+[160/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/busy_wait.c.obj
+[161/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/errno.c.obj
+[162/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/device.c.obj
+[163/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/fatal.c.obj
+[164/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/init.c.obj
+[165/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/kheap.c.obj
+[166/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/version.c.obj
+[167/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/mem_slab.c.obj
+[168/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/float.c.obj
+[169/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/idle.c.obj
+[170/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/mutex.c.obj
+[171/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/mailbox.c.obj
+[172/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/msg_q.c.obj
+[173/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/system_work_q.c.obj
+[174/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/sem.c.obj
+[175/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/stack.c.obj
+[176/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/queue.c.obj
+[177/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/condvar.c.obj
+[178/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/thread.c.obj
+[179/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/work.c.obj
+[180/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/pipe.c.obj
+[181/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/timeslicing.c.obj
+[182/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/boot_args.c.obj
+[183/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/sched.c.obj
+[184/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/timer.c.obj
+[185/215] Linking C static library app/libapp.a
+[186/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/timeout.c.obj
+[187/215] Building C object zephyr/CMakeFiles/zephyr_pre0.dir/misc/empty_file.c.obj
+[188/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/dynamic_disabled.c.obj
+[189/215] Linking C static library zephyr/libzephyr.a
+[190/215] Linking C static library zephyr/arch/common/libarch__common.a
+[191/215] Building C object zephyr/kernel/CMakeFiles/kernel.dir/mempool.c.obj
+[192/215] Linking C static library zephyr/arch/arch/arm/core/libarch__arm__core.a
+[193/215] Linking C static library zephyr/arch/arch/arm/core/cortex_m/cmse/libarch__arm__core__cortex_m__cmse.a
+[194/215] Linking C static library zephyr/arch/arch/arm/core/cortex_m/libarch__arm__core__cortex_m.a
+[195/215] Linking C static library zephyr/arch/arch/arm/core/mpu/libarch__arm__core__mpu.a
+[196/215] Linking C static library zephyr/lib/posix/c_lib_ext/liblib__posix__c_lib_ext.a
+[197/215] Linking C static library zephyr/lib/libc/minimal/liblib__libc__minimal.a
+[198/215] Linking C static library zephyr/lib/libc/common/liblib__libc__common.a
+[199/215] Linking C static library zephyr/subsys/nvmem/libsubsys__nvmem.a
+[200/215] Linking C static library zephyr/drivers/interrupt_controller/libdrivers__interrupt_controller.a
+[201/215] Linking C static library zephyr/drivers/gpio/libdrivers__gpio.a
+[202/215] Linking C static library zephyr/drivers/clock_control/libdrivers__clock_control.a
+[203/215] Linking C static library zephyr/drivers/otp/libdrivers__otp.a
+[204/215] Linking C static library zephyr/drivers/reset/libdrivers__reset.a
+[205/215] Linking C static library zephyr/drivers/pinctrl/libdrivers__pinctrl.a
+[206/215] Linking C static library zephyr/drivers/serial/libdrivers__serial.a
+[207/215] Linking C static library zephyr/drivers/timer/libdrivers__timer.a
+[208/215] Linking C static library modules/hal_stm32/stm32cube/lib..__modules__hal__hal_stm32-fc11896dd39cfca37bf9b4aeaaa2df8861b81875__stm32cube.a
+[209/215] Linking C static library zephyr/kernel/libkernel.a
+[210/215] Linking C executable zephyr/zephyr_pre0.elf
+[211/215] Generating linker.cmd
+[212/215] Generating isr_tables.c, isr_tables_vt.ld, isr_tables_swi.ld
+[213/215] Building C object zephyr/CMakeFiles/zephyr_final.dir/misc/empty_file.c.obj
+[214/215] Building C object zephyr/CMakeFiles/zephyr_final.dir/isr_tables.c.obj
+[215/215] Linking C executable zephyr/zephyr.elf
+Memory region         Used Size  Region Size  %age Used
+           FLASH:      127172 B       256 KB     48.51%
+             RAM:      248528 B       256 KB     94.81%
+        AXISRAM1:           0 B         2 MB      0.00%
+        AXISRAM2:           0 B       511 KB      0.00%
+            ITCM:           0 B       256 KB      0.00%
+            DTCM:           0 B       256 KB      0.00%
+  NUCLEO_AXISRAM:           0 B       192 KB      0.00%
+        IDT_LIST:           0 B        32 KB      0.00%
+Generating files from /Users/seungwon/FALCON/Final_code/validation/build/sign_detail/zephyr/zephyr.elf for board: nucleo_n657x0_q/stm32n657xx

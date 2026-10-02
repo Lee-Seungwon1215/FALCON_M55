@@ -1,0 +1,74 @@
+2026-09-09T11:36:04.982301+00:00 OpenOCD: halt
+2026-09-09T11:36:05.072255+00:00 OpenOCD: dump_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_stage_a/backups/m4-original-zdqc3j0p/flash_08000000_2mib.bin} 0x08000000 0x200000
+2026-09-09T11:37:01.948521+00:00 dumped 2097152 bytes in 56.874741s (36.009 KiB/s)
+2026-09-09T11:37:01.952573+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_stage_a/backups/m4-original-zdqc3j0p/flash_08000000_2mib.bin} 0x08000000 bin
+2026-09-09T11:37:14.015696+00:00 verified 2097152 bytes in 12.061934s (169.790 KiB/s)
+2026-09-09T11:37:14.018194+00:00 Fresh full backup verified; entire high 256 KiB slot is already blank (read-only check). Original boot image will be preserved.
+2026-09-09T11:37:14.131260+00:00 OpenOCD: reset halt
+2026-09-09T11:37:14.319987+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_stage_a/backups/m4-original-zdqc3j0p/flash_08000000_2mib.bin} 0x08000000 bin
+2026-09-09T11:39:11.332060+00:00 verified 2097152 bytes in 117.011307s (17.503 KiB/s)
+2026-09-09T11:39:11.337477+00:00 OpenOCD: flash write_image erase {/Users/seungwon/FALCON/fn-dsa_m4/measurement_stage_a/build/fndsa_m4.bin} 0x081c0000 bin
+2026-09-09T11:39:15.264701+00:00 auto erase enabled
+wrote 103064 bytes from file /Users/seungwon/FALCON/fn-dsa_m4/measurement_stage_a/build/fndsa_m4.bin in 3.925578s (25.639 KiB/s)
+2026-09-09T11:39:15.265487+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_stage_a/build/fndsa_m4.bin} 0x081c0000 bin
+2026-09-09T11:39:18.321463+00:00 verified 103060 bytes in 3.055246s (32.942 KiB/s)
+2026-09-09T11:39:18.322129+00:00 OpenOCD: reg sp 0x200a0000
+2026-09-09T11:39:18.322682+00:00 sp (/32): 0x200a0000
+2026-09-09T11:39:18.322964+00:00 OpenOCD: reg msp 0x200a0000
+2026-09-09T11:39:18.323257+00:00 msp (/32): 0x200a0000
+2026-09-09T11:39:18.323415+00:00 OpenOCD: reg psp 0x200a0000
+2026-09-09T11:39:18.323637+00:00 psp (/32): 0x200a0000
+2026-09-09T11:39:18.323783+00:00 OpenOCD: reg xpsr 0x01000000
+2026-09-09T11:39:18.324002+00:00 xpsr (/32): 0x01000000
+2026-09-09T11:39:18.324138+00:00 OpenOCD: reg primask 0x00000000
+2026-09-09T11:39:18.324341+00:00 primask (/1): 0x00
+2026-09-09T11:39:18.324469+00:00 OpenOCD: reg basepri 0x00000000
+2026-09-09T11:39:18.324697+00:00 basepri (/8): 0x00
+2026-09-09T11:39:18.324960+00:00 OpenOCD: reg faultmask 0x00000000
+2026-09-09T11:39:18.325368+00:00 faultmask (/1): 0x00
+2026-09-09T11:39:18.325594+00:00 OpenOCD: reg control 0x00000000
+2026-09-09T11:39:18.325885+00:00 control (/3): 0x00
+2026-09-09T11:39:18.326063+00:00 OpenOCD: resume 0x081ccbf0
+2026-09-09T11:39:42.498338+00:00 Both warmups and tampered-signature checks passed; scalar host fingerprints match.
+2026-09-09T11:39:42.499179+00:00 OpenOCD: write_memory 0x20030078 32 {0x474f3130}
+2026-09-09T11:39:42.512223+00:00 progress counts=[[0, 0, 0], [0, 0, 0]], degree=512, operation=0, state=0x52554e21, error=0
+2026-09-09T11:40:42.524014+00:00 progress counts=[[16, 16, 16], [0, 0, 0]], degree=512, operation=0, state=0x52554e21, error=0
+2026-09-09T11:41:42.543692+00:00 progress counts=[[31, 31, 31], [0, 0, 0]], degree=512, operation=0, state=0x52554e21, error=0
+2026-09-09T11:42:42.647836+00:00 progress counts=[[44, 43, 43], [0, 0, 0]], degree=512, operation=1, state=0x52554e21, error=0
+2026-09-09T11:43:42.669624+00:00 progress counts=[[61, 60, 60], [0, 0, 0]], degree=512, operation=1, state=0x52554e21, error=0
+2026-09-09T11:44:42.679095+00:00 progress counts=[[75, 75, 75], [0, 0, 0]], degree=512, operation=0, state=0x52554e21, error=0
+2026-09-09T11:45:42.701116+00:00 progress counts=[[92, 91, 91], [0, 0, 0]], degree=512, operation=1, state=0x52554e21, error=0
+2026-09-09T11:46:42.722090+00:00 progress counts=[[100, 100, 100], [1, 1, 1]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:47:42.744546+00:00 progress counts=[[100, 100, 100], [5, 5, 5]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:48:42.762969+00:00 progress counts=[[100, 100, 100], [8, 8, 8]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:49:42.781508+00:00 progress counts=[[100, 100, 100], [14, 13, 13]], degree=1024, operation=1, state=0x52554e21, error=0
+2026-09-09T11:50:42.802049+00:00 progress counts=[[100, 100, 100], [18, 18, 18]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:51:42.818139+00:00 progress counts=[[100, 100, 100], [23, 23, 23]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:52:42.827354+00:00 progress counts=[[100, 100, 100], [26, 25, 25]], degree=1024, operation=1, state=0x52554e21, error=0
+2026-09-09T11:53:42.844405+00:00 progress counts=[[100, 100, 100], [31, 31, 31]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:54:42.857499+00:00 progress counts=[[100, 100, 100], [35, 35, 35]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:55:42.878691+00:00 progress counts=[[100, 100, 100], [39, 39, 39]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:56:42.890981+00:00 progress counts=[[100, 100, 100], [43, 42, 42]], degree=1024, operation=1, state=0x52554e21, error=0
+2026-09-09T11:57:42.913262+00:00 progress counts=[[100, 100, 100], [47, 47, 47]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:58:42.937190+00:00 progress counts=[[100, 100, 100], [52, 52, 52]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T11:59:42.958860+00:00 progress counts=[[100, 100, 100], [57, 57, 57]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:00:42.983154+00:00 progress counts=[[100, 100, 100], [61, 61, 61]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:01:43.000856+00:00 progress counts=[[100, 100, 100], [65, 65, 65]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:02:43.017358+00:00 progress counts=[[100, 100, 100], [68, 68, 68]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:03:43.039798+00:00 progress counts=[[100, 100, 100], [72, 72, 72]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:04:43.049749+00:00 progress counts=[[100, 100, 100], [76, 75, 75]], degree=1024, operation=1, state=0x52554e21, error=0
+2026-09-09T12:05:43.059416+00:00 progress counts=[[100, 100, 100], [79, 79, 79]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:06:43.081854+00:00 progress counts=[[100, 100, 100], [84, 84, 84]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:07:43.102664+00:00 progress counts=[[100, 100, 100], [89, 89, 89]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:08:43.116536+00:00 progress counts=[[100, 100, 100], [94, 94, 94]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:09:43.133571+00:00 progress counts=[[100, 100, 100], [97, 97, 97]], degree=1024, operation=0, state=0x52554e21, error=0
+2026-09-09T12:10:43.149057+00:00 progress counts=[[100, 100, 100], [100, 100, 100]], degree=1024, operation=2, state=0x600d0000, error=0
+2026-09-09T12:10:43.149686+00:00 OpenOCD: halt
+2026-09-09T12:10:43.310621+00:00 All 600 timed operations passed, and both final fingerprints match the scalar host oracle.
+2026-09-09T12:10:43.324723+00:00 OpenOCD: halt
+2026-09-09T12:10:43.326924+00:00 OpenOCD: flash erase_address 0x081c0000 0x1a000
+2026-09-09T12:10:43.974098+00:00 erased address 0x081c0000 (length 106496) in 0.645142s (161.205 KiB/s)
+2026-09-09T12:10:43.975403+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m4/measurement_stage_a/backups/m4-original-zdqc3j0p/flash_08000000_2mib.bin} 0x08000000 bin
+2026-09-09T12:10:54.058804+00:00 verified 2097152 bytes in 10.081970s (203.135 KiB/s)
+2026-09-09T12:10:54.062540+00:00 OpenOCD: reset halt
+2026-09-09T12:10:54.257041+00:00 Restoration verified. Original Flash restored; board left reset/halted.

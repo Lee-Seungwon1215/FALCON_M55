@@ -1,0 +1,45 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 1/29
+
+Polynomial multiplication on
+embedded vector architectures
+Hanno Becker1, Jose Maria Bermudo Mera2, Angshuman Karmakar2
+,
+Joseph Yiu1 and Ingrid Verbauwhede2
+1 Arm Ltd, Cambridge, UK, {firstname.lastname}@arm.com
+2 imec-COSIC, KU Leuven Kasteelpark Arenberg 10, Bus 2452, B-3001 Leuven-Heverlee,
+Belgium {firstname.lastname}@esat.kuleuven.be
+Abstract. High-degree, low-precision polynomial arithmetic is a fundamental compu-
+tational primitive underlying structured lattice based cryptography. Its algorithmic
+properties and suitability for implementation on diﬀerent compute platforms is an ac-
+tiveareaofresearch, andthisarticlecontributestothislineofwork: Firstly, wepresent
+memory-eﬃciency and performance improvements for the Toom-Cook/Karatsuba
+polynomial multiplication strategy. Secondly, we provide implementations of those
+improvements on Arm® Cortex®-M4 CPU, as well as the newer Cortex-M55 processor,
+the first M-profile core implementing the M-profile Vector Extension (MVE), also
+known as Arm® Helium™ technology. We also implement the Number Theoretic
+Transform (NTT) on the Cortex-M55 processor. We show that despite being single-
+issue, in-order and oﬀering only 8 vector registers compared to 32 on A-profile SIMD
+architectures like Arm® Neon™ technology and the Scalable Vector Extension (SVE),
+by careful register management and instruction scheduling, we can obtain a 3×to
+5×performance improvement over already highly optimized implementations on
+Cortex-M4, while maintaining a low area and energy profile necessary for use in
+embedded market. Finally, as a real-world application we integrate our multiplication
+techniques to post-quantum key-encapsulation mechanism Saber.
+Keywords: Post-Quantum Cryptography· Polynomial multiplication· IoT·
+Cortex-M55· Cortex-M4· M-profile Vector Extension (MVE)· Helium vector
+extension· Number Theoretic Transform (NTT)· Toom-Cook· Karatsuba
+1 Introduction
+The rapidly expanding Internet of Things (IoT) has an unprecedented impact on our digital
+ecosystem, so much that it is often termed the fourth industrial revolution. However, it
+also poses significant challenges. Firstly (sadly, often rather lastly), security: Absence or
+insuﬃcient quality of security measures on IoT devices is a frequent headline. Secondly,
+performance: Embedded devices have much less compute resources than high-end consumer
+devices such as mobile phones or desktops. The dichotomy of the situation is that tight
+resource constraints need to be imposed on these devices to allow them to be cost-
+eﬀective, but equally they limit performance and, importantly, often impede incorporating
+secure cryptographic protocols. Both aspects are in fact closely tied because (public-
+key) cryptography is computationally demanding. It is therefore a constant tussle of
+cryptographers and embedded engineers alike to fit secure and most advanced cryptographic
+protocols into constrained devices, and to have them perform suﬃciently well to enable
+a wide range of applications. Unsurprisingly, an important criterion to assess a new
+cryptographic protocol is to evaluate its suitability for constrained devices.

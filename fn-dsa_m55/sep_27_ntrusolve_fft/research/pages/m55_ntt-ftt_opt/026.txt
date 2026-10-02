@@ -1,0 +1,79 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 26/29
+
+26 Polynomial multiplication on embedded vector architectures
+Appendix A Classical vs. striding Toom-Cook 4-way
+This section compares the algorithms for the evaluation and interpolation techniques of
+classical Toom-Cook 4-way used in earlier implementations of Saber [DKRV18,KMRV18,
+MKV20,KRS19] with the corresponding algorithms for striding Toom-Cook 4-way multi-
+plication proposed in this paper. The changes in the algorithms have been highlighted
+with bold text. Additionally, there is a change on the output of the evaluation and the
+input of the interpolation with respect to the previous methods.
+Alg. 9: Toom-Cook 4-way evaluation with
+vertical scanning from [KMRV18]
+Input: Two arrays A and B with the
+n= 256 coeﬃcients of the
+polynomials
+Output: Seven arrays w1 to w7 with 127
+coeﬃcients of the intermediate
+products each
+1 for j = 0 to 63 do
+2 r0 = A0[j];
+3 r1 = A64[j];
+4 r2 = A128[j];
+5 r3 = A192[j];
+6 r4 = r0 + r2;
+7 r5 = r1 + r3;
+8 r6 = r4 + r5;
+9 r7 = r4−r5;
+10 aws3[j] = r6;
+11 aws4[j] = r7;
+12 r4 = 2 ∗(r0 ∗4 + r2);
+13 r5 = r1 ∗4 + r3;
+14 r6 = r4 + r5;
+15 r7 = r4−r5;
+16 aws5[j] = r6;
+17 aws6[j] = r7;
+18 r4 = 8 ∗r3 + 4 ∗r2 + 2 ∗r1 + r0;
+19 aws2[j] = r4;
+20 aws7[j] = r0;
+21 aws1[j] = r3;
+22 Repeat the above steps to generate the
+weighted polynomials bws1 to bws7;
+23 for i= 1 to 7 do
+24 wi = awsi ∗bwsi;
+25 return w1 to w7;
+Alg. 10: Striding Toom-Cook 4-way eval-
+uation with vertical scanning of the coef-
+ficients[This work]
+Input: Two arrays A and B with the
+n= 256 coeﬃcients of the
+polynomials
+Output: Seven arrays w1 to w7 with 64
+coeﬃcients of the intermediate
+products each
+1 for j = 0 to 63 do
+2 r0 = A0[j];
+3 r1 = A1[j];
+4 r2 = A2[j];
+5 r3 = A3[j];
+6 r4 = r0 + r2;
+7 r5 = r1 + r3;
+8 r6 = r4 + r5;
+9 r7 = r4−r5;
+10 aws3[j] = r6;
+11 aws4[j] = r7;
+12 r4 = 2 ∗(r0 ∗4 + r2);
+13 r5 = r1 ∗4 + r3;
+14 r6 = r4 + r5;
+15 r7 = r4−r5;
+16 aws5[j] = r6;
+17 aws6[j] = r7;
+18 r4 = 8 ∗r3 + 4 ∗r2 + 2 ∗r1 + r0;
+19 aws2[j] = r4;
+20 aws7[j] = r0;
+21 aws1[j] = r3;
+22 Repeat the above steps to generate the
+weighted polynomials bws1 to bws7;
+23 for i= 1 to 7 do
+24 wi = awsi ∗bwsi;
+25 return w1 to w7;

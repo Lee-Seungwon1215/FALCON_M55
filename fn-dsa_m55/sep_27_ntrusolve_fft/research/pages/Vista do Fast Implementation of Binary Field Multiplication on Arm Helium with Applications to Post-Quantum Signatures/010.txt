@@ -1,0 +1,135 @@
+DOCUMENT: Vista do Fast Implementation of Binary Field Multiplication on Arm Helium with Applications to Post-Quantum Signatures.pdf PAGE: 10/16
+
+[OCR: verify mathematical symbols against the PDF]
+26° Simpósio Brasileiro de Cibersegurança (SBSeg 2026), Armação dos Búzios - RJ
+Trilha Principal: Artigos Completos
+Algorithm 11 Modular reduction
+Require: C(z) = CL (2) Đ x128 CH (z), irreducible f(x) =
+2128 +r(x)
+Ensure: c(x) mod f(x)
+1: function REDUCTION(c(x), f(x))
+2:
+((X)<СH(2)•Т(2) а
+3:
+l(x) + t(x) mod x
+4:
+h(x)t(x)/x128|
+5:
+6:
+if cH(x) # 0then
+1(x)+l(x)@h(x).r(x)
+7:
+return cL(2) Đ1(x)
+Algorithm
+12 Reduction
+in
+GF(2128)
+Require: high, low: upper and lower halves of unreduced prod-
+uct
+Ensure: red = (high - x128 • low) mod f(x)
+1: function GF128_REDUCTION(high, low)
+ro + VDUP(0x0087)
+3.
+4:
+5:
+6:
+7:
+1 + VMULLB(high, ro
+2 + VMULLT(high, ro
+VST1(v0 (1], r2)
+r3 + VLD1(vo [0])
+r1 + VEOR(r1, r3)
+T4 + VLD1 (vo[8])
+Ts + VMULLB(т4, Tо)
+71 + VEOR(r1, rs)
+return VEOR(r1, low)
+Algorithm 13 Reduction in
+GF(2192)
+Require: higho, low1, lowo: limbs of unreduced product
+Ensure: ho, k1: reduced result in GF(2192)
+1: function GF192 ReDUctIon(higho, low1, lowo)
+2:
+ro + VDUP(0x0087)
+3:
+r1 + VCREATE(lane1 (low1), laneo(higho))
+r2 + VCREATE(lane1 (higho), 0)
+73 + VMULLB(r2, ro)
+т4 + VMULLT(r2, rо)
+VST1(vo[1), r4)
+r5 + VLD1(vo[0])
+73 + VEOR(r3, r5)
+10:
+11:
+12:
+13:
+14:
+15:
+16:
+17:
+18:
+19:
+20:
+21:
+22:
+23:
+r6 + VLD1(vo [4])
+r1 + VEOR(r1, T6)
+r7 + VMULLB(r1, ro)
+r8 + VMULLT(r1, ro)
+VST1(vo [1), т8)
+rg + VLD1(vo [0])
+r7 + VEOR(r7, rg)
+r10 + VLD1(vo[8])
+T3 + VEOR (r3, r10)
+r11 + VEOR(r7, lowo)
+712 + VEOR(r3, low1)
+712 + VSET(0, r12, 2)
+713 + VSET(0, r12, 3)
+return ho + r11, h1 + r13
+Algorithm
+14 Reduction in
+GF(2256)
+Require: high1, higho, low1, lowo: limbs of unreduced prod-
+uct
+Ensure: ho, h1: reduced result in GF(2256)
+1: function GF256_REDUCTION(high1, higho, low1, lowo)
+2:
+ro + VDUP(0x0425)
+3:
+r1+ VMULLB(high1, ro)
+r2 + VMULLT(high1, ro)
+VST1(vo[1], r2)
+r3 + VLD1(vo [0])
+r1 + VEOR(r1, Г3)
+r4 + VLD1(vo[8])
+9:
+10:
+11:
+75 + VEOR(higho, r4)
+T6 + VMULLB(r5, ro)
+r7 + VMULLT(r5, ro)
+VST1(vo[1], r7)
+T8 + VLD1(vo[0])
+T6 + VEOR(T6, T8)
+rg + VLD1(vo[8])
+r1 + VEOR(r1, rg)
+710 + VEOR(r6, lowo)
+19:
+r11 + VEOR(r1, low1)
+return ho + r10, h1 f r11
+based on the one-wayness of AIM2 [Kim et al. 2023], a symmetric primitive designed to
+be efficient in the MPC-in-the-Head (MPCitH) [Ishai et al. 2007] setting. AIM2 takes a
+secret plaintext pt € GF (2*) and a public initialization vector iv, and produces a public
+ciphertext ct through l € {2,3} parallel branches, each consisting of an inverse Mersenne
+mgpes t2 here lL ranchs
+S-box of the form x → xě, where ē = (2º - 1)-1 mod 2" - 1, followed by an affine
+layer and a final Mersenne output S-box. The number of branches l depends on the
+security level: l = 2 for n € {128, 192} and l = 3 for n = 256. The inverse Mersenne
+e - or (13%, 2) an .
+S-box is the only nonlinear component of AIM2, and each evaluation decomposes into
+a chain of squarings and a single field multiplication over GF(2"), making binary field
+arithmetic the dominant cost of every AIM2 call. AlMer is defined at three security levels
+for n € {128, 192, 256}, requiring arithmetic over GF(2128), GF(2192), and GF(2256),
+respectively, with these operations invoked repeatedly during key generation, signing, and
+verification. Key and signature sizes for all parameter sets are listed in Table 1.
+10

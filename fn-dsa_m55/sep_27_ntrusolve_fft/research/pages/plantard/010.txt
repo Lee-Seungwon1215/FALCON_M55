@@ -1,0 +1,94 @@
+DOCUMENT: plantard.pdf PAGE: 10/24
+
+10 Improved Plantard Arithmetic for Lattice-based Cryptography
+1. We first check that r∈[−
+q+1
+q
+2 ,
+2 ). Since abq′mod±22l
+2l ∈[−2l−1
+,2l−1
+−1], we have
+(−2l−1 + 2α)q
+2l ≤r≤ (2l−1
+2l
+−1 + 2α)q
+q
+−
+2 + q
+2l−α ≤r≤ q
+2 + (2α
+−1)q
+2l.
+Since q
+2l−α < 1
+2 and q is an odd number, we can get r ≥⌊−q
+2 ⌋=−
+q+1
+2 from the
+left-hand side of the inequation. Let’s consider q
+2 + (2α
+−1)q
+2l on the right-hand side;
+since q<2l−α−1, we have
+(2α
+2α2l−α−1
+1
+=
+2l
+=
+q
+2 < q
+2.
+−1)q
+2l < q2α
+2l <
+2.
+Because q is an odd number, then
+q
+2 + (2α
+−1)q
+2l
+Therefore, the result r lies in [−
+q+1
+2 ,
+q
+2 ).
+2. Then, we check that r ≡ab(−2−2l) mod q. The proof is very similar to the one
+in [Pla21], except that we introduce a small integer α>0 and impose a stricter con-
+straint q<2l−α−1 on q. Since q is an odd number, there exists q−1 = q−1 mod±22l
+and p≡abq−1 mod 22l so that
+pq−ab≡ abq−1 q−abmod 22l ≡ab−abmod 22l ≡0 mod 22l
+.
+Therefore, pq−ab is divisible by 22l, so
+ab−2−2l mod q≡
+pq−ab
+22l.
+Letp= abq−1 mod±22l,p1 = p
+2l ,p0 = p−p12l. Becausetheright-shiftofthesigned
+integer always rounds the result towards negative infinity, we always have p0 ∈[0,2l).
+Thereafter, instead of analyzing q2l
+−p0q+abin the original work, we slightly modify
+the equation to q2l+α
+−p0q+ ab. The correctness of the Plantard multiplication
+proposed by Thomas Plantard is based on the inequality: 0 <q2l
+−p0q+ ab<22l
+.
+We now check that our modified equation q2l+α
+−p0q+abalso satisfies this inequality:
+0 <q2l+α
+−p0q+ ab<22l (3)
+under the restrictions q<2l−α−1,α>0, and−q2α ≤a,b≤q2α
+.
+(1) When ab∈[0,q222α] and p0 ∈[0,2l), we have
+q2l+α
+−p0q+ ab≥q2l+α
+−p0q>q(2l+α
+−2l) >0 when α>0, and
+q2l+α
+−p0q+ ab≤q2l+α + ab≤q(2l+α + q22α)
+<2l−α−1(2l+α + 2l+α−1)
+= 22l−1 + 22l−2 <22l
+.
+Therefore, we have 0 <q2l+α
+−p0q+ ab<22l when ab≥0 and α>0.

@@ -1,0 +1,54 @@
+DOCUMENT: plantard.pdf PAGE: 19/24
+
+Junhao Huang et al. 19
+tool is arm-non-eabi-gcc version 10.2.1, and we compile our code with -flto and -O3 options,
+which are the same as [ABCG20] and [AHKS22]. The Keccak implementation is token
+from pqm4, and the hardware random number generator (RNG) of the microcontroller is
+used in our implementation.
+The proposed Kyber implementation is initially built upon the pqm4 code, which
+consists of the optimizations presented in [ABCG20, BKS19]. Later work [AHKS22]
+presents a faster Kyber implementation, including a high-speed and stack-friendly version.
+Although their high-speed Kyber implementation has better efficiency, their stack usage is
+almost doubled. We integrate the improved Plantard arithmetic into their stack-friendly
+implementation to benchmark the speed performance of Kyber. The proposed NTTRU
+implementation is based on the reference code [LS19] that uses the symmetric primitives
+from OpenSSL. To immigrate its reference code to Cortex-M4, we use the SHA2 and AES
+implementations in pqm4, which are based on the work in [AP21].
+5.2 Performance of the Polynomial Arithmetic
+The cycle counts of the core polynomial arithmetic in Kyber and NTTRU are presented in
+Table 1. Using the improved Plantard arithmetic, the proposed Kyber implementation
+basedon[ABCG20]achieves20.24%and16.92%speed-upsforNTTandINTT,respectively.
+The speed-optimized implementation of [AHKS22] trades the speed with extra stack usage
+whileimplementingthematrix-vectormultiplicationandbasemultiplication, whichexplains
+their two times faster base multiplication. Besides, the coefficients of their matrix-vector
+multiplication lie in [−q,q], which reduces one modular reduction of 128 coefficients at the
+beginning of their INTT implementation. On the contrary, the matrix-vector multiplication
+of their stack-friendly implementation produces coefficients smaller than kq, which requires
+extra modular reductions in INTT and results in a slower INTT implementation.
+After applying the improved Plantard arithmetic in their stack-friendly implementation,
+we halve the coefficient size of the matrix-vector multiplication down to 1
+2 kq; then, three
+different lazy reduction strategies are adopted for the INTT in Kyber512, Kyber768,
+and Kyber1024, respectively. Overall, the proposed implementation based on the stack-
+friendly code of [AHKS22] achieves 25.02% speed-up for NTT and 20.84%/18.56%/17.97%
+speed-ups for the INTT in Kyber512/Kyber768/Kyber1024, respectively. Our INTT
+implementation is also 14.38%/11.92%/11.28% faster than their speed-optimized INTT
+implementation in Kyber512/Kyber768/Kyber1024, respectively. All these speed-ups
+mainly come from the efficient Plantard multiplication by a constant and better lazy
+reduction strategies. The results clearly reveal the improved Plantard arithmetic’s benefits
+to the NTT/INTT on Cortex-M4. The base multiplication of Kyber consists of modular
+multiplication by a constant and modular multiplication of two variables, which increases
+the register usage pressure and requires extra cycles to handle this problem.
+The polynomial arithmetic implementation of NTTRU is similar to Kyber. By fully
+utilizing the SIMD instructions, the double butterflies, double modular reduction over
+packed coefficients, double base multiplication, and double base inversion are first presented
+by applying the improved Plantard arithmetic. The assembly implementation of NTTRU
+obtains excellent speed-ups compared with its reference implementation in [LS19]. Table 1
+shows that the speed-ups for NTT, INTT, base multiplication, and base inversion are
+83.21%, 78.64%, 76.40%, and 59.34%, respectively. The speed-ups for NTT and INTT
+mainly come from the efficient Plantard multiplication by a constant, better lazy reduction
+techniques, and parallel implementation utilizing the SIMD instructions on Cortex-M4. The
+speed-up for base inversion is relatively smaller than others because most of the modular
+multiplications in this operation are implemented as the modular multiplications of two
+variables. Therefore, the efficient Plantard multiplication by a constant (Algorithm 11)
+can not be applied to base inversion.

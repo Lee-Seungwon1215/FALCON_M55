@@ -1,0 +1,51 @@
+DOCUMENT: m55_slothy.pdf PAGE: 3/46
+
+Abdulrahman, Becker, Kannwischer, Klein 3
+which the developer stays in full control over instruction selection, while instruction
+scheduling, register allocation and also loop optimization (aka software pipelining) are
+automated based on models of the underlying architecture and microarchitecture. This way,
+manual work is restricted to the most difficult and creative aspect of selecting algorithms
+and mapping them to the target architecture. Moreover, since register allocation and
+scheduling are automated, the developer can write “clean” code emphasizing the logic
+of the computation and using symbolic register names, thereby achieving reviewable
+and maintainable code artifacts. Moreover, formal verification can be decomposed into
+separately verifying the correctness of the “clean” base code, and the semantics-preservation
+of the transformation underlying the optimized scheduling and register allocation. Finally,
+since the microarchitectural model is flexible, our approach allows porting code to new
+microarchitectures with little effort.
+Compared with traditional compilation, our approach is less reliant on fast but ap-
+proximative algorithms, and is instead based on superoptimization in search for optimal
+solutions: More precisely, we use constraint solving to express the simultaneous optimiza-
+tion of register allocation, instruction scheduling, and software pipelining as a constraint
+satisfaction problem which is then passed to an external solver.
+Contributions. Our contributions are fourfold:
+1. We describe SLOTHY (Super (Lazy) Optimization of Tricky Handwritten assemblY),
+a (micro)architecture agnostic approach to modelling the simultaneous assembly-level
+optimization of register allocation, instruction ordering and software pipelining as a
+constraint satisfaction problem.
+2. We develop instantiations of SLOTHY for multiple architectures and microarchitec-
+tures: (a) A model of the Armv8.1-M+Helium architecture and the Cortex-M55 +
+Cortex-M85 microarchitectures implementing it, (b) a model of the AArch64+Neon
+architecture and the Cortex-A55 + Cortex-A72 microarchitectures implementing it.
+3. We provide an implementation slothy of SLOTHY based on CP-SAT from Google
+OR-Tools. As a development tool, slothy converts “clean” and microarchitecture-
+agnostic input assembly (using e.g. symbolic registers and macros for readability)
+into microarchitecture-specific high-performance assembly. slothy’s output is not
+only fast, but also compact and auditable: Loops can be optimized without unrolling,
+and we outline how trace annotations can support manual or automatic checks of
+the equivalence of input and output, without having to trust SLOTHY itself.
+4. We demonstrate the practicality of SLOTHY by optimizing multiple real-world
+workloads from Digital Signal Processing and cryptography: (a) on Cortex-M55 and
+Cortex-M85, a radix-4 complex Fast Fourier Transform (FFT) in fixed-point and
+floating-point arithmetic, (b) on Cortex-M55, Cortex-M85, Cortex-A55 and Cortex-
+A72, instances of the Number Theoretic Transform (NTT) underlying the PQ key
+encapsulation and signature schemes CRYSTALS-Kyber and CRYSTALS-Dilithium
+(to be standardized as ML-KEM and ML-DSA, respectively [NIS23a, NIS23b]), and
+(c) on Cortex-A55, the X25519 scalar multiplication. In all cases, slothy transforms
+“clean” base implementations into high-performance implementations that match
+or outperform prior microarchitecture-specific handwritten assembly, while also
+maintaining compactness, auditability, and portability to further microarchitectures.
+Future work. There are multiple avenues of future work.
+First, we encourage research in the application of SLOTHY to other (micro)architectures
+and workloads. In the context of post-quantum cryptography, for example, we do deliber-
+ately not build complete implementations of CRYSTALS-Kyber and CRYSTALS-Dilithium.

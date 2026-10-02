@@ -1,0 +1,55 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 7/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 7
+3.1 A primer on vector architectures
+Vector architectures promise to accelerate computation through the introduction of Single
+Instruction Multiple Data (SIMD) operations: They add a set of wide registers that are
+viewed as vectors of equal-sized blocks called lanes, and provide instructions that operate
+on those lanes in parallel. For example, a 128-bit vector register can be viewed as a length-8
+vector of 16-bit elements, and a 16-bit vector add instruction (e.g. VADD.u16 in Helium,
+see Figure 1) adds the lanes of two such vectors, storing the results in the lanes of a third
+vector – thus the term “Single Instruction, Multiple Data”.
+It is intuitively clear that vectorization holds great potential for accelerating computa-
+tional workloads. However, the exact order of speedup is influenced by a large number
+of architectural and microarchitectural parameters, which tend to also have implications
+on both hardware cost and software constraints. Choosing a specific set of parameters is
+therefore a careful tradeoﬀ tailored to the target domain. We provide some details in the
+rest of this section to help the reader put the design choices of Helium and Cortex-M55
+and their implications on hardware and software into perspective.
+Architecturally, two parameters impacting the speedup potential of a SIMD architecture
+are the expressiveness of its instruction set and the size of the vector registers: A SIMD
+architecture with 256-bit vectors, such as provided by AVX2 or 256-bit implementations of
+Arm’s Scalable Vector Extension (SVE), performs twice as many operations per instruction
+compared to SIMD on 128-bit vectors, such as provided by Helium or Neon. Also,
+specialized instructions for common operations or operation sequences (such as multiply-
+accumulate) lower the number of instructions required to express a computation. It is
+clear, however, that tailoring those parameters for performance comes at a significant cost
+in hardware.
+Another architectural parameter of interest is the number of architectural vector
+registers, which constitutes a less obvious tradeoﬀ: To begin, fewer vector registers clearly
+imply a lower hardware cost but larger constraints on software. However, the extent to
+which those constraints imply a performance loss is less obvious, and very much depends
+on the workload under consideration.
+Microarchitecturally, primary parameters influencing the potential of vectorization are
+the number of SIMD execution units, the latency and throughput of vector instructions,
+and out-of-order execution capabilities. For example, the Cortex-X1 CPU has four Neon
+execution units and therefore twice the vectorization throughput potential compared to a
+Cortex-A78 CPU with two Neon execution units. Whether such potential can be realized,
+however, heavily depends on the nature of the workload (e.g. data flow, instruction
+distribution) and on the scheduling of instructions: In the case of high-end out-of-order
+CPUs, the latter is mostly taken care of by the CPU itself – even to the extent that
+multiple iterations of a loop can be executed in parallel to create enough independent
+data streams to keep all SIMD units busy. Out-of-order execution also relaxes constraints
+on software since instruction scheduling happens dynamically, but the downside of those
+powerful microarchitectural features is a significant hardware cost. In-order execution, such
+as found in all M-profile processors as well as low-end A-profile processors, considerably
+improves cost and eﬃciency, but there it is the responsibility of the programmer/compiler
+to keep the SIMD unit(s) busy through careful instruction scheduling.
+To summarize: Within the design space of SIMD architectures and microarchitectures,
+there are tradeoﬀs between hardware cost and performance potential, and hardware cost
+and software constraints towards reaching this potential. Whether those constraints can
+be met is a workload-specific problem. We will next describe the tradeoﬀs and constraints
+in the case of the Helium vector architecture and the Cortex-M55 microarchitecture. In
+Section 6, we will discuss how to solve the software constraints in the case of the PQC
+workloads under consideration, thereby realizing the full performance potential of Helium
++ Cortex-M55 while maintaining a low gate and power profile.

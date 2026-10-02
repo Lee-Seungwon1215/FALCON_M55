@@ -1,0 +1,60 @@
+{
+  "candidate": "s2a",
+  "baseline": "ntt_opt",
+  "source_scope": {
+    "changed_files": [
+      "mq_cm55.s"
+    ],
+    "same_layer_butterfly_pairs": 22,
+    "forward_ct_pairs": 12,
+    "inverse_gs_pairs": 10,
+    "inverse_l0_excluded": true,
+    "new_secret_dependent_branches": 0,
+    "new_memory_accesses": 0
+  },
+  "mq_object": {
+    "baseline_text_bytes": 10500,
+    "candidate_text_bytes": 10500,
+    "shared_instruction_counts": {
+      "control_flow": 86,
+      "memory": 377,
+      "vadd": 318,
+      "vsub": 142,
+      "vcmp": 232,
+      "vqrdmulh": 57,
+      "vmul": 117,
+      "vmla": 57,
+      "vector_push_pop": 4
+    }
+  },
+  "performance": {
+    "baseline_pairwise_samples": 60,
+    "candidate_faster_samples": 10,
+    "equal_samples": 41,
+    "candidate_slower_samples": 9,
+    "mean_baseline_minus_candidate_cycles": -0.0833333333,
+    "upper_median_equivalent_to_baseline": true
+  },
+  "hashes": {
+    "baseline_mq_cm55_sha256": "b4f5834ac4cb72c6d51f62bf4c9746b58350e668ebcb193bf1e51272ae9fbbc3",
+    "candidate_mq_cm55_sha256": "ec20b22a2f0d0748842cbb79fd5fd3e429a8bc3fddfc1ad6d624711ca8ce07e8",
+    "candidate_source_tree_sha256": "87125d02874719eb649a0c3d6ec95625f2e808ea3cb2525bde1d6fca0ba684c0",
+    "candidate_elf_sha256": "be8a0ebc48692a54c9beeefe65abf431360d9f386da4fbeb8feb1a22e355face",
+    "candidate_raw_log_sha256": "d75abcda02d2d2a3b91eff7c680b0147a1b795f1b301a43ec58b73954f90da0c"
+  },
+  "validation": {
+    "barrett_pair_mismatches": 0,
+    "forward_ntt_mismatches": 0,
+    "inverse_roundtrip_mismatches": 0,
+    "max_modular_error": 0,
+    "host_kat_digests_match": true,
+    "sign_verify": "PASS",
+    "tamper_rejection": "PASS",
+    "fault_registers_zero": true,
+    "tcm_ecc_start": "0x1300a",
+    "tcm_ecc_end": "0x1300a",
+    "stack_used_upper_bound_bytes": 9624
+  },
+  "verdict": "No measurable standalone speedup; do not select S2-A by itself.",
+  "limitations": "Static constant-time structure audit only; power/EM TVLA was not performed."
+}

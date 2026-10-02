@@ -1,0 +1,42 @@
+{
+  "command": [
+    "clang",
+    "-O1",
+    "-g",
+    "-ffunction-sections",
+    "-fdata-sections",
+    "-ffp-contract=off",
+    "-fno-fast-math",
+    "-DFNDSA_AVX2=0",
+    "-DFNDSA_ASM_CORTEXM4=0",
+    "-DFNDSA_ASM_CORTEXM55=0",
+    "-DAUDIT_BOARD=0",
+    "-I/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge",
+    "-fsanitize=address,undefined,float-cast-overflow",
+    "-fno-sanitize-recover=all",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/security/invnorm_audit.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fxp.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_gauss.c",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sha3.c",
+    "-Wl,-dead_strip",
+    "-o",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/security/results/host_asan_20260928T040039Z/audit"
+  ],
+  "build_returncode": 0,
+  "run_returncode": -6,
+  "claim": "Host C-path numerical and sanitizer evidence only, not M55 assembly or complete security",
+  "sources": {
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/validation/security/invnorm_audit.c": "fe45be8c4d859f0df524aa9e606fd4581cefc7c7b3d3700d4512f2e5ab3039c2",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_fxp.c": "f40694bfc7246f865ebfcfc53931d63d4345dac50cd0c7b88b54894501e98c50",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_gauss.c": "d7a4890e94d81b3a9a83722aef98ca343d513b4c7f17f1f3e3ec91bb739c1da9",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sha3.c": "a6a21c599f031414ecf98c558058b83c9e7dbf2a979b4b55242c4cdcf8fdfdf3",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/fndsa.h": "8c8cd534e01d1b177960736cc4627a46c42327ca4cd30657554abff55db96d2b",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_ds_q32.h": "7cf1c7b261d3090992c0aa2d8a1fb444a3305e9aee5b9c6f57174dde519fe9ba",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/sign_inner.h": "ad44f8173b213120c476603418b0ddd35c5e4c3df728673d27519d4e19bdebb8",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_ds.h": "b6d6a1511b8669156b844e4633f16780b59f49619ff024611ae01e940f8108e1",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/inner.h": "7aba9935edf50456b39cbccca33ff5216669394528e3a1aec3075d728394e45d",
+    "/Users/seungwon/FALCON/fn-dsa_m55/sep_27_ntrusolve_fft/A_tw_bridge/kgen_inner.h": "b76c31abedf7c797a2b7b68e54ff3dae30077474da0f15267811011d101a4065"
+  },
+  "raw_sha256": "084c204d28755becfcdbf260a8a5135a249903bdd81ded8bfc36ea7b02690b07",
+  "pass": false
+}

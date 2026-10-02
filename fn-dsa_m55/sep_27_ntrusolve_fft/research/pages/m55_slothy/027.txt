@@ -1,0 +1,53 @@
+DOCUMENT: m55_slothy.pdf PAGE: 27/46
+
+Abdulrahman, Becker, Kannwischer, Klein 27
+Unrolling Opt. for Cortex-M55 Base Opt. for Cortex-M85
+4× 2× 1× 1× 1× 2× 4×
+Cortex-M55 1.56 1.62 2.0 3.25 2.0 1.75 1.87
+Cortex-M85 1.68 1.75 2.25 3.0 2.25 1.5 1.5
+Table 1: Cycles / squared-magnitude operation z→|z|2 of base and slothy-optimized imple-
+mentations. Horizontal: Optimization target & Unrolling level. Vertical: Benchmarking target.
+104
+103
+Cortex-A55
+Cortex-A72
+Cortex-M55
+Cortex-M85
+Mean slothy runtime [s]
+102
+101
+100
+104
+103
+Maximum Number of Variables in Result
+102
+0 50 100 150 200
+Number of Instructions
+Figure 7: Runtime measurements of slothy for loops of various NTTs. One data point
+represents the runtime distribution of 10 optimizations of a fixed loop body, with software
+pipelining enabled. Optimization of pre/postamble disabled, no additional optimization
+targets set. Measurements done on Apple M1 Pro (8C).
+benefit of the automated microarchitecture-specific optimization provided by slothy.
+Reflection. While simple, the example of sqmag demonstrates the capabilities and
+our envisioned usage of slothy well: We could focus on mapping sqmag to Armv8.1-
+M+Helium in a readable way, leaving all microarchitecture specific optimizations — which,
+even in this short kernel, are not trivial — to slothy, taking the target microarchitecture
+as a parameter. Of course, we had to develop and a suitable microarchitecture model for
+slothy, but this is one-off effort that can be re-used for other workloads.
+7.4 Performance
+Judging from numerous examples, we find that the performance of slothy depends on
+the length of the kernel to be optimized, the complexity of the microarchitectural model,
+and finally — in an intuitive sense — the difficulty of the optimization problem. Moreover,
+due to the non-deterministic and heuristic nature of CP-SAT, the runtime and results of
+slothy varies even for the same workload. In fact, the runtime could even depend on the
+precise order in which the model’s variables and constraints are presented to the solver,
+but we leave exploration and utilization of this variability for future work.
+From Figure 7 we can see that kernels of less than 50 instructions typically optimize
+in seconds to minutes while kernels between 50−250 instructions tend to optimize in
+minutes to hours. We sometimes also note a large performance variability for the same
+kernel, again owing to the non-determinism of CP-SAT. Further, the intuition that more
+complex microarchitectural models should increase the runtime of slothy is also reflected
+in Figure 7: For two data points of different targets that have the same number of
+instructions (and thus correspond to the same code snippet, most of the time), we can see
+that, in the majority of cases, the optimization on the Cortex-A72 (resp. Cortex-M85)
+takes more time than on the Cortex-A55 (resp. Cortex-M55).

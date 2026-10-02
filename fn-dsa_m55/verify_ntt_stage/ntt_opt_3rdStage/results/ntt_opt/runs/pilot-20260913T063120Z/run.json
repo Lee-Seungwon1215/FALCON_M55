@@ -1,0 +1,30 @@
+{
+  "candidate": "ntt_opt",
+  "mode": "pilot",
+  "started_utc": "2026-09-13T06:31:20.218616+00:00",
+  "command": [
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python3",
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/exec_with_tcm_init.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build-ntt-opt/zephyr/zephyr.elf",
+    "--pilot"
+  ],
+  "elf_sha256": "0a6e2474a2081f0e6ff493f028124df32200ac8fcade17a5707f5bb7a1e2839a",
+  "source_tree_sha256": "3f35646b92528a5b7abd65ab13cc5de56d3023c1d2fd07a88e4e1e2f14a8ed7e",
+  "probe": "003C00223335510735383531",
+  "ended_utc": "2026-09-13T06:31:20.303673+00:00",
+  "returncode": 1,
+  "valid": false,
+  "host_digests_match": false,
+  "validation_errors": [
+    "missing/duplicate/unexpected BATCH coordinates",
+    "missing/unexpected SUMMARY coordinates",
+    "incorrect mode/count banner",
+    "TCM ECC state missing or disabled",
+    "CFSR missing or nonzero",
+    "HFSR missing or nonzero",
+    "AFSR missing or nonzero"
+  ],
+  "samples": [],
+  "raw_log_sha256": "31dc565135da7f6a3e8d24a62a72b09f0bf49c7203bf335f1205c88b4f83d052"
+}

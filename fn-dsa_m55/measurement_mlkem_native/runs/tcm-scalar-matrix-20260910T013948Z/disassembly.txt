@@ -1,0 +1,149 @@
+
+/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/runs/tcm-scalar-matrix-20260910T013948Z/tcm_probe.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+34080000 <probe_vectors>:
+34080000:	340bf000 	.word	0x340bf000
+34080004:	34080041 	.word	0x34080041
+34080008:	340800f5 	.word	0x340800f5
+3408000c:	340800f5 	.word	0x340800f5
+34080010:	340800f5 	.word	0x340800f5
+34080014:	340800f5 	.word	0x340800f5
+34080018:	340800f5 	.word	0x340800f5
+3408001c:	340800f5 	.word	0x340800f5
+34080020:	340800f5 	.word	0x340800f5
+34080024:	340800f5 	.word	0x340800f5
+34080028:	340800f5 	.word	0x340800f5
+3408002c:	340800f5 	.word	0x340800f5
+34080030:	340800f5 	.word	0x340800f5
+34080034:	340800f5 	.word	0x340800f5
+34080038:	340800f5 	.word	0x340800f5
+3408003c:	340800f5 	.word	0x340800f5
+
+34080040 <probe_init>:
+34080040:	b672      	cpsid	i
+34080042:	483c      	ldr	r0, [pc, #240]	@ (34080134 <probe_scalarcopy_end>)
+34080044:	493c      	ldr	r1, [pc, #240]	@ (34080138 <probe_scalarcopy_end+0x4>)
+34080046:	6008      	str	r0, [r1, #0]
+34080048:	f3bf 8f4f 	dsb	sy
+3408004c:	f3bf 8f6f 	isb	sy
+34080050:	2200      	movs	r2, #0
+34080052:	2300      	movs	r3, #0
+34080054:	f04f 5080 	mov.w	r0, #268435456	@ 0x10000000
+34080058:	4938      	ldr	r1, [pc, #224]	@ (3408013c <probe_scalarcopy_end+0x8>)
+3408005a:	e8e0 2302 	strd	r2, r3, [r0], #8
+3408005e:	4288      	cmp	r0, r1
+34080060:	d3fb      	bcc.n	3408005a <probe_init+0x1a>
+34080062:	f04f 5040 	mov.w	r0, #805306368	@ 0x30000000
+34080066:	4936      	ldr	r1, [pc, #216]	@ (34080140 <probe_scalarcopy_end+0xc>)
+34080068:	e8e0 2302 	strd	r2, r3, [r0], #8
+3408006c:	4288      	cmp	r0, r1
+3408006e:	d3fb      	bcc.n	34080068 <probe_init+0x28>
+34080070:	f04f 2410 	mov.w	r4, #268439552	@ 0x10001000
+34080074:	4d33      	ldr	r5, [pc, #204]	@ (34080144 <probe_scalarcopy_end+0x10>)
+34080076:	f20f 0089 	addw	r0, pc, #137	@ 0x89
+3408007a:	f020 0001 	bic.w	r0, r0, #1
+3408007e:	e9d0 2300 	ldrd	r2, r3, [r0]
+34080082:	e9c4 2300 	strd	r2, r3, [r4]
+34080086:	e9d0 6702 	ldrd	r6, r7, [r0, #8]
+3408008a:	e9c4 6702 	strd	r6, r7, [r4, #8]
+3408008e:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+34080092:	42ac      	cmp	r4, r5
+34080094:	d3f5      	bcc.n	34080082 <probe_init+0x42>
+34080096:	4a2c      	ldr	r2, [pc, #176]	@ (34080148 <probe_scalarcopy_end+0x14>)
+34080098:	4b2c      	ldr	r3, [pc, #176]	@ (3408014c <probe_scalarcopy_end+0x18>)
+3408009a:	4c2d      	ldr	r4, [pc, #180]	@ (34080150 <probe_scalarcopy_end+0x1c>)
+3408009c:	4d2d      	ldr	r5, [pc, #180]	@ (34080154 <probe_scalarcopy_end+0x20>)
+3408009e:	4622      	mov	r2, r4
+340800a0:	e9c4 2300 	strd	r2, r3, [r4]
+340800a4:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+340800a8:	42ac      	cmp	r4, r5
+340800aa:	d3f8      	bcc.n	3408009e <probe_init+0x5e>
+340800ac:	4c2a      	ldr	r4, [pc, #168]	@ (34080158 <probe_scalarcopy_end+0x24>)
+340800ae:	4d2b      	ldr	r5, [pc, #172]	@ (3408015c <probe_scalarcopy_end+0x28>)
+340800b0:	4622      	mov	r2, r4
+340800b2:	e9c4 2300 	strd	r2, r3, [r4]
+340800b6:	f504 3480 	add.w	r4, r4, #65536	@ 0x10000
+340800ba:	42ac      	cmp	r4, r5
+340800bc:	d3f8      	bcc.n	340800b0 <probe_init+0x70>
+340800be:	4c28      	ldr	r4, [pc, #160]	@ (34080160 <probe_scalarcopy_end+0x2c>)
+340800c0:	4622      	mov	r2, r4
+340800c2:	e9c4 2300 	strd	r2, r3, [r4]
+340800c6:	f3bf 8f4f 	dsb	sy
+340800ca:	f3bf 8f6f 	isb	sy
+
+340800ce <probe_ready>:
+340800ce:	be00      	bkpt	0x0000
+340800d0:	f7ff bffd 	b.w	340800ce <probe_ready>
+
+340800d4 <probe_call>:
+340800d4:	460e      	mov	r6, r1
+340800d6:	47a0      	blx	r4
+340800d8:	42b0      	cmp	r0, r6
+340800da:	f040 8008 	bne.w	340800ee <probe_mismatch>
+340800de:	3d01      	subs	r5, #1
+340800e0:	d1f9      	bne.n	340800d6 <probe_call+0x2>
+340800e2:	f000 b801 	b.w	340800e8 <probe_done>
+
+340800e6 <probe_memcpy_call>:
+340800e6:	47a0      	blx	r4
+
+340800e8 <probe_done>:
+340800e8:	be00      	bkpt	0x0000
+340800ea:	f7ff bffd 	b.w	340800e8 <probe_done>
+
+340800ee <probe_mismatch>:
+340800ee:	be00      	bkpt	0x0000
+340800f0:	f7ff bffd 	b.w	340800ee <probe_mismatch>
+
+340800f4 <probe_fault>:
+340800f4:	be00      	bkpt	0x0000
+340800f6:	f7ff bffd 	b.w	340800f4 <probe_fault>
+340800fa:	bf00      	nop
+340800fc:	f3af 8000 	nop.w
+
+34080100 <probe_body>:
+34080100:	6808      	ldr	r0, [r1, #0]
+34080102:	4770      	bx	lr
+34080104:	bf00      	nop
+34080106:	bf00      	nop
+
+34080108 <probe_return>:
+34080108:	4770      	bx	lr
+3408010a:	bf00      	nop
+3408010c:	bf00      	nop
+3408010e:	bf00      	nop
+
+34080110 <probe_scalarcopy>:
+34080110:	b4f0      	push	{r4, r5, r6, r7}
+34080112:	4603      	mov	r3, r0
+34080114:	2a10      	cmp	r2, #16
+34080116:	d303      	bcc.n	34080120 <probe_scalarcopy+0x10>
+34080118:	c9f0      	ldmia	r1!, {r4, r5, r6, r7}
+3408011a:	c3f0      	stmia	r3!, {r4, r5, r6, r7}
+3408011c:	3a10      	subs	r2, #16
+3408011e:	e7f9      	b.n	34080114 <probe_scalarcopy+0x4>
+34080120:	2a04      	cmp	r2, #4
+34080122:	d305      	bcc.n	34080130 <probe_scalarcopy+0x20>
+34080124:	f851 4b04 	ldr.w	r4, [r1], #4
+34080128:	f843 4b04 	str.w	r4, [r3], #4
+3408012c:	3a04      	subs	r2, #4
+3408012e:	e7f7      	b.n	34080120 <probe_scalarcopy+0x10>
+34080130:	bcf0      	pop	{r4, r5, r6, r7}
+34080132:	4770      	bx	lr
+
+34080134 <probe_scalarcopy_end>:
+34080134:	34080000 	.word	0x34080000
+34080138:	e000ed08 	.word	0xe000ed08
+3408013c:	10040000 	.word	0x10040000
+34080140:	30040000 	.word	0x30040000
+34080144:	10041000 	.word	0x10041000
+34080148:	13579bdf 	.word	0x13579bdf
+3408014c:	2468ace0 	.word	0x2468ace0
+34080150:	10000800 	.word	0x10000800
+34080154:	10040800 	.word	0x10040800
+34080158:	30000800 	.word	0x30000800
+3408015c:	30040800 	.word	0x30040800
+34080160:	34080800 	.word	0x34080800

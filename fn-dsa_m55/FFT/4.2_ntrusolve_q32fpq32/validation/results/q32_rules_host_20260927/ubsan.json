@@ -1,0 +1,25 @@
+{
+  "compiler": "Apple clang version 15.0.0 (clang-1500.3.9.4)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "flags": "-O3 -ffp-contract=off -fno-fast-math -fsanitize=undefined,float-cast-overflow -fno-sanitize-recover=all -DFNDSA_ASM_CORTEXM4=0 -DFNDSA_AVX2=0",
+  "files": {
+    "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/kgen_ds_q32.h": "75fec4c18b1c031780c444cabe2b104c0baff8728415bf241a0bf87b104c8353",
+    "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/kgen_inner.h": "0e124f2cbfee404b9e51c1723ef21544f0849a14e5b61ffa76c32f083fa0ec11",
+    "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/host_q32_rules.c": "4db96db8da479b1e8de4825526d398868646c96d0f73248154fcbbccc02112ea",
+    "fn-dsa_m55/FFT/4.2_ntrusolve_q32fpq32/validation/host_q32_precision.c": "681dcd6982bd7dd48870f03026f0f820b734f869623e48b22ff910e77adbe449"
+  },
+  "results": {
+    "rules": {
+      "returncode": 0,
+      "stdout": "Q32_RULES count=1000000 codec=0 add=0 mul=0\n",
+      "stderr": "",
+      "binary_sha256": "ced35763e35b6ac6214bb9241564f29c22f3e276241ef4daca0de58a6a699b93"
+    },
+    "precision": {
+      "returncode": 0,
+      "stdout": "PRECISION xexp=6 yexp=6 count=200000 input_loss=0 projected_mul_difference=0\nPRECISION xexp=15 yexp=15 count=200000 input_loss=0 projected_mul_difference=0\nPRECISION xexp=15 yexp=31 count=200000 input_loss=199605 projected_mul_difference=0\nPRECISION xexp=20 yexp=31 count=200000 input_loss=199784 projected_mul_difference=0\nPRECISION xexp=31 yexp=31 count=200000 input_loss=199999 projected_mul_difference=0\n",
+      "stderr": "",
+      "binary_sha256": "4d49815f673c966313bdd65729676e10f2879a898933efa0ca4cbab69b8a78c7"
+    }
+  },
+  "limit": "wide tests compare DS-projected products of represented operands; arbitrary 64-bit Q32 input preservation is NOT claimed"
+}

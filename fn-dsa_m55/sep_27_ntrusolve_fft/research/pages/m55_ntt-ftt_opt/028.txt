@@ -1,0 +1,93 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 28/29
+
+28 Polynomial multiplication on embedded vector architectures
+Appendix B Saber – A post-quantum KEM
+Saber [DKRV18,BMD+20] is a key encapsulation mechanism (KEM) secure against a
+post-quantum chosen-ciphertext attack (CCA). It is one of the 4 finalists [NISb] in the
+NIST’s PQC standardization procedure. We describe Saber briefly here. We refer to the
+NIST submission of Saber [BMD+20] for more details.
+The hardness of Saber is based on the module learning with rounding (LWR) [BPR12]
+problem, a variant of the learning with errors (LWE) problem introduced in [Reg04].
+An LWE sample is of the form (A,b= A·s + e) ∈Zm×n
+q ×Zm
+q whereas an LWR
+sample has the form (A,b= ⌊p
+q
+A·s⌉= ⌊A·s⌉p) ∈Zm×n
+q ×Zm
+p . In the latter case,
+the explicit error e is replaced by the error inherent in rounding from Zq to Zp. The
+connection between LWR and LWE is well-studied, see e.g. LWE [BPR12,AA16,BGM+16].
+Schemes using LWR need to use multiple moduli [BGML+18,CKLS18] unlike LWE based
+schemes [ADPS16,BDK+18]. Saber uses 2-power moduli (p,q,t) such that p|q|t, where p
+and q is fixed at 213 and 210, respectively, and t is 23
+,24 or 26 depending on the security
+parameter.
+Saber uses module-lattices, which means that the public key A ∈(Rn
+2k )l×l is a matrix
+of polynomials, the secret s ∈(Rn
+2k )l is a vector of polynomials. Here and below, Rn
+2k
+abbreviates Z2k [X]/(Xn + 1), and l is a security parameter which for Saber can be either
+of 2 (LightSaber), 3 (Saber), or 4 (FireSaber). This explains the importance of polynomial
+matrix-vector multiplication for implementations of Saber.
+The construction of Saber follows the general structure of a LWE based noisy Diﬃe-
+Hellman key-exchange construction as shown by Chris Peikert [Pei14]. To reduce the
+failure probability of such schemes a reconciliation mechanism [DXL12] is used. This basic
+key-exchange scheme is then transformed into a chosen-plaintext attack (CPA) secure
+public-key encryption (PKE) [BMD+20] in the similar way ElGamal encryption is obtained
+from Diﬃe-Hellman key-exchange. Finally, this CPA secure PKE is transformed to a CCA
+secure KEM by Fujisaki-Okamoto (FO) transform [JZC+18,FO99,FO13].
+This section lists the PKE (Algorithm 13-15) and KEM algorithms of Saber. As
+described in Section 2, the Saber PKE is a CPA secure scheme which is then converted into
+a CCA-secure KEM (Algorithm 16-18) scheme using a variant of FO transform [JZC+18,
+FO99,FO13].
+Here, XOF stands for extended output function, βµ denotes centered binomial distribu-
+tion with standard deviation µ/2 (µ= 5,4,3 for l= 2,3,4 respectively), Mdenotes the
+message space {0,1}256, and ϵp,ϵq,ϵt denotes log2(p),log2(q),log2(t) respectively.
+Alg. 13: Saber.PKE.KeyGen
+input : Security level l
+output : pk=(seedA, b),sk=(s)
+1 seedA ←$ {0,1}256;
+2 r←$ {0,1}256;
+3 A←$ Gen(XOF(seedA)) ∈(Rn
+q)l×l;
+4 s←$ βµ(XOF(r)) ∈(Rn
+q)l×l;
+5 b= (As+ h) ≫(ϵq−ϵp) ∈(Rn
+p)l×l;
+6 return pk = (seedA, b),sk = (s);
+Alg. 15: Saber.PKE.Enc
+input : pk=(seedA, b), m∈M, optional r
+′
+output : ct= (c,b′)
+1 A←$ Gen(XOF(seedA)) ∈(Rn
+q)l×l;
+2 if r
+′ not specified then
+3 r
+′←$ {0,1}256;
+4 s
+′←$ βµ(XOF(r
+′)) ∈(Rn
+q)l×1;
+5 b′= (ATs
+′+ h) ≫(ϵq−ϵp) ∈(Rn
+p)l×1;
+′
+6 v
+= bT(s
+′mod p) ∈Rn
+p;
+7 c= (v
+′+ h1−2ϵp−1m) ≫(ϵp−ϵt−1) ∈Rn
+2t;
+8 return ct = (c,b′);
+Alg. 14: Saber.PKE.Dec
+input : sk=(s), ct= (c,b′)
+output : m∈M
+1 v= b′T(s mod p) ∈Rn
+p;
+2 m= ((v−2ϵp−ϵt−1c+ h2)) ≫(ϵp−1) ∈Rn
+2 ;
+3 return m;

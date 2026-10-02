@@ -1,0 +1,39 @@
+{
+  "started_utc": "2026-09-09T13:25:41.937452+00:00",
+  "mode": "pilot",
+  "elf_sha256": "44e351780ce356112a9d53d577a5a5b5c2831de1b43d4cec39b0b267763aabdb",
+  "command": [
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/build-venv/bin/python",
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/mlkem-native-637d076aa113d8faaec2277ed4a46b657acaf35f/test/zephyr/nucleo_n657x0_q/exec_wrapper.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/build/zephyr/zephyr.elf",
+    "--pilot"
+  ],
+  "probe": "003C00223335510735383531",
+  "environment": {
+    "GDB_PORT": "3349",
+    "OPENOCD": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/bin/openocd",
+    "OPENOCD_SPEED": "8000",
+    "SWO_TRACECLK": "100000000",
+    "SWO_PIN_FREQ": "1000000",
+    "GDB": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-gdb",
+    "NM": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-nm",
+    "READELF": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/arm-gnu-toolchain-15.2.rel1-darwin-arm64-arm-none-eabi/bin/arm-none-eabi-readelf",
+    "OPENOCD_SCRIPTS": "/Users/seungwon/FALCON/fn-dsa_m55/measurement_mlkem_native/env/openocd-4e9b167/share/openocd/scripts",
+    "OPENOCD_TARGET": "target/stm32n6x.cfg",
+    "OPENOCD_INTERFACE": "interface/stlink.cfg"
+  },
+  "source_manifest_sha256": "9091423038d61aa861e612c94790d5d15da43c75def87ba31a16162dd05db040",
+  "host_expected_log_sha256": "fddd33e48b283c54df32f6c8333f135e9b6b7fc05ef7934b1204f621d4a28825",
+  "ended_utc": "2026-09-09T13:25:42.203102+00:00",
+  "returncode": 1,
+  "valid": false,
+  "host_digests_match": false,
+  "measurement_validation_errors": [
+    "missing/duplicate/unexpected BATCH coordinates",
+    "missing/unexpected SUMMARY coordinates",
+    "missing/incorrect benchmark mode or counts"
+  ],
+  "samples": [],
+  "raw_log_sha256": "d1898e548f677eceb3ae7bfa37d6f1cdfb4b6e1f5f73426970b73f836d3dcf3c"
+}

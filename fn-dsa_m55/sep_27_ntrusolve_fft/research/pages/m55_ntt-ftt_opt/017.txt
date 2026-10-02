@@ -1,0 +1,78 @@
+DOCUMENT: m55_ntt-ftt_opt.pdf PAGE: 17/29
+
+Becker, Bermudo Mera, Karmakar, Yiu, Verbauwhede 17
+VQDMULH.s32 c,l,n step, where n is a constant which we’d ideally store in a GPR rather
+than a vector. Secondly, the fixed-point variant can be improved to 4 and 3 instruction
+Montgomery multiplication variants, which we discuss now.
+Alg. 5: Montgomery via rounding
+Alg. 6: Montgomery via rounding, con-
+stant
+In: Odd n<232
+, |a|,|b|<231
+, b odd
+In: ω≡−n−1 modulo 232 precomputed
+Out: Representative h of ab/231 modulo n
+1: VQRDMULH.s32 h, a, b
+2: VMUL.u32 l, a, b
+3: VMUL.u32 l, l, ω
+4: VQRDMLAH.s32 h, l, n
+In: Odd n<232
+, |a|,|b|<231
+, b odd
+In: b′≡−bn−1 modulo 232 precomputed
+Out: Representative h of ab/231 modulo n
+1: VQRDMULH.s32 h, a, b
+2: VMUL.u32 l, a, b′
+3: VQRDMLAH.s32 h, l, n
+Algorithm 5 shows a variant of Algorithm 4 where the subtraction step VHSUB has been
+merged with the high multiply VQDMULH.s32 into a single doubling multiply-high-rounding
+with accumulate instruction VQRDMLAH.s32, leveragingv+w
+2l =
+v
+2ℓ + w
+2ℓ for any two
+v,w<2ℓ s.t. v≡−w̸≡2ℓ−1 modulo 2ℓ, the case 2ℓ−1 being excluded by the important
+new assumption that b is odd. This variant of Montgomery multiplication has been
+communicated with the authors of [BHK+], and is explored in greater detail in loc.cit.
+alongside other improvements to modular arithmetic.
+Barrett reduction Algorithm 3 implements Barrett reduction (Algorithm 1). Two things
+are noteworthy: Firstly, we have merged the multiplication c←n·t and the subtraction
+z−c into a single multiply-accummulate VMLA. Secondly, since VQRDMULH.s32 computes
+2ab
+232 , not ab
+232 , we use 2 2ℓ
+2n as the approximation to 2ℓ
+n
+instead of 2ℓ
+n
+in Algorithm 1.
+The theoretical implications of this modification are studied in greater detail in [BHK+].
+Central reduction After the inverse NTT, we need to normalize to signed canonical
+representatives in {− q
+2 ,...,
+q
+2 }. Assuming we are already given a signed representative
+in the range {−q+ 1,...,q−1}, this can be achieved by two conditional additions of ±q.
+In Helium, we implement central reduction using lane predication. See Algorithm 7.
+Alg. 7: Central reduction
+In: q 32-bit modulus, v∈Z4
+, |vi|<q.
+Out: v′with |v′
+i|<q/2 and v′
+i ≡vi mod q.
+1: VPT.s32 LT, v, #0 Predicate next operation on vi <0
+2: VADDT.s32 v, v, q Predicated correction by q
+3: VPT.s32 GE, v, # q
+2 Predicate next operation on vi ≥q
+2
+4: VSUBT.s32 v′
+, v, q Predicated correction by q
+6.4.2 Forward NTT
+We compute two layers of radix-2 butterflies at once, using 4 vectors for the butterfly and
+leaving 4 for intermediate results and loop optimization (pre-load, late-store). Merging
+three layers would require register spilling, so we have not implemented it. See Algorithm 8.
+We implement Montgomery multiplication via the 3-instruction rounding strategy
+Algorithm 6, choosing odd representatives for the ζi and their twists ζ′
+i. For NTT layers 0
+to 5, we keep the modulus and root constants in 7 GPRs, reducing the pressure on the
+vector file and taking advantage of the scalar-vector instructions. For the last two NTT

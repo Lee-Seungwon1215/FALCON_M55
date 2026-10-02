@@ -1,0 +1,33 @@
+DOCUMENT: falcon_m7.pdf PAGE: 15/22
+
+Dilithium and Falcon on the ARM Cortex M7 15
+Table 9: IEEE 754 standard format for single (32-bit) and double precision (64-
+bit).
+Type/
+Precision
+Sign Exponent Significand
+float (32 bits) 31 (1 bit) 30:23 (8 bits) 22:0 (23 bits)
+double (64 bits) 63 (1 bit) 62:52 (11 bits) 51:0 (52 bits)
+We discovered variable timing behaviour in all double-precision floating-point
+functions on all the development boards we used in the experiments. We now
+focus on the double-precision floating-point addition (vadd.f64) function to il-
+lustrate and explain lower level timing irregularities.
+The non-constant run-time was clearly observed when generating two random
+double-precision values for addition, with an average run-time of 16 clock cycles
+and standard deviation of 4.1. However, when we generated random values in
+the same range such they had the same exponents, the run-times were constant
+and consistent at 10 clock cycles. Moreover, when we mixed randomness from
+two fixed exponent ranges we observed constant and consistent run-times of 19
+clock cycles.
+5.2 Raspberry Pi 3
+We also discovered a subtle issue with constant run-time on the Raspberry Pi
+3, which itself has an ARM Cortex A53 core. This issue involves type casting,
+specifically, when casting a double to an int64_t, the operation rounds towards
+zero. There is no native instruction to do such a truncation on ARMv7. Thus
+instead, the compiler calls the runtime symbol __fixdfi, that is, __aeabi_d2lz.
+This may or may not be implemented in constant time. In LLVM it is not9 and
+importantly it leaks the sign. This is the case for the Raspberry Pi 3 which they
+targeted in [Por19]. We reported this issue to the Falcon team and moreover
+proposed a constant time fix, which we show in Listing 1.2.
+9 see for example https://github.com/llvm-mirror/compiler-rt/blob/
+69445f095c22aac2388f939bedebf224a6efcdaf/lib/builtins/fixdfdi.c#L18

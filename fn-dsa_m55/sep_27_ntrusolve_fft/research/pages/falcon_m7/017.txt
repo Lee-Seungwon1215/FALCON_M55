@@ -1,0 +1,44 @@
+DOCUMENT: falcon_m7.pdf PAGE: 17/22
+
+Dilithium and Falcon on the ARM Cortex M7 17
+sign tree cannot fit on the Cortex M4, but has been implemented in this
+research on the Cortex M7.
+– Expanding the private key also has a significant improvement using the FPU;
+showing an increase between 8.37–8.49x between the emulated code.
+– Verify shows little to know changes by using the FPU, due to it not requiring
+floating-point operations, and the slight decrease is probably due to the larger
+instruction pipeline on the M7.
+In Section 3.1 we provided stack and RAM usage for Dilithium and Falcon.
+The most notable results are for Falcon which has a small increase (at most, 88
+Bytes) in stack usage when the FPU is used.
+In Section 4, we provide profiling results of the two signature schemes, which
+can point to areas in which these schemes could be optimised in the future.
+The profiling results of Dilithium in Table 7 perhaps offer little novel insights
+into the bottlenecks of its implementation on the Cortex M7. Dilithium has
+a much simpler implementation complexity in comparison to Falcon and this
+can be observed by the much more compact table of results. However, we can
+observe the elegance of its design and performance when comparing the results
+across parameter sets; seeing that some values change a little, and some increase
+proportional to the added computations required by the small change in each
+parameter set, afforded by fixing the polynomial ring and modulus.
+We observe from the profiling of Falcon in Table 8 that the FPU improves,
+in comparison to emulation, floating-point operations in key generation by an
+order of magnitude, specifically in the following operations.
+– Converting a small vector to floating point (poly_small_to_fp) improves by
+7.5–7.65x, multiplying polynomials by a constant (poly_mulconst) and an
+adjoint (poly_mul_autoadj_fft) improves by 5.13–5.36x and 5.37–6.08x,
+respectively.
+– Polynomial inversion to FFT format (poly_invnorm2_fft) saves between
+11–13.2x.
+– The normalisation step alongside FPR addition saves between 12.1–13.1x.
+– FFT and iFFT operations improve by 15.4–17.2x, making this the biggest
+improvement of all operations in Falcon.
+The FPU improves upon emulating floating-point operations in sign dynamic
+by an order of magnitude, specifically in the following operations.
+– ffSampling improves by 5.75–5.88x, get lattice point and computing the
+Gram matrix (G) improves by 7.88–8.05x and 7.72–9.37x, respectively.
+– Applying the lattice basis, recomputing the matrix basis, and converting the
+basis to FFT format save 13.3–14x, 15–15.1x, and 15.9–16.1x, respectively.
+– Similar savings are noted for sign tree for applying the lattice basis, applying
+ffSampling, and getting the lattice point.
+– Expanding the private key saves between 12.3–12.5x.

@@ -1,0 +1,48 @@
+DOCUMENT: plantard.pdf PAGE: 3/24
+
+Junhao Huang et al. 3
+on the Intel platform, which further speeds up the butterfly units. The follow-up work
+[BKS19, ABCG20, GKS21] further extended the signed Montgomery reduction to the
+Cortex-M4 platform. The fastest Montgomery reduction for 16-/32-bit moduli [ABCG20,
+GKS21, AHKS22] only consumes 2 cycles on the Cortex-M4 platform. Even though
+Montgomery arithmetic could provide an efficient solution to most of the LBC schemes,
+this paper shows that Plantard arithmetic could be a potential alternative to Montgomery
+arithmetic in the LBC schemes with l-bit odd modulus, given that the target platform
+could implement the l×2l-bit multiplication in one multiplication.
+Our Contributions. This paper aims to improve, customize, and implement the Plantard
+arithmetic for the existing LBC schemes. Our contributions are threefold:
+• First, we present an improved Plantard arithmetic for signed integers with its
+correctness proof. The proposed method is inspired by the observation that the
+moduli in the existing LBC schemes are normally several times smaller than the
+modulus constraint in the original Plantard arithmetic.
+• Second, we detail the advantages of the improved Plantard arithmetic over its original
+version, Montgomery and Barrett arithmetic. With some tweaks over the original
+algorithm, the improved Plantard arithmetic not only supports signed integers but
+also extends its input range and narrows down its output range, thus enabling better
+lazy reduction strategies in NTT/INTT. Besides, it inherits the advantage of the
+Plantard multiplication, i.e., saving one multiplication when one of the two operands
+is a constant. All these merits make it possible to replace the Montgomery and
+Barrett arithmetic with the improved Plantard arithmetic in LBC schemes on some
+platforms.
+• Third, we present an efficient implementation of the improved Plantard arithmetic
+for 16-bit odd moduli using the smulw{b,t} instruction to perform the 16 ×32-bit
+multiplication on Cortex-M4. By replacing the state-of-the-art Montgomery and
+Barrett arithmetic with the improved Plantard arithmetic, we demonstrate that the
+proposed design enables more efficient polynomial arithmetic, namely NTT, INTT,
+and modular reduction, resulting in faster Kyber and NTTRU implementations on
+Cortex-M4. To the best of our knowledge, this is the first assembly implementation
+of NTTRU on Cortex-M4, and we set new speed records for Kyber and NTTRU.
+It should be noted that our optimizations for Kyber and NTTRU are not limited to
+Cortex-M4 and can be extended to Cortex-M7 as well as some 32-bit microcontrollers
+without SIMD extensions, e.g., the SiFive Freedom E310 with a 32-bit E31 RISC-V core
+[SiF] (see Subsection 4.3 for more details about the extensibility of our optimizations).
+Code. The implementations of Kyber and NTTRU are open source and available at
+https://github.com/UIC-ESLAS/ImprovedPlantardArithmetic.
+2 Preliminaries
+In this section, we first briefly introduce the variants of the Learning With Errors (LWE)
+problem. Then, the algorithms of Kyber and NTTRU are described. Finally, the details of
+the NTT and related modular arithmetic are given.
+The Learning With Errors (LWE) problem is systematically defined by Regev in
+[Reg05] for constructing public-key cryptosystems under the quantum random oracle
+model. Lyubashevsky et al. [LPR10] introduced a Ring algebraic structure for LWE,
+in effect solving the inefficient problem of LWE-based schemes; this variant is called

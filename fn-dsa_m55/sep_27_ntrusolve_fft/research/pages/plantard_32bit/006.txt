@@ -1,0 +1,118 @@
+DOCUMENT: plantard_32bit.pdf PAGE: 6/15
+
+IEEE TRANSACTIONS ON INFORMATION FORENSICS AND SECURITY 6
+C. Plantard Multiplication by a Constant Tailored for Kyber
+As mentioned before, Plantard arithmetic enables efficient
+modular multiplication by a constant in NTT/INTT, where
+the constant is the precomputed twiddle factor. During pre-
+computation, one could always make sure that the twiddle
+factors are reduced to [0,q). As the product ab lies in
+[q2l
+−q2l+α
+,22l
+−q2l+α), when we limit the constant b in
+[0,q), the input range of a can be further enlarged.
+For Kyber, we have q = 3329, l = 16. To ensure that
+modulus restriction q < 2l−α−1 holds, the maximum α is
+equal to 3. Besides, the maximum value of b (i.e. bmax) is
+equal to 3328 in Kyber. Overall, we can deduce the maximum
+and minimum value of a by:
+= (232
+amax <(22l
+−q2l+α)/bmax
+−3329 ×219)/3328 ≈230.13q.
+amin >(q2l
+= (3329 ×216
+−q2l+α)/bmax
+−3329 ×219)/3328 ≈−137.85q.
+Thanks to our improvements, the modular multiplication by
+a constant in Kyber supports input of range a∈[−137q,230q].
+Compared to the range [−64q,64q] in [20, Algorithm 11], the
+input range of the Plantard multiplication by a constant tailored
+for Kyber is at least 2.14×larger.
+IV. EFFICIENT PLANTARD ARITHMETIC FOR 16-BIT
+MODULUS ON CORTEX-M3 AND RISC-V
+The efficient Plantard arithmetic on Cortex-M4 [20] was
+dependent on the SIMD instruction smulw{b,t} for carrying
+out the 16 ×32-bit multiplication [a×bq′]2l. Here, a denotes
+a 16-bit signed integer and bq′ represents a precomputed
+32-bit positive integer. In [20, Algorithm 16], Huang et al.
+also presented a 5-instruction implementation of the Plantard
+multiplication by a constant on RISC-V. They concluded that
+in cases where multiplication instruction is slower than the
+shift instruction, the Plantard arithmetic has better performance
+than the Montgomery and Barrett arithmetic. In this section,
+we propose two optimization techniques to improve the per-
+formance of the Plantard arithmetic based on the specific ISA
+characteristics of Cortex-M3 and RISC-V, respectively. These
+optimization techniques show that the Plantard arithmetic can
+outperform the Montgomery and Barrett arithmetic without the
+prerequisite of slow multiplication. This is demonstrated by the
+efficient implementation of Plantard arithmetic on Cortex-M3,
+where both multiplication and shift instructions take one cycle.
+Notably, the efficient implementation of Plantard arithmetic is
+not restricted to Kyber’s modulus and can be customized for
+other 16-bit odd moduli as well.
+A. Plantard multiplication by a constant
+The first optimization technique is proposed for efficient
+Plantard multiplication by a constant on Cortex-M3 (Algo-
+rithm 4). Unlike the Plantard multiplication by a constant on
+Cortex-M4 [20, Algorithm 11], this algorithm accepts a 32-bit
+signed integer as input on low-end 32-bit platforms. If one
+Algorithm 4 Efficient Plantard multiplication by a constant
+for Kyber on Cortex-M3
+Input: An 32-bit signed integer a ∈[−137q,230q], a pre-
+computed 32-bit integer bq′ where b is a constant and
+q′
+= q−1 mod±232
+Output: r= ab(−2−2l) mod±q
+1: bq′←bq−1 mod 22l ▷ precomputed
+2: mul r,a,bq′ ▷ r←[abq′]2l
+3: add r,2α,r,asr#16 ▷ r←([r]l + 2α)
+4: mul r,r,q
+5: asr r,r,#16 ▷ r←[rq]l
+6: return r
+implements the multiplication [a×bq′]2l with the 32 ×32-
+bit multiplication instruction mul, the valid product locates
+in the most significant half of the 32-bit register r. Then,
+one need to shift the valid product to the least positive half
+so as to compute the later steps. The above shift operation
+might decrease the efficiency of Plantard arithmetic, as it
+consumes an extra cycle. In order to improve the efficiency, we
+propose to merge this shift operation with the “add to 2α” step
+by utilizing the inline barrel shifter operation on Cortex-M3
+(cf. line 3 of Algorithm 4). This operation initiates by right-
+shifting register r by 16 bits. Thereafter, the addition of 2α is
+directly carried out in the same cycle. After that, the remaining
+operations are computed by using just one multiplication
+and one right-shift instructions. In Section V-A1, a similar
+technique will be proposed to omit the final shift operation in
+the CT algorithm on Cortex-M3.
+The second optimization technique for the Plantard multipli-
+cation by a constant is carried out on RISC-V, as demonstrated
+in Algorithm 5. Similar to the algorithm on Cortex-M3, we
+also utilize the 32 ×32-bit multiplication instruction mul to
+implement the multiplication [a ×bq′]2l. As RISC-V does
+not provide inline barrel shifter operation as in Cortex-M3,
+we perform the right-shift operation and the addition of
+2α separately. Then, instead of computing [rq]l with one
+multiplication and one shift similar to the final two steps in
+Algorithm 4, we propose to precompute q2l = q×2l, which
+is inspired by the similar technique of Montgomery arithmetic
+proposed in [32]. This technique utilizes the fact that [rq]l is
+equivalent to [rq2l]2l, and the division by 22l operation can
+be implemented by using one mulh instruction. Note that this
+optimization technique cannot be applied to Cortex-M3 as it
+does not offer constant-time full multiplication instruction, but
+it can be securely extended to other platforms as long as the
+targeted platform has constant-time mulh instruction.
+For platforms that lack of inline shifter and mulh instruc-
+tions, if there is an efficient and constant-time mla instruction
+to handle the multiply-and-add operation, it is also possible to
+merge step 4 and 5 in Algorithm [20, Algorithm 16]. But we
+choose not to do it on Cortex-M3 since the mla instruction
+use two cycles on this platform, which will make this version
+slower than that in Algorithm 4.
+In summary, the efficient Plantard multiplication by a con-
+stant on both Cortex-M3 and RISC-V take four instructions,
+including two multiplications, one shift and one addition.

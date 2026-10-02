@@ -1,0 +1,46 @@
+DOCUMENT: m55_slothy.pdf PAGE: 41/46
+
+Abdulrahman, Becker, Kannwischer, Klein 41
+9 Conclusion
+In this work, we studied a workflow for the development of high performance assembly
+based on constraint programming: Beyond achieving highest performance through micro-
+architectural optimizations, our flow keeps the code artifact clean and maintainable, and
+produces results that can be audited without having to trust the optimizer.
+At the core, our workflow is based on a (micro)architecture agnostic approach SLOTHY
+to modelling the simultaneous optimization of instruction scheduling, register allocation
+and software pipelining as a constraint satisfaction problem. We provide an implementation
+of SLOTHY and instantiate it with Armv8.1-M+Helium + Cortex-M55 + Cortex-M85
+as well as AArch64+Neon + Cortex-A55 + Cortex-A72. We showcase the power of our
+approach by optimizing three real-world workloads from Digital Signal Processing and
+cryptography, matching or improving upon prior art in all cases.
+We believe that our workflow is a promising avenue to overcome the trade-off between
+fast and clean implementations, and encourage further research into the application of
+SLOTHY to other (micro)architectures and workloads, as well as the development of
+mechanized formal verification of the optimizations.
+Acknowledgments
+Matthias J. Kannwischer was supported by the Taiwan Ministry of Science and Technology
+through grant 109-2221-E-001-009-MY3, Academia Sinica Investigator Award AS-IA-109-
+M01, and the Executive Yuan Data Safety and Talent Cultivation Project (AS-KPQ-109-
+DSTCP).
+We thank Joseph Yiu for helping with various questions around the Cortex-M55 and
+Cortex-M85 CPUs as well as the setup of our MPS3-based benchmarking platform.
+References
+[AGG98] [AHKS22] [Alt95] [Arma] [Armb] [Armc] Erik R. Altman, R. Govindarajan, and Guang R. Gao. A unified framework
+for instruction scheduling and mapping for function units with structural
+hazards. Journal of Parallel and Distributed Computing, 49(2):259–293, 1998.
+4, 5
+Amin Abdulrahman, Vincent Hwang, Matthias J. Kannwischer, and Daan
+Sprenkels. Faster kyber and dilithium on the cortex-m4. In Applied Cryp-
+tography and Network Security: 20th International Conference, ACNS 2022,
+Rome, Italy, June 20–23, 2022, Proceedings, page 853–871, Berlin, Heidelberg,
+2022. Springer-Verlag. 35, 36
+Erik Richter Altman. Optimal software pipelining with function unit and
+register constraints, 1995. Thesis, McGill University, Montreal. 4, 5
+Arm Limited. Arm Architecture Reference Manual Armv8, for Armv8-A
+architecture profile. https://developer.arm.com/documentation/
+ddi0487/latest. 8
+Arm Limited. Arm Cortex-A Series Programmer’s Guide for Armv8-a.
+https://developer.arm.com/documentation/den0024/a/. 10
+Arm Limited. Arm Cortex-M4 Processor Technical Reference Manual Revi-
+sion r0p1. https://developer.arm.com/documentation/100166/
+0001. 22

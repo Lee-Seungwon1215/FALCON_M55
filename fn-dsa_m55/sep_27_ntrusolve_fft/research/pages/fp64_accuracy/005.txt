@@ -1,0 +1,45 @@
+DOCUMENT: fp64_accuracy.pdf PAGE: 5/18
+
+Formal Verification of Emulated Floating-Point Arithmetic in Falcon 5
+Algorithm 3: Falcon signature verification.
+Inputs: a message m, a signature sig, and a public key pk= h
+1: c= HashToPoint(r||m)
+2: s2 = Decompress(s,8·sbytelen−328)
+3: if s2 == ⊥then
+4: reject
+5: s1 = c−s2h
+6: if ||(s1,s2) ||2 > β2 then
+7: reject
+8: accept
+There are two classes of predicates in CryptoLine for modeling the proper-
+ties of strings of CryptoLine instructions: the algebraic predicates and the range
+predicates. An algebraic predicate is a conjunction of equations and modular
+equations, and a range predicate is a boolean formula with comparisons, equa-
+tions, and modular equations. We have the assertion assert and the assumption
+assume annotations for imposing properties on the predicates. For an algebraic
+predicate P and a range predicate Q, assert P && Q asks the backend to verify
+P with the associated computer algebra system and Q with the associated SMT
+solver, and assume P && Q adds P and Q to the corresponding backend tools.
+Assertions are used alone for verifying properties, and assumptions are com-
+monly used in conjunction with assertions for transferring predicates between
+the backend tools. For example, we first verify an algebraic predicate P by im-
+posing assert P && true and pass it to the SMT solver by imposing assume
+true && P.
+For verifying a program as a whole, we specify pre-conditions on the vari-
+ables, insert the string of CryptoLine instructions translated from the target
+program, annotate it with assertions and assumptions at proper locations, and
+finally specify the post-conditions. The most difficult part is the insertions of
+annotations, which, if ignored, results in non-responseness of the verification
+process in our context.
+2.5 Jasmin
+Jasmin is a programming language serving as a vehicle correlating assembly
+programs and their high-level abstractions. It was introduced by [Alm+17] for
+verifying the memory safety and constant-timeness of elliptic-curve arithmetic
+implementations. Jasmin was extended by [Alm+19] for verifying implemen-
+tation correctness and the security of SHA3 implementations with EasyCrypt,
+and [Alm+20] revisited the compiler, memory model, and EasyCrypt embedding
+for verifying the ChaCha20 stream cipher, the Poly1305 message-authentication
+code[Ber05],andtheGimlipermutation[Ber+17].Recently,[Alm+23]extended
+Jasmin with function calls, pointers to the stack memory, and the system call
+randombytes, and proved the implementation correctness of the key encapsula-
+tion mechanism Kyber recently selected by the National Institute of Standards

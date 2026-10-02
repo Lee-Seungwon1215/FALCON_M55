@@ -1,0 +1,543 @@
+{
+  "candidate": "after",
+  "started_utc": "2026-09-14T03:17:29.533613+00:00",
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_slothy/measurement/exec_board.py",
+    "--verbose",
+    "/Users/seungwon/FALCON/fn-dsa_m55/stage_profile_compare/build/after/zephyr/zephyr.elf"
+  ],
+  "source_tree_sha256": "4cca9f390516f2136d240447b4a257f799c6f0e72a4a915902a8aa76fd9a9aee",
+  "elf_sha256": "9c36e0869084b028d9c5a67bcd56b64957bd36b525d25138166cf896dcd8a9ab",
+  "mq_assembly": "/Users/seungwon/FALCON/fn-dsa_m55/ntt_opt_slothy/mq_cm55.s",
+  "probe": "003C00223335510735383531",
+  "ended_utc": "2026-09-14T03:17:44.323501+00:00",
+  "returncode": 0,
+  "valid": true,
+  "validation_errors": [],
+  "totals": {
+    "512_keygen": {
+      "calls": 10,
+      "total": 570949579,
+      "minimum": 47913160,
+      "maximum": 73647470
+    },
+    "512_sign": {
+      "calls": 100,
+      "total": 1740142246,
+      "minimum": 17239844,
+      "maximum": 17555005
+    },
+    "512_verify": {
+      "calls": 100,
+      "total": 32250500,
+      "minimum": 322505,
+      "maximum": 322505
+    },
+    "1024_keygen": {
+      "calls": 10,
+      "total": 2785218870,
+      "minimum": 176665172,
+      "maximum": 452615190
+    },
+    "1024_sign": {
+      "calls": 100,
+      "total": 3727746702,
+      "minimum": 36919003,
+      "maximum": 37576785
+    },
+    "1024_verify": {
+      "calls": 100,
+      "total": 62321500,
+      "minimum": 623215,
+      "maximum": 623215
+    }
+  },
+  "categories": {
+    "512_keygen_other": {
+      "cycles": 6559,
+      "entries": 10
+    },
+    "512_keygen_kg_generate": {
+      "cycles": 42332101,
+      "entries": 247
+    },
+    "512_keygen_kg_check": {
+      "cycles": 60886033,
+      "entries": 247
+    },
+    "512_keygen_kg_ntru": {
+      "cycles": 466017166,
+      "entries": 11
+    },
+    "512_keygen_kg_sk_complete": {
+      "cycles": 145120,
+      "entries": 10
+    },
+    "512_keygen_kg_pk_compute": {
+      "cycles": 1562600,
+      "entries": 10
+    },
+    "512_keygen_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_keygen_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_other": {
+      "cycles": 13300,
+      "entries": 0
+    },
+    "512_sign_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_sg_message_hash": {
+      "cycles": 1566600,
+      "entries": 100
+    },
+    "512_sign_sg_key_prep": {
+      "cycles": 24538000,
+      "entries": 100
+    },
+    "512_sign_sg_hash_to_point": {
+      "cycles": 15702178,
+      "entries": 100
+    },
+    "512_sign_sg_fft_basis": {
+      "cycles": 378398500,
+      "entries": 100
+    },
+    "512_sign_sg_ldl_ffsampling": {
+      "cycles": 753197400,
+      "entries": 100
+    },
+    "512_sign_sg_gaussian_berexp": {
+      "cycles": 417515507,
+      "entries": 102400
+    },
+    "512_sign_sg_recon_norm": {
+      "cycles": 147434100,
+      "entries": 100
+    },
+    "512_sign_sg_encode": {
+      "cycles": 1776661,
+      "entries": 100
+    },
+    "512_sign_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_sign_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_other": {
+      "cycles": 13800,
+      "entries": 0
+    },
+    "512_verify_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "512_verify_vr_message_hash": {
+      "cycles": 11969200,
+      "entries": 100
+    },
+    "512_verify_vr_decode": {
+      "cycles": 1808800,
+      "entries": 100
+    },
+    "512_verify_vr_ntt": {
+      "cycles": 2951800,
+      "entries": 100
+    },
+    "512_verify_vr_hash_to_point": {
+      "cycles": 14754800,
+      "entries": 100
+    },
+    "512_verify_vr_poly": {
+      "cycles": 361400,
+      "entries": 100
+    },
+    "512_verify_vr_norm": {
+      "cycles": 390700,
+      "entries": 200
+    },
+    "1024_keygen_other": {
+      "cycles": 6620,
+      "entries": 10
+    },
+    "1024_keygen_kg_generate": {
+      "cycles": 282786042,
+      "entries": 877
+    },
+    "1024_keygen_kg_check": {
+      "cycles": 489282487,
+      "entries": 877
+    },
+    "1024_keygen_kg_ntru": {
+      "cycles": 2009633971,
+      "entries": 17
+    },
+    "1024_keygen_kg_sk_complete": {
+      "cycles": 282560,
+      "entries": 10
+    },
+    "1024_keygen_kg_pk_compute": {
+      "cycles": 3227190,
+      "entries": 10
+    },
+    "1024_keygen_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_keygen_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_other": {
+      "cycles": 14700,
+      "entries": 0
+    },
+    "1024_sign_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_sg_message_hash": {
+      "cycles": 1566600,
+      "entries": 100
+    },
+    "1024_sign_sg_key_prep": {
+      "cycles": 44795500,
+      "entries": 100
+    },
+    "1024_sign_sg_hash_to_point": {
+      "cycles": 28893331,
+      "entries": 100
+    },
+    "1024_sign_sg_fft_basis": {
+      "cycles": 830185600,
+      "entries": 100
+    },
+    "1024_sign_sg_ldl_ffsampling": {
+      "cycles": 1666733400,
+      "entries": 100
+    },
+    "1024_sign_sg_gaussian_berexp": {
+      "cycles": 823058436,
+      "entries": 204800
+    },
+    "1024_sign_sg_recon_norm": {
+      "cycles": 328981900,
+      "entries": 100
+    },
+    "1024_sign_sg_encode": {
+      "cycles": 3517235,
+      "entries": 100
+    },
+    "1024_sign_vr_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_decode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_ntt": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_poly": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_sign_vr_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_other": {
+      "cycles": 14800,
+      "entries": 0
+    },
+    "1024_verify_kg_generate": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_check": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_ntru": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_sk_complete": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_kg_pk_compute": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_message_hash": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_key_prep": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_hash_to_point": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_fft_basis": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_ldl_ffsampling": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_gaussian_berexp": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_recon_norm": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_sg_encode": {
+      "cycles": 0,
+      "entries": 0
+    },
+    "1024_verify_vr_message_hash": {
+      "cycles": 22328500,
+      "entries": 100
+    },
+    "1024_verify_vr_decode": {
+      "cycles": 3590600,
+      "entries": 100
+    },
+    "1024_verify_vr_ntt": {
+      "cycles": 6986500,
+      "entries": 100
+    },
+    "1024_verify_vr_hash_to_point": {
+      "cycles": 27945000,
+      "entries": 100
+    },
+    "1024_verify_vr_poly": {
+      "cycles": 707000,
+      "entries": 100
+    },
+    "1024_verify_vr_norm": {
+      "cycles": 749100,
+      "entries": 200
+    }
+  },
+  "fingerprints": {
+    "512": "9895079d",
+    "1024": "a020dd02"
+  },
+  "raw_log_sha256": "00c54f292c1993e081c1d43ff835e747a737fd9c11763694a4ba75424a3ffe1e"
+}

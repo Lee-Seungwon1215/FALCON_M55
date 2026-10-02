@@ -1,0 +1,58 @@
+DOCUMENT: m55_slothy.pdf PAGE: 11/46
+
+Abdulrahman, Becker, Kannwischer, Klein 11
+the standard primitive n-th root of unity. Algebraically, this is the same as the splitting
+by evaluation (evζi
+n ) : C[X]/(Xn
+=
+−1)∼
+−→ iC[X]/(X−ζi
+n).
+Fast Fourier Transform. The Fast Fourier Transform (FFT) is a method for the efficient
+computationoftheFourierTransform. WhiletheabovedescriptionoftheFourierTransform
+suggests quadratic complexity, the FFT splits the computation into a logarithmic number
+of layers of linear complexity each, giving an overall complexity of O(nlog n). Each FFT
+layer operates on strided blocks of r data units via so-called butterflies, and r is called the
+radix of the FFT. Common choices are radix-2 and radix-4. Efficient implementations of
+the FFT are an essential component of any Digital Signal Processing (DSP) library, with
+complex numbers presented in either floating point or fixed point format.
+In the realm of Post-Quantum Cryptography, the FFT is of interest for the fast Fourier
+sampling of the digital signature scheme Falcon [PFK+22], selected for standardization
+by NIST in 2022 [NIS16].
+Number Theoretic Transform. The Number Theoretic Transform (NTT) is a variant of
+the Fourier Transform that’s defined over the integers rather than the complex numbers:
+While the latter splits C[X]/(Xn
+−1) as iC[X]/(X−ζi
+n) for the complex n-th root
+of unity ζn = exp(2πi/n), the NTT splits a modular polynomial ring Fq[X]/(Xn
+−1) as
+iFq[X]/(X−ωi), for ω ∈Fq a modular primitive n-th root of unity, that is, ωn = 1
+modulo q, but ωi ̸= 1 modulo q for all i<n.
+Structurally, the NTT is the same as the Fourier Transform, and in particular can be
+implemented in O(nlog n) time through a variant of the Fast Fourier Transform. However,
+the underlying coefficient arithmetic relies on modular integer arithmetic rather than
+floating point or fixed point arithmetic.
+Fast implementations of the Number Theoretic Transform are essential for high perfor-
+mance implementations of post-quantum cryptography, which use the NTT for polynomial
+multiplication (using the analogue of the convolution theorem in digital signal processing).
+The recently designated winners Kyber [SAB+22] and Dilithium [LDK+22] of the NIST
+Post-Quantum Cryptography standardization project [NIS16] both rely on the NTT. In
+this work, we target the NTTs for these schemes. Kyber uses a 7-layer incomplete 16-bit
+NTT with n= 256 and q= 3329, while Dilithium uses an 8-layer complete 32-bit NTT
+with n= 256 and q= 223
+−213 + 1.
+Basic aspects of NTT implementations are the merging of layers (depending on register
+pressure), the growth of coefficients and insertion of modular reductions (depending on
+the underlying prime), and the underlying primitive for modular multiplication.
+4 Assembly optimization as a constraint solving problem
+Thissection, whichistheheartofourwork,describesSLOTHY—Super(Lazy)Optimization
+of Tricky Handwritten assemblY — our approach to modeling assembly superoptimization
+as a constraint solving problem.
+4.1 Scope
+SLOTHY optimizes instruction scheduling, register allocation and software pipelining. That
+is, it considers reordering of instructions and change of their use of registers in search for
+some functionally equivalent but optimally performing variant of the code. Importantly,
+instruction scheduling and register allocation are considered simultaneously, avoiding the
+phase ordering problem (Section 3.1). In case of a loop, SLOTHY also simultaneously
+searches for suitable interleavings of iterations. Put differently, SLOTHY retains the
+(isomorphism class of the) source’s computational flow graph.

@@ -1,0 +1,29 @@
+2026-09-09T00:29:23.206410+00:00 OpenOCD: reset halt
+2026-09-09T00:29:23.309246+00:00 OpenOCD: load_image {/Users/seungwon/FALCON/fn-dsa_m55/measurement/build/fndsa_m55.bin} 0x34180400 bin
+2026-09-09T00:29:23.503161+00:00 109516 bytes written at address 0x34180400
+downloaded 109516 bytes in 0.193000s (554.141 KiB/s)
+2026-09-09T00:29:23.504097+00:00 OpenOCD: verify_image {/Users/seungwon/FALCON/fn-dsa_m55/measurement/build/fndsa_m55.bin} 0x34180400 bin
+2026-09-09T00:29:24.295928+00:00 verified 109516 bytes in 0.791000s (135.208 KiB/s)
+2026-09-09T00:29:24.296149+00:00 OpenOCD: reg sp 0x341ff000
+2026-09-09T00:29:24.296473+00:00 sp (/32): 0x341ff000
+2026-09-09T00:29:24.296596+00:00 OpenOCD: reg msp 0x341ff000
+2026-09-09T00:29:24.296736+00:00 msp (/32): 0x341ff000
+2026-09-09T00:29:24.296813+00:00 OpenOCD: reg psp 0x341ff000
+2026-09-09T00:29:24.296935+00:00 psp (/32): 0x341ff000
+2026-09-09T00:29:24.297002+00:00 OpenOCD: reg xpsr 0x01000000
+2026-09-09T00:29:24.297100+00:00 xpsr (/32): 0x01000000
+2026-09-09T00:29:24.297162+00:00 OpenOCD: reg primask 0x00000000
+2026-09-09T00:29:24.297279+00:00 primask (/1): 0x00
+2026-09-09T00:29:24.297375+00:00 OpenOCD: reg basepri 0x00000000
+2026-09-09T00:29:24.297517+00:00 basepri (/8): 0x00
+2026-09-09T00:29:24.297622+00:00 OpenOCD: reg faultmask 0x00000000
+2026-09-09T00:29:24.297729+00:00 faultmask (/1): 0x00
+2026-09-09T00:29:24.297789+00:00 OpenOCD: reg control 0x00000000
+2026-09-09T00:29:24.297897+00:00 control (/3): 0x00
+2026-09-09T00:29:24.297969+00:00 OpenOCD: resume 0x3418dd10
+2026-09-09T00:29:25.318145+00:00 Both warmups, valid/tampered signature checks and host fingerprints passed.
+2026-09-09T00:29:25.318654+00:00 OpenOCD: write_memory 0x341ff088 32 {0x474f3130}
+2026-09-09T00:29:25.322069+00:00 progress counts=[[0, 0, 0], [0, 0, 0]], degree=512, operation=0, error=0
+2026-09-09T00:30:25.336159+00:00 progress counts=[[100, 100, 100], [100, 100, 100]], degree=1024, operation=2, error=0
+2026-09-09T00:30:25.341976+00:00 OpenOCD: halt
+2026-09-09T00:30:25.371117+00:00 All 600 measured operations passed; both final fingerprints match host. No Flash was written. M55 left halted.

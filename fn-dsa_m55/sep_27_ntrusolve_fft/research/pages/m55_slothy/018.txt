@@ -1,0 +1,49 @@
+DOCUMENT: m55_slothy.pdf PAGE: 18/46
+
+18 Fast and Clean: Auditable high-performance assembly via constraint solving
+or modifying those registers in accordance with their reliance and influence on arithmetic
+flags. We use this approach to model flags in the X25519 example below.
+4.13 Address offset rewrites
+A typical loop will modify the base address for the data to be operated on with each
+iteration: For example, in Helium, data might be loaded via VLDR Qin, [Raddr]
+for some address register Raddr, and later stored via VSTR Qout, [Raddr], #16,
+incrementing the address register for the next iteration. Such patterns make deep soft-
+ware pipelining impossible without further modelling of the semantics of the address
+increments, as there is a data dependency between the final store of one iteration, incre-
+menting the address register, and the initial load for the next iteration. Since SLOTHY
+does not know about the semantics of instructions beyond their signature and depen-
+dencies, it cannot reorder load and store in this situation. With further semantic knowl-
+edge, however, one could of course reorder load and store in such situations, leveraging
+commutativity relations such as VSTR Qa, [Rptr], #16; VLDR Vb, [Rptr] ≡
+VLDR Qb, [Rptr, #16]; VSTR Qa, [Rptr], #16.
+We address this problem as follows: To begin, our existing SLOTHY architecture models
+(see Section 6) do not model address increments, but treat address registers for load/store
+operations as input-only. This gives SLOTHY the flexibility to freely reorder load/stores
+and identify deep software pipelining opportunities, but also constitutes a semantic change
+if a load/store with increment is reordered with another load/store from the same base
+register. After the optimization, we therefore iterate through pairs of load/stores which
+depend on the same address register and have been reordered by SLOTHY, and fix up
+their address offsets, leveraging commutativity relations such as the one above. This works
+well in the typical case where only one load/store instruction modifies the base register,
+and where the offers a flexible immediate offset. For pairs of load/store instruction which
+do not have this flexibility, we forbid their reordering in SLOTHY.
+We note that manual address increments via add Raddr, Raddr, #16 do currently
+still prevent software pipelining in SLOTHY. For loops where such increments can not be
+realized as pre/post increments, further work on SLOTHY is needed to optimize them.
+4.14 Other objectives
+Beyond the minimization of stalls, the following are useful objectives: If software pipelining
+is enabled, it is natural to maximize I I.core — that is, to minimize the amount of
+interleaving between successive iterations. Second, register usage can be minimized. This
+is particularly interesting if the code in question does not fit into the register file, and
+“virtual registers” are used to approximate the amount of stack spilling needed.
+5 Accuracy, Soundness & Security
+5.1 Security
+The security of cryptographic code requires dedicated implementation techniques depending
+on the threat model. For example, constant-time code should not use any branches, memory
+accesses, or variable-time instructions depending on secret data. Other techniques thwart
+stronger physical side-channels or fault attacks, such as masking, redundancy, or the
+specific ordering of instructions and use of registers to avoid pipeline leakage. Where
+automated code synthesis/optimization is used on cryptographic code, it is thus important
+to understand if/how it interferes with those techniques.
+The implementations studied here are (solely) constant-time, and so are our SLOTHY-
+optimizations: Since SLOTHY applies fixed-instruction superoptimization, no branches

@@ -1,0 +1,14 @@
+PASS: all 600 raw mailbox cycles match JSON; mean/median/sample-SD/min/max recomputed.
+PASS: current source, ELF and binary SHA-256 match the measured session.
+PASS: both final fingerprints match the completed M4 measurement and scalar host oracle.
+PASS: Original M4 path accepted
+PASS: Explicit M55 assembly compatibility accepted
+PASS: M55 without explicit compatibility rejected as intended
+PASS: M55 compatibility with ASM disabled rejected as intended
+PASS: codec_cm4.s assembled .text identical under M4/M55 flags (228 bytes).
+PASS: mq_cm4.s assembled .text identical under M4/M55 flags (1424 bytes).
+PASS: sha3_cm4.s assembled .text identical under M4/M55 flags (4184 bytes).
+PASS: sign_fpr_cm4.s assembled .text identical under M4/M55 flags (4460 bytes).
+PASS: sign_sampler_cm4.s assembled .text identical under M4/M55 flags (904 bytes).
+PASS: summed measured duration 55.835982s <= completion observation 60.017505s.
+Under the nominal CPU clock, even one uncounted 2^32-cycle wrap would exceed the observed whole-run time; a consistency check, not external clock calibration.
